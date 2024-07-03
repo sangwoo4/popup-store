@@ -20,18 +20,18 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "characters")
+    @Column(name = "characters", length = 20)
     private String characters;
 
-    @Column(name = "cosmetic")
+    @Column(name = "cosmetic", length = 20)
     private String cosmetic;
 
-    @Column(name = "food_drink")
+    @Column(name = "food_drink", length = 20)
     private String foodDrink;
 
-    @Column(name = "fancy")
+    @Column(name = "fancy", length = 20)
     private String fancy;
 
-    @OneToMany(mappedBy = "category")
-    Set<StoreCategory> store;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<StoreCategory> storeCategories;
 }

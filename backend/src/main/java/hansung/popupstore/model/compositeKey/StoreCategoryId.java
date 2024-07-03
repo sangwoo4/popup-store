@@ -1,4 +1,4 @@
-package hansung.popupstore.model;
+package hansung.popupstore.model.compositeKey;
 
 import jakarta.persistence.Embeddable;
 import java.io.Serializable;
@@ -7,24 +7,22 @@ import java.util.Objects;
 @Embeddable
 public class StoreCategoryId implements Serializable {
 
-    private Long popupStoreId;
+    private Long storeId;
     private Long categoryId;
 
     public StoreCategoryId() {}
 
-    public StoreCategoryId(Long popupStoreId, Long categoryId) {
-        this.popupStoreId = popupStoreId;
+    public StoreCategoryId(Long storeId, Long categoryId) {
+        this.storeId = storeId;
         this.categoryId = categoryId;
     }
 
-    // Getters and setters
-
-    public Long getPopupStoreId() {
-        return popupStoreId;
+    public Long getStoreId() {
+        return storeId;
     }
 
-    public void setPopupStoreId(Long popupStoreId) {
-        this.popupStoreId = popupStoreId;
+    public void setStoreId(Long storeId) {
+        this.storeId = storeId;
     }
 
     public Long getCategoryId() {
@@ -40,12 +38,12 @@ public class StoreCategoryId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StoreCategoryId that = (StoreCategoryId) o;
-        return Objects.equals(popupStoreId, that.popupStoreId) &&
+        return Objects.equals(storeId, that.storeId) &&
                 Objects.equals(categoryId, that.categoryId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(popupStoreId, categoryId);
+        return Objects.hash(storeId, categoryId);
     }
 }
