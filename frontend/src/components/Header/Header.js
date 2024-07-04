@@ -9,8 +9,6 @@ const Header = () => {
       
       <Link to="/">홈</Link>
       &nbsp; | &nbsp;
-      <Link to="/popup.details">상세정보 페이지</Link>
-      &nbsp; | &nbsp;
       <Link to="/reservation.details">예약내역</Link>
       &nbsp; | &nbsp;
       <Link to="/mypage">마이 페이지</Link>
