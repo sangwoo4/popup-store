@@ -1,4 +1,4 @@
-package hansung.popupstore.company.Dto;
+package hansung.popupstore.PopupStore;
 
 
 import hansung.popupstore.model.PopupStore;
@@ -11,16 +11,16 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompanyDto {
+public class PopupStoreDto {
 
     private Long id;
     private String title;
     private String address;
     private String roadAddress;
-    private String start_date;
-    private String end_date;
-    private String start_time;
-    private String end_time;
+    private String startDate;
+    private String endDate;
+    private String startTime;
+    private String endTime;
     private String telephone;
     private String subway;
     private String description;
@@ -34,10 +34,10 @@ public class CompanyDto {
                 .title(title)
                 .address(address)
                 .roadAddress(roadAddress)
-                .start_date(start_date)
-                .end_date(end_date)
-                .start_time(start_time)
-                .end_time(end_time)
+                .startDate(startDate)
+                .endTime(endTime)
+                .startTime(startTime)
+                .endTime(endTime)
                 .telephone(telephone)
                 .subway(subway)
                 .description(description)

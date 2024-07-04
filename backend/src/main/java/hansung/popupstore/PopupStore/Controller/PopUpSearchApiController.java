@@ -1,5 +1,6 @@
-package hansung.popupstore.Naver;
+package hansung.popupstore.PopupStore.Controller;
 
+import hansung.popupstore.PopupStore.Service.PopupStoreService;
 import hansung.popupstore.model.PopupStore;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -10,9 +11,9 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/search/popup")
-public class NaverSearchApiController {
+public class PopUpSearchApiController {
 
-    private NaverService naverService;
+    private PopupStoreService naverService;
 
     @GetMapping("/AllPopup")
     public List<PopupStore> savePopUp() {

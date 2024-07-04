@@ -2,18 +2,15 @@ package hansung.popupstore.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
+@Getter
 @Table(name = "popup_store")
 public class PopupStore {
     @Id
@@ -21,27 +18,27 @@ public class PopupStore {
     private Long id;
 
     @NotNull
-    @Column(name = "title", length = 30)
+    @Column(name = "title")
     private String title;
 
     @NotNull
-    @Column(name = "address", length = 30)
+    @Column(name = "address")
     private String address;
 
-    @Column(name = "road_address", length = 30)
+    @Column(name = "road_address")
     private String roadAddress;
 
     @Column(name = "start_date", length = 10)
-    private String start_date;
+    private String startDate;
 
     @Column(name = "end_date", length = 10)
-    private String end_date;
+    private String endDate;
 
     @Column(name = "start_time", length = 10)
-    private String start_time;
+    private String startTime;
 
     @Column(name = "end_time", length = 10)
-    private String end_time;
+    private String endTime;
 
     @Column(name = "telephone", length = 15)
     private String telephone;
