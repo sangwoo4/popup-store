@@ -52,11 +52,11 @@ public class PopupStore {
 
     @NotNull
     @Column(name = "mapx", length = 15)
-    private int mapx;
+    private String mapx;
 
     @NotNull
     @Column(name = "mapy", length = 15)
-    private int mapy;
+    private String mapy;
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;

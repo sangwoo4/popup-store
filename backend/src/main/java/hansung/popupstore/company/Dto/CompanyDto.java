@@ -25,8 +25,8 @@ public class CompanyDto {
     private String subway;
     private String description;
     private String link;
-    private int mapx;
-    private int mapy;
+    private String mapx;
+    private String mapy;
 
     public PopupStore toEntity(){
         return PopupStore.builder()
