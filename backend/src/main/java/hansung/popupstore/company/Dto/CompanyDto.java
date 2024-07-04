@@ -28,26 +28,6 @@ public class CompanyDto {
     private int mapx;
     private int mapy;
 
-
-//    public CompanyDto(Long id, String title, String address, String roadAddress, String start_date,
-//                      String end_date, String start_time, String end_time, String telephone, String subway,
-//                      String description, String link, int mapx, int mapy) {
-//        this.id = id;
-//        this.title = title;
-//        this.address = address;
-//        this.roadAddress = roadAddress;
-//        this.start_date = start_date;
-//        this.end_date = end_date;
-//        this.start_time = start_time;
-//        this.end_time = end_time;
-//        this.telephone = telephone;
-//        this.subway = subway;
-//        this.description = description;
-//        this.link = link;
-//        this.mapx = mapx;
-//        this.mapy = mapy;
-//    }
-
     public PopupStore toEntity(){
         return PopupStore.builder()
                 .id(id)
