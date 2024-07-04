@@ -2,7 +2,7 @@ package hansung.popupstore.PopupStore.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hansung.popupstore.PopupStore.PopupStoreDto;
+import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
 import hansung.popupstore.PopupStore.PopupStoreRepository;
 import hansung.popupstore.model.PopupStore;
 import org.jsoup.Jsoup;

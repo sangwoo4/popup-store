@@ -1,16 +1,17 @@
 package hansung.popupstore.model;
 
+import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.Set;
 
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Getter
 @Table(name = "popup_store")
 public class PopupStore {
     @Id
@@ -66,4 +67,20 @@ public class PopupStore {
 
     @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
     Set<StoreCategory> storeCategories;
+
+    public void updateFromDto(PopupStoreDto dto) {
+        this.title = dto.getTitle();
+        this.address = dto.getAddress();
+        this.roadAddress = dto.getRoadAddress();
+        this.startDate = dto.getStartDate();
+        this.endDate = dto.getEndDate();
+        this.startTime = dto.getStartTime();
+        this.endTime = dto.getEndTime();
+        this.telephone = dto.getTelephone();
+        this.subway = dto.getSubway();
+        this.description = dto.getDescription();
+        this.link = dto.getLink();
+        this.mapx = dto.getMapx();
+        this.mapy = dto.getMapy();
+    }
 }

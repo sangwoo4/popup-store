@@ -7,8 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@EnableJpaRepositories
+@Repository
 public interface PopupStoreRepository extends JpaRepository<PopupStore, Long> {
-    Optional<PopupStore> findByTitle(String title);
     Optional<PopupStore> findByTitleContaining(String title);
 }
