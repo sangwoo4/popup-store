@@ -8,17 +8,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/popup")
 public class PopUpRegisterController {
 
     @Autowired
     private PopUpRegisterService companyService;
     @PostMapping("/register")
-    public ResponseEntity<?> submit(@RequestBody PopupStoreDto companyDto){
-        PopupStoreDto SaveCompanyDto = companyService.saveRegister(companyDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(SaveCompanyDto);
+    public ResponseEntity<?> submit(@RequestBody PopupStoreDto registerDto){
+        PopupStoreDto SaveRegisterDto = companyService.saveRegister(registerDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(SaveRegisterDto);
     }
 }

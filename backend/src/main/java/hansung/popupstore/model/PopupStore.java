@@ -43,7 +43,6 @@ public class PopupStore {
     @Column(name = "telephone", length = 15)
     private String telephone;
 
-    @NotNull
     @Column(name = "subway", length = 30)
     private String subway;
 

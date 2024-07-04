@@ -61,6 +61,7 @@ public class PopupStoreService {
                 String cleanedTitle = removeHtmlTags(originalTitle);
                 if (!titleSet.contains(cleanedTitle)) {
                     PopupStoreDto popupStoreDto = PopupStoreDto.builder()
+                            .id(itemNode.path("id").asLong())
                             .title(cleanedTitle)
                             .address(itemNode.path("address").asText())
                             .roadAddress(itemNode.path("roadAddress").asText())
