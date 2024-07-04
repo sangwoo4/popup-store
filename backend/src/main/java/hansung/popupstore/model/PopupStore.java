@@ -2,9 +2,11 @@ package hansung.popupstore.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -19,12 +21,15 @@ public class PopupStore {
     private Long id;
 
     @NotNull
-    @Column(name = "store_title", length = 30)
-    private String store_title;
+    @Column(name = "title", length = 30)
+    private String title;
 
     @NotNull
-    @Column(name = "store_address", length = 30)
-    private String store_address;
+    @Column(name = "address", length = 30)
+    private String address;
+
+    @Column(name = "road_address", length = 30)
+    private String roadAddress;
 
     @Column(name = "start_date", length = 10)
     private String start_date;
@@ -38,12 +43,26 @@ public class PopupStore {
     @Column(name = "end_time", length = 10)
     private String end_time;
 
-    @Column(name = "tell", length = 15)
-    private String tell;
+    @Column(name = "telephone", length = 15)
+    private String telephone;
 
     @NotNull
     @Column(name = "subway", length = 30)
     private String subway;
+
+    @NotNull
+    @Column(name = "mapx", length = 15)
+    private int mapx;
+
+    @NotNull
+    @Column(name = "mapy", length = 15)
+    private int mapy;
+
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+
+    @Column(name = "link", length = 50)
+    private String link;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")

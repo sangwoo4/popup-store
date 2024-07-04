@@ -22,14 +22,19 @@ public class CompanyService {
         }
         return CompanyDto.builder()
                 .id(popup_store.getId())
-                .store_title(popup_store.getStore_title())
-                .store_address(popup_store.getStore_address())
+                .title(popup_store.getTitle())
+                .address(popup_store.getAddress())
+                .roadAddress(popup_store.getRoadAddress())
                 .start_date(popup_store.getStart_date())
                 .end_date(popup_store.getEnd_date())
                 .start_time(popup_store.getStart_time())
                 .end_time(popup_store.getEnd_time())
-                .tell(popup_store.getTell())
+                .telephone(popup_store.getTelephone())
                 .subway(popup_store.getSubway())
+                .description(popup_store.getDescription())
+                .link(popup_store.getLink())
+                .mapx(popup_store.getMapx())
+                .mapy(popup_store.getMapy())
                 .build();
     }
 }
