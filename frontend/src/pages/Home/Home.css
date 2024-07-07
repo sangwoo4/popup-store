@@ -17,3 +17,13 @@
     color: #000000; /* 글자 색상 */
     font-weight: bold; /* 글자 굵기 */
 }
+
+.location {
+    border: 1px solid #000000; /* 검은색 테두리 */
+    padding: 100px; /* 내부 여백 */
+    display: inline-block; /* 컨텐츠 크기에 맞게 테두리를 조정 */
+    margin-top: 20px; /* 위쪽 여백 */
+    text-decoration: none; /* 링크 밑줄 제거 */
+    color: #000000; /* 글자 색상 */
+    font-weight: bold; /* 글자 굵기 */
+}
