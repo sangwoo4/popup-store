@@ -39,6 +39,5 @@
   },
   "devDependencies": {
     "@types/navermaps": "^3.7.5"
-  },
-  "proxy": "http://localhost:8080"
+  }
 }

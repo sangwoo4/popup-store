@@ -14,7 +14,7 @@ const DetailInfo = () => {
   useEffect(() => {
     const fetchLocationInfo = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/popup/register/${id}`);
+        const response = await fetch(`http://localhost:8080/popup/register/${location}`);
         if (!response.ok) {
           throw new Error('Network response was not ok...');
         }
