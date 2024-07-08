@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -26,5 +26,5 @@ public class Company {
     private String companyName;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<PopupStore> popupStores;
+    private List<PopupStore> popupStores;
 }

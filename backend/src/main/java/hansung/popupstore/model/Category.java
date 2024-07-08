@@ -1,12 +1,14 @@
 package hansung.popupstore.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -20,18 +22,11 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "characters", length = 20)
-    private String characters;
+    @Column(name = "name", length = 50)
+    private String name;
 
-    @Column(name = "cosmetic", length = 20)
-    private String cosmetic;
+    @ManyToMany(mappedBy = "categories", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<PopupStore> popupStores = new HashSet<>();
 
-    @Column(name = "food_drink", length = 20)
-    private String foodDrink;
-
-    @Column(name = "fancy", length = 20)
-    private String fancy;
-
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<StoreCategory> storeCategories;
 }

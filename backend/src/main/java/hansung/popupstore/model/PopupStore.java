@@ -3,8 +3,12 @@ package hansung.popupstore.model;
 import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -55,7 +59,8 @@ public class PopupStore {
     @Column(name = "mapy", length = 15)
     private String mapy;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Lob
+    @Column(name = "description")
     private String description;
 
     @Column(name = "link", length = 50)
@@ -65,8 +70,21 @@ public class PopupStore {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<StoreCategory> storeCategories;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable (
+            name ="store_category",
+            joinColumns = @JoinColumn(name = "popup_store_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable (
+            name ="store_day",
+            joinColumns = @JoinColumn(name = "popup_store_id"),
+            inverseJoinColumns = @JoinColumn(name = "day_code")
+    )
+    private Set<Day> days = new HashSet<>();
 
     public void updateFromDto(PopupStoreDto dto) {
         this.title = dto.getTitle();
@@ -82,5 +100,11 @@ public class PopupStore {
         this.link = dto.getLink();
         this.mapx = dto.getMapx();
         this.mapy = dto.getMapy();
+        this.categories.clear();
+        this.categories.addAll(dto.getCategories());
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 }

@@ -1,13 +1,13 @@
 package hansung.popupstore.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jdk.jfr.Enabled;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import jakarta.validation.constraints.NotNull;
 
 @Data
 @Enabled

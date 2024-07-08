@@ -1,8 +1,7 @@
-package hansung.popupstore.PopupStore;
+package hansung.popupstore.PopupStore.Repository;
 
 import hansung.popupstore.model.PopupStore;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

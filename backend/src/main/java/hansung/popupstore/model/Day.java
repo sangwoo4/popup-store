@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,4 +25,7 @@ public class Day {
     @NotNull
     @Column(name="day", length=10)
     private String day;
+
+    @ManyToMany(mappedBy = "days", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.DETACH})
+    private Set<PopupStore> popupStores = new HashSet<>();
 }

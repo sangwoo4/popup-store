@@ -1,10 +1,15 @@
 package hansung.popupstore.PopupStore.Dto;
 
+import hansung.popupstore.model.Category;
 import hansung.popupstore.model.PopupStore;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Builder
@@ -13,19 +18,29 @@ import lombok.NoArgsConstructor;
 public class PopupStoreDto {
 
     private Long id;
+
+    @NotBlank(message = "스토어명을 입력해주세요")
     private String title;
+
+    @NotBlank(message = "주소를 입력해주세요")
     private String address;
+
     private String roadAddress;
     private String startDate;
     private String endDate;
     private String startTime;
     private String endTime;
     private String telephone;
+
+    @NotBlank(message = "가장 가까운 지하철역을 입력해주세요")
     private String subway;
+
     private String description;
     private String link;
     private String mapx;
     private String mapy;
+
+    private Set<Category> categories = new HashSet<>();
 
     public PopupStore toEntity() {
         return PopupStore.builder()
@@ -43,10 +58,11 @@ public class PopupStoreDto {
                 .link(link)
                 .mapx(mapx)
                 .mapy(mapy)
+                .categories(new HashSet<>(categories))
                 .build();
     }
 
-    public static PopupStoreDto fromEntity(PopupStore popupStore) {
+    public PopupStoreDto toDto(PopupStore popupStore) {
         return PopupStoreDto.builder()
                 .id(popupStore.getId())
                 .title(popupStore.getTitle())
@@ -62,6 +78,8 @@ public class PopupStoreDto {
                 .link(popupStore.getLink())
                 .mapx(popupStore.getMapx())
                 .mapy(popupStore.getMapy())
+                .categories(popupStore.getCategories())
                 .build();
     }
+
 }
