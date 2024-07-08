@@ -1,3 +1,4 @@
+// 24-07-08 백엔드 key value 연결 코드
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -13,7 +14,7 @@ const DetailInfo = () => {
   useEffect(() => {
     const fetchLocationInfo = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/search/popup/${location}`);
+        const response = await fetch(`http://localhost:8080/popup/register/${id}`);
         if (!response.ok) {
           throw new Error('Network response was not ok...');
         }
@@ -117,7 +118,8 @@ const DetailInfo = () => {
 export default DetailInfo;
 
 
-// 2.24-07-06 수정 전 (백엔드 get 받아오기 전)
+
+// // 24-07-06 수정 전 (백엔드 get 받아오기 전)
 // import React, { useEffect, useRef, useState } from 'react';
 // import { useParams } from 'react-router-dom';
 
@@ -128,18 +130,24 @@ export default DetailInfo;
 //   const { naver } = window;
 
 //   const locations = {
-//     hansung: {
-//       name: "한성대학교",
-//       latlng: new naver.maps.LatLng(37.5824, 127.0105),
-//       address: "서울특별시 성북구 삼선교로 16길 116",
-//       phone: "02-760-4114",
+//     shinchan: {
+//       company: "짱구는 못말려",
+//       title: "짱구는 여행중!",
+//       period: "24.06.05 ~ 24.06.16",
+//       latlng: new naver.maps.LatLng(37.5133, 127.1024),
+//       address: "서울특별시 송파구 올림픽로 300",
+//       phone: "1661-2000",
+//       heart: "52",
+//       naver_url: "null",
+//       insta_url: "https://www.instagram.com/p/C7gWtafhQQW/",
 //     },
-//     cityhall: {
-//       name: "서울시청",
-//       latlng: new naver.maps.LatLng(37.5663, 126.9779),
-//       address: "서울특별시 중구 세종대로 110",
-//       phone: "02-120",
-//     }
+
+//     // cityhall: {
+//     //   name: "서울시청",
+//     //   latlng: new naver.maps.LatLng(37.5663, 126.9779),
+//     //   address: "서울특별시 중구 세종대로 110",
+//     //   phone: "02-120",
+//     // }
 //   };
 //   const locationInfo = locations[location];
 
@@ -162,7 +170,7 @@ export default DetailInfo;
 //         <p>${locationInfo.address}<br/>
 //            전화: ${locationInfo.phone}</p>
 //       </div>
-//     `;
+//     `; // 지도 마커에 뜨는 정보
 
 //     const infowindow = new naver.maps.InfoWindow({
 //       content: contentString,
@@ -185,7 +193,7 @@ export default DetailInfo;
 
 //   return (
 //     <>
-//       <h1>Naver Map - {locationInfo.name} 상세정보 페이지</h1>
+//       <h1 className='detail-popup'>Naver Map - {locationInfo.title} 상세정보 페이지</h1>
 //       <div>
 //         <button className='info' onClick={() => setActiveMenu('info')}>상세정보</button>
 //         <button className='map' onClick={() => setActiveMenu('map')}>지도</button>
@@ -193,7 +201,7 @@ export default DetailInfo;
 //       </div>
 //       {activeMenu === 'info' && (
 //         <div>
-//           <h2>{locationInfo.name}</h2>
+//           <h2>{locationInfo.title}</h2>
 //           <h4>주소: {locationInfo.address}<br />
 //             전화: {locationInfo.phone}</h4>
 //         </div>
