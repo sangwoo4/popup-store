@@ -16,21 +16,25 @@ public class SecurityConfig {
     public DefaultSecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
-                .formLogin((formLogin) -> formLogin
-                        .loginPage("/user/login")
-                        .usernameParameter("email")
-                        .passwordParameter("password")
-                        .defaultSuccessUrl("/"))
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/company/**").hasAnyRole("COMPANY", "ADMIN")
+                        .requestMatchers("/**").permitAll()
+                )
+//                .formLogin((formLogin) -> formLogin
+//                        .loginPage("/auth/login")
+//                        .usernameParameter("email")
+//                        .passwordParameter("password")
+//                        .defaultSuccessUrl("/")
+//                )
                 .logout((logout) -> logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))
                         .logoutSuccessUrl("/")
-                        .invalidateHttpSession(true))
+                        .invalidateHttpSession(true)
+                )
                 .csrf().disable()
         ;
 
         return http.build();
-
     }
 
     @Bean

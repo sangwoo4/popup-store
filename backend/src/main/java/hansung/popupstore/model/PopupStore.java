@@ -1,25 +1,87 @@
 package hansung.popupstore.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Data;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
-@Data
+import java.util.HashSet;
+import java.util.Set;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
+@Table(name = "popup_store")
 public class PopupStore {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @Column(name = "title")
     private String title;
-    private String link;
-    private String category;
-    private String description;
-    private String telephone;
+
+    @NotNull
+    @Column(name = "address")
     private String address;
+
+    @Column(name = "road_address")
     private String roadAddress;
+
+    @Column(name = "start_date", length = 10)
+    private String startDate;
+
+    @Column(name = "end_date", length = 10)
+    private String endDate;
+
+    @Column(name = "start_time", length = 10)
+    private String startTime;
+
+    @Column(name = "end_time", length = 10)
+    private String endTime;
+
+    @Column(name = "telephone", length = 15)
+    private String telephone;
+
+    @Column(name = "subway", length = 30)
+    private String subway;
+
+    @NotNull
+    @Column(name = "mapx", length = 15)
     private String mapx;
+
+    @NotNull
+    @Column(name = "mapy", length = 15)
     private String mapy;
+
+    @Lob
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "link", length = 50)
+    private String link;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
+    private Company company;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable (
+            name ="store_category",
+            joinColumns = @JoinColumn(name = "popup_store_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable (
+            name ="store_day",
+            joinColumns = @JoinColumn(name = "popup_store_id"),
+            inverseJoinColumns = @JoinColumn(name = "day_code")
+    )
+
+    private Set<Day> days = new HashSet<>();
+
 }
