@@ -15,7 +15,7 @@ public class PopUpSearchApiController {
 
     private PopupStoreService naverService;
 
-    @GetMapping("/AllPopup")
+    @GetMapping("/all")
     public List<PopupStore> savePopUp() {
         String query = "팝업";
         String result = naverService.fetchNaverSearchResults(query);

@@ -25,6 +25,7 @@ public class StoreCategory {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("categoryId")
+
     @JoinColumn(name = "category_id")
     private Category category;
 }
