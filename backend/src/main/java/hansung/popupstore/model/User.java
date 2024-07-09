@@ -1,14 +1,17 @@
 package hansung.popupstore.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jdk.jfr.Enabled;
 import lombok.*;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+
 import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.HashSet;
 import java.util.Set;
+
 
 @Enabled
 @Builder

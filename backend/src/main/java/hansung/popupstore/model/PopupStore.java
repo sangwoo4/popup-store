@@ -4,13 +4,15 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Getter
 @Table(name = "popup_store")
 public class PopupStore {
     @Id
@@ -54,7 +56,8 @@ public class PopupStore {
     @Column(name = "mapy", length = 15)
     private String mapy;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Lob
+    @Column(name = "description")
     private String description;
 
     @Column(name = "link", length = 50)
@@ -64,6 +67,21 @@ public class PopupStore {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<StoreCategory> storeCategories;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable (
+            name ="store_category",
+            joinColumns = @JoinColumn(name = "popup_store_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable (
+            name ="store_day",
+            joinColumns = @JoinColumn(name = "popup_store_id"),
+            inverseJoinColumns = @JoinColumn(name = "day_code")
+    )
+
+    private Set<Day> days = new HashSet<>();
+
 }
