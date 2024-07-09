@@ -24,9 +24,12 @@ public class AuthService {
     private final CompanyRepository companyRepository;
 
     public ResponseDto<?> userSignUp(UserSignUpDto dto) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(dto.getPassword());
+
         User user = User.builder()
                 .email(dto.getEmail())
-                .password(dto.getPassword())
+                .password(hashedPassword) // 이미 해싱된 비밀번호 사용
                 .birth(dto.getBirth())
                 .gender(dto.getGender())
                 .nickname(dto.getNickname())
@@ -34,13 +37,7 @@ public class AuthService {
                 .username(dto.getUsername())
                 .build();
 
-        String password = dto.getPassword();
-
         try {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String hashedPassword = passwordEncoder.encode(password);
-
-            user.setPassword(hashedPassword);
             userRepository.save(user);
 
             Role userRole = roleRepository.findByRole("ROLE_USER").orElseThrow(() -> new RuntimeException("Role not found."));
@@ -55,19 +52,18 @@ public class AuthService {
     }
 
     public ResponseDto<?> companySignUp(CompanySignUpDto dto) {
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(dto.getPassword());
+
         Company company = Company.builder()
-                .password(dto.getPassword())
+                .password(hashedPassword)
                 .companyName(dto.getCompanyName())
                 .email(dto.getCompanyEmail())
                 .build();
 
-        String password = dto.getPassword();
-
         try {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String hashedPassword = passwordEncoder.encode(password);
 
-            company.setPassword(hashedPassword);
             companyRepository.save(company);
 
             Role companyRole = roleRepository.findByRole("ROLE_COMPANY").orElseThrow(() -> new RuntimeException("Role not found."));

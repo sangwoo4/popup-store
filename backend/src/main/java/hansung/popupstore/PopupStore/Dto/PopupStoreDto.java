@@ -43,7 +43,7 @@ public class PopupStoreDto {
     private Set<Category> categories = new HashSet<>();
 
     public PopupStore toEntity() {
-        return PopupStore.builder()
+        PopupStore popupStore = PopupStore.builder()
                 .id(id)
                 .title(title)
                 .address(address)
@@ -58,8 +58,14 @@ public class PopupStoreDto {
                 .link(link)
                 .mapx(mapx)
                 .mapy(mapy)
-                .categories(new HashSet<>(categories))
                 .build();
-    }
 
+        if (categories != null) {
+            popupStore.setCategories(new HashSet<>(categories));
+        } else {
+            popupStore.setCategories(new HashSet<>()); // 또는 null 처리 로직 추가
+        }
+
+        return popupStore;
+    }
 }

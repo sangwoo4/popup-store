@@ -1,127 +1,49 @@
 package hansung.popupstore.PopupStore.Service;
-
-import hansung.popupstore.Account.Dto.ResponseDto;
-import hansung.popupstore.Account.Dto.UserSignUpDto;
-import hansung.popupstore.Account.Repository.RoleRepository;
-import hansung.popupstore.Account.Repository.UserRepository;
 import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
 import hansung.popupstore.PopupStore.Repository.CategoryRepository;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.model.Category;
 import hansung.popupstore.model.PopupStore;
-import hansung.popupstore.model.Role;
-import hansung.popupstore.model.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-
 @Service
 @RequiredArgsConstructor
 public class PopUpRegisterService {
-    private PopupStoreRepository popupStoreRepository;
-    private RoleRepository roleRepository;
-    private  UserRepository userRepository;
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    public PopUpRegisterService(PopupStoreRepository popupStoreRepository, CategoryRepository categoryRepository) {
-        this.popupStoreRepository = popupStoreRepository;
-        this.categoryRepository = categoryRepository;
-    }
-    public ResponseDto<?> signUp(UserSignUpDto dto) {
-        User user = User.builder()
-                .email(dto.getEmail())
-                .password(dto.getPassword())
-                .birth(dto.getBirth())
-                .gender(dto.getGender())
-                .nickname(dto.getNickname())
-                .phone(dto.getPhone())
-                .username(dto.getUsername())
-                .build();
-
-        String password = dto.getPassword();
-
-        try {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String hashedPassword = passwordEncoder.encode(password);
-
-            user.setPassword(hashedPassword);
-            userRepository.save(user);
-            System.out.println("user");
-
-            Role userRole = roleRepository.findByRole("ROLE_USER").orElseThrow(() -> new RuntimeException("Role not found."));
-            user.getRoles().add(userRole);  // roles는 이제 null이 아니므로 NullPointerException이 발생하지 않습니다.
-            System.out.println("role");
-
-            userRepository.save(user);
-
-        } catch (Exception e) {
-            return ResponseDto.setFailed("회원 생성 실패.");
-        }
-
-        return ResponseDto.setSuccess("회원 생성 성공.");
-    }
+    private final PopupStoreRepository popupStoreRepository;
+    private final CategoryRepository categoryRepository;
 
 
-    // 팝업 스토어 등록
     @Transactional
     public PopupStoreDto saveRegister(PopupStoreDto popupStoreDto) {
-        // DTO를 엔티티로 변환
         PopupStore popupStore = popupStoreDto.toEntity();
 
-        // 카테고리 저장 및 업데이트
         Set<Category> savedCategories = saveOrUpdateCategories(popupStoreDto.getCategories());
-        popupStore.getCategories().clear();
-        popupStore.getCategories().addAll(savedCategories);
+        popupStore.setCategories(savedCategories);
 
         PopupStore savedPopupStore = popupStoreRepository.save(popupStore);
-
-        if (savedPopupStore == null) {
-            throw new IllegalStateException("저장하기 실패");
-        }
-
         return toDto(savedPopupStore);
     }
 
-    // 팝업 스토어 수정
     @Transactional
     public PopupStoreDto updateRegister(Long id, PopupStoreDto popupStoreDto) {
         PopupStore popupStore = popupStoreRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("수정 실패"));
 
-        // DTO에서 엔티티로 데이터 업데이트
-        popupStore.setTitle(popupStoreDto.getTitle());
-        popupStore.setAddress(popupStoreDto.getAddress());
-        popupStore.setRoadAddress(popupStoreDto.getRoadAddress());
-        popupStore.setStartDate(popupStoreDto.getStartDate());
-        popupStore.setEndDate(popupStoreDto.getEndDate());
-        popupStore.setStartTime(popupStoreDto.getStartTime());
-        popupStore.setEndTime(popupStoreDto.getEndTime());
-        popupStore.setTelephone(popupStoreDto.getTelephone());
-        popupStore.setSubway(popupStoreDto.getSubway());
-        popupStore.setDescription(popupStoreDto.getDescription());
-        popupStore.setLink(popupStoreDto.getLink());
-        popupStore.setMapx(popupStoreDto.getMapx());
-        popupStore.setMapy(popupStoreDto.getMapy());
+        updatePopupStoreFromDto(popupStore, popupStoreDto);
 
-        // 카테고리 업데이트 처리
         Set<Category> savedCategories = saveOrUpdateCategories(popupStoreDto.getCategories());
-        popupStore.getCategories().clear();
-        popupStore.getCategories().addAll(savedCategories);
+        popupStore.setCategories(savedCategories);
 
         popupStoreRepository.save(popupStore);
-
         return toDto(popupStore);
     }
 
-    // 팝업 스토어 조회
     @Transactional
     public PopupStoreDto getPost(Long id) {
         PopupStore popupStore = popupStoreRepository.findById(id)
@@ -129,29 +51,22 @@ public class PopUpRegisterService {
         return toDto(popupStore);
     }
 
-    // 팝업 스토어 삭제
     @Transactional
     public void deleteRegister(Long id) {
-        Optional<PopupStore> optionalPopupStore = popupStoreRepository.findById(id);
-        PopupStore popupStore = optionalPopupStore.orElseThrow(() ->
-                new IllegalStateException("존재하지 않는 팝업 스토어입니다."));
+        PopupStore popupStore = popupStoreRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("존재하지 않는 팝업 스토어입니다."));
         popupStoreRepository.deleteById(id);
     }
 
-    // 카테고리 저장 및 삭제
     private Set<Category> saveOrUpdateCategories(Set<Category> categories) {
         Set<Category> savedCategories = new HashSet<>();
         for (Category category : categories) {
             Optional<Category> existingCategory = categoryRepository.findByName(category.getName());
-            if (existingCategory.isPresent()) {
-                savedCategories.add(existingCategory.get());
-            } else {
-                savedCategories.add(categoryRepository.save(category));
-            }
+            savedCategories.add(existingCategory.orElseGet(() -> categoryRepository.save(category)));
         }
         return savedCategories;
     }
-    // 엔티티를 DTO로 변환하는 메서드
+
     private PopupStoreDto toDto(PopupStore popupStore) {
         return PopupStoreDto.builder()
                 .id(popupStore.getId())
@@ -168,7 +83,23 @@ public class PopUpRegisterService {
                 .link(popupStore.getLink())
                 .mapx(popupStore.getMapx())
                 .mapy(popupStore.getMapy())
-                .categories(popupStore.getCategories())
+                .categories(popupStore.getCategories() != null ? new HashSet<>(popupStore.getCategories()) : new HashSet<>())
                 .build();
+    }
+
+    private void updatePopupStoreFromDto(PopupStore popupStore, PopupStoreDto dto) {
+        popupStore.setTitle(dto.getTitle());
+        popupStore.setAddress(dto.getAddress());
+        popupStore.setRoadAddress(dto.getRoadAddress());
+        popupStore.setStartDate(dto.getStartDate());
+        popupStore.setEndDate(dto.getEndDate());
+        popupStore.setStartTime(dto.getStartTime());
+        popupStore.setEndTime(dto.getEndTime());
+        popupStore.setTelephone(dto.getTelephone());
+        popupStore.setSubway(dto.getSubway());
+        popupStore.setDescription(dto.getDescription());
+        popupStore.setLink(dto.getLink());
+        popupStore.setMapx(dto.getMapx());
+        popupStore.setMapy(dto.getMapy());
     }
 }

@@ -13,16 +13,12 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private UserRepository userRepository;
-    private TokenProvider tokenProvider;
+    private final UserRepository userRepository;
+    private final TokenProvider tokenProvider;
 
     public String getNicknameByToken(String token) {
         // 토큰의 유효성 검사
         String userEmail = tokenProvider.validateJwt(token);
-        if (userEmail == null) {
-            // 토큰이 유효하지 않은 경우
-            return null;
-        }
 
         // 토큰이 유효한 경우 사용자를 데이터베이스에서 찾음
         Optional<User> userOptional = userRepository.findByEmail(userEmail);

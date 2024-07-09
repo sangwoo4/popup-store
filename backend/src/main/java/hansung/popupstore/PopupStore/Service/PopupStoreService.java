@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.model.PopupStore;
+import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
@@ -23,10 +24,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PopupStoreService {
     private static final Logger logger = LoggerFactory.getLogger(PopupStoreService.class);
-    private final PopupStoreRepository popupStoreRepository;
-    private final ObjectMapper objectMapper;
+    private PopupStoreRepository popupStoreRepository;
+    private ObjectMapper objectMapper;
 
     @Value("${naver.client.id}")
     private String clientId;
