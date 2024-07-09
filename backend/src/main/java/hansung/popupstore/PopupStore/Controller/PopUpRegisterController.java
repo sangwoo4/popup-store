@@ -34,8 +34,8 @@ public class PopUpRegisterController {
     }
 
     @GetMapping("/register/{id}")
-    public ResponseEntity<?> detail(@PathVariable("id") Long id, @RequestBody PopupStoreDto getDto){
-        PopupStoreDto popupStoreDto = companyService.getPost(id, getDto);
+    public ResponseEntity<?> detail(@PathVariable("id") Long id){
+        PopupStoreDto popupStoreDto = companyService.getPost(id);
         return ResponseEntity.status(HttpStatus.OK).body(popupStoreDto);
     }
 }

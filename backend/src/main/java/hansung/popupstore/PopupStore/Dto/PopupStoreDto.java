@@ -62,24 +62,4 @@ public class PopupStoreDto {
                 .build();
     }
 
-    public PopupStoreDto toDto(PopupStore popupStore) {
-        return PopupStoreDto.builder()
-                .id(popupStore.getId())
-                .title(popupStore.getTitle())
-                .address(popupStore.getAddress())
-                .roadAddress(popupStore.getRoadAddress())
-                .startDate(popupStore.getStartDate())
-                .endDate(popupStore.getEndDate())
-                .startTime(popupStore.getStartTime())
-                .endTime(popupStore.getEndTime())
-                .telephone(popupStore.getTelephone())
-                .subway(popupStore.getSubway())
-                .description(popupStore.getDescription())
-                .link(popupStore.getLink())
-                .mapx(popupStore.getMapx())
-                .mapy(popupStore.getMapy())
-                .categories(popupStore.getCategories())
-                .build();
-    }
-
 }

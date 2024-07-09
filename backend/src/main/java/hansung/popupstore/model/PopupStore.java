@@ -1,17 +1,14 @@
 package hansung.popupstore.model;
 
-import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -87,25 +84,4 @@ public class PopupStore {
 
     private Set<Day> days = new HashSet<>();
 
-    public void updateFromDto(PopupStoreDto dto) {
-        this.title = dto.getTitle();
-        this.address = dto.getAddress();
-        this.roadAddress = dto.getRoadAddress();
-        this.startDate = dto.getStartDate();
-        this.endDate = dto.getEndDate();
-        this.startTime = dto.getStartTime();
-        this.endTime = dto.getEndTime();
-        this.telephone = dto.getTelephone();
-        this.subway = dto.getSubway();
-        this.description = dto.getDescription();
-        this.link = dto.getLink();
-        this.mapx = dto.getMapx();
-        this.mapy = dto.getMapy();
-        this.categories.clear();
-        this.categories.addAll(dto.getCategories());
-    }
-
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
-    }
 }
