@@ -1,12 +1,20 @@
 package hansung.popupstore.PopupStore.Service;
 
+import hansung.popupstore.Account.Dto.ResponseDto;
+import hansung.popupstore.Account.Dto.UserSignUpDto;
+import hansung.popupstore.Account.Repository.RoleRepository;
+import hansung.popupstore.Account.Repository.UserRepository;
 import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
 import hansung.popupstore.PopupStore.Repository.CategoryRepository;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.model.Category;
 import hansung.popupstore.model.PopupStore;
+import hansung.popupstore.model.Role;
+import hansung.popupstore.model.User;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -15,16 +23,52 @@ import java.util.Set;
 
 
 @Service
+@RequiredArgsConstructor
 public class PopUpRegisterService {
-
-    private final PopupStoreRepository popupStoreRepository;
-    private final CategoryRepository categoryRepository;
+    private PopupStoreRepository popupStoreRepository;
+    private RoleRepository roleRepository;
+    private  UserRepository userRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
     public PopUpRegisterService(PopupStoreRepository popupStoreRepository, CategoryRepository categoryRepository) {
         this.popupStoreRepository = popupStoreRepository;
         this.categoryRepository = categoryRepository;
     }
+    public ResponseDto<?> signUp(UserSignUpDto dto) {
+        User user = User.builder()
+                .email(dto.getEmail())
+                .password(dto.getPassword())
+                .birth(dto.getBirth())
+                .gender(dto.getGender())
+                .nickname(dto.getNickname())
+                .phone(dto.getPhone())
+                .username(dto.getUsername())
+                .build();
+
+        String password = dto.getPassword();
+
+        try {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String hashedPassword = passwordEncoder.encode(password);
+
+            user.setPassword(hashedPassword);
+            userRepository.save(user);
+            System.out.println("user");
+
+            Role userRole = roleRepository.findByRole("ROLE_USER").orElseThrow(() -> new RuntimeException("Role not found."));
+            user.getRoles().add(userRole);  // roles는 이제 null이 아니므로 NullPointerException이 발생하지 않습니다.
+            System.out.println("role");
+
+            userRepository.save(user);
+
+        } catch (Exception e) {
+            return ResponseDto.setFailed("회원 생성 실패.");
+        }
+
+        return ResponseDto.setSuccess("회원 생성 성공.");
+    }
+
 
     // 팝업 스토어 등록
     @Transactional
