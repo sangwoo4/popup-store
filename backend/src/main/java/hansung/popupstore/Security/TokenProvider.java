@@ -25,7 +25,7 @@ public class TokenProvider {
             Date now = new Date();
             if (expiration.before(now)) {
                 // 토큰이 만료된 경우
-                System.out.println("null1");
+                System.out.println("토큰 만료");
                 return null;
             }
 
@@ -33,11 +33,11 @@ public class TokenProvider {
             return claims.getBody().getSubject();
         } catch (ExpiredJwtException e) {
             // 토큰이 만료된 경우
-            System.out.println("null2");
+            System.out.println("토큰 만료");
             return null;
         } catch (Exception e) {
             // 서명이 유효하지 않은 경우
-            System.out.println("null3");
+            System.out.println("서명이 유효하지 않은 토큰");
             return null;
         }
     }

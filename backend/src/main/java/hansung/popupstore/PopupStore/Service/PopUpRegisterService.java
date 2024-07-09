@@ -83,7 +83,7 @@ public class PopUpRegisterService {
                 .link(popupStore.getLink())
                 .mapx(popupStore.getMapx())
                 .mapy(popupStore.getMapy())
-                .categories(popupStore.getCategories())
+                .categories(popupStore.getCategories() != null ? new HashSet<>(popupStore.getCategories()) : new HashSet<>())
                 .build();
     }
 

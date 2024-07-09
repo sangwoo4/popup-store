@@ -16,9 +16,7 @@ public class UserController {
         // Authorization 헤더에서 토큰 추출, "Bearer " 문자열 제거
         String token = authorizationHeader.replace("Bearer ", "");
         System.out.println("got token " + token);
-        // 토큰을 사용하여 사용자의 닉네임 가져오기
         String nickname = userService.getNicknameByToken(token);
-
         // 클라이언트에게 닉네임 반환
         return ResponseEntity.ok(nickname);
     }
