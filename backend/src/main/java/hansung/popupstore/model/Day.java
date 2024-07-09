@@ -26,6 +26,6 @@ public class Day {
     @Column(name="day", length=10)
     private String day;
 
-    @ManyToMany(mappedBy = "days", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.DETACH})
+    @ManyToMany(mappedBy = "days")
     private Set<PopupStore> popupStores = new HashSet<>();
 }

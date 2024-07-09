@@ -25,7 +25,7 @@ public class Category {
     @Column(name = "name", length = 50)
     private String name;
 
-    @ManyToMany(mappedBy = "categories", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "categories")
     @JsonIgnore
     private Set<PopupStore> popupStores = new HashSet<>();
 

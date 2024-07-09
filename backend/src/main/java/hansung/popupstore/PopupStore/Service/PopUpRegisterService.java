@@ -26,21 +26,12 @@ public class PopUpRegisterService {
         this.categoryRepository = categoryRepository;
     }
 
+    // 팝업 스토어 등록
     @Transactional
     public PopupStoreDto saveRegister(PopupStoreDto popupStoreDto) {
         PopupStore popupStore = popupStoreDto.toEntity();
 
-        // 카테고리 설정 및 저장
-        Set<Category> savedCategories = new HashSet<>();
-        for (Category category : popupStoreDto.getCategories()) {
-            Optional<Category> existingCategory = categoryRepository.findByName(category.getName());
-            if (existingCategory.isPresent()) {
-                savedCategories.add(existingCategory.get());
-            } else {
-                // Category가 존재하지 않으면 새로 저장
-                savedCategories.add(categoryRepository.save(category));
-            }
-        }
+        Set<Category> savedCategories = saveOrUpdateCategories(popupStoreDto.getCategories());
         popupStore.setCategories(savedCategories);
 
         PopupStore savedPopupStore = popupStoreRepository.save(popupStore);
@@ -52,6 +43,7 @@ public class PopUpRegisterService {
         return popupStoreDto.toDto(savedPopupStore);
     }
 
+    // 팝업 스토어 수정
     @Transactional
     public PopupStoreDto updateRegister(Long id, PopupStoreDto popupStoreDto) {
         PopupStore popupStore = popupStoreRepository.findById(id)
@@ -59,17 +51,7 @@ public class PopUpRegisterService {
 
         popupStore.updateFromDto(popupStoreDto);
 
-        // 카테고리 설정 및 저장
-        Set<Category> savedCategories = new HashSet<>();
-        for (Category category : popupStoreDto.getCategories()) {
-            Optional<Category> existingCategory = categoryRepository.findByName(category.getName());
-            if (existingCategory.isPresent()) {
-                savedCategories.add(existingCategory.get());
-            } else {
-                // Category가 존재하지 않으면 새로 저장
-                savedCategories.add(categoryRepository.save(category));
-            }
-        }
+        Set<Category> savedCategories = saveOrUpdateCategories(popupStoreDto.getCategories());
         popupStore.setCategories(savedCategories);
 
         popupStoreRepository.save(popupStore);
@@ -85,11 +67,26 @@ public class PopUpRegisterService {
         return popupStoreDto.toDto(popupStore);
     }
 
+    // 팝업 스토어 삭제
     @Transactional
     public void deleteRegister(Long id) {
         Optional<PopupStore> optionalPopupStore = popupStoreRepository.findById(id);
         PopupStore popupStore = optionalPopupStore.orElseThrow(() ->
                 new IllegalStateException("존재하지 않는 팝업 스토어입니다."));
         popupStoreRepository.deleteById(id);
+    }
+
+    // 카테고리 저장 및 삭제
+    private Set<Category> saveOrUpdateCategories(Set<Category> categories) {
+        Set<Category> savedCategories = new HashSet<>();
+        for (Category category : categories) {
+            Optional<Category> existingCategory = categoryRepository.findByName(category.getName());
+            if (existingCategory.isPresent()) {
+                savedCategories.add(existingCategory.get());
+            } else {
+                savedCategories.add(categoryRepository.save(category));
+            }
+        }
+        return savedCategories;
     }
 }
