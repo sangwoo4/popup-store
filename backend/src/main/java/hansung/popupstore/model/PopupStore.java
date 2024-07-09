@@ -84,6 +84,7 @@ public class PopupStore {
             joinColumns = @JoinColumn(name = "popup_store_id"),
             inverseJoinColumns = @JoinColumn(name = "day_code")
     )
+
     private Set<Day> days = new HashSet<>();
 
     public void updateFromDto(PopupStoreDto dto) {
