@@ -5,10 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import jdk.jfr.Enabled;
 import lombok.*;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-
-import jakarta.validation.constraints.NotNull;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +14,7 @@ import java.util.Set;
 @EntityScan
 @NoArgsConstructor
 @Entity
-@Data
+@Getter
 @Table(name = "user")
 public class User {
     @Id
