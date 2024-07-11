@@ -1,29 +1,147 @@
-.shinchan {
-    border: 1px solid #000000; /* 검은색 테두리 */
-    padding: 100px; /* 내부 여백 */
-    display: inline-block; /* 컨텐츠 크기에 맞게 테두리를 조정 */
-    margin-top: 20px; /* 위쪽 여백 */
-    text-decoration: none; /* 링크 밑줄 제거 */
-    color: #000000; /* 글자 색상 */
-    font-weight: bold; /* 글자 굵기 */
+/*
+ ----- 07.11 css수정사항 예정 -----
+    1. 추천 팝업 회색 창(recommended-popup-wrapper) height 줄이기 500 -> 3~400
+    2. 팝업 상세 창(popup-item)도 함께 줄여서 너비와 크기 맞출 것
+    3. 각 디스플레이 별 고정 방식이 있는지 알아보기
+    4. 카드 왼쪽과 오른쪽 간격 맞추기
+*/
+
+body {
+    font-family: Arial, sans-serif;
 }
 
-.cityhall {
-    border: 1px solid #000000; /* 검은색 테두리 */
-    padding: 100px; /* 내부 여백 */
-    display: inline-block; /* 컨텐츠 크기에 맞게 테두리를 조정 */
-    margin-top: 20px; /* 위쪽 여백 */
-    text-decoration: none; /* 링크 밑줄 제거 */
-    color: #000000; /* 글자 색상 */
-    font-weight: bold; /* 글자 굵기 */
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
 }
 
-.location {
-    border: 1px solid #000000; /* 검은색 테두리 */
-    padding: 100px; /* 내부 여백 */
-    display: inline-block; /* 컨텐츠 크기에 맞게 테두리를 조정 */
-    margin-top: 20px; /* 위쪽 여백 */
-    text-decoration: none; /* 링크 밑줄 제거 */
-    color: #000000; /* 글자 색상 */
-    font-weight: bold; /* 글자 굵기 */
+.recommended-popup-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    height: 500px; /*수정사항 1번*/
+    display: flex;
+    flex-direction: column;
+}
+
+.recommended-popup-wrapper h2 {
+    text-align: center;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.popup-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    gap: 20px; 
+    overflow-x: auto;
+    padding: 20px;
+}
+
+.popup-item {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 300px;
+    min-width: 300px;
+    max-width: 300px; 
+    height: 400px; /*수정사항 2번*/
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+    background-color: #fff;
+    display: inline-block; 
+    vertical-align: top; 
+    margin-left: 10%;
+}
+
+.popup-item:hover {
+    transform: scale(1.05);
+}
+
+.popup-image {
+    width: 100%;
+    height: 200px; /*이미지 줄이기 수정사항*/
+    object-fit: cover;
+}
+
+.popup-details {
+    padding: 12px; /*상세 카드 타이틀 수정 필요? 글자수에 맞게 크기 맞추기*/
+}
+
+.popup-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.popup-link h2 {
+    margin: 0;
+    font-size: 1.5em;
+    color: #007BFF;
+}
+
+.popup-link p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.category-box {
+  margin-top: 10px;
+}
+
+.category-item {
+  display: inline-block;
+  padding: 5px 10px;
+  border: 1px solid #007BFF;
+  border-radius: 5px;
+  color: #007BFF;
+  margin-right: 5px; /* 각 카테고리 사이의 간격 조정 */
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.slick-prev:before, .slick-next:before {
+    color: white;
+    font-size: 30px;
+    line-height: 1;
+}
+
+.slick-prev {
+    left: -40px;
+    z-index: 1;
+}
+
+.slick-next {
+    right: -40px;
+    z-index: 1;
+}
+
+.slick-prev:before, .slick-next:before {
+    content: '\2039';
+    font-family: 'slick';
+    opacity: .75;
+    color: white;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.slick-next:before {
+    content: '\203A';
+    margin-left: -2px;
+}
+
+.slick-prev:before, .slick-next:before {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@media (max-width: 768px) {
+    .popup-item {
+        margin-right: 20px;
+    }
 }

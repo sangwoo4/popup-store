@@ -1,4 +1,5 @@
-// 24-07-08 백엔드 key value 연결 코드
+// 2024.07.11 상세정보 화면 백엔드 api 설정 완료
+
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -9,7 +10,6 @@ const DetailInfo = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const mapElement = useRef(null);
-  const { naver } = window;
 
   useEffect(() => {
     const fetchLocationInfo = async () => {
@@ -21,11 +21,10 @@ const DetailInfo = () => {
         const data = await response.json();
         setLocationInfo({
           name: data.title,
-          latlng: new naver.maps.LatLng(data.mapy / 1e7, data.mapx / 1e7),
+          latlng: new window.naver.maps.LatLng(data.mapy / 1e7, data.mapx / 1e7),
           address: data.address,
-          phone: data.telephone || 'Not telephone',
+          phone: data.telephone || 'Not available',
           description: data.description,
-
         });
         setLoading(false);
       } catch (error) {
@@ -35,43 +34,43 @@ const DetailInfo = () => {
     };
 
     fetchLocationInfo();
-  }, [location, naver]);
+  }, [location]);
 
   useEffect(() => {
-    if (!mapElement.current || !naver || !locationInfo) return;
+    if (activeMenu === 'map' && mapElement.current && window.naver && locationInfo) {
+      const map = new window.naver.maps.Map(mapElement.current, {
+        center: locationInfo.latlng,
+        zoom: 17,
+      });
 
-    const map = new naver.maps.Map(mapElement.current, {
-      center: locationInfo.latlng,
-      zoom: 17,
-    });
+      const marker = new window.naver.maps.Marker({
+        map: map,
+        position: locationInfo.latlng,
+      });
 
-    const marker = new naver.maps.Marker({
-      map: map,
-      position: locationInfo.latlng,
-    });
+      const contentString = `
+        <div class="iw_inner">
+          <h3>${locationInfo.name}</h3>
+          <p>${locationInfo.address}<br/>
+             전화: ${locationInfo.phone}</p>
+        </div>
+      `;
 
-    const contentString = `
-      <div class="iw_inner">
-        <h3>${locationInfo.name}</h3>
-        <p>${locationInfo.address}<br/>
-           전화: ${locationInfo.phone}</p>
-      </div>
-    `;
+      const infowindow = new window.naver.maps.InfoWindow({
+        content: contentString,
+      });
 
-    const infowindow = new naver.maps.InfoWindow({
-      content: contentString,
-    });
+      window.naver.maps.Event.addListener(marker, "click", function () {
+        if (infowindow.getMap()) {
+          infowindow.close();
+        } else {
+          infowindow.open(map, marker);
+        }
+      });
 
-    naver.maps.Event.addListener(marker, "click", function (e) {
-      if (infowindow.getMap()) {
-        infowindow.close();
-      } else {
-        infowindow.open(map, marker);
-      }
-    });
-
-    infowindow.open(map, marker);
-  }, [naver, locationInfo]);
+      infowindow.open(map, marker);
+    }
+  }, [activeMenu, locationInfo]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -98,8 +97,8 @@ const DetailInfo = () => {
           <h2>{locationInfo.name}</h2>
           <h4>주소: {locationInfo.address}<br />
             전화: {locationInfo.phone}</h4>
-            <hr/>
-            상세정보: {locationInfo.description}
+          <hr />
+          상세정보: {locationInfo.description}
         </div>
       )}
       {activeMenu === 'map' && (
@@ -116,6 +115,7 @@ const DetailInfo = () => {
 };
 
 export default DetailInfo;
+
 
 
 
