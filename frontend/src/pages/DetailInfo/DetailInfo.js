@@ -11,20 +11,22 @@ const DetailInfo = () => {
   const [error, setError] = useState(null);
   const mapElement = useRef(null);
 
+  // --------------------------백엔드 GET 통신--------------------------------------
   useEffect(() => {
     const fetchLocationInfo = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/popup/register/${location}`);
-        if (!response.ok) {
+        const response = await fetch(`http://localhost:8080/popup/register/${location}`); // 백엔드 api 주소, 각 팝업에 대한 상세정보이므로 location으로 api 설정
+        if (!response.ok) { // 서버 응답 확인
           throw new Error('Network response was not ok...');
         }
-        const data = await response.json();
-        setLocationInfo({
+        const data = await response.json(); // 서버에서 받은 응답을 JSON형식으로 변환
+        setLocationInfo({ //백엔드 key value와 맞춤 오른쪽 . 이후 값!!!
           name: data.title,
           latlng: new window.naver.maps.LatLng(data.mapy / 1e7, data.mapx / 1e7),
           address: data.address,
           phone: data.telephone || 'Not available',
           description: data.description,
+          category: data.categories,
         });
         setLoading(false);
       } catch (error) {
@@ -35,6 +37,8 @@ const DetailInfo = () => {
 
     fetchLocationInfo();
   }, [location]);
+  // --------------------------백엔드 GET 통신--------------------------------------
+
 
   useEffect(() => {
     if (activeMenu === 'map' && mapElement.current && window.naver && locationInfo) {
@@ -92,6 +96,7 @@ const DetailInfo = () => {
         <button className='map' onClick={() => setActiveMenu('map')}>지도</button>
         <button className='review' onClick={() => setActiveMenu('review')}>후기</button>
       </div>
+
       {activeMenu === 'info' && (
         <div>
           <h2>{locationInfo.name}</h2>
@@ -99,11 +104,14 @@ const DetailInfo = () => {
             전화: {locationInfo.phone}</h4>
           <hr />
           상세정보: {locationInfo.description}
+          카테고리: {locationInfo.categories}
         </div>
       )}
+
       {activeMenu === 'map' && (
         <div ref={mapElement} style={{ minHeight: '400px', width: '60%', border: '1px solid black' }} />
       )}
+
       {activeMenu === 'review' && (
         <div>
           <h2>후기</h2>
