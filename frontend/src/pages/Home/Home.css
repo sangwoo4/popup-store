@@ -19,7 +19,7 @@ h1 {
 .recommended-popup-wrapper {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 20px 30px;
     background-color: #f0f0f0;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -48,16 +48,16 @@ h1 {
     border: 1px solid #ccc;
     border-radius: 10px;
     overflow: hidden;
-    width: 300px;
-    min-width: 300px;
-    max-width: 300px; 
+    width: 350px;
+    min-width: 350px;
+    max-width: 350px; 
     height: 300px; /*수정사항 2번*/
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     transition: transform 0.2s;
     background-color: #fff;
     display: inline-block; 
     vertical-align: top; 
-    margin-left: 10%;
+    margin-left: 7%;
 }
 
 .popup-item:hover {
@@ -106,18 +106,18 @@ h1 {
 }
 
 .slick-prev:before, .slick-next:before {
-    color: white;
-    font-size: 30px;
+    color: #002fff !important; /* 색상 수정 */
+    font-size: 40px !important;
     line-height: 1;
 }
 
 .slick-prev {
-    left: -40px;
+    left: -30px !important;
     z-index: 1;
 }
 
 .slick-next {
-    right: -40px;
+    right: -10px !important;
     z-index: 1;
 }
 

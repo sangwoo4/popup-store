@@ -27,6 +27,9 @@ const Header = () => {
       &nbsp; | &nbsp;
 
       <Link to="/login">로그인/회원가입</Link>
+      &nbsp; | &nbsp;
+
+      <Link to="/popup.registration">기업 팝업 등록하기</Link>
       <hr/>
     </header>
   );

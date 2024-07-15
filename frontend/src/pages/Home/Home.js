@@ -1,3 +1,5 @@
+//24.07.15 카테고리별 팝업 따로 뜨게 설정
+
 import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
@@ -11,30 +13,29 @@ const Home = () => {
   const [error, setError] = useState(null);
   const [categories, setCategories] = useState([]);
 
-  // --------------------------백엔드 GET 통신 240713--------------------------------------
+  // --------------------------백엔드 GET 통신--------------------------------------
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await fetch('http://localhost:8080/search/popup/all', { // 백엔드 api 주소
-          method: "GET", // GET 방식을 사용
+        const response = await fetch('http://localhost:8080/search/popup/all', {
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json', //서버가 JSON 형식의 데이터를 처리하는 것을 기대함
+            'Content-Type': 'application/json',
           },
         });
-        if (!response.ok) { //서버 응답 여부 확인: 서버에 오류가 있으면 오류 원인을 띄워줌
+        if (!response.ok) {
           throw new Error(`Network response was not ok: ${response.statusText}`);
         }
-        const data = await response.json(); // 서버에서 받은 응답을 JSON형식으로 변환
+        const data = await response.json();
 
-        // 서버에서 categories 배열이 있는지 확인하고 있다면 배열을 가져와서 상태에 설정
         if (data.categories && Array.isArray(data.categories)) {
           setCategories(data.categories);
         }
 
-        console.log(data); // 데이터를 콘솔에 로그하여 확인
-        setLocations(data); //서버에서 받은 데이터로 업데이트
+        console.log(data);
+        setLocations(data); 
         setLoading(false);
-      } catch (error) { //에러 발생시 원인 띄움
+      } catch (error) {
         console.error('Error fetching data:', error);
         setError(error);
         setLoading(false);
@@ -63,8 +64,7 @@ const Home = () => {
     prevArrow: <SamplePrevArrow />
   };
 
-  // 추천 팝업에 최대 5개의 항목만 표시
-  const recommendedLocations = locations.slice(0, 5);
+  const recommendedLocations = locations.slice(0);
 
   return (
     <div>
@@ -90,33 +90,32 @@ const Home = () => {
         </Slider>
       </div>
 
-      <h1>카테고리 검색</h1>
+      <br/><br/><br/><br/><br/>
+      <h1>카테고리별</h1>
       <div className='category-search-wrapper'>
-        {categories.filter(category => category.name === "캐릭터").map((category) => (
-          <div key={category.name} className='category-section'>
-            <h2>{category.name}</h2>
-            <div className='category-items'>
-              {locations.filter(location => 
-                location.categories && location.categories.some(locCategory => locCategory.name === category.name)
-              ).map(location => (
-                <div key={location.id} className='popup-item'>
-                  <Link to={`/popup.details/${location.id}`} className='popup-link'>
-                    <img src={location.image || "/images/image1.png"} alt={location.title} className='popup-image'/>
-                    <div className='popup-details'>
-                      <h3>{location.title}</h3>
-                      <p>{location.description}</p>
-                      <div className="category-box1">
-                        {location.categories && location.categories.map((locCategory, index) => (
-                          <div key={index} className="category-item">{locCategory.name}</div>
-                        ))}
-                      </div>
+        <div className='category-section'>
+          <h2>캐릭터</h2>
+          <div className='category-items'>
+            {locations.filter(location =>
+              location.categories && location.categories.some(locCategory => locCategory.name === "캐릭터")
+            ).map(location => (
+              <div key={location.id} className='popup-item'>
+                <Link to={`/popup.details/${location.id}`} className='popup-link'>
+                  <img src={location.image || "/images/image1.png"} alt={location.title} className='popup-image'/>
+                  <div className='popup-details'>
+                    <h3>{location.title}</h3>
+                    <p>{location.description}</p>
+                    <div className="category-box1">
+                      {location.categories && location.categories.map((locCategory, index) => (
+                        <div key={index} className="category-item">{locCategory.name}</div>
+                      ))}
                     </div>
-                  </Link>
-                </div>
-              ))}
-            </div>
+                  </div>
+                </Link>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );
@@ -127,7 +126,7 @@ function SampleNextArrow(props) {
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", background: "black" }}
+      style={{ ...style, display: "block", right: '-5px' }} // 여기서 인라인 스타일로 right 조정
       onClick={onClick}
     />
   );
@@ -138,13 +137,14 @@ function SamplePrevArrow(props) {
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", background: "black" }}
+      style={{ ...style, display: "block", left: '-20px' }} // 여기서 인라인 스타일로 left 조정
       onClick={onClick}
     />
   );
 }
 
 export default Home;
+
 
 
 

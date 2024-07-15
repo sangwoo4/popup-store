@@ -1,0 +1,232 @@
+.find {
+    top: 10px;
+    left: 30px;
+    font-style: italic;
+}
+
+.findBox {
+    border: 1px solid black;
+
+    position: absolute;
+	top: 20%;
+    left: 20%;
+    bottom: 10%;
+	width: 60%;
+	max-width: 430px;
+    max-height: 500px;
+    padding: 0 20px;
+
+    border-radius: 10px;
+}
+
+.findID-Button {
+    position: absolute;
+    margin-top: 30px;
+    margin-left: 10px;
+    width: 200px;
+    height: 40px;
+
+    cursor: pointer;
+}
+
+.findPW-Button {
+    position: absolute;
+    margin-top: 30px;
+    margin-left: 210px;
+    width: 200px;
+    height: 40px;
+
+    cursor: pointer;
+}
+
+/*아이디 찾기 css*/
+.findID_Text {
+    position: absolute;
+    margin-top: 90px;
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+/*이름*/
+.findID_InputTitle_Name {
+    position: absolute;
+    font-size: 12px;
+	color: #000000;
+    top: 150px;
+    left: 7%;
+}
+
+.findID_Input_Name {
+    position: absolute;
+    display: flex;
+    width: 160px;
+    padding: 10px;
+    top: 170px;
+    left: 7%;
+    background-color: white;
+    border: 1px solid #e2e0e0;
+}
+.findID_Input_Name:focus-within {
+    border: 1px solid #9e9c9c;
+}
+
+/*생년월일*/
+.findID_InputTitle_Birth {
+    position: absolute;
+    font-size: 12px;
+	color: #000000;
+    top: 150px;
+    left: 50%;
+}
+
+.findID_Input_Birth {
+    position: absolute;
+    display: flex;
+    width: 160px;
+    padding: 10px;
+    top: 170px;
+    left: 50%;
+    background-color: white;
+    border: 1px solid #e2e0e0;
+}
+.findID_Input_Birth:focus-within {
+    border: 1px solid #9e9c9c;
+}
+
+/*전화번호*/
+.findID_InputTitle_PhoneNum {
+    position: absolute;
+    font-size: 12px;
+	color: #000000;
+    top: 230px;
+    left: 7%;
+}
+
+.findID_Input_PhoneNum {
+    position: absolute;
+    display: flex;
+    width: 360px;
+    padding: 10px;
+    top: 250px;
+    left: 7%;
+    background-color: white;
+    border: 1px solid #e2e0e0;
+}
+.findID_Input_PhoneNum:focus-within {
+    border: 1px solid #9e9c9c;
+}
+
+/*이메일찾기 제출버튼*/
+.findID-Button_Submit {
+    position: absolute;
+    top: 400px;
+    left: 7%;
+    width: 380px;
+    height: 50px;
+
+    background-color: #bdbdbd;
+    border: none;
+    font-size: 15px;
+
+    cursor: pointer;
+}
+
+/*비밀번호 찾기 css*/
+.findPW_Text {
+    position: absolute;
+    margin-top: 90px;
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+/*이름*/
+.findPW_InputTitle_Name {
+    position: absolute;
+    font-size: 12px;
+	color: #000000;
+    top: 150px;
+    left: 7%;
+}
+
+.findPW_Input_Name {
+    position: absolute;
+    display: flex;
+    width: 160px;
+    padding: 10px;
+    top: 170px;
+    left: 7%;
+    background-color: white;
+    border: 1px solid #e2e0e0;
+}
+.findPW_Input_Name:focus-within {
+    border: 1px solid #9e9c9c;
+}
+
+/*생년월일*/
+.findPW_InputTitle_Birth {
+    position: absolute;
+    font-size: 12px;
+	color: #000000;
+    top: 150px;
+    left: 50%;
+}
+
+.findPW_Input_Birth {
+    position: absolute;
+    display: flex;
+    width: 160px;
+    padding: 10px;
+    top: 170px;
+    left: 50%;
+    background-color: white;
+    border: 1px solid #e2e0e0;
+}
+.findPW_Input_Birth:focus-within {
+    border: 1px solid #9e9c9c;
+}
+
+/*이메일*/
+.findPW_InputTitle_Email {
+    position: absolute;
+    font-size: 12px;
+	color: #000000;
+    top: 230px;
+    left: 7%;
+}
+
+.findPW_Input_Email {
+    position: absolute;
+    display: flex;
+    width: 360px;
+    padding: 10px;
+    top: 250px;
+    left: 7%;
+    background-color: white;
+    border: 1px solid #e2e0e0;
+}
+.findPW_Input_Email:focus-within {
+    border: 1px solid #9e9c9c;
+}
+
+/*전화번호*/
+.findPW_InputTitle_PhoneNum {
+    position: absolute;
+    font-size: 12px;
+	color: #000000;
+    top: 310px;
+    left: 7%;
+}
+
+.findPW_Input_PhoneNum {
+    position: absolute;
+    display: flex;
+    width: 360px;
+    padding: 10px;
+    top: 330px;
+    left: 7%;
+    background-color: white;
+    border: 1px solid #e2e0e0;
+}
+.findPW_Input_PhoneNum:focus-within {
+    border: 1px solid #9e9c9c;
+}

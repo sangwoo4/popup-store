@@ -1,0 +1,142 @@
+/* 회원가입 CSS */
+
+.page {
+    width: 100%;
+    max-width: 450px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: hsl(0, 0%, 97%);
+    border: 1px solid rgb(179, 179, 179);
+
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.backButton {
+    align-self: flex-end;
+    cursor: pointer;
+    border: none;
+    font-size: 30px;
+    padding: 0;
+    background-color: transparent;
+}
+
+.titleWrap {
+    font-size: 27px;
+    font-weight: bold;
+    color: #262626;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.contentWrap {
+    margin-top: 20px;
+    flex: 1;
+}
+
+.inputTitle {
+    font-size: 14px;
+    color: #000000;
+    margin-top: 20px;
+}
+
+.inputWrap {
+    display: flex;
+    width: 90%;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 5px;
+    background-color: white;
+    border: 1px solid #e2e0e0;
+    position: relative;
+}
+
+.inputWrap:focus-within {
+    border: 1px solid #4430f4;
+}
+
+.input {
+    width: 100%;
+    outline: none;
+    border: none;
+    height: 17px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.input::placeholder {
+    color: #dadada;
+}
+
+.check-email,
+.check-phone,
+.check-nickname {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 30px;
+    display: flex;
+    align-items: center;
+    background-color: #4430f4;
+    color: white;
+    border: none;
+    padding: 0 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.genderInputs {
+    display: flex;
+    margin-top: 20px;
+}
+
+.bottomButton {
+    width: 100%;
+    height: 48px;
+    border: none;
+    font-weight: bold;
+    border-radius: 64px;
+    background-color: #a79eff;
+    color: white;
+    margin-top: 25px;
+    cursor: pointer;
+}
+
+.bottomButton:disabled {
+    background-color: #dadada;
+    color: white;
+}
+
+.errorMessageWrap {
+    margin-top: 8px;
+    color: #ef0000;
+    font-size: 12px;
+}
+
+@media (max-width: 480px) {
+    .page {
+        width: 90%;
+    }
+
+    .inputWrap {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .check-email,
+    .check-phone,
+    .check-nickname {
+        top: 5px;
+        right: 5px;
+        transform: none;
+    }
+
+    .genderInputs {
+        flex-direction: column;
+    }
+}
