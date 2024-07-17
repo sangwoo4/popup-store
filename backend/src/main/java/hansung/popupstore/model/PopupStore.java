@@ -70,6 +70,7 @@ public class PopupStore {
     )
     private Set<Category> categories = new HashSet<>();
 
+
     @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<StoreDay> storeDays = new HashSet<>();

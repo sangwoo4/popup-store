@@ -2,7 +2,7 @@ package hansung.popupstore.Account.controller;
 
 import hansung.popupstore.Account.Dto.CompanySignUpDto;
 import hansung.popupstore.Account.Dto.LoginDto;
-import hansung.popupstore.Account.Dto.ResponseDto;
+import hansung.popupstore.ResponseDto;
 import hansung.popupstore.Account.Dto.UserSignUpDto;
 import hansung.popupstore.Account.Repository.RoleRepository;
 import hansung.popupstore.Account.service.AuthService;

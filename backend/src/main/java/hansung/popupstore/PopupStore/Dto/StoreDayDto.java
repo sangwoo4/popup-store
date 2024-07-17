@@ -27,12 +27,12 @@ public class StoreDayDto {
     }
 
     // Method to convert from StoreDay entity to StoreDayDto
-    public static StoreDayDto fromEntity(StoreDay storeDay) {
-        return StoreDayDto.builder()
-                .dayId(String.valueOf(storeDay.getDay().getId())) // Convert dayId to String
-                .openTime(storeDay.getOpenTime())
-                .closeTime(storeDay.getCloseTime())
-                .day(storeDay.getDay().getDay()) // Get the day as a string (e.g., Monday)
-                .build();
-    }
+//    public static StoreDayDto fromEntity(StoreDay storeDay) {
+//        return StoreDayDto.builder()
+//                .dayId(String.valueOf(storeDay.getDay().getId())) // Convert dayId to String
+//                .openTime(storeDay.getOpenTime())
+//                .closeTime(storeDay.getCloseTime())
+//                .day(storeDay.getDay().getDay()) // Get the day as a string (e.g., Monday)
+//                .build();
+//    }
 }
