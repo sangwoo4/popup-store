@@ -1,7 +1,5 @@
 package hansung.popupstore.PopupStore.Dto;
 
-import hansung.popupstore.model.Category;
-import hansung.popupstore.model.PopupStore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,7 +26,7 @@ public class PopupStoreDto {
     private String link;
     private String mapx;
     private String mapy;
-    private Set<Category> categories = new HashSet<>();
+    private Set<CategoryDto> categories = new HashSet<>();
     private Set<StoreDayDto> storeDays = new HashSet<>();
 
 //    public PopupStore toEntity() {

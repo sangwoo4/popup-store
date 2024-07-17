@@ -1,6 +1,5 @@
 package hansung.popupstore.PopupStore.Service;
 
-
 import hansung.popupstore.PopupStore.Dto.CategoryDto;
 import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
 import hansung.popupstore.PopupStore.Dto.StoreDayDto;
@@ -32,16 +31,17 @@ public class PopUpRegisterService {
 
     @Transactional
     public ResponseDto<?> createPopUp(PopupStoreDto dto) {
-        // Save or update categories
-        Set<Category> categories = saveOrUpdateCategories(dto.getCategories());
         // Create PopupStore entity
-        PopupStore popupStore = buildPopupStoreEntity(dto, categories);
+        PopupStore popupStore = buildPopupStoreEntity(dto);
 
         // Save PopupStore entity
         popupStoreRepository.save(popupStore);
 
         // Save or update StoreDays
         saveOrUpdateStoreDays(dto.getStoreDays(), popupStore);
+
+        // Save or update Categories
+        saveOrUpdateCategories(dto.getCategories(), popupStore);
 
         return ResponseDto.setSuccess("PopupStore created successfully.");
     }
@@ -56,8 +56,7 @@ public class PopUpRegisterService {
             updatePopupStoreEntity(popupStore, dto);
 
             // Update categories
-            Set<Category> categories = saveOrUpdateCategories(dto.getCategories());
-            popupStore.setCategories(categories);
+            saveOrUpdateCategories(dto.getCategories(), popupStore);
 
             // Update StoreDays
             saveOrUpdateStoreDays(dto.getStoreDays(), popupStore);
@@ -94,9 +93,7 @@ public class PopUpRegisterService {
         }
     }
 
-
-
-    private PopupStore buildPopupStoreEntity(PopupStoreDto dto, Set<Category> categories) {
+    private PopupStore buildPopupStoreEntity(PopupStoreDto dto) {
         return PopupStore.builder()
                 .title(dto.getTitle())
                 .address(dto.getAddress())
@@ -109,20 +106,25 @@ public class PopUpRegisterService {
                 .link(dto.getLink())
                 .mapx(dto.getMapx())
                 .mapy(dto.getMapy())
-                .categories(categories)
                 .build();
     }
 
-    private Set<Category> saveOrUpdateCategories(Set<Category> categories) {
+    private void saveOrUpdateCategories(Set<CategoryDto> categoryDtos, PopupStore popupStore) {
         Set<Category> savedCategories = new HashSet<>();
-        for (Category category : categories) {
-            Category savedCategory = categoryRepository.findByName(category.getName())
-                    .orElseGet(() -> categoryRepository.save(category));
-            savedCategories.add(savedCategory);
+        for (CategoryDto categoryDto : categoryDtos) {
+            if (categoryDto.getCategoryName() == null) {
+                System.out.println("Category name is null: " + categoryDto);
+                continue;
+            }
+            Optional<Category> existingCategory = categoryRepository.findByName(categoryDto.getCategoryName());
+            if (existingCategory.isPresent()) {
+                savedCategories.add(existingCategory.get());
+            } else {
+                System.out.println("Category not found: " + categoryDto.getCategoryName());
+            }
         }
-        return savedCategories;
+        popupStore.setCategories(savedCategories);
     }
-
 
     private void saveOrUpdateStoreDays(Set<StoreDayDto> storeDayDtos, PopupStore popupStore) {
         for (StoreDayDto storeDayDto : storeDayDtos) {
@@ -174,6 +176,13 @@ public class PopUpRegisterService {
                     .build());
         }
 
+        Set<CategoryDto> categoryDtos = new HashSet<>();
+        for (Category category : popupStore.getCategories()) {
+            categoryDtos.add(CategoryDto.builder()
+                    .categoryName(category.getName())
+                    .build());
+        }
+
         return PopupStoreDto.builder()
                 .title(popupStore.getTitle())
                 .address(popupStore.getAddress())
@@ -186,7 +195,7 @@ public class PopUpRegisterService {
                 .link(popupStore.getLink())
                 .mapx(popupStore.getMapx())
                 .mapy(popupStore.getMapy())
-                .categories(popupStore.getCategories())
+                .categories(categoryDtos)
                 .storeDays(storeDayDtos)
                 .build();
     }
