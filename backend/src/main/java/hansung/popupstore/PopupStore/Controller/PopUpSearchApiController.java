@@ -16,24 +16,32 @@ import java.util.Optional;
 @RequestMapping("/search/popup")
 public class PopUpSearchApiController {
 
-    private PopupStoreService naverService;
+    private PopupStoreService popupStoreService;
 
     @GetMapping("/all")
     public List<PopupStore> savePopUp() {
         String query = "팝업";
-        String result = naverService.fetchNaverSearchResults(query);
-        naverService.savePopupStores(result);
-        return naverService.getAllPopupStores();
+        String result = popupStoreService.fetchNaverSearchResults(query);
+        popupStoreService.getNewPopupStores(result);
+        return popupStoreService.getAllPopupStores();
     }
 
-    @GetMapping
-    public Optional<PopupStore> searchPopUp(@RequestParam("query") String query){
-        String naverSearch = "팝업 " + query;
-        System.out.println(naverSearch);
-        String result = naverService.fetchNaverSearchResults(naverSearch);
+//    @GetMapping("/all")
+//    public List<PopupStore> testPopUp() {
+//        String query = "팝업";
+//        String result = popupStoreService.fetchNaverSearchResults(query);
+//        popupStoreService.savePopupStores(result);
+//        return popupStoreService.getAllPopupStores();
+//    }
 
-        naverService.savePopupStores(result);
-        return naverService.searchPopupStores(query);
-
-    }
+//    @GetMapping
+//    public Optional<PopupStore> searchPopUp(@RequestParam("query") String query){
+//        String naverSearch = "팝업 " + query;
+//        System.out.println(naverSearch);
+//        String result = popupStoreService.fetchNaverSearchResults(naverSearch);
+//
+//        popupStoreService.savePopupStores(result);
+//        return popupStoreService.searchPopupStores(query);
+//
+//    }
 }

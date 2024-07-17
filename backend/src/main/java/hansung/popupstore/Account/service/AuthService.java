@@ -29,7 +29,7 @@ public class AuthService {
 
         User user = User.builder()
                 .email(dto.getEmail())
-                .password(hashedPassword) // 이미 해싱된 비밀번호 사용
+                .password(hashedPassword)
                 .birth(dto.getBirth())
                 .gender(dto.getGender())
                 .nickname(dto.getNickname())

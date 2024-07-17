@@ -2,7 +2,7 @@ package hansung.popupstore.PopupStore.Dto;
 
 import hansung.popupstore.model.Category;
 import hansung.popupstore.model.PopupStore;
-import jakarta.validation.constraints.NotBlank;
+import hansung.popupstore.model.StoreDay;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,29 +18,19 @@ import java.util.Set;
 public class PopupStoreDto {
 
     private Long id;
-
-    @NotBlank(message = "스토어명을 입력해주세요")
     private String title;
-
-    @NotBlank(message = "주소를 입력해주세요")
     private String address;
-
     private String roadAddress;
     private String startDate;
     private String endDate;
-    private String startTime;
-    private String endTime;
     private String telephone;
-
-    @NotBlank(message = "가장 가까운 지하철역을 입력해주세요")
     private String subway;
-
     private String description;
     private String link;
     private String mapx;
     private String mapy;
-
     private Set<Category> categories = new HashSet<>();
+    private Set<StoreDayDto> storeDays = new HashSet<>();
 
     public PopupStore toEntity() {
         PopupStore popupStore = PopupStore.builder()
@@ -50,8 +40,6 @@ public class PopupStoreDto {
                 .roadAddress(roadAddress)
                 .startDate(startDate)
                 .endDate(endDate)
-                .startTime(startTime)
-                .endTime(endTime)
                 .telephone(telephone)
                 .subway(subway)
                 .description(description)
@@ -67,5 +55,29 @@ public class PopupStoreDto {
         }
 
         return popupStore;
+    }
+
+    public static PopupStoreDto fromEntity(PopupStore popupStore) {
+        Set<StoreDayDto> storeDayDtos = new HashSet<>();
+        for (StoreDay storeDay : popupStore.getStoreDays()) {
+            storeDayDtos.add(StoreDayDto.fromEntity(storeDay));
+        }
+
+        return PopupStoreDto.builder()
+                .id(popupStore.getId())
+                .title(popupStore.getTitle())
+                .address(popupStore.getAddress())
+                .roadAddress(popupStore.getRoadAddress())
+                .startDate(popupStore.getStartDate())
+                .endDate(popupStore.getEndDate())
+                .telephone(popupStore.getTelephone())
+                .subway(popupStore.getSubway())
+                .description(popupStore.getDescription())
+                .link(popupStore.getLink())
+                .mapx(popupStore.getMapx())
+                .mapy(popupStore.getMapy())
+                .categories(popupStore.getCategories())
+                .storeDays(storeDayDtos)
+                .build();
     }
 }
