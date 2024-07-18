@@ -1,7 +1,9 @@
 package hansung.popupstore.PopupStore.Service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
+import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -9,11 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Service
 public class PopUpAiService {
 
-    public PopupStoreDto convertCategoryAPI(String queryResult) {
-        String url = "http://localhost:8000/navercategory"; // FastAPI 엔드포인트 URL, 외부 API와 통신
+    public List<PopupStoreDto> convertCategoryAPI(String queryResult) {
+        String url = "http://localhost:8000/navercategory"; // FastAPI 엔드포인트 URL
 
         // HTTP 헤더 설정
         HttpHeaders headers = new HttpHeaders();
@@ -26,16 +30,20 @@ public class PopUpAiService {
         RestOperations restTemplate = new RestTemplate();
         String response = restTemplate.postForObject(url, requestEntity, String.class);
 
-        return convertToJson(response);
+        System.out.println("Response::::::::::::::::::::::::::::::::::::::::::: " + response);
+        List<PopupStoreDto> dto = convertToJson(response);
+        System.out.println("dto::::::::::::::::::::::::::::::::::::::::::::::::: " + dto);
+        return dto;
     }
 
-    private PopupStoreDto convertToJson(String response) {
-        // JSON 문자열을 PopupStoreDto 객체로 변환
+    private List<PopupStoreDto> convertToJson(String response) {
+        // JSON 문자열을 PopupStoreDto 객체 리스트로 변환
+        System.out.println("Response: " + response);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.readValue(response, PopupStoreDto.class);
+            return objectMapper.readValue(response, new TypeReference<List<PopupStoreDto>>() {});
         } catch (Exception e) {
-            // 예외 처리 (필요시 적절히 처리)
+            // 예외 처리
             throw new RuntimeException("JSON 변환 중 오류 발생", e);
         }
     }

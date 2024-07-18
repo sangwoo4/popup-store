@@ -30,15 +30,22 @@ public class PopUpSearchApiController {
 //        return popupStoreService.getAllPopupStores();
 //    }
     @GetMapping("/all")
-    public ResponseEntity<ResponseDto<?>> savePopUp(){
+    public ResponseEntity<ResponseDto<?>> savePopUp() {
         String query = "팝업";
 
         String results = popupStoreService.fetchNaverSearchResults(query);
         String queryResult = popupStoreService.getNewPopupStores(results);
-        System.out.println("queryResult ============= "+ queryResult );
-        PopupStoreDto convertResult = popUpAiService.convertCategoryAPI(queryResult);
-        ResponseDto<?> result = popUpRegisterService.createPopUp(convertResult);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+
+        // convertCategoryAPI 메서드가 리스트를 반환하므로 이를 처리합니다.
+        List<PopupStoreDto> convertResults = popUpAiService.convertCategoryAPI(queryResult);
+
+        // convertResults 리스트의 각 요소에 대해 createPopUp 호출
+        for (PopupStoreDto convertResult : convertResults) {
+            ResponseDto<?> result = popUpRegisterService.createPopUp(convertResult);
+            System.out.println("result=================" + result);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 //    @GetMapping("/all")
