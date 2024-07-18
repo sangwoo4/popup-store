@@ -14,18 +14,18 @@ public class PopUpRegisterController {
 
     private PopUpRegisterService companyService;
 
-    // 팝업 스토어 등록
-    @PostMapping("/register")
-    public ResponseEntity<?> submit(@RequestBody PopupStoreDto registerDto){
-        PopupStoreDto SaveRegisterDto = companyService.saveRegister(registerDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(SaveRegisterDto);
-    }
-    // 팝업 스토어 수정
-    @PutMapping("/register/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody PopupStoreDto registerDto){
-        PopupStoreDto updatedDto = companyService.updateRegister(id, registerDto);
-        return new ResponseEntity<>(updatedDto, HttpStatus.OK);
-    }
+//    // 팝업 스토어 등록
+//    @PostMapping("/register")
+//    public ResponseEntity<?> submit(@RequestBody PopupStoreDto registerDto){
+//        PopupStoreDto SaveRegisterDto = companyService.saveRegister(registerDto);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(SaveRegisterDto);
+//    }
+//    // 팝업 스토어 수정
+//    @PutMapping("/register/update/{id}")
+//    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody PopupStoreDto registerDto){
+//        PopupStoreDto updatedDto = companyService.updateRegister(id, registerDto);
+//        return new ResponseEntity<>(updatedDto, HttpStatus.OK);
+//    }
 
     @DeleteMapping("/register/update/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id){

@@ -56,8 +56,8 @@ public class PopupStore {
     @Column(name = "mapy", length = 15)
     private String mapy;
 
-    @Lob
-    @Column(name = "description")
+
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "link", length = 50)

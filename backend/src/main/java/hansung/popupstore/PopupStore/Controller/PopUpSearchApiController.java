@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public class PopUpSearchApiController {
     public List<PopupStore> savePopUp() {
         String query = "팝업";
         String result = naverService.fetchNaverSearchResults(query);
-        naverService.savePopupStores(result);
+        naverService.getNewPopupStores(result);
         return naverService.getAllPopupStores();
     }
 

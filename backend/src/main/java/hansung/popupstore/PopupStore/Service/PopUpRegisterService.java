@@ -1,4 +1,7 @@
 package hansung.popupstore.PopupStore.Service;
+import hansung.popupstore.PopupStore.Controller.PopUpAiController;
+import hansung.popupstore.PopupStore.Dto.ChatRequestDto;
+import hansung.popupstore.PopupStore.Dto.ChatResponseDto;
 import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
 import hansung.popupstore.PopupStore.Repository.CategoryRepository;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
@@ -9,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -17,32 +21,42 @@ import java.util.Set;
 public class PopUpRegisterService {
     private final PopupStoreRepository popupStoreRepository;
     private final CategoryRepository categoryRepository;
+    private final PopUpAiController popUpAiController;
 
-
-    @Transactional
-    public PopupStoreDto saveRegister(PopupStoreDto popupStoreDto) {
-        PopupStore popupStore = popupStoreDto.toEntity();
-
-        Set<Category> savedCategories = saveOrUpdateCategories(popupStoreDto.getCategories());
-        popupStore.setCategories(savedCategories);
-
-        PopupStore savedPopupStore = popupStoreRepository.save(popupStore);
-        return toDto(savedPopupStore);
-    }
-
-    @Transactional
-    public PopupStoreDto updateRegister(Long id, PopupStoreDto popupStoreDto) {
-        PopupStore popupStore = popupStoreRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("수정 실패"));
-
-        updatePopupStoreFromDto(popupStore, popupStoreDto);
-
-        Set<Category> savedCategories = saveOrUpdateCategories(popupStoreDto.getCategories());
-        popupStore.setCategories(savedCategories);
-
-        popupStoreRepository.save(popupStore);
-        return toDto(popupStore);
-    }
+//    @Transactional
+//    public PopupStoreDto saveRegister(PopupStoreDto popupStoreDto) {
+//        PopupStore popupStore = popupStoreDto.toEntity();
+//
+//        // FastAPI를 통해 카테고리 가져오기
+//        ChatRequestDto chatRequestDto = new ChatRequestDto(popupStoreDto.getTitle(), popupStoreDto.getDescription());
+////        ChatResponseDto aiCategories = popUpAiController.invokeFastAPI(popupStoreDto);
+//
+//        // 가져온 카테고리 저장
+//        Set<Category> savedCategories = saveOrUpdateCategories(aiCategories.getCategories());
+//        popupStore.setCategories(savedCategories);
+//
+//        PopupStore savedPopupStore = popupStoreRepository.save(popupStore);
+//        return toDto(savedPopupStore);
+//    }
+//
+//    @Transactional
+//    public PopupStoreDto updateRegister(Long id, PopupStoreDto popupStoreDto) {
+//        PopupStore popupStore = popupStoreRepository.findById(id)
+//                .orElseThrow(() -> new IllegalStateException("수정 실패"));
+//
+//        updatePopupStoreFromDto(popupStore, popupStoreDto);
+//
+//        // FastAPI를 통해 카테고리 가져오기
+//        ChatRequestDto chatRequestDto = new ChatRequestDto(popupStoreDto.getTitle(), popupStoreDto.getDescription());
+//        ChatResponseDto aiCategories = popUpAiController.invokeFastAPI(chatRequestDto);
+//
+//        // 가져온 카테고리 저장
+//        Set<Category> savedCategories = saveOrUpdateCategories(aiCategories.getCategories());
+//        popupStore.setCategories(savedCategories);
+//
+//        popupStoreRepository.save(popupStore);
+//        return toDto(popupStore);
+//    }
 
     @Transactional
     public PopupStoreDto getPost(Long id) {
@@ -58,11 +72,15 @@ public class PopUpRegisterService {
         popupStoreRepository.deleteById(id);
     }
 
-    private Set<Category> saveOrUpdateCategories(Set<Category> categories) {
+    private Set<Category> saveOrUpdateCategories(List<ChatResponseDto.Category> categories) {
         Set<Category> savedCategories = new HashSet<>();
-        for (Category category : categories) {
-            Optional<Category> existingCategory = categoryRepository.findByName(category.getName());
-            savedCategories.add(existingCategory.orElseGet(() -> categoryRepository.save(category)));
+        for (ChatResponseDto.Category aiCategory : categories) {
+            Optional<Category> existingCategory = categoryRepository.findByName(aiCategory.getName());
+            savedCategories.add(existingCategory.orElseGet(() -> {
+                Category category = new Category();
+                category.setName(aiCategory.getName());
+                return categoryRepository.save(category);
+            }));
         }
         return savedCategories;
     }
