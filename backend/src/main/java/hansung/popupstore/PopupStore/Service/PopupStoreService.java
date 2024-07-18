@@ -45,39 +45,7 @@ public class PopupStoreService {
         return Jsoup.clean(html, Whitelist.none());
     }
 
-    @Transactional
-    public void getNewPopupStores(String result) {
-        Set<String> existingTitles = popupStoreRepository.findAll().stream()
-                .map(PopupStore::getTitle)
-                .collect(Collectors.toSet());
-        Set<String> titleSet = new HashSet<>(existingTitles);
-        List<PopupStore> storesToSave = new ArrayList<>();
-        List<JsonNode> newStores = new ArrayList<>();
 
-        try {
-            JsonNode rootNode = objectMapper.readTree(result);
-            JsonNode itemsNode = rootNode.path("items");
-            Iterator<JsonNode> var7 = itemsNode.iterator();
-            while (var7.hasNext()) {
-                JsonNode itemNode = var7.next();
-                String originalTitle = itemNode.path("title").asText();
-                String cleanedTitle = removeHtmlTags(originalTitle);
-                if (!titleSet.contains(cleanedTitle)) {
-                    newStores.add(itemNode);
-                    titleSet.add(cleanedTitle); // 중복 방지를 위해 추가
-                }
-            }
-
-            // 새로운 타이틀들의 데이터를 JSON 문자열로 변환
-            String newStoresJson = objectMapper.writeValueAsString(newStores);
-            System.out.println("New Stores JSON: " + newStoresJson);
-
-            // 만약 저장하려면, 파일이나 데이터베이스에 저장하는 로직 추가
-
-        } catch (IOException e) {
-            logger.error("JSON 처리 중 오류 발생: ", e);
-        }
-    }
 //    @Transactional
 //    public void savePopupStores(String result) {
 //        System.out.println("result::::::::" + result);
@@ -122,31 +90,39 @@ public class PopupStoreService {
 //        }
 //    }
 
-    public String fetchNaverSearchResults(String query) {
-        URI uri = UriComponentsBuilder.fromUriString("https://openapi.naver.com")
-                .path("/v1/search/local.json")
-                .queryParam("query", query)
-                .queryParam("display", 5)
-                .queryParam("start", 1)
-                .queryParam("sort", "random")
-                .encode()
-                .build()
-                .toUri();
+    @Transactional
+    public String getNewPopupStores(String result) {
+        Set<String> existingTitles = popupStoreRepository.findAll().stream()
+                .map(PopupStore::getTitle)
+                .collect(Collectors.toSet());
+        Set<String> titleSet = new HashSet<>(existingTitles);
+        List<PopupStore> storesToSave = new ArrayList<>();
+        List<JsonNode> newStores = new ArrayList<>();
 
-        RequestEntity<Void> requestEntity = RequestEntity.get(uri)
-                .header("X-Naver-Client-Id", this.clientId)
-                .header("X-Naver-Client-Secret", this.clientSecret)
-                .build();
 
-        RestTemplate restTemplate = new RestTemplate();
-
+        String test = null;
         try {
-            ResponseEntity<String> response = restTemplate.exchange(requestEntity, String.class);
-            return response.getBody();
-        } catch (Exception var6) {
-            logger.error("Naver API 요청 중 오류 발생: ", var6);
-            throw new RuntimeException("Naver API 요청 중 오류 발생", var6);
+            JsonNode rootNode = objectMapper.readTree(result);
+            JsonNode itemsNode = rootNode.path("items");
+            Iterator<JsonNode> var7 = itemsNode.iterator();
+            while (var7.hasNext()) {
+                JsonNode itemNode = var7.next();
+                String originalTitle = itemNode.path("title").asText();
+                String cleanedTitle = removeHtmlTags(originalTitle);
+                if (!titleSet.contains(cleanedTitle)) {
+                    newStores.add(itemNode);
+                    titleSet.add(cleanedTitle); // 중복 방지를 위해 추가
+                }
+            }
+
+            // 새로운 타이틀들의 데이터를 JSON 문자열로 변환
+            String newStoresJson = objectMapper.writeValueAsString(newStores);
+            // 만약 저장하려면, 파일이나 데이터베이스에 저장하는 로직 추가
+
+        } catch (IOException e) {
+            logger.error("JSON 처리 중 오류 발생: ", e);
         }
+        return test;
     }
 
     public List<PopupStore> getAllPopupStores() {

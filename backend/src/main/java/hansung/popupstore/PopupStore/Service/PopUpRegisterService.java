@@ -112,15 +112,15 @@ public class PopUpRegisterService {
     private void saveOrUpdateCategories(Set<CategoryDto> categoryDtos, PopupStore popupStore) {
         Set<Category> savedCategories = new HashSet<>();
         for (CategoryDto categoryDto : categoryDtos) {
-            if (categoryDto.getCategoryName() == null) {
+            if (categoryDto.getCategory() == null) {
                 System.out.println("Category name is null: " + categoryDto);
                 continue;
             }
-            Optional<Category> existingCategory = categoryRepository.findByName(categoryDto.getCategoryName());
+            Optional<Category> existingCategory = categoryRepository.findByName(categoryDto.getCategory());
             if (existingCategory.isPresent()) {
                 savedCategories.add(existingCategory.get());
             } else {
-                System.out.println("Category not found: " + categoryDto.getCategoryName());
+                System.out.println("Category not found: " + categoryDto.getCategory());
             }
         }
         popupStore.setCategories(savedCategories);
@@ -179,7 +179,7 @@ public class PopUpRegisterService {
         Set<CategoryDto> categoryDtos = new HashSet<>();
         for (Category category : popupStore.getCategories()) {
             categoryDtos.add(CategoryDto.builder()
-                    .categoryName(category.getName())
+                    .category(category.getName())
                     .build());
         }
 

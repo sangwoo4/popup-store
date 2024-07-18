@@ -1,12 +1,15 @@
 package hansung.popupstore.PopupStore.Controller;
 
+import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
+import hansung.popupstore.PopupStore.Service.PopUpAiService;
+import hansung.popupstore.PopupStore.Service.PopUpRegisterService;
 import hansung.popupstore.PopupStore.Service.PopupStoreService;
+import hansung.popupstore.ResponseDto;
 import hansung.popupstore.model.PopupStore;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,14 +19,23 @@ import java.util.Optional;
 @RequestMapping("/search/popup")
 public class PopUpSearchApiController {
 
-    private PopupStoreService popupStoreService;
+    private final PopupStoreService popupStoreService;
+    private final PopUpAiService popUpAiService;
+    private final PopUpRegisterService popUpRegisterService;
 
+//    public List<PopupStore> savePopUp() {
+//        String query = "팝업";
+//        String queryResult = popupStoreService.getNewPopupStores(query);
+//        String convertResult = popUpAiService.convertCategoryAPI(queryResult);
+//        return popupStoreService.getAllPopupStores();
+//    }
     @GetMapping("/all")
-    public List<PopupStore> savePopUp() {
+    public ResponseEntity<ResponseDto<?>> savePopUp(){
         String query = "팝업";
-        String result = popupStoreService.fetchNaverSearchResults(query);
-        popupStoreService.getNewPopupStores(result);
-        return popupStoreService.getAllPopupStores();
+        String queryResult = popupStoreService.getNewPopupStores(query);
+        PopupStoreDto convertResult = popUpAiService.convertCategoryAPI(queryResult);
+        ResponseDto<?> result = popUpRegisterService.createPopUp(convertResult);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 //    @GetMapping("/all")
