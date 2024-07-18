@@ -32,7 +32,10 @@ public class PopUpSearchApiController {
     @GetMapping("/all")
     public ResponseEntity<ResponseDto<?>> savePopUp(){
         String query = "팝업";
-        String queryResult = popupStoreService.getNewPopupStores(query);
+
+        String results = popupStoreService.fetchNaverSearchResults(query);
+        String queryResult = popupStoreService.getNewPopupStores(results);
+        System.out.println("queryResult ============= "+ queryResult );
         PopupStoreDto convertResult = popUpAiService.convertCategoryAPI(queryResult);
         ResponseDto<?> result = popUpRegisterService.createPopUp(convertResult);
         return new ResponseEntity<>(result, HttpStatus.OK);
