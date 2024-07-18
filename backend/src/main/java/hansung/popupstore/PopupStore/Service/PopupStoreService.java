@@ -2,6 +2,7 @@ package hansung.popupstore.PopupStore.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.model.PopupStore;
 import jakarta.transaction.Transactional;
@@ -119,7 +120,6 @@ public class PopupStoreService {
 
     @Transactional
     public String getNewPopupStores(String result) {
-        System.out.println("query ==============" + result);
         Set<String> existingTitles = popupStoreRepository.findAll().stream()
                 .map(PopupStore::getTitle)
                 .collect(Collectors.toSet());
@@ -137,10 +137,15 @@ public class PopupStoreService {
                 String originalTitle = itemNode.path("title").asText();
                 String cleanedTitle = removeHtmlTags(originalTitle);
                 if (!titleSet.contains(cleanedTitle)) {
-                    newStores.add(itemNode);
+                    // 새로운 JsonNode 객체를 만들어 cleanedTitle을 반영
+                    ObjectNode newItemNode = itemNode.deepCopy();
+                    newItemNode.put("title", cleanedTitle);
+
+                    newStores.add(newItemNode);
                     titleSet.add(cleanedTitle); // 중복 방지를 위해 추가
                 }
             }
+
             System.out.println("new Store==========" + newStores);
             // 새로운 타이틀들의 데이터를 JSON 문자열로 변환
             newStoresJson = objectMapper.writeValueAsString(newStores);
