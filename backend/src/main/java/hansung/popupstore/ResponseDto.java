@@ -1,4 +1,4 @@
-package hansung.popupstore.Account.Dto;
+package hansung.popupstore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

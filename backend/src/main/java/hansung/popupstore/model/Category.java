@@ -3,10 +3,7 @@ package hansung.popupstore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Setter
 @Entity
 @Table(name = "category")
 public class Category {
@@ -29,4 +27,6 @@ public class Category {
     @JsonIgnore
     private Set<PopupStore> popupStores = new HashSet<>();
 
+    public void setName(String text) {
+    }
 }

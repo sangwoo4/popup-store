@@ -1,5 +1,6 @@
 package hansung.popupstore.PopupStore.Controller;
 
+import hansung.popupstore.ResponseDto;
 import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
 import hansung.popupstore.PopupStore.Service.PopUpRegisterService;
 import lombok.AllArgsConstructor;
@@ -12,30 +13,30 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/popup")
 public class PopUpRegisterController {
 
-    private PopUpRegisterService companyService;
+    private final PopUpRegisterService popUpRegisterService;
 
     // 팝업 스토어 등록
     @PostMapping("/register")
-    public ResponseEntity<?> submit(@RequestBody PopupStoreDto registerDto){
-        PopupStoreDto SaveRegisterDto = companyService.saveRegister(registerDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(SaveRegisterDto);
+    public ResponseEntity<ResponseDto<?>> submit(@RequestBody PopupStoreDto registerDto) {
+        ResponseDto<?> result = popUpRegisterService.createPopUp(registerDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
-    // 팝업 스토어 수정
+
     @PutMapping("/register/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody PopupStoreDto registerDto){
-        PopupStoreDto updatedDto = companyService.updateRegister(id, registerDto);
-        return new ResponseEntity<>(updatedDto, HttpStatus.OK);
+    public ResponseEntity<ResponseDto<?>> update(@PathVariable("id") Long id, @RequestBody PopupStoreDto registerDto) {
+        ResponseDto<?> result = popUpRegisterService.updatePopUp(id, registerDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @DeleteMapping("/register/update/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id){
-        companyService.deleteRegister(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<ResponseDto<?>> delete(@PathVariable("id") Long id) {
+        ResponseDto<?> result = popUpRegisterService.deleteRegister(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/register/{id}")
-    public ResponseEntity<?> detail(@PathVariable("id") Long id){
-        PopupStoreDto popupStoreDto = companyService.getPost(id);
-        return ResponseEntity.status(HttpStatus.OK).body(popupStoreDto);
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("id") Long id) {
+        ResponseDto<?> result = popUpRegisterService.getDetail(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
