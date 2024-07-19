@@ -1,7 +1,8 @@
 package hansung.popupstore.Account.controller;
 
+import hansung.popupstore.Account.Dto.CompanyLoginDto;
 import hansung.popupstore.Account.Dto.CompanySignUpDto;
-import hansung.popupstore.Account.Dto.LoginDto;
+import hansung.popupstore.Account.Dto.UserLoginDto;
 import hansung.popupstore.ResponseDto;
 import hansung.popupstore.Account.Dto.UserSignUpDto;
 import hansung.popupstore.Account.Repository.RoleRepository;
@@ -32,9 +33,15 @@ public class AuthController {
         return result;
     }
 
-    @PostMapping("/service/login")
-    public ResponseDto<?> login(@RequestBody LoginDto requestBody) {
-        ResponseDto<?> result = authService.login(requestBody);
+    @PostMapping("/user/login")
+    public ResponseDto<?> userLogin(@RequestBody UserLoginDto requestBody) {
+        ResponseDto<?> result = authService.userLogin(requestBody);
+        return result;
+    }
+
+    @PostMapping("/company/login")
+    public ResponseDto<?> companyLogin(@RequestBody CompanyLoginDto requestBody){
+        ResponseDto<?> result = authService.companyLogin(requestBody);
         return result;
     }
 

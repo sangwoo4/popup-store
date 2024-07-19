@@ -1,6 +1,7 @@
 package hansung.popupstore.PopupStore.Dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import hansung.popupstore.model.StoreDay;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import lombok.Data;
 
 @Data
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class StoreDayDto {
     private String dayId; // String representation of dayId
     private String openTime;

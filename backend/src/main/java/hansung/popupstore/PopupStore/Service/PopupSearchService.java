@@ -3,6 +3,7 @@ package hansung.popupstore.PopupStore.Service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.model.PopupStore;
 import jakarta.transaction.Transactional;
@@ -11,7 +12,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -26,70 +26,22 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class PopupStoreService {
-    private static final Logger logger = LoggerFactory.getLogger(PopupStoreService.class);
-    private PopupStoreRepository popupStoreRepository;
-    private ObjectMapper objectMapper;
+public class PopupSearchService {
+
+    private final PopupStoreRepository popupStoreRepository;
+    private final ObjectMapper objectMapper;
+    private final PopUpRegisterService popUpRegisterService;
+    private final PopUpAiService popUpAiService;
+    private static final Logger logger = LoggerFactory.getLogger(PopupSearchService.class);
 
     @Value("${naver.client.id}")
     private String clientId;
     @Value("${naver.client.secret}")
     private String clientSecret;
 
-    @Autowired
-    public PopupStoreService(PopupStoreRepository popupStoreRepository, ObjectMapper objectMapper) {
-        this.popupStoreRepository = popupStoreRepository;
-        this.objectMapper = objectMapper;
-    }
-
     public static String removeHtmlTags(String html) {
         return Jsoup.clean(html, Whitelist.none());
     }
-
-
-//    @Transactional
-//    public void savePopupStores(String result) {
-//        System.out.println("result::::::::" + result);
-//        Set<String> existingTitles = this.popupStoreRepository.findAll().stream()
-//                .map(PopupStore::getTitle)
-//                .collect(Collectors.toSet());
-//        Set<String> titleSet = new HashSet<>(existingTitles);
-//        List<PopupStore> storesToSave = new ArrayList<>();
-//
-//        try {
-//            JsonNode rootNode = this.objectMapper.readTree(result);
-//            System.out.println("root Node \n" + rootNode);
-//            JsonNode itemsNode = rootNode.path("items");
-//            System.out.println("itemsNode \n" + itemsNode);
-//            Iterator<JsonNode> var7 = itemsNode.iterator();
-//            System.out.println("var 7 " + var7);
-//            while (var7.hasNext()) {
-//                JsonNode itemNode = var7.next();
-//                String originalTitle = itemNode.path("title").asText();
-//                String cleanedTitle = removeHtmlTags(originalTitle);
-//                if (!titleSet.contains(cleanedTitle)) {
-//                    PopupStoreDto popupStoreDto = PopupStoreDto.builder()
-//                            .id(itemNode.path("id").asLong())
-//                            .title(cleanedTitle)
-//                            .address(itemNode.path("address").asText())
-//                            .roadAddress(itemNode.path("roadAddress").asText())
-//                            .telephone(itemNode.path("telephone").asText())
-//                            .description(itemNode.path("description").asText())
-//                            .link(itemNode.path("link").asText())
-//                            .mapx(itemNode.path("mapx").asText())
-//                            .mapy(itemNode.path("mapy").asText())
-//                            .build();
-//                    PopupStore popupStore = this.popupStoreRepository.save(popupStoreDto.toEntity());
-//                    storesToSave.add(popupStore);
-//                }
-//            }
-//
-//            this.popupStoreRepository.saveAll(storesToSave);
-//            logger.info("총 {}개의 팝업 스토어를 저장했습니다.", storesToSave.size());
-//        } catch (IOException var12) {
-//            logger.error("JSON 처리 중 오류 발생: ", var12);
-//        }
-//    }
 
     public String fetchNaverSearchResults(String query) {
         URI uri = UriComponentsBuilder.fromUriString("https://openapi.naver.com")
@@ -157,11 +109,43 @@ public class PopupStoreService {
         return newStoresJson;
     }
 
+    public void processPopUpSearch(String query) {
+        String results = fetchNaverSearchResults(query);
+        String queryResult = getNewPopupStores(results);
+
+        // convertCategoryAPI 메서드가 리스트를 반환하므로 이를 처리합니다.
+        List<PopupStoreDto> convertResults = popUpAiService.convertCategoryAPI(queryResult);
+
+        // convertResults 리스트의 각 요소에 대해 createPopUp 호출
+        for (PopupStoreDto convertResult : convertResults) {
+            popUpRegisterService.createPopUp(convertResult);
+        }
+        getAllPopupStores();
+    }
+
+    public void searchPopupStores(String searchQuery){
+        String results = fetchNaverSearchResults(searchQuery);
+        String queryResult = getNewPopupStores(results);
+
+        // convertCategoryAPI 메서드가 리스트를 반환하므로 이를 처리합니다.
+        List<PopupStoreDto> convertResults = popUpAiService.convertCategoryAPI(queryResult);
+
+        // convertResults 리스트의 각 요소에 대해 createPopUp 호출
+        for (PopupStoreDto convertResult : convertResults) {
+            popUpRegisterService.createPopUp(convertResult);
+        }
+
+        getQueryPopupStores(searchQuery);
+    }
+
+
     public List<PopupStore> getAllPopupStores() {
         return this.popupStoreRepository.findAll();
     }
 
-    public Optional<PopupStore> searchPopupStores(String query) {
+    public Optional<PopupStore> getQueryPopupStores(String query) {
         return this.popupStoreRepository.findByTitleContaining(query);
     }
+
+
 }

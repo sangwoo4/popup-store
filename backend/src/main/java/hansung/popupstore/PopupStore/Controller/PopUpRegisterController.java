@@ -31,7 +31,7 @@ public class PopUpRegisterController {
     @DeleteMapping("/register/update/{id}")
     public ResponseEntity<ResponseDto<?>> delete(@PathVariable("id") Long id) {
         ResponseDto<?> result = popUpRegisterService.deleteRegister(id);
-        return new ResponseEntity<>(result, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/detail/{id}")

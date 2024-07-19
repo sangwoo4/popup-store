@@ -108,7 +108,7 @@ public class AuthService {
         return ResponseDto.setSuccess("사용 가능한 번호 입니다.");
     }
 
-    public ResponseDto<LoginResponseDto> login(LoginDto dto) {
+    public ResponseDto<LoginResponseDto> userLogin(UserLoginDto dto) {
         String email = dto.getEmail();
         String password = dto.getPassword();
 
@@ -121,6 +121,37 @@ public class AuthService {
 
             User user = userOptional.get();
             String storedHashedPassword = user.getPassword();
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            boolean passwordMatches = passwordEncoder.matches(password, storedHashedPassword);
+
+            if (!passwordMatches) {
+                return ResponseDto.setFailed("입력하신 로그인 정보가 존재하지 않습니다.");
+            }
+
+            int exprTime = 3600;
+            String token = tokenProvider.generateToken(email, exprTime);
+            System.out.println("생성된 토큰: " + token);
+
+            LoginResponseDto loginResponseDto = new LoginResponseDto(token, exprTime);
+            return ResponseDto.setSuccessData("로그인에 성공하였습니다.", loginResponseDto);
+        } catch (Exception e) {
+            return ResponseDto.setFailed("데이터베이스 연결에 실패하였습니다.");
+        }
+    }
+
+    public ResponseDto<LoginResponseDto> companyLogin(CompanyLoginDto dto) {
+        String email = dto.getEmail();
+        String password = dto.getPassword();
+
+        try {
+            Optional<Company> companyOptional = companyRepository.findByEmail(email);
+
+            if (!companyOptional.isPresent()) {
+                return ResponseDto.setFailed("입력하신 로그인 정보가 존재하지 않습니다.");
+            }
+
+            Company company = companyOptional.get();
+            String storedHashedPassword = company.getPassword();
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             boolean passwordMatches = passwordEncoder.matches(password, storedHashedPassword);
 
