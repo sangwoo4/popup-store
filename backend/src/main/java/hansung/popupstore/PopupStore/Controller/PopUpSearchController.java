@@ -56,15 +56,15 @@ public class PopUpSearchController {
 
     @GetMapping("/all")
     public ResponseEntity<ResponseDto<?>> savePopUp() {
-        popupSearchService.processPopUpSearch("팝업");
-        return new ResponseEntity<>(HttpStatus.OK);
+        ResponseDto<?> result = popupSearchService.processPopUpSearch("팝업");
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<ResponseDto<?>> searchPopUp(@RequestParam("query") String query) {
         String searchQuery = "팝업" + query;
-        popupSearchService.searchPopupStores(searchQuery);
-        return new ResponseEntity<>(HttpStatus.OK);
+        ResponseDto<?> result = popupSearchService.searchPopupStores(searchQuery);
+        return new ResponseEntity<>(result, HttpStatus.OK);
 
     }
 }
