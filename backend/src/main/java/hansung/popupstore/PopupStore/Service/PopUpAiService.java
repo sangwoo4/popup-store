@@ -30,9 +30,7 @@ public class PopUpAiService {
         RestOperations restTemplate = new RestTemplate();
         String response = restTemplate.postForObject(url, requestEntity, String.class);
 
-        System.out.println("Response::::::::::::::::::::::::::::::::::::::::::: " + response);
         List<PopupStoreDto> dto = convertToJson(response);
-        System.out.println("dto::::::::::::::::::::::::::::::::::::::::::::::::: " + dto);
         return dto;
     }
 
