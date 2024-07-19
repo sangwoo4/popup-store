@@ -45,6 +45,7 @@ dependencies {
 	implementation 'com.naver.maps:map-sdk:3.18.0'
 	implementation group: 'org.jsoup', name: 'jsoup', version: '1.7.2'
 	implementation group: 'org.htmlunit', name: 'htmlunit', version: '3.0.0'
+	implementation group: 'org.jsoup', name: 'jsoup', version: '1.7.2'
 
 
 }
