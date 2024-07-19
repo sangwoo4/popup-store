@@ -59,7 +59,10 @@ public class AuthService {
         Company company = Company.builder()
                 .password(hashedPassword)
                 .companyName(dto.getCompanyName())
-                .email(dto.getCompanyEmail())
+                .companyId(dto.getCompanyId())
+                .managerName(dto.getManagerName())
+                .address(dto.getAddress())
+                .email(dto.getEmail())
                 .build();
 
         try {
@@ -67,6 +70,7 @@ public class AuthService {
             companyRepository.save(company);
 
             Role companyRole = roleRepository.findByRole("ROLE_COMPANY").orElseThrow(() -> new RuntimeException("Role not found."));
+            System.out.println("companyrole" + companyRole);
             company.getRoles().add(companyRole);
             companyRepository.save(company);
 
