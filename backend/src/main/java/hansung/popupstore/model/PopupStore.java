@@ -18,6 +18,7 @@ import java.util.Set;
 public class PopupStore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="popup_store_id")
     private Long id;
 
     @NotNull
@@ -70,9 +71,14 @@ public class PopupStore {
     )
     private Set<Category> categories = new HashSet<>();
 
+<<<<<<< HEAD
+    @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<StoreDay> storeDays;
+=======
 
     @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<StoreDay> storeDays = new HashSet<>();
+>>>>>>> 1ee7e2ee2b99fb14609d29230dab91c8cda356c2
 
 }
