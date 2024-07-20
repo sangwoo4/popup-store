@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
+import hansung.popupstore.ResponseDto;
 import hansung.popupstore.model.PopupStore;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -98,18 +99,16 @@ public class PopupSearchService {
                 }
             }
 
-            System.out.println("new Store==========" + newStores);
             // 새로운 타이틀들의 데이터를 JSON 문자열로 변환
             newStoresJson = objectMapper.writeValueAsString(newStores);
             // 만약 저장하려면, 파일이나 데이터베이스에 저장하는 로직 추가
-            System.out.println("newStoresJson" + newStoresJson);
         } catch (IOException e) {
             logger.error("JSON 처리 중 오류 발생: ", e);
         }
         return newStoresJson;
     }
 
-    public void processPopUpSearch(String query) {
+    public ResponseDto<?> processPopUpSearch(String query) {
         String results = fetchNaverSearchResults(query);
         String queryResult = getNewPopupStores(results);
 
@@ -120,10 +119,10 @@ public class PopupSearchService {
         for (PopupStoreDto convertResult : convertResults) {
             popUpRegisterService.createPopUp(convertResult);
         }
-        getAllPopupStores();
+        return getAllPopupStores();
     }
 
-    public void searchPopupStores(String searchQuery){
+    public ResponseDto<?> searchPopupStores(String searchQuery){
         String results = fetchNaverSearchResults(searchQuery);
         String queryResult = getNewPopupStores(results);
 
@@ -135,17 +134,19 @@ public class PopupSearchService {
             popUpRegisterService.createPopUp(convertResult);
         }
 
-        getQueryPopupStores(searchQuery);
+        return getQueryPopupStores(searchQuery);
     }
 
 
-    public List<PopupStore> getAllPopupStores() {
-        return this.popupStoreRepository.findAll();
+    public ResponseDto<?> getAllPopupStores(){
+        List<PopupStore> optionalPopupStore = popupStoreRepository.findAll();
+        return ResponseDto.setSuccessData("팝업 스토어 조회 성공", optionalPopupStore);
     }
 
-    public Optional<PopupStore> getQueryPopupStores(String query) {
-        return this.popupStoreRepository.findByTitleContaining(query);
-    }
 
+    public ResponseDto<?> getQueryPopupStores(String query){
+        Optional<PopupStore> optionalPopupStore = popupStoreRepository.findByTitleContaining(query);
+        return ResponseDto.setSuccessData("팝업 스토어 조회 성공", optionalPopupStore);
+    }
 
 }
