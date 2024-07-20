@@ -2,15 +2,12 @@ package hansung.popupstore.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -19,13 +16,16 @@ import java.util.Set;
 public class Day {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long dayCode;
+    @Column(name = "day_code")
+    private int code;
 
-    @NotNull
-    @Column(name="day", length=10)
+    @Column
     private String day;
 
-    @ManyToMany(mappedBy = "days")
-    private Set<PopupStore> popupStores = new HashSet<>();
+    // other fields
+
+    @OneToMany(mappedBy = "day", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<StoreDay> storeDays;
+
+
 }

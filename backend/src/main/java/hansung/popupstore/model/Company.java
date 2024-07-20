@@ -22,15 +22,27 @@ public class Company {
     private Long id;
 
     @NotNull
-    private String password;
-
-    @NotNull
-    @Column(name = "company_name", length = 20)
+    @Column(name = "company_name", length = 20) //기업 명
     private String companyName;
 
     @NotNull
-    @Column(unique = true)
+    @Column(name = "manager_name", unique = true) //대표자명
+    private String managerName;
+
+    @NotNull
+    @Column(name = "addrsess")
+    private String address;
+
+    @NotNull
+    @Column(name = "email", unique = true)
     private String email;
+
+    @NotNull
+    private String password;
+
+    @NotNull
+    @Column(name="company_id", unique = true) // 사업자 번호
+    private String companyId;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -44,9 +56,12 @@ public class Company {
     private Set<PopupStore> popupStores = new HashSet<>();
 
     @Builder
-    public Company(Long id, String password, String companyName, Set<Role> roles, Set<PopupStore> popupStores, String email) {
+    public Company(Long id, String address, String companyId, String password, String managerName, String companyName, Set<Role> roles, Set<PopupStore> popupStores, String email) {
         this.id = id;
         this.email = email;
+        this.address = address;
+        this.managerName = managerName;
+        this.companyId = companyId;
         this.password = password;
         this.companyName = companyName;
         this.roles = roles != null ? roles : new HashSet<>();

@@ -2,7 +2,7 @@ package hansung.popupstore.PopupStore.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
+import hansung.popupstore.PopupStore.Dto.PopUpStoreDto;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.model.PopupStore;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +62,7 @@ public class PopupStoreService {
                 String originalTitle = itemNode.path("title").asText();
                 String cleanedTitle = removeHtmlTags(originalTitle);
                 if (!titleSet.contains(cleanedTitle)) {
-                    PopupStoreDto popupStoreDto = PopupStoreDto.builder()
+                    PopUpStoreDto popupStoreDto = PopUpStoreDto.builder()
                             .id(itemNode.path("id").asLong())
                             .title(cleanedTitle)
                             .address(itemNode.path("address").asText())

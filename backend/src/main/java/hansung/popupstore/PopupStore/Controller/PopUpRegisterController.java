@@ -1,6 +1,7 @@
 package hansung.popupstore.PopupStore.Controller;
 
-import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
+
+import hansung.popupstore.PopupStore.Dto.PopUpStoreDto;
 import hansung.popupstore.PopupStore.Service.PopUpRegisterService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,14 +17,14 @@ public class PopUpRegisterController {
 
     // 팝업 스토어 등록
     @PostMapping("/register")
-    public ResponseEntity<?> submit(@RequestBody PopupStoreDto registerDto){
-        PopupStoreDto SaveRegisterDto = companyService.saveRegister(registerDto);
+    public ResponseEntity<?> submit(@RequestBody PopUpStoreDto registerDto){
+        PopUpStoreDto SaveRegisterDto = companyService.saveRegister(registerDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(SaveRegisterDto);
     }
     // 팝업 스토어 수정
     @PutMapping("/register/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody PopupStoreDto registerDto){
-        PopupStoreDto updatedDto = companyService.updateRegister(id, registerDto);
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody PopUpStoreDto registerDto){
+        PopUpStoreDto updatedDto = companyService.updateRegister(id, registerDto);
         return new ResponseEntity<>(updatedDto, HttpStatus.OK);
     }
 
@@ -35,7 +36,7 @@ public class PopUpRegisterController {
 
     @GetMapping("/register/{id}")
     public ResponseEntity<?> detail(@PathVariable("id") Long id){
-        PopupStoreDto popupStoreDto = companyService.getPost(id);
+        PopUpStoreDto popupStoreDto = companyService.getPost(id);
         return ResponseEntity.status(HttpStatus.OK).body(popupStoreDto);
     }
 }
