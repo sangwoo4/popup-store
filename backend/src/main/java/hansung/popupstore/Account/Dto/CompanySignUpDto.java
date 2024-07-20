@@ -9,8 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompanySignUpDto {
-    private Long companyId;
-    private String companyEmail;
-    private String password;
+    private Long id;
     private String companyName;
+    private String companyId;
+    private String email;
+    private String password;
+    private String address;
+    private String managerName;
 }
