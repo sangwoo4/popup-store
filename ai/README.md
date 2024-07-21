@@ -2,7 +2,7 @@
 
 이 프로젝트는 FastAPI를 사용하여 OpenAI API를 호출하고 카테고리를 분류하는 코드
 
-### 1. 리포지토리 클론
+## 1. 리포지토리 클론
 
 bash
 -- 클론 --
@@ -45,7 +45,7 @@ uvicorn Recommend.Combine:app --reload
 cd Recommend
 uvicorn Combine:app --reload
 
-### 4. 기타 예상 애로사항
+## 4. 기타 예상 애로사항
 
 -- API KEY 부재--
 시스템 환경변수에 키 설정
