@@ -1,0 +1,46 @@
+.selection-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #f0f0f0;
+  }
+  
+  .title {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .subtitle {
+    font-size: 20px;
+    margin-bottom: 40px;
+    color: #666;
+  }
+  
+  .button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .option-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .option-button:hover {
+    background: #0056b3;
+  }
+  
+  .option-button:active {
+    background: #004085;
+  }
+  

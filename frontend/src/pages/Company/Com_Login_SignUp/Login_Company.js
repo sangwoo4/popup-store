@@ -1,17 +1,8 @@
-/*
-    수정사항 예정 [24.07.15]
-    1. 헤더와 푸터 사이에 들어가게 수정 - O
-    2. 모든 코드 재수정 
-*/
-
-
 import React, { useEffect, useState, useRef } from 'react';
-import './Login.css';
+// import './Login.css';
 import { Link, useNavigate } from "react-router-dom";
-import SignUp from './SignUp';
-import FindIDPW from './FindIDPW';
 
-export default function Login() {
+export default function Login_Company() {
   const [email, setEmail] = useState('');
   const [password, setPw] = useState('');
 
@@ -144,7 +135,7 @@ export default function Login() {
         </div>
 
         <div className="login-link">
-          <Link to="/signup">
+          <Link to="/auth/company/signup">
             회원가입
           </Link>
         </div>

@@ -90,7 +90,7 @@ export default function SignUp() {
       return;
     }
 
-    fetch("http://localhost:8080/user/signup", {
+    fetch("http://localhost:8080/auth/user/signup", {
       method: "POST",
       headers: {
         "Content-Type":"application/json; charset=utf-8"
@@ -128,7 +128,7 @@ export default function SignUp() {
       setEmailValid(false);
       return;
     }
-    fetch("http://localhost:8080/user/signup/check-email", {
+    fetch("http://localhost:8080/auth/signup/check-email", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;"
@@ -162,7 +162,7 @@ export default function SignUp() {
       setPhoneValid(false);
       return;
     }
-    fetch("http://localhost:8080/user/signup/check-phone", {
+    fetch("http://localhost:8080/auth/signup/check-phone", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;"
@@ -196,7 +196,7 @@ export default function SignUp() {
       setNicknameValid(false);
       return;
     }
-    fetch("http://localhost:8080/user/signup/check-nickname", {
+    fetch("http://localhost:8080/auth/signup/check-nickname", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;"

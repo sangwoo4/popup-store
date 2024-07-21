@@ -1,0 +1,29 @@
+.loginLink {
+    position: absolute;
+    top: 6%;
+    left: 80%;
+    cursor: pointer;
+    font-size: 13px;
+    font-style: italic;
+    color: rgb(255, 0, 0);
+}
+
+.success-Login {
+    position: absolute;
+    top: 6%;
+    left: 75%;
+    cursor: pointer;
+    font-size: 13px;
+    font-style: italic;
+    color: rgb(255, 0, 0);
+}
+
+.logoutButton{
+    position: absolute;
+    top: 6%;
+    left: 85%;
+    cursor: pointer;
+    font-size: 13px;
+    font-style: italic;
+    color: rgb(25, 0, 255);
+}

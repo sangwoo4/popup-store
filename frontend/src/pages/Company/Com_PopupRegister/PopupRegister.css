@@ -1,7 +1,6 @@
-/* PopupRegister.css */
-
 .popup-registration {
-    max-width: 600px;
+    max-width: 500px;
+    max-height: 1200px;
     margin: 20px auto;
     padding: 20px;
     border: 1px solid #ccc;
@@ -68,6 +67,19 @@
 /* Time Picker 내 폰트 크기 설정 */
 .popup-registration .react-time-picker__inputGroup__input {
     font-size: 1em;
+}
+
+/* 운영요일 컨테이너 */
+.operating-days-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.day-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 /* 등록 버튼 스타일 */
