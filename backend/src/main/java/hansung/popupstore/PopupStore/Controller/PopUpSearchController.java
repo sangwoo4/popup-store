@@ -1,17 +1,11 @@
 package hansung.popupstore.PopupStore.Controller;
 
-import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
-import hansung.popupstore.PopupStore.Service.PopUpAiService;
-import hansung.popupstore.PopupStore.Service.PopUpRegisterService;
 import hansung.popupstore.PopupStore.Service.PopupSearchService;
-import hansung.popupstore.ResponseDto;
+import hansung.popupstore.Util.ResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @AllArgsConstructor

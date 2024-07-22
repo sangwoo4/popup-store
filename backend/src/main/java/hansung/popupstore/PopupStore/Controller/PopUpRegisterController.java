@@ -1,6 +1,6 @@
 package hansung.popupstore.PopupStore.Controller;
 
-import hansung.popupstore.ResponseDto;
+import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
 import hansung.popupstore.PopupStore.Service.PopUpRegisterService;
 import lombok.AllArgsConstructor;

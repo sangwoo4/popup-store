@@ -16,4 +16,6 @@ public class CompanySignUpDto {
     private String password;
     private String address;
     private String managerName;
+    private String postcode;
+    private String detailAddress;
 }

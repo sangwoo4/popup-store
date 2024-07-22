@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
-import hansung.popupstore.ResponseDto;
+import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.model.PopupStore;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -102,6 +102,7 @@ public class PopupSearchService {
             // 새로운 타이틀들의 데이터를 JSON 문자열로 변환
             newStoresJson = objectMapper.writeValueAsString(newStores);
             // 만약 저장하려면, 파일이나 데이터베이스에 저장하는 로직 추가
+            System.out.println("newStoresJson======" + newStoresJson);
         } catch (IOException e) {
             logger.error("JSON 처리 중 오류 발생: ", e);
         }

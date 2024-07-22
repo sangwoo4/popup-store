@@ -1,4 +1,4 @@
-package hansung.popupstore;
+package hansung.popupstore.Util;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

@@ -2,51 +2,52 @@ package hansung.popupstore.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jdk.jfr.Enabled;
 import lombok.*;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Enabled
 @EntityScan
-@NoArgsConstructor
 @Entity
+@Getter
+@NoArgsConstructor
+
+@Table(name = "company")
 @Data
-@Table(name="company")
 public class Company {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Column(name = "company_name", length = 20) //기업 명
+    @Column(name = "company_name", length = 20, nullable = false)
     private String companyName;
 
-    @NotNull
-    @Column(name = "manager_name", unique = true) //대표자명
+    @Column(name = "manager_name", unique = true, nullable = false)
     private String managerName;
 
-    @NotNull
-    @Column(name = "addrsess")
+    @Column(nullable = false)
     private String address;
 
-    @NotNull
-    @Column(name = "email", unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @NotNull
+    @Column(nullable = false)
     private String password;
 
-    @NotNull
-    @Column(name="company_id", unique = true) // 사업자 번호
+    @Column(name = "company_id", unique = true, nullable = false)
     private String companyId;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @Column(nullable = false)
+    private String postcode;
+
+    @Column(nullable = false)
+    private String detailAddress;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "account_role",
+            name = "company_role",
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
@@ -56,15 +57,17 @@ public class Company {
     private Set<PopupStore> popupStores = new HashSet<>();
 
     @Builder
-    public Company(Long id, String address, String companyId, String password, String managerName, String companyName, Set<Role> roles, Set<PopupStore> popupStores, String email) {
+    public Company(Long id, String companyName, String managerName, String address, String email, String password, String companyId, Set<Role> roles, Set<PopupStore> popupStores, String postcode, String detailAddress) {
         this.id = id;
-        this.email = email;
-        this.address = address;
-        this.managerName = managerName;
-        this.companyId = companyId;
-        this.password = password;
         this.companyName = companyName;
+        this.managerName = managerName;
+        this.address = address;
+        this.email = email;
+        this.password = password;
+        this.companyId = companyId;
         this.roles = roles != null ? roles : new HashSet<>();
+        this.detailAddress = detailAddress;
+        this.postcode = postcode;
         this.popupStores = popupStores != null ? popupStores : new HashSet<>();
     }
 }

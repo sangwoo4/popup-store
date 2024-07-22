@@ -1,4 +1,4 @@
-package hansung.popupstore;
+package hansung.popupstore.Util;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

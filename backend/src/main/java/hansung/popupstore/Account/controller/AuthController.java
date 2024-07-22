@@ -3,7 +3,7 @@ package hansung.popupstore.Account.controller;
 import hansung.popupstore.Account.Dto.CompanyLoginDto;
 import hansung.popupstore.Account.Dto.CompanySignUpDto;
 import hansung.popupstore.Account.Dto.UserLoginDto;
-import hansung.popupstore.ResponseDto;
+import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.Account.Dto.UserSignUpDto;
 import hansung.popupstore.Account.Repository.RoleRepository;
 import hansung.popupstore.Account.service.AuthService;
@@ -45,21 +45,33 @@ public class AuthController {
         return result;
     }
 
-    @PostMapping("/signup/check-email")
-    public ResponseDto<?> checkEmail(@RequestBody UserSignUpDto requestBody){
+    @PostMapping("user/signup/check-email")
+    public ResponseDto<?> userCheckEmail(@RequestBody UserSignUpDto requestBody){
         ResponseDto<?> result = authService.checkEmail(requestBody);
         return result;
     }
 
-    @PostMapping("/signup/check-nickname")
-    public ResponseDto<?> checkNick(@RequestBody UserSignUpDto requestBody){
+    @PostMapping("user/signup/check-nickname")
+    public ResponseDto<?> userCheckNick(@RequestBody UserSignUpDto requestBody){
         ResponseDto<?> result = authService.checkNick(requestBody);
         return result;
     }
 
-    @PostMapping("/signup/check-phone")
-    public ResponseDto<?> checkPhone(@RequestBody UserSignUpDto requestBody){
+    @PostMapping("user/signup/check-phone")
+    public ResponseDto<?> userCheckPhone(@RequestBody UserSignUpDto requestBody){
         ResponseDto<?> result = authService.checkPhone(requestBody);
+        return result;
+    }
+
+    @PostMapping("company/signup/check-email")
+    public ResponseDto<?> companyCheckEmail(@RequestBody CompanySignUpDto requestBody){
+        ResponseDto<?> result = authService.checkCompanyEmail(requestBody);
+        return result;
+    }
+
+    @PostMapping("company/signup/check-companyid")
+    public ResponseDto<?> checkCompanyId(@RequestBody CompanySignUpDto requestBody){
+        ResponseDto<?> result = authService.checkCompanyId(requestBody);
         return result;
     }
 }

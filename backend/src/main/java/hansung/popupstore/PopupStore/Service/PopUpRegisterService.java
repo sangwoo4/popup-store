@@ -7,7 +7,7 @@ import hansung.popupstore.PopupStore.Repository.CategoryRepository;
 import hansung.popupstore.PopupStore.Repository.DayRepository;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.PopupStore.Repository.StoreDayRepository;
-import hansung.popupstore.ResponseDto;
+import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.model.Category;
 import hansung.popupstore.model.Day;
 import hansung.popupstore.model.PopupStore;
