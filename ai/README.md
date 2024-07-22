@@ -79,3 +79,6 @@
 ###     "python.pythonPath": "./ai/myenv/bin/python",
 ###     "python.envFile": "${workspaceFolder}/ai/.env"
 ### }
+
+# 변경사항
+1. dotenv 라이브러리 추가, StoreDays 추가
