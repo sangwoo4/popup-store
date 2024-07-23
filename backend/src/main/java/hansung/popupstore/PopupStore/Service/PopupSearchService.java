@@ -93,7 +93,6 @@ public class PopupSearchService {
                     // 새로운 JsonNode 객체를 만들어 cleanedTitle을 반영
                     ObjectNode newItemNode = itemNode.deepCopy();
                     newItemNode.put("title", cleanedTitle);
-
                     newStores.add(newItemNode);
                     titleSet.add(cleanedTitle); // 중복 방지를 위해 추가
                 }
