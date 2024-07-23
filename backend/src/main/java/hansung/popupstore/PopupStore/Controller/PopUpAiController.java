@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/popoup/ai")
+@RequestMapping("/popup/ai")
 public class PopUpAiController {
 
     private final PopUpAiService popUpAiService;

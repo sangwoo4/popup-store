@@ -1,5 +1,6 @@
 package hansung.popupstore.PopupStore.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -72,70 +73,72 @@ public class PopupSearchService {
     }
 
     @Transactional
-    public String getNewPopupStores(String result) {
+    public List<String> getNewPopupStores(String result) {
         Set<String> existingTitles = popupStoreRepository.findAll().stream()
                 .map(PopupStore::getTitle)
                 .collect(Collectors.toSet());
         Set<String> titleSet = new HashSet<>(existingTitles);
+        List<String> newStores = new ArrayList<>(); // 변경된 부분
 
-        List<JsonNode> newStores = new ArrayList<>();
-
-        String newStoresJson = null;
         try {
             JsonNode rootNode = objectMapper.readTree(result);
             JsonNode itemsNode = rootNode.path("items");
-            Iterator<JsonNode> var7 = itemsNode.iterator();
-            while (var7.hasNext()) {
-                JsonNode itemNode = var7.next();
+            Iterator<JsonNode> iterator = itemsNode.iterator();
+
+            while (iterator.hasNext()) {
+                JsonNode itemNode = iterator.next();
                 String originalTitle = itemNode.path("title").asText();
                 String cleanedTitle = removeHtmlTags(originalTitle);
+
                 if (!titleSet.contains(cleanedTitle)) {
-                    // 새로운 JsonNode 객체를 만들어 cleanedTitle을 반영
                     ObjectNode newItemNode = itemNode.deepCopy();
                     newItemNode.put("title", cleanedTitle);
-                    newStores.add(newItemNode);
+                    String nodeJson = objectMapper.writeValueAsString(newItemNode); // JSON 문자열로 변환
+                    newStores.add(nodeJson); // 새로운 노드를 리스트에 추가
                     titleSet.add(cleanedTitle); // 중복 방지를 위해 추가
                 }
             }
 
-            // 새로운 타이틀들의 데이터를 JSON 문자열로 변환
-            newStoresJson = objectMapper.writeValueAsString(newStores);
-            // 만약 저장하려면, 파일이나 데이터베이스에 저장하는 로직 추가
-            System.out.println("newStoresJson======" + newStoresJson);
         } catch (IOException e) {
             logger.error("JSON 처리 중 오류 발생: ", e);
         }
-        return newStoresJson;
+
+        return newStores; // 문자열 리스트로 반환
     }
 
-    public ResponseDto<?> processPopUpSearch(String query) {
+    public ResponseDto<?> processPopUpSearch(String query) throws JsonProcessingException {
         String results = fetchNaverSearchResults(query);
-        String queryResult = getNewPopupStores(results);
+        List<String> queryResults = getNewPopupStores(results); // 변경된 부분
 
-        // convertCategoryAPI 메서드가 리스트를 반환하므로 이를 처리합니다.
-        List<PopupStoreDto> convertResults = popUpAiService.convertCategoryAPI(queryResult);
+        List<PopupStoreDto> allConvertedResults = new ArrayList<>();
+
+        // 각 결과를 convertCategoryAPI 메서드에 전달하여 처리
+        for (String queryResult : queryResults) {
+            List<PopupStoreDto> convertResults = popUpAiService.convertCategoryAPI(queryResult);
+            allConvertedResults.addAll(convertResults);
+        }
 
         // convertResults 리스트의 각 요소에 대해 createPopUp 호출
-        for (PopupStoreDto convertResult : convertResults) {
+        for (PopupStoreDto convertResult : allConvertedResults) {
             popUpRegisterService.createPopUp(convertResult);
         }
         return getAllPopupStores();
     }
 
-    public ResponseDto<?> searchPopupStores(String searchQuery){
-        String results = fetchNaverSearchResults(searchQuery);
-        String queryResult = getNewPopupStores(results);
-
-        // convertCategoryAPI 메서드가 리스트를 반환하므로 이를 처리합니다.
-        List<PopupStoreDto> convertResults = popUpAiService.convertCategoryAPI(queryResult);
-
-        // convertResults 리스트의 각 요소에 대해 createPopUp 호출
-        for (PopupStoreDto convertResult : convertResults) {
-            popUpRegisterService.createPopUp(convertResult);
-        }
-
-        return getQueryPopupStores(searchQuery);
-    }
+//    public ResponseDto<?> searchPopupStores(String searchQuery) throws JsonProcessingException {
+//        String results = fetchNaverSearchResults(searchQuery);
+//        String queryResult = getNewPopupStores(results);
+//
+//        // convertCategoryAPI 메서드가 리스트를 반환하므로 이를 처리합니다.
+//        List<PopupStoreDto> convertResults = popUpAiService.convertCategoryAPI(queryResult);
+//
+//        // convertResults 리스트의 각 요소에 대해 createPopUp 호출
+//        for (PopupStoreDto convertResult : convertResults) {
+//            popUpRegisterService.createPopUp(convertResult);
+//        }
+//
+//        return getQueryPopupStores(searchQuery);
+//    }
 
 
     public ResponseDto<?> getAllPopupStores(){

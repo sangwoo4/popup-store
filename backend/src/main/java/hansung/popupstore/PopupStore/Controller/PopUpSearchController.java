@@ -1,5 +1,6 @@
 package hansung.popupstore.PopupStore.Controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import hansung.popupstore.PopupStore.Service.PopupSearchService;
 import hansung.popupstore.Util.ResponseDto;
 import lombok.AllArgsConstructor;
@@ -49,16 +50,16 @@ public class PopUpSearchController {
 //    }
 
     @GetMapping("/all")
-    public ResponseEntity<ResponseDto<?>> savePopUp() {
+    public ResponseEntity<ResponseDto<?>> savePopUp() throws JsonProcessingException {
         ResponseDto<?> result = popupSearchService.processPopUpSearch("팝업");
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<ResponseDto<?>> searchPopUp(@RequestParam("query") String query) {
-        String searchQuery = "팝업" + query;
-        ResponseDto<?> result = popupSearchService.searchPopupStores(searchQuery);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-
-    }
+//    @GetMapping
+//    public ResponseEntity<ResponseDto<?>> searchPopUp(@RequestParam("query") String query) throws JsonProcessingException {
+//        String searchQuery = "팝업" + query;
+//        ResponseDto<?> result = popupSearchService.searchPopupStores(searchQuery);
+//        return new ResponseEntity<>(result, HttpStatus.OK);
+//
+//    }
 }
