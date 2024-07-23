@@ -108,6 +108,7 @@ public class PopupSearchService {
 
     public ResponseDto<?> processPopUpSearch(String query) throws JsonProcessingException {
         String results = fetchNaverSearchResults(query);
+        System.out.println("results" + results);
         List<String> queryResults = getNewPopupStores(results); // 변경된 부분
 
         List<PopupStoreDto> allConvertedResults = new ArrayList<>();
@@ -125,20 +126,26 @@ public class PopupSearchService {
         return getAllPopupStores();
     }
 
-//    public ResponseDto<?> searchPopupStores(String searchQuery) throws JsonProcessingException {
-//        String results = fetchNaverSearchResults(searchQuery);
-//        String queryResult = getNewPopupStores(results);
-//
-//        // convertCategoryAPI 메서드가 리스트를 반환하므로 이를 처리합니다.
-//        List<PopupStoreDto> convertResults = popUpAiService.convertCategoryAPI(queryResult);
-//
-//        // convertResults 리스트의 각 요소에 대해 createPopUp 호출
-//        for (PopupStoreDto convertResult : convertResults) {
-//            popUpRegisterService.createPopUp(convertResult);
-//        }
-//
-//        return getQueryPopupStores(searchQuery);
-//    }
+    public ResponseDto<?> searchPopupStores(String searchQuery) throws JsonProcessingException {
+        String results = fetchNaverSearchResults(searchQuery);
+        System.out.println("results=========" + results);
+        List<String> queryResults = getNewPopupStores(results); // 변경된 부분
+
+        List<PopupStoreDto> allConvertedResults = new ArrayList<>();
+        // convertCategoryAPI 메서드가 리스트를 반환하므로 이를 처리합니다.
+
+        // 각 결과를 convertCategoryAPI 메서드에 전달하여 처리
+        for (String queryResult : queryResults) {
+            List<PopupStoreDto> convertResults = popUpAiService.convertCategoryAPI(queryResult);
+            allConvertedResults.addAll(convertResults);
+        }
+
+        // convertResults 리스트의 각 요소에 대해 createPopUp 호출
+        for (PopupStoreDto convertResult : allConvertedResults) {
+            popUpRegisterService.createPopUp(convertResult);
+        }
+        return getQueryPopupStores(searchQuery);
+    }
 
 
     public ResponseDto<?> getAllPopupStores(){
@@ -148,8 +155,16 @@ public class PopupSearchService {
 
 
     public ResponseDto<?> getQueryPopupStores(String query){
-        Optional<PopupStore> optionalPopupStore = popupStoreRepository.findByTitleContaining(query);
-        return ResponseDto.setSuccessData("팝업 스토어 조회 성공", optionalPopupStore);
+        String removePopup = query.replace("팝업 스토어", "").trim(); // 문자열 앞뒤 공백 제거
+        System.out.println("removePopup: " + removePopup);
+
+        List<PopupStore> popupStores = popupStoreRepository.findByTitleContaining(removePopup);
+
+        if (popupStores.isEmpty()) {
+            return ResponseDto.setSuccessData("팝업 스토어 조회 성공, 결과가 없습니다.", Collections.emptyList());
+        }
+
+        return ResponseDto.setSuccessData("팝업 스토어 조회 성공", popupStores);
     }
 
 }
