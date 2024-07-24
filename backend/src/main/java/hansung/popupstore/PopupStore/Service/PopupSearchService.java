@@ -128,13 +128,12 @@ public class PopupSearchService {
 
     public ResponseDto<?> searchPopupStores(String searchQuery) throws JsonProcessingException {
         String results = fetchNaverSearchResults(searchQuery);
-        System.out.println("results=========" + results);
         List<String> queryResults = getNewPopupStores(results); // 변경된 부분
 
-        List<PopupStoreDto> allConvertedResults = new ArrayList<>();
-        // convertCategoryAPI 메서드가 리스트를 반환하므로 이를 처리합니다.
 
-        // 각 결과를 convertCategoryAPI 메서드에 전달하여 처리
+        List<PopupStoreDto> allConvertedResults = new ArrayList<>();
+
+        // 첫 번째 검색어 결과를 처리
         for (String queryResult : queryResults) {
             List<PopupStoreDto> convertResults = popUpAiService.convertCategoryAPI(queryResult);
             allConvertedResults.addAll(convertResults);
@@ -144,9 +143,10 @@ public class PopupSearchService {
         for (PopupStoreDto convertResult : allConvertedResults) {
             popUpRegisterService.createPopUp(convertResult);
         }
+
+        // 두 가지 검색어를 합쳐서 조회
         return getQueryPopupStores(searchQuery);
     }
-
 
     public ResponseDto<?> getAllPopupStores(){
         List<PopupStore> optionalPopupStore = popupStoreRepository.findAll();
@@ -155,13 +155,13 @@ public class PopupSearchService {
 
 
     public ResponseDto<?> getQueryPopupStores(String query){
-        String removePopup = query.replace("팝업 스토어", "").trim(); // 문자열 앞뒤 공백 제거
+        String removePopup = query.replace("팝업", "").trim(); // 문자열 앞뒤 공백 제거
         System.out.println("removePopup: " + removePopup);
 
         List<PopupStore> popupStores = popupStoreRepository.findByTitleContaining(removePopup);
 
         if (popupStores.isEmpty()) {
-            return ResponseDto.setSuccessData("팝업 스토어 조회 성공, 결과가 없습니다.", Collections.emptyList());
+            return ResponseDto.setFailedData("팝업 스토어 조회 성공, 결과가 없습니다.", Collections.emptyList());
         }
 
         return ResponseDto.setSuccessData("팝업 스토어 조회 성공", popupStores);
