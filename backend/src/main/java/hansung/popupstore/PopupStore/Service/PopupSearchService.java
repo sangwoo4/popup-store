@@ -108,9 +108,7 @@ public class PopupSearchService {
 
     public ResponseDto<?> processPopUpSearch(String query) throws JsonProcessingException {
         String results = fetchNaverSearchResults(query);
-        System.out.println("results" + results);
         List<String> queryResults = getNewPopupStores(results); // 변경된 부분
-
         List<PopupStoreDto> allConvertedResults = new ArrayList<>();
 
         // 각 결과를 convertCategoryAPI 메서드에 전달하여 처리

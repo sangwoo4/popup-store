@@ -1,0 +1,8 @@
+# 환경 변수 파일 무시
+ai/.env
+
+# Python 바이트코드 파일 무시
+ai/Recommend/__pycache__/
+
+# 가상 환경 디렉터리 무시
+ai/myenv/

@@ -1,0 +1,26 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: star8096
+      MYSQL_DATABASE: popup
+    networks:
+      - docker-network
+    ports:
+      - "3307:3306"
+
+  app:
+    build: .
+    container_name: popupstore-container
+    depends_on:
+      - mysql
+    networks:
+      - docker-network
+    ports:
+      - "8080:8080"
+
+networks:
+  docker-network:
+    driver: bridge
