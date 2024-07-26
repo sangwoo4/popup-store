@@ -5,12 +5,12 @@ services:
     image: mysql:8.0
     container_name: mysql-container
     environment:
-      MYSQL_ROOT_PASSWORD: star8096
+      MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: popup
     networks:
       - docker-network
     ports:
-      - "3306:3306"
+      - "3307:3306"  # 호스트 포트:컨테이너 포트
 
   spring-app:
     build:
@@ -23,9 +23,9 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/popup
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/popup  # 컨테이너 내 포트
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: star8096
+      SPRING_DATASOURCE_PASSWORD: 1234
 
   fastapi-app:
     build:
@@ -38,6 +38,7 @@ services:
       - docker-network
     environment:
       AUTO_CATEGORY_KEY: sk-proj-VXwcPzlcS0gr1vjm62FVT3BlbkFJHgphK3z9HJbEJ0JdTLyw
+
 networks:
   docker-network:
     driver: bridge

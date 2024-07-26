@@ -116,7 +116,7 @@ public class PopUpRegisterService {
                 System.out.println("Category name is null: " + categoryDto);
                 continue;
             }
-            Optional<Category> existingCategory = categoryRepository.findByName(categoryDto.getCategory());
+            Optional<Category> existingCategory = categoryRepository.findByCategory(categoryDto.getCategory());
             if (existingCategory.isPresent()) {
                 savedCategories.add(existingCategory.get());
             } else {
@@ -179,7 +179,7 @@ public class PopUpRegisterService {
         Set<CategoryDto> categoryDtos = new HashSet<>();
         for (Category category : popupStore.getCategories()) {
             categoryDtos.add(CategoryDto.builder()
-                    .category(category.getName())
+                    .category(category.getCategory())
                     .build());
         }
 

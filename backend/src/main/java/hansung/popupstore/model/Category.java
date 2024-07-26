@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Setter
@@ -20,13 +19,17 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", length = 50)
-    private String name;
+    @Column(name = "category", length = 50)
+    private String category;
 
     @ManyToMany(mappedBy = "categories")
     @JsonIgnore
     private Set<PopupStore> popupStores = new HashSet<>();
 
-    public void setName(String text) {
+    public Category() {}
+
+    public Category(String category) {
+        this.category = category;
     }
+
 }
