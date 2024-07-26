@@ -90,7 +90,7 @@ async def chat(requests: List[ChatRequest]):
         )
             # OpenAI Fine-Tuning Model 호출
             response = await client.completions.create(
-                model="ft:davinci-002:personal:category-v2-3-7-4:9ovQpb93",
+                model="ft:davinci-002:personal:category-v2-3-7-4:9ovYgXnM",
                 prompt=detailed_prompt,
                 max_tokens=25,
                 temperature=0.5,
