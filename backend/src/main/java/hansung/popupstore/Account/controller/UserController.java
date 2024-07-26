@@ -1,7 +1,9 @@
 package hansung.popupstore.Account.controller;
 
 import hansung.popupstore.Account.service.UserService;
+import hansung.popupstore.Util.ResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,12 @@ public class UserController {
         String nickname = userService.getNicknameByToken(token);
         // 클라이언트에게 닉네임 반환
         return ResponseEntity.ok(nickname);
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<ResponseDto<?>> getCategories() {
+        ResponseDto<?> result = userService.getAllCategories();
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }

@@ -3,14 +3,17 @@ package hansung.popupstore.Account.service;
 import hansung.popupstore.Account.Dto.*;
 import hansung.popupstore.Account.Repository.RoleRepository;
 import hansung.popupstore.Account.Repository.UserRepository;
+import hansung.popupstore.PopupStore.Repository.CategoryRepository;
 import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.Security.TokenProvider;
+import hansung.popupstore.model.Category;
 import hansung.popupstore.model.Role;
 import hansung.popupstore.model.User;
 import hansung.popupstore.Util.PasswordEncoderUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,7 +23,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
     private final RoleRepository roleRepository;
-
+    private final CategoryRepository categoryRepository;
     public ResponseDto<?> userSignUp(UserSignUpDto dto) {
         String hashedPassword = PasswordEncoderUtil.encode(dto.getPassword());
 
@@ -121,5 +124,10 @@ public class UserService {
             // 사용자가 존재하지 않는 경우
             return null;
         }
+    }
+
+    public ResponseDto<List<Category>> getAllCategories(){
+        List<Category> allCategories = categoryRepository.findAll();
+        return ResponseDto.setSuccessData("카테고리 조회 성공", allCategories);
     }
 }
