@@ -1,4 +1,4 @@
-package hansung.popupstore.PopupStore.Dto;
+package hansung.popupstore.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;

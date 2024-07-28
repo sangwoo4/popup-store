@@ -26,6 +26,10 @@ public class Category {
     @JsonIgnore
     private Set<PopupStore> popupStores = new HashSet<>();
 
+    @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
+    private Set<User> users = new HashSet<>();
+
     public Category() {}
 
     public Category(String category) {

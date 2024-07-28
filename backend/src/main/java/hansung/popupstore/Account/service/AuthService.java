@@ -2,6 +2,8 @@ package hansung.popupstore.Account.service;
 
 import hansung.popupstore.Account.Dto.*;
 import hansung.popupstore.Util.ResponseDto;
+import hansung.popupstore.dto.CompanyDto;
+import hansung.popupstore.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,23 +14,23 @@ public class AuthService {
     private final UserService userService;
     private final CompanyService companyService;
 
-    public ResponseDto<?> userSignUp(UserSignUpDto dto) {
+    public ResponseDto<?> userSignUp(UserDto dto) {
         return userService.userSignUp(dto);
     }
 
-    public ResponseDto<?> companySignUp(CompanySignUpDto dto) {
+    public ResponseDto<?> companySignUp(CompanyDto dto) {
         return companyService.companySignUp(dto);
     }
 
-    public ResponseDto<UserSignUpDto> checkEmail(UserSignUpDto dto) {
+    public ResponseDto<UserDto> checkEmail(UserDto dto) {
         return userService.checkEmail(dto);
     }
 
-    public ResponseDto<UserSignUpDto> checkNick(UserSignUpDto dto) {
+    public ResponseDto<UserDto> checkNick(UserDto dto) {
         return userService.checkNick(dto);
     }
 
-    public ResponseDto<UserSignUpDto> checkPhone(UserSignUpDto dto) {
+    public ResponseDto<UserDto> checkPhone(UserDto dto) {
         return userService.checkPhone(dto);
     }
 
@@ -40,11 +42,11 @@ public class AuthService {
         return companyService.companyLogin(dto);
     }
 
-    public ResponseDto<CompanySignUpDto> checkCompanyEmail(CompanySignUpDto dto){
+    public ResponseDto<CompanyDto> checkCompanyEmail(CompanyDto dto){
         return companyService.checkCompanyEmail(dto);
     }
 
-    public ResponseDto<CompanySignUpDto> checkCompanyId(CompanySignUpDto dto){
+    public ResponseDto<CompanyDto> checkCompanyId(CompanyDto dto){
         return companyService.checkCompanyId(dto);
     }
 }

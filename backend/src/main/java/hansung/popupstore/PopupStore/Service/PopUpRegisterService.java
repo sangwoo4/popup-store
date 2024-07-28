@@ -1,8 +1,8 @@
 package hansung.popupstore.PopupStore.Service;
 
-import hansung.popupstore.PopupStore.Dto.CategoryDto;
-import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
-import hansung.popupstore.PopupStore.Dto.StoreDayDto;
+import hansung.popupstore.dto.CategoryDto;
+import hansung.popupstore.dto.PopupStoreDto;
+import hansung.popupstore.dto.StoreDayDto;
 import hansung.popupstore.PopupStore.Repository.CategoryRepository;
 import hansung.popupstore.PopupStore.Repository.DayRepository;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;

@@ -1,7 +1,7 @@
 package hansung.popupstore.PopupStore.Controller;
 
 import hansung.popupstore.Util.ResponseDto;
-import hansung.popupstore.PopupStore.Dto.PopupStoreDto;
+import hansung.popupstore.dto.PopupStoreDto;
 import hansung.popupstore.PopupStore.Service.PopUpRegisterService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

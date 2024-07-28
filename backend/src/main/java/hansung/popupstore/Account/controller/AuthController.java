@@ -1,10 +1,10 @@
 package hansung.popupstore.Account.controller;
 
 import hansung.popupstore.Account.Dto.CompanyLoginDto;
-import hansung.popupstore.Account.Dto.CompanySignUpDto;
+import hansung.popupstore.dto.CompanyDto;
 import hansung.popupstore.Account.Dto.UserLoginDto;
 import hansung.popupstore.Util.ResponseDto;
-import hansung.popupstore.Account.Dto.UserSignUpDto;
+import hansung.popupstore.dto.UserDto;
 import hansung.popupstore.Account.Repository.RoleRepository;
 import hansung.popupstore.Account.service.AuthService;
 import hansung.popupstore.Account.service.UserService;
@@ -22,13 +22,13 @@ public class AuthController {
     private final UserService userService;
     private final RoleRepository roleRepository;
     @PostMapping("/user/signup")
-    public ResponseDto<?> userSignUp(@RequestBody UserSignUpDto requestBody){
+    public ResponseDto<?> userSignUp(@RequestBody UserDto requestBody){
         ResponseDto<?> result = authService.userSignUp(requestBody);
         return result;
     }
 
     @PostMapping("/company/signup")
-    public ResponseDto<?> companySignUp(@RequestBody CompanySignUpDto requestBody){
+    public ResponseDto<?> companySignUp(@RequestBody CompanyDto requestBody){
         ResponseDto<?> result = authService.companySignUp(requestBody);
         return result;
     }
@@ -46,31 +46,31 @@ public class AuthController {
     }
 
     @PostMapping("user/signup/check-email")
-    public ResponseDto<?> userCheckEmail(@RequestBody UserSignUpDto requestBody){
+    public ResponseDto<?> userCheckEmail(@RequestBody UserDto requestBody){
         ResponseDto<?> result = authService.checkEmail(requestBody);
         return result;
     }
 
     @PostMapping("user/signup/check-nickname")
-    public ResponseDto<?> userCheckNick(@RequestBody UserSignUpDto requestBody){
+    public ResponseDto<?> userCheckNick(@RequestBody UserDto requestBody){
         ResponseDto<?> result = authService.checkNick(requestBody);
         return result;
     }
 
     @PostMapping("user/signup/check-phone")
-    public ResponseDto<?> userCheckPhone(@RequestBody UserSignUpDto requestBody){
+    public ResponseDto<?> userCheckPhone(@RequestBody UserDto requestBody){
         ResponseDto<?> result = authService.checkPhone(requestBody);
         return result;
     }
 
     @PostMapping("company/signup/check-email")
-    public ResponseDto<?> companyCheckEmail(@RequestBody CompanySignUpDto requestBody){
+    public ResponseDto<?> companyCheckEmail(@RequestBody CompanyDto requestBody){
         ResponseDto<?> result = authService.checkCompanyEmail(requestBody);
         return result;
     }
 
     @PostMapping("company/signup/check-companyid")
-    public ResponseDto<?> checkCompanyId(@RequestBody CompanySignUpDto requestBody){
+    public ResponseDto<?> checkCompanyId(@RequestBody CompanyDto requestBody){
         ResponseDto<?> result = authService.checkCompanyId(requestBody);
         return result;
     }

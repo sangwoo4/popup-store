@@ -5,10 +5,10 @@ import hansung.popupstore.Account.Repository.CompanyRepository;
 import hansung.popupstore.Account.Repository.RoleRepository;
 import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.Security.TokenProvider;
+import hansung.popupstore.dto.CompanyDto;
 import hansung.popupstore.model.Company;
 import hansung.popupstore.model.Role;
 import hansung.popupstore.Util.PasswordEncoderUtil;
-import hansung.popupstore.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class CompanyService {
     private final TokenProvider tokenProvider;
     private final RoleRepository roleRepository;
 
-    public ResponseDto<?> companySignUp(CompanySignUpDto dto) {
+    public ResponseDto<?> companySignUp(CompanyDto dto) {
         String hashedPassword = PasswordEncoderUtil.encode(dto.getPassword());
 
         Company company = Company.builder()
@@ -82,7 +82,7 @@ public class CompanyService {
         }
     }
 
-    public ResponseDto<CompanySignUpDto> checkCompanyEmail(CompanySignUpDto dto) {
+    public ResponseDto<CompanyDto> checkCompanyEmail(CompanyDto dto) {
         String email = dto.getEmail();
 
         Optional<Company> companyOptional = companyRepository.findByEmail(email);
@@ -92,7 +92,7 @@ public class CompanyService {
         return ResponseDto.setSuccess("사용 가능한 email 입니다.");
     }
 
-    public ResponseDto<CompanySignUpDto> checkCompanyId(CompanySignUpDto dto) {
+    public ResponseDto<CompanyDto> checkCompanyId(CompanyDto dto) {
         String checkCompanyId = dto.getCompanyId();
 
         Optional<Company> companyOptional = companyRepository.findByCompanyId(checkCompanyId);

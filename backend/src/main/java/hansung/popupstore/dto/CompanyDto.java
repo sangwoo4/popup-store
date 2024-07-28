@@ -1,4 +1,4 @@
-package hansung.popupstore.Account.Dto;
+package hansung.popupstore.dto;
 
 
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanySignUpDto {
+public class CompanyDto {
     private Long id;
     private String companyName;
     private String companyId;

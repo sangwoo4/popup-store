@@ -1,14 +1,18 @@
-package hansung.popupstore.Account.Dto;
+package hansung.popupstore.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class UserSignUpDto {
+@Builder
+public class UserDto {
     private Long userId;
     private String email;
     private String password;
@@ -18,4 +22,6 @@ public class UserSignUpDto {
     private String gender;
     private String phone;
     private String username;
+    private Set<CategoryDto> categories = new HashSet<>();
+
 }
