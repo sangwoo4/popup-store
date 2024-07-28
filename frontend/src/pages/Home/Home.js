@@ -82,7 +82,7 @@ const Home = () => {
                   <p>{location.description}</p>
                   <div className="category-box1">
                     {location.categories && location.categories.map((category, index) => (
-                      <div key={index} className="category-item">{category.name}</div>
+                      <div key={index} className="category-item">{category.category}</div>
                     ))}
                   </div>
                 </div>
@@ -99,7 +99,7 @@ const Home = () => {
           <h2>캐릭터</h2>
           <div className='category-items'>
             {locations.filter(location =>
-              location.categories && location.categories.some(locCategory => locCategory.name === "캐릭터")
+              location.categories && location.categories.some(locCategory => locCategory.category === "패션")
             ).map(location => (
               <div key={location.id} className='popup-item'>
                 <Link to={`/popup.details/${location.id}`} className='popup-link'>
@@ -109,7 +109,7 @@ const Home = () => {
                     <p>{location.description}</p>
                     <div className="category-box1">
                       {location.categories && location.categories.map((locCategory, index) => (
-                        <div key={index} className="category-item">{locCategory.name}</div>
+                        <div key={index} className="category-item">{locCategory.category}</div>
                       ))}
                     </div>
                   </div>
