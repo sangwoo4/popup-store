@@ -13,7 +13,6 @@ const Home = () => {
   const [error, setError] = useState(null);
   const [categories, setCategories] = useState([]);
 
-  // --------------------------백엔드 GET 통신--------------------------------------
   useEffect(() => {
     const fetchLocations = async () => {
       try {
@@ -28,12 +27,18 @@ const Home = () => {
         }
         const data = await response.json();
 
+        console.log(data); // 데이터 구조 확인용
+
         if (data.categories && Array.isArray(data.categories)) {
           setCategories(data.categories);
         }
 
-        console.log(data);
-        setLocations(data); 
+        if (Array.isArray(data.data)) {
+          setLocations(data.data);
+        } else {
+          console.error("Received data does not contain an array of locations:", data);
+          setLocations([]); // Fallback to an empty array if no locations found
+        }
         setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -52,7 +57,6 @@ const Home = () => {
   if (error) {
     return <p>Error: {error.message}</p>;
   }
-  // --------------------------백엔드 GET 통신--------------------------------------
 
   const settings = {
     dots: true,
@@ -64,14 +68,12 @@ const Home = () => {
     prevArrow: <SamplePrevArrow />
   };
 
-  const recommendedLocations = locations.slice(0);
-
   return (
     <div>
       <div className='recommended-popup-wrapper'>
         <h2>추천 팝업</h2>
         <Slider {...settings}>
-          {recommendedLocations.map(location => (
+          {locations.map(location => (
             <div key={location.id} className='popup-item'>
               <Link to={`/popup.details/${location.id}`} className='popup-link'>
                 <img src={location.image || "/images/image1.png"} alt={location.title} className='popup-image'/>
@@ -126,7 +128,7 @@ function SampleNextArrow(props) {
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", right: '-5px' }} // 여기서 인라인 스타일로 right 조정
+      style={{ ...style, display: "block", right: '-5px' }}
       onClick={onClick}
     />
   );
@@ -137,7 +139,7 @@ function SamplePrevArrow(props) {
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", left: '-20px' }} // 여기서 인라인 스타일로 left 조정
+      style={{ ...style, display: "block", left: '-20px' }}
       onClick={onClick}
     />
   );
@@ -153,121 +155,9 @@ export default Home;
 
 
 
-// -----------------------------------------------------------------------
-// // GET 방식 사용 전 링크 예제
-// import React from 'react';
-// import { Link } from "react-router-dom";
-// import Slider from "react-slick";
-// import './Home.css';
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
-
-// const Home = () => {
-//   const settings = {
-//     dots: true,
-//     infinite: true,
-//     speed: 500,
-//     slidesToShow: 3,
-//     slidesToScroll: 1,
-//     nextArrow: <SampleNextArrow />,
-//     prevArrow: <SamplePrevArrow />
-//   };
-
-//   return (
-//     <div>
-//       <h1>메인 홈 화면</h1>
-
-//       <div className='recommended-popup-wrapper'>
-//         <h2>추천 팝업</h2>
-//         <Slider {...settings}>
-//           <div className='popup-item'>
-//             <Link to="/popup.details/shinchan" className='popup-link'>
-//               <img src="/images/image1.png" alt="짱구 팝업 이미지" className='popup-image'/>
-//               <div className='popup-details'>
-//                 <h2>짱구는 여행중!</h2>
-//                 <p>기간: 2024-07-01 ~ 2024-07-10</p>
-//                 <p>장소: 서울 잠실 롯데월드몰</p>
-//                 <div className="category-box">캐릭터</div>
-//               </div>
-//             </Link>
-//           </div>
-//           <div className='popup-item'>
-//             <Link to="/popup.details/shinchan" className='popup-link'>
-//               <img src="/images/image1.png" alt="짱구 팝업 이미지" className='popup-image'/>
-//               <div className='popup-details'>
-//                 <h2>짱구는 여행중!</h2>
-//                 <p>기간: 2024-07-01 ~ 2024-07-10</p>
-//                 <p>장소: 서울 잠실 롯데월드몰</p>
-//                 <div className="category-box">캐릭터</div>
-//               </div>
-//             </Link>
-//           </div>
-//           <div className='popup-item'>
-//             <Link to="/popup.details/shinchan" className='popup-link'>
-//               <img src="/images/image1.png" alt="짱구 팝업 이미지" className='popup-image'/>
-//               <div className='popup-details'>
-//                 <h2>짱구는 여행중!</h2>
-//                 <p>기간: 2024-07-01 ~ 2024-07-10</p>
-//                 <p>장소: 서울 잠실 롯데월드몰</p>
-//                 <div className="category-box">캐릭터</div>
-//               </div>
-//             </Link>
-//           </div>
-//           <div className='popup-item'>
-//             <Link to="/popup.details/cityhall" className='popup-link'>
-//               <img src="/images/image2.png" alt="서울시청 팝업 이미지" className='popup-image'/>
-//               <div className='popup-details'>
-//                 <h2>서울시청</h2>
-//                 <p>기간: 2024-07-11 ~ 2024-07-20</p>
-//                 <div className="category-box">문화</div>
-//               </div>
-//             </Link>
-//           </div>
-//           <div className='popup-item'>
-//             <Link to="localhost:8080/search/popup/all" className='popup-link'>
-//               <img src="/images/image3.png" alt="팝업 조회 이미지" className='popup-image'/>
-//               <div className='popup-details'>
-//                 <h2>팝업 조회</h2>
-//                 <p>기간: 2024-07-21 ~ 2024-07-30</p>
-//                 <div className="category-box">이벤트</div>
-//               </div>
-//             </Link>
-//           </div>
-//           {/* Add more popup items here */}
-//         </Slider>
-//       </div>
-//     </div>
-//   );
-// };
-
-// function SampleNextArrow(props) {
-//   const { className, style, onClick } = props;
-//   return (
-//     <div
-//       className={className}
-//       style={{ ...style, display: "block", background: "black" }}
-//       onClick={onClick}
-//     />
-//   );
-// }
-
-// function SamplePrevArrow(props) {
-//   const { className, style, onClick } = props;
-//   return (
-//     <div
-//       className={className}
-//       style={{ ...style, display: "block", background: "black" }}
-//       onClick={onClick}
-//     />
-//   );
-// }
-
-// export default Home;
 
 
-
-
-// // 2024.07.11 백엔드 api 통신 가능 - 카테고리있으면 가져오기 가능
+// //24.07.15 카테고리별 팝업 따로 뜨게 설정
 
 // import React, { useEffect, useState } from 'react';
 // import { Link } from "react-router-dom";
@@ -282,30 +172,33 @@ export default Home;
 //   const [error, setError] = useState(null);
 //   const [categories, setCategories] = useState([]);
 
-//   // --------------------------백엔드 GET 통신 240713--------------------------------------
 //   useEffect(() => {
 //     const fetchLocations = async () => {
 //       try {
-//         const response = await fetch('http://localhost:8080/search/popup/all', { // 백엔드 api 주소
-//           method: "GET", // GET 방식을 사용
+//         const response = await fetch('http://localhost:8080/search/popup/all', {
+//           method: "GET",
 //           headers: {
-//             'Content-Type': 'application/json', //서버가 JSON 형식의 데이터를 처리하는 것을 기대함
+//             'Content-Type': 'application/json',
 //           },
 //         });
-//         if (!response.ok) { //서버 응답 여부 확인: 서버에 오류가 있으면 오류 원인을 띄워줌
+//         if (!response.ok) {
 //           throw new Error(`Network response was not ok: ${response.statusText}`);
 //         }
-//         const data = await response.json(); // 서버에서 받은 응답을 JSON형식으로 변환
+//         const data = await response.json();
 
-//         // 서버에서 categories 배열이 있는지 확인하고 있다면 배열을 가져와서 상태에 설정
 //         if (data.categories && Array.isArray(data.categories)) {
 //           setCategories(data.categories);
 //         }
 
-//         console.log(data); // 데이터를 콘솔에 로그하여 확인
-//         setLocations(data); //서버에서 받은 데이터로 업데이트
+//         console.log(data);
+//         if (Array.isArray(data)) {
+//           setLocations(data);
+//         } else {
+//           console.error("Received data is not an array:", data);
+//           setLocations([]); // Empty array as fallback
+//         }
 //         setLoading(false);
-//       } catch (error) { //에러 발생시 원인 띄움
+//       } catch (error) {
 //         console.error('Error fetching data:', error);
 //         setError(error);
 //         setLoading(false);
@@ -322,8 +215,6 @@ export default Home;
 //   if (error) {
 //     return <p>Error: {error.message}</p>;
 //   }
-//   // --------------------------백엔드 GET 통신--------------------------------------
-
 
 //   const settings = {
 //     dots: true,
@@ -335,22 +226,22 @@ export default Home;
 //     prevArrow: <SamplePrevArrow />
 //   };
 
+//   const recommendedLocations = Array.isArray(locations) ? locations.slice(0) : [];
+
 //   return (
 //     <div>
 //       <div className='recommended-popup-wrapper'>
 //         <h2>추천 팝업</h2>
 //         <Slider {...settings}>
-//           {locations.map(location => ( // 37번째 줄에서 위치를 백엔드 data로 업데이트 시킨다는 것을 명시
-//             //ex) location.aaa -> aaa는 백엔드 key value
-//             <div key={location.id} className='popup-item'> {/* 백엔드 id값을 활용*/}
-//               <Link to={`/popup.details/${location.id}`} className='popup-link'> {/* 백엔드 id값으로 각 상세정보 링크 실행 이동*/}
-//                 <img src={location.image || "/images/image1.png"} alt={location.title} className='popup-image'/> {/* 백엔드 image을 활용, 사진이 없으면 리액트 내장된 사진 이용*/}
+//           {recommendedLocations.map(location => (
+//             <div key={location.id} className='popup-item'>
+//               <Link to={`/popup.details/${location.id}`} className='popup-link'>
+//                 <img src={location.image || "/images/image1.png"} alt={location.title} className='popup-image'/>
 //                 <div className='popup-details'>
-//                   <h3>{location.title}</h3> {/* 백엔드 title 가져옴*/}
-//                   <p>{location.description}</p> {/* 백엔드 description 가져옴*/}
+//                   <h3>{location.title}</h3>
+//                   <p>{location.description}</p>
 //                   <div className="category-box1">
-//                     {/* 각각의 카테고리를 별도의 상자에 나타내기 */}
-//                     {location.categories && location.categories.map((category, index) => (  //백엔드 categories 가져옴
+//                     {location.categories && location.categories.map((category, index) => (
 //                       <div key={index} className="category-item">{category.name}</div>
 //                     ))}
 //                   </div>
@@ -360,7 +251,34 @@ export default Home;
 //           ))}
 //         </Slider>
 //       </div>
-//       <h1>카테고리 검색</h1>
+
+//       <br/><br/><br/><br/><br/>
+//       <h1>카테고리별</h1>
+//       <div className='category-search-wrapper'>
+//         <div className='category-section'>
+//           <h2>캐릭터</h2>
+//           <div className='category-items'>
+//             {locations.filter(location =>
+//               location.categories && location.categories.some(locCategory => locCategory.name === "캐릭터")
+//             ).map(location => (
+//               <div key={location.id} className='popup-item'>
+//                 <Link to={`/popup.details/${location.id}`} className='popup-link'>
+//                   <img src={location.image || "/images/image1.png"} alt={location.title} className='popup-image'/>
+//                   <div className='popup-details'>
+//                     <h3>{location.title}</h3>
+//                     <p>{location.description}</p>
+//                     <div className="category-box1">
+//                       {location.categories && location.categories.map((locCategory, index) => (
+//                         <div key={index} className="category-item">{locCategory.name}</div>
+//                       ))}
+//                     </div>
+//                   </div>
+//                 </Link>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+//       </div>
 //     </div>
 //   );
 // };
@@ -370,7 +288,7 @@ export default Home;
 //   return (
 //     <div
 //       className={className}
-//       style={{ ...style, display: "block", background: "black" }}
+//       style={{ ...style, display: "block", right: '-5px' }}
 //       onClick={onClick}
 //     />
 //   );
@@ -381,7 +299,7 @@ export default Home;
 //   return (
 //     <div
 //       className={className}
-//       style={{ ...style, display: "block", background: "black" }}
+//       style={{ ...style, display: "block", left: '-20px' }}
 //       onClick={onClick}
 //     />
 //   );
