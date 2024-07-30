@@ -1,0 +1,223 @@
+/*
+ ----- 07.11 css수정사항 예정 -----
+    1. 추천 팝업 회색 창(recommended-popup-wrapper) height 줄이기 500 -> 3~400
+    2. 팝업 상세 창(popup-item)도 함께 줄여서 너비와 크기 맞출 것
+    3. 각 디스플레이 별 고정 방식이 있는지 알아보기
+    4. 카드 왼쪽과 오른쪽 간격 맞추기
+*/
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 20px;
+  color: #333;
+}
+
+.recommended-popup-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 30px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  height: 400px; /*수정사항 1번*/
+  display: flex;
+  flex-direction: column;
+}
+
+.recommended-popup-wrapper h2 {
+  text-align: center;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.popup-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap: 20px; 
+  overflow-x: auto;
+  padding: 20px;
+}
+
+.popup-item {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 350px;
+  min-width: 350px;
+  max-width: 350px; 
+  height: 300px; /*수정사항 2번*/
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+  background-color: #fff;
+  display: inline-block; 
+  vertical-align: top; 
+  margin-left: 7%;
+}
+
+.popup-item:hover {
+  transform: scale(1.05);
+}
+
+.popup-image {
+  width: 100%;
+  height: 150px; /*이미지 줄이기 수정사항*/
+  object-fit: cover;
+}
+
+.popup-details {
+  padding: 12px; /*상세 카드 타이틀 수정 필요? 글자수에 맞게 크기 맞추기*/
+}
+
+.popup-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.popup-link h2 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #007BFF;
+}
+
+.popup-link p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.category-box1 {
+margin-top: 10px;
+}
+
+.category-item {
+display: inline-block;
+padding: 5px 10px;
+border: 1px solid #007BFF;
+border-radius: 5px;
+color: #007BFF;
+margin-right: 5px; /* 각 카테고리 사이의 간격 조정 */
+font-size: 0.9em;
+font-weight: bold;
+}
+
+.slick-prev:before, .slick-next:before {
+  color: #002fff !important; /* 색상 수정 */
+  font-size: 40px !important;
+  line-height: 1;
+}
+
+.slick-prev {
+  left: -30px !important;
+  z-index: 1;
+}
+
+.slick-next {
+  right: -10px !important;
+  z-index: 1;
+}
+
+.slick-prev:before, .slick-next:before {
+  content: '\2039';
+  font-family: 'slick';
+  opacity: .75;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.slick-next:before {
+  content: '\203A';
+  margin-left: -2px;
+}
+
+.slick-prev:before, .slick-next:before {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (max-width: 768px) {
+  .popup-item {
+      margin-right: 20px;
+  }
+}
+
+
+/* 카테고리 검색 섹션 */
+.category-search-wrapper {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.category-section {
+  margin-bottom: 40px;
+}
+
+.category-section h2 {
+  margin-bottom: 20px;
+  color: #333;
+  border-bottom: 2px solid #007BFF;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.category-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.category-item {
+  border: 1px solid #007BFF;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #fff;
+  transition: transform 0.2s;
+  flex: 1 1 calc(33.333% - 40px);
+  max-width: calc(33.333% - 40px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.category-item:hover {
+  transform: scale(1.05);
+}
+
+.category-item img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-bottom: 1px solid #007BFF;
+  margin-bottom: 10px;
+}
+
+.category-item h3 {
+  margin: 0;
+  font-size: 1.2em;
+  color: #007BFF;
+}
+
+.category-item p {
+  color: #555;
+}
+
+@media (max-width: 768px) {
+  .category-item {
+      flex: 1 1 calc(50% - 20px);
+      max-width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 480px) {
+  .category-item {
+      flex: 1 1 100%;
+      max-width: 100%;
+  }
+}

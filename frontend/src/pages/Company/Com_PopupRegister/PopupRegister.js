@@ -40,36 +40,53 @@ const PopupRegistration = () => {
   const [showPostcodeModal, setShowPostcodeModal] = useState(false);
   const navigate = useNavigate();
 
+  // 주소 찾기 완료 핸들러
   const handlePostcodeComplete = (data) => {
     const fullAddress = `${data.address} ${data.bname ? ` (${data.bname})` : ''} ${data.buildingName ? ` ${data.buildingName}` : ''}`;
     setAddress(fullAddress);
     setRoadAddress(data.roadAddress);
-    fetchCoordinates(data.roadAddress);
+    fetchCoordinates(data.roadAddress); // 주소를 좌표로 변환
     setShowPostcodeModal(false);
   };
 
+  // 네이버 주소 API를 사용하여 주소를 좌표로 변환
   const fetchCoordinates = (address) => {
-    console.log('Fetching coordinates for address:', address);
-    
-    if (window.kakao && window.kakao.maps) {
-      const geocoder = new window.kakao.maps.services.Geocoder();
-      geocoder.addressSearch(address, (result, status) => {
-        if (status === window.kakao.maps.services.Status.OK) {
-          const { y, x } = result[0];
-          console.log(`좌표 변환 성공: x = ${x}, y = ${y}`);
-          setCoordinates({ mapx: x, mapy: y });
+    if (window.naver && window.naver.maps && window.naver.maps.Service) {
+      const geocoder = window.naver.maps.Service;
+  
+      geocoder.geocode({ address: address }, (status, response) => {
+        console.log('Geocode response:', response); // 응답 객체 전체 출력
+        if (status === window.naver.maps.Service.Status.OK) {
+          if (response.result && response.result.items && response.result.items.length > 0) {
+            const item = response.result.items[0];
+            if (item.point) {
+              const x = item.point.x;
+              const y = item.point.y;
+              // 소수점 제거
+              const formattedX = x.toString().replace('.', '');
+              const formattedY = y.toString().replace('.', '');
+              console.log(`좌표 변환 성공: x = ${formattedX}, y = ${formattedY}`);
+              setCoordinates({ mapx: formattedX, mapy: formattedY });
+            } else {
+              console.error('응답에서 좌표 포인트를 찾을 수 없습니다.');
+              setCoordinates({ mapx: '', mapy: '' });
+            }
+          } else {
+            console.error('응답에서 항목을 찾을 수 없습니다.');
+            setCoordinates({ mapx: '', mapy: '' });
+          }
         } else {
           console.error('주소로부터 좌표를 가져오는데 실패했습니다.', status);
           setCoordinates({ mapx: '', mapy: '' });
         }
       });
     } else {
-      console.error('카카오 지도 API를 로드하지 못했습니다.');
+      console.error('네이버 지도 API를 로드하지 못했습니다.');
     }
   };
   
-  
 
+  // 카테고리 제안 받기
   const fetchCategorySuggestions = async (title, description) => {
     try {
       console.log('Fetching category suggestions for:', title, description);
@@ -78,15 +95,19 @@ const PopupRegistration = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, description }),
       });
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
+  
       const data = await response.json();
       console.log('Received categories:', data);
-      if (Array.isArray(data) && data.length > 0 && Array.isArray(data[0].categories)) {
-        setCategory(data[0].categories);
+  
+      // Ensure we are receiving an array and each item has a categories array
+      if (Array.isArray(data)) {
+        const allCategories = data.flatMap(item => item.categories || []);
+        console.log('Flattened categories:', allCategories);
+        setCategory(allCategories);
       } else {
         console.error('Received categories data is not in the expected format:', data);
         setCategory([]);
@@ -96,10 +117,11 @@ const PopupRegistration = () => {
       setCategory([]);
     }
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     const storeDays = Object.keys(operatingDays)
       .filter(day => operatingDays[day].isSelected)
       .map(day => ({
@@ -107,7 +129,7 @@ const PopupRegistration = () => {
         openTime: operatingDays[day].startTime,
         closeTime: operatingDays[day].endTime
       }));
-
+  
     const data = {
       title,
       address,
@@ -117,16 +139,15 @@ const PopupRegistration = () => {
       telephone: phoneNumber,
       subway,
       description,
-      company,
-      mapx: coordinates.mapx,
-      mapy: coordinates.mapy,
-      categories: category.map(cat => ({ id: cat.id, category: cat.category })),
+      link: 'http://example.com', // 링크 값 추가
+      mapx: coordinates.mapx, // 소수점 제거된 문자열
+      mapy: coordinates.mapy, // 소수점 제거된 문자열
+      categories: category.map(cat => ({ category: cat.category })), // id 속성을 제거
       storeDays
     };
-
-    // 데이터 전송 전 확인
+  
     console.log('Data to be sent:', JSON.stringify(data, null, 2));
-
+  
     fetch('http://localhost:8080/popup/register', {
       method: 'POST',
       headers: {
@@ -135,19 +156,24 @@ const PopupRegistration = () => {
       body: JSON.stringify(data)
     })
     .then(response => {
-      console.log('Response status:', response.status);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       return response.json();
     })
     .then(data => {
       console.log('Success:', data);
-      alert('등록되었습니다!'); // 등록 성공 알림
-      navigate('/'); // 홈 화면으로 이동
+      alert('등록되었습니다!');
+      navigate('/');
     })
     .catch((error) => {
       console.error('Error:', error);
-      alert('등록에 실패했습니다. 다시 시도해주세요.'); // 등록 실패 알림
+      alert('등록에 실패했습니다. 다시 시도해주세요.');
     });
   };
+  
+  
+  
 
   const handleOperatingStartDateChange = (date) => {
     setOperatingStartDate(date);
@@ -415,7 +441,9 @@ export default PopupRegistration;
 
 
 
-// //24.07.28 
+
+
+// //24.07.29 좌표변환 수정 전
 // import React, { useState, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
 // import DatePicker from 'react-datepicker';
@@ -432,7 +460,6 @@ export default PopupRegistration;
 //   const [address, setAddress] = useState('');
 //   const [roadAddress, setRoadAddress] = useState('');
 //   const [subway, setSubway] = useState('');
-//   const [image, setImage] = useState(null);
 //   const [category, setCategory] = useState([]);
 //   const [description, setDescription] = useState('');
 //   const [operatingDays, setOperatingDays] = useState({
@@ -445,6 +472,7 @@ export default PopupRegistration;
 //     일요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
 //   });
 
+//   const [coordinates, setCoordinates] = useState({ mapx: '', mapy: '' });
 //   const [showPostcodeModal, setShowPostcodeModal] = useState(false);
 //   const navigate = useNavigate();
 
@@ -452,37 +480,63 @@ export default PopupRegistration;
 //     const fullAddress = `${data.address} ${data.bname ? ` (${data.bname})` : ''} ${data.buildingName ? ` ${data.buildingName}` : ''}`;
 //     setAddress(fullAddress);
 //     setRoadAddress(data.roadAddress);
+//     fetchCoordinates(data.roadAddress);
 //     setShowPostcodeModal(false);
 //   };
 
-//   // 카테고리 api 전달 함수------------------------------------------------
+//   const fetchCoordinates = (address) => {
+//     console.log('입력한 주소: ', address);
+    
+//     if (window.kakao && window.kakao.maps) {
+//       const geocoder = new window.kakao.maps.services.Geocoder();
+//       geocoder.addressSearch(address, (result, status) => {
+//         if (status === window.kakao.maps.services.Status.OK) {
+//           const { y, x } = result[0];
+//           console.log(`좌표 변환 성공: x = ${x}, y = ${y}`);
+//           setCoordinates({ mapx: x, mapy: y });
+//         } else {
+//           console.error('주소로부터 좌표를 가져오는데 실패했습니다.', status);
+//           setCoordinates({ mapx: '', mapy: '' });
+//         }
+//       });
+//     } else {
+//       console.error('카카오 지도 API를 로드하지 못했습니다.');
+//     }
+//   };
+  
+  
+
 //   const fetchCategorySuggestions = async (title, description) => {
-//     console.log('Fetching category suggestions with:', { title, description }); // API 호출 로그
 //     try {
+//       console.log('Fetching category suggestions for:', title, description);
 //       const response = await fetch('http://localhost:8080/popup/ai/category', {
 //         method: 'POST',
 //         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify({ title, description }), // title과 description을 JSON형태로 전달
+//         body: JSON.stringify({ title, description }),
 //       });
-
+  
 //       if (!response.ok) {
 //         throw new Error(`HTTP error! status: ${response.status}`);
 //       }
-
+  
 //       const data = await response.json();
-//       console.log('API Response:', data); // API 응답 로그
-
-//       if (Array.isArray(data) && data.length > 0 && Array.isArray(data[0].categories)) {
-//         setCategory(data[0].categories); // 카테고리 배열 설정
+//       console.log('Received categories:', data);
+  
+//       // Ensure we are receiving an array and each item has a categories array
+//       if (Array.isArray(data)) {
+//         const allCategories = data.flatMap(item => item.categories || []);
+//         console.log('Flattened categories:', allCategories);
+//         setCategory(allCategories);
 //       } else {
 //         console.error('Received categories data is not in the expected format:', data);
-//         setCategory([]); // 비어있는 배열로 초기화
+//         setCategory([]);
 //       }
 //     } catch (error) {
 //       console.error('Error fetching category suggestions:', error);
-//       setCategory([]); // 에러 발생 시 빈 배열로 설정
+//       setCategory([]);
 //     }
 //   };
+  
 
 //   const handleSubmit = (e) => {
 //     e.preventDefault();
@@ -495,34 +549,45 @@ export default PopupRegistration;
 //         closeTime: operatingDays[day].endTime
 //       }));
 
-//     const formData = new FormData();
-//     formData.append('title', title);
-//     formData.append('company', company);
-//     formData.append('startDate', operatingStartDate ? operatingStartDate.toISOString().split('T')[0] : '');
-//     formData.append('endDate', operatingEndDate ? operatingEndDate.toISOString().split('T')[0] : '');
-//     formData.append('telephone', phoneNumber);
-//     formData.append('address', address);
-//     formData.append('roadAddress', roadAddress);
-//     formData.append('subway', subway);
-//     formData.append('description', description);
-//     formData.append('category', JSON.stringify(category));
-//     formData.append('storeDays', JSON.stringify(storeDays));
-//     if (image) {
-//       formData.append('image', image);
-//     }
+//     const data = {
+//       title,
+//       address,
+//       roadAddress,
+//       startDate: operatingStartDate ? operatingStartDate.toISOString().split('T')[0] : '',
+//       endDate: operatingEndDate ? operatingEndDate.toISOString().split('T')[0] : '',
+//       telephone: phoneNumber,
+//       subway,
+//       description,
+//       company,
+//       mapx: coordinates.mapx,
+//       mapy: coordinates.mapy,
+//       categories: category.map(cat => ({ id: cat.id, category: cat.category })),
+//       storeDays
+//     };
+
+//     // 데이터 전송 전 확인
+//     console.log('Data to be sent:', JSON.stringify(data, null, 2));
 
 //     fetch('http://localhost:8080/popup/register', {
 //       method: 'POST',
-//       body: formData
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify(data)
 //     })
-//       .then(response => response.json())
-//       .then(data => {
-//         console.log('Success:', data);
-//         navigate('/');
-//       })
-//       .catch((error) => {
-//         console.error('Error:', error);
-//       });
+//     .then(response => {
+//       console.log('Response status:', response.status);
+//       return response.json();
+//     })
+//     .then(data => {
+//       console.log('Success:', data);
+//       alert('등록되었습니다!'); // 등록 성공 알림
+//       navigate('/'); // 홈 화면으로 이동
+//     })
+//     .catch((error) => {
+//       console.error('Error:', error);
+//       alert('등록에 실패했습니다. 다시 시도해주세요.'); // 등록 실패 알림
+//     });
 //   };
 
 //   const handleOperatingStartDateChange = (date) => {
@@ -557,24 +622,20 @@ export default PopupRegistration;
 //     }));
 //   };
 
-//   // title 필드 값이 변경될 때마다 호출
 //   const handleTitleChange = (e) => {
 //     const newTitle = e.target.value;
 //     setTitle(newTitle);
   
-//     // title 입력 시, 스페이스 바 입력 받으면 API 호출
 //     if (e.inputType === 'insertText' && e.data === ' ') {
 //       console.log('Triggering API Call for Title');
 //       fetchCategorySuggestions(newTitle, description);
 //     }
 //   };
 
-//   // description 필드 값이 변경될 때마다 호출
 //   const handleDescriptionChange = (e) => {
 //     const newDescription = e.target.value;
 //     setDescription(newDescription);
   
-//     // description 입력 시, .(온점) 또는 엔터키 입력 받으면 API 호출
 //     if (e.inputType === 'insertText' && (e.data === '.' || e.data === '\n')) {
 //       console.log('Triggering API Call for Description');
 //       fetchCategorySuggestions(title, newDescription);
@@ -586,11 +647,10 @@ export default PopupRegistration;
 
 //   const handleKeyDown = (e) => {
 //     if (e.key === '.' || e.key === 'Enter') {
-//       e.preventDefault(); // Enter 키의 기본 동작 방지그
-//       console.log('Title:', title); // 현재 제목 로그
-//       console.log('Description:', description); // 현재 설명 로그
+//       e.preventDefault();
+//       console.log('Title:', title);
+//       console.log('Description:', description);
 
-//       // API 호출
 //       fetchCategorySuggestions(title, description);
 //     }
 //   };
@@ -632,7 +692,7 @@ export default PopupRegistration;
 //         </label>
 
 //         <label>
-//           회사명:
+//           주최사:
 //           <input
 //             type="text"
 //             value={company}
@@ -642,9 +702,9 @@ export default PopupRegistration;
 //         </label>
 
 //         <label>
-//           운영기간:
-//           <div className="date-picker-container">
-//             <DatePicker
+//            운영기간:
+//            <div className="date-picker-container">
+//              <DatePicker
 //                selected={operatingStartDate}
 //                onChange={handleOperatingStartDateChange}
 //                selectsStart
@@ -708,14 +768,6 @@ export default PopupRegistration;
 //             type="text"
 //             value={subway}
 //             onChange={(e) => setSubway(e.target.value)}
-//           />
-//         </label>
-
-//         <label>
-//           이미지:
-//           <input
-//             type="file"
-//             onChange={(e) => setImage(e.target.files[0])}
 //           />
 //         </label>
 

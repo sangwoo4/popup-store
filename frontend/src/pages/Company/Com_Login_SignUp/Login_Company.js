@@ -56,7 +56,7 @@ export default function Login_Company() {
       if (res.data.token) {
         alert("로그인 되었습니다.");
         window.localStorage.setItem('token', res.data.token);
-        window.location.href = '/';  // 로그인 성공 시 '/' 경로로 이동
+        window.location.href = '/auth/company/homepage';  // 로그인 성공 시 기업 전용 홈페이지로 이동
       } else {
         alert("이메일 또는 비밀번호가 일치하지 않습니다.");
       }
