@@ -16,6 +16,6 @@ public class CompanyDto {
     private String password;
     private String address;
     private String managerName;
-    private String postCode;
+    private String postCode; // 이 필드가 설정되어야 합니다.
     private String detailAddress;
 }

@@ -1,5 +1,6 @@
 package hansung.popupstore.PopupStore.Controller;
 
+import hansung.popupstore.Security.TokenProvider;
 import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.dto.PopupStoreDto;
 import hansung.popupstore.PopupStore.Service.PopUpRegisterService;
@@ -14,12 +15,32 @@ import org.springframework.web.bind.annotation.*;
 public class PopUpRegisterController {
 
     private final PopUpRegisterService popUpRegisterService;
-
+    private final TokenProvider tokenProvider;
     // 팝업 스토어 등록
     @PostMapping("/register")
-    public ResponseEntity<ResponseDto<?>> submit(@RequestBody PopupStoreDto registerDto) {
+    public ResponseEntity<ResponseDto<?>> submit(@RequestHeader("Authorization") String token,
+                                                 @RequestBody PopupStoreDto registerDto) {
+        System.out.println("token: " + token);
+
+        // Authorization 헤더에서 Bearer를 제거하고 토큰만 추출
+        String jwtToken = token.replace("Bearer ", "");
+
+        Long companyId = extractCompanyIdFromToken(jwtToken);
+        System.out.println("Extracted companyId: " + companyId);
+
+        registerDto.setCompanyId(companyId);
         ResponseDto<?> result = popUpRegisterService.createPopUp(registerDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    // Token에서 companyId를 추출하는 메서드
+    private Long extractCompanyIdFromToken(String token) {
+        String companyIdStr = tokenProvider.validateJwt(token);
+        System.out.println("companyIdStr: " + companyIdStr);
+        if (companyIdStr == null) {
+            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
+        }
+        return Long.parseLong(companyIdStr);
     }
 
     @GetMapping("/register")

@@ -1,5 +1,6 @@
 package hansung.popupstore.dto;
 
+import hansung.popupstore.model.Company;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class PopupStoreDto {
     private String link;
     private String mapx;
     private String mapy;
+    private Long companyId;
     private Set<CategoryDto> categories = new HashSet<>();
     private Set<StoreDayDto> storeDays = new HashSet<>();
 

@@ -1,5 +1,6 @@
 package hansung.popupstore.PopupStore.Service;
 
+import hansung.popupstore.Account.Repository.CompanyRepository;
 import hansung.popupstore.dto.CategoryDto;
 import hansung.popupstore.dto.PopupStoreDto;
 import hansung.popupstore.dto.StoreDayDto;
@@ -8,11 +9,7 @@ import hansung.popupstore.PopupStore.Repository.DayRepository;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.PopupStore.Repository.StoreDayRepository;
 import hansung.popupstore.Util.ResponseDto;
-import hansung.popupstore.model.Category;
-import hansung.popupstore.model.Day;
-import hansung.popupstore.model.PopupStore;
-import hansung.popupstore.model.StoreDay;
-import hansung.popupstore.model.StoreDayId;
+import hansung.popupstore.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +25,7 @@ public class PopUpRegisterService {
     private final CategoryRepository categoryRepository;
     private final DayRepository dayRepository;
     private final StoreDayRepository storeDayRepository;
+    private final CompanyRepository companyRepository;
 
     @Transactional
     public ResponseDto<?> createPopUp(PopupStoreDto dto) {
@@ -94,6 +92,8 @@ public class PopUpRegisterService {
     }
 
     private PopupStore buildPopupStoreEntity(PopupStoreDto dto) {
+        Company company = companyRepository.findById(dto.getCompanyId())
+                .orElseThrow(() -> new RuntimeException("회사를 찾을 수 없습니다. ID: " + dto.getCompanyId()));
         return PopupStore.builder()
                 .title(dto.getTitle())
                 .address(dto.getAddress())
@@ -106,8 +106,10 @@ public class PopUpRegisterService {
                 .link(dto.getLink())
                 .mapx(dto.getMapx())
                 .mapy(dto.getMapy())
+                .company(company) // 회사 정보 설정
                 .build();
     }
+
 
     private void saveOrUpdateCategories(Set<CategoryDto> categoryDtos, PopupStore popupStore) {
         Set<Category> savedCategories = new HashSet<>();

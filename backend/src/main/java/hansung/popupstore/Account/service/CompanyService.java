@@ -10,6 +10,7 @@ import hansung.popupstore.model.PopupStore;
 import hansung.popupstore.model.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,9 +26,9 @@ public class CompanyService {
     private final RoleService roleService;
     private final PasswordService passwordService;
 
+    @Transactional
     public ResponseDto<?> companySignUp(CompanyDto dto) {
         String hashedPassword = passwordService.encodePassword(dto.getPassword());
-
         Company company = Company.builder()
                 .password(hashedPassword)
                 .companyName(dto.getCompanyName())
@@ -36,19 +37,19 @@ public class CompanyService {
                 .address(dto.getAddress())
                 .email(dto.getEmail())
                 .detailAddress(dto.getDetailAddress())
-                .postCode(dto.getPostCode())
+                .postCode(dto.getPostCode()) // Ensure this value is set
                 .build();
 
         try {
-            companyRepository.save(company);
-
+            companyRepository.save(company); // Save company to the database
             Role companyRole = roleService.getRoleByRoleName("ROLE_COMPANY");
             company.getRoles().add(companyRole);
-            companyRepository.save(company);
+            companyRepository.save(company); // Save updated company with roles
 
             return ResponseDto.setSuccess("회원 생성 성공.");
         } catch (Exception e) {
-            return ResponseDto.setFailed("회원 생성 실패.");
+            e.printStackTrace(); // Print stack trace for debugging
+            return ResponseDto.setFailed("회원 생성 실패: " + e.getMessage());
         }
     }
 

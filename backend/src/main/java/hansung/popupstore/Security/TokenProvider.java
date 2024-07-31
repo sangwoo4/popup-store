@@ -34,7 +34,7 @@ public class TokenProvider {
                 return null; // 토큰 만료
             }
 
-            return claims.getBody().getSubject(); // 유효한 경우
+            return claims.getBody().getSubject(); // 주체 정보(예: companyId)
         } catch (Exception e) {
             return null; // 검증 실패
         }

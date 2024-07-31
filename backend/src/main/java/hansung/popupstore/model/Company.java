@@ -41,7 +41,7 @@ public class Company {
     @Column(name = "company_id", unique = true, nullable = false)
     private String companyId;
 
-    @Column(nullable = false)
+    @Column
     private String postCode;
 
     @Column(nullable = false)

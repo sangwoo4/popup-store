@@ -24,6 +24,7 @@ public class CompanyController {
 
         // 토큰 검증 및 주체 정보 추출
         String companyIdStr = tokenProvider.validateJwt(actualToken);
+        System.out.println("companyIdStr" + companyIdStr);
         if (companyIdStr == null) {
             return new ResponseEntity<>(ResponseDto.setFailed("유효하지 않은 토큰입니다."), HttpStatus.UNAUTHORIZED);
         }
