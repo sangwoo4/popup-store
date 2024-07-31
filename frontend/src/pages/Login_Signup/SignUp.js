@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './SignUp.css';
-import { FiX } from "react-icons/fi";
-import { Link } from "react-router-dom";
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
@@ -26,13 +24,34 @@ export default function SignUp() {
   const [doubleCheckPhone, setDoubleCheckPhone] = useState(false);
   const [doubleCheckNickname, setDoubleCheckNickname] = useState(false);
 
+  const [emailCheckSuccess, setEmailCheckSuccess] = useState(false);
+  const [phoneCheckSuccess, setPhoneCheckSuccess] = useState(false);
+  const [nicknameCheckSuccess, setNicknameCheckSuccess] = useState(false);
+
   useEffect(() => {
-    if (emailValid && passwordValid && confirmPasswordValid && phoneValid && birthValid && nameValid && nicknameValid) {
+    if (
+      emailValid &&
+      passwordValid && 
+      confirmPasswordValid && 
+      phoneValid && 
+      birthValid && 
+      nameValid && 
+      nicknameValid) {
       setNotAllow(false);
     } else {
       setNotAllow(true);
     }
-  }, [emailValid, passwordValid, confirmPasswordValid, phoneValid, birthValid, nameValid, nicknameValid, doubleCheckEmail, doubleCheckPhone, doubleCheckNickname]);
+  }, [
+    emailValid, 
+    passwordValid, 
+    confirmPasswordValid, 
+    phoneValid, 
+    birthValid, 
+    nameValid, 
+    nicknameValid, 
+    doubleCheckEmail, 
+    doubleCheckPhone, 
+    doubleCheckNickname]);
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -128,7 +147,7 @@ export default function SignUp() {
       setEmailValid(false);
       return;
     }
-    fetch("http://localhost:8080/auth/signup/check-email", {
+    fetch("http://localhost:8080/auth/user/signup/check-email", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;"
@@ -145,10 +164,13 @@ export default function SignUp() {
       if (res.result) {
         alert("사용 가능한 이메일입니다.");
         setEmailValid(true);
+        setEmailCheckSuccess(true); // 중복 확인 성공 시 상태 업데이트
       } else {
         alert("이미 사용 중인 이메일입니다.");
         setEmailValid(false);
+        setEmailCheckSuccess(false); // 중복 확인 실패 시 상태 업데이트
       }
+      setDoubleCheckEmail(true); // API 응답 후에 설정
     })
     .catch(error => {
       console.error('이메일 중복 확인 중 오류 발생:', error);
@@ -162,7 +184,7 @@ export default function SignUp() {
       setPhoneValid(false);
       return;
     }
-    fetch("http://localhost:8080/auth/signup/check-phone", {
+    fetch("http://localhost:8080/auth/user/signup/check-phone", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;"
@@ -179,10 +201,13 @@ export default function SignUp() {
       if (res.result) {
         alert("사용 가능한 전화번호입니다.");
         setPhoneValid(true);
+        setPhoneCheckSuccess(true); // 중복 확인 성공 시 상태 업데이트
       } else {
         alert("이미 사용 중인 전화번호입니다.");
         setPhoneValid(false);
+        setPhoneCheckSuccess(false); // 중복 확인 성공 시 상태 업데이트
       }
+      setDoubleCheckPhone(true);
     })
     .catch(error => {
       console.error('전화번호 중복 확인 중 오류 발생:', error);
@@ -196,7 +221,7 @@ export default function SignUp() {
       setNicknameValid(false);
       return;
     }
-    fetch("http://localhost:8080/auth/signup/check-nickname", {
+    fetch("http://localhost:8080/auth/user/signup/check-nickname", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;"
@@ -213,10 +238,13 @@ export default function SignUp() {
       if (res.result) {
         alert("사용 가능한 닉네임입니다.");
         setNicknameValid(true);
+        setNicknameCheckSuccess(true); // 중복 확인 성공 시 상태 업데이트
       } else {
         alert("이미 사용 중인 닉네임입니다.");
         setNicknameValid(false);
+        setNicknameCheckSuccess(false); // 중복 확인 성공 시 상태 업데이트
       }
+      setDoubleCheckNickname(true);
     })
     .catch(error => {
       console.error('닉네임 중복 확인 중 오류 발생:', error);
@@ -226,10 +254,6 @@ export default function SignUp() {
 
   return (
     <div className="page">
-      <Link to="/Login">
-        <button className="backButton"><FiX /></button>
-      </Link>
-
       <div className="titleWrap">
         회원가입
       </div>
@@ -244,13 +268,15 @@ export default function SignUp() {
             value={email}
             onChange={handleEmail}
           />
-          <button
-            className="check-email"
-            onClick={handleDoubleCheckEmail}
-            disabled={!emailValid}
-          >
-            중복확인
-          </button>
+          <div className='check-useremail'>
+            <button
+              onClick={handleDoubleCheckEmail}
+              // disabled={!emailValid}
+              className={`checkButton ${emailCheckSuccess ? 'success' : ''}`}
+            >
+              중복확인
+            </button>
+          </div>
         </div>
         {(!emailValid && email.length > 0) && (
           <div className="errorMessageWrap">올바른 이메일을 입력해주세요.</div>
@@ -321,13 +347,15 @@ export default function SignUp() {
             value={phone}
             onChange={handlePhone}
           />
-          <button
-            className="check-phone"
-            onClick={handleDoubleCheckPhone}
-            disabled={!phoneValid}
-          >
-            중복확인
-          </button>
+          <div className='check-userphone'>
+            <button
+              onClick={handleDoubleCheckPhone}
+              // disabled={!phoneValid}
+              className={`checkButton ${phoneCheckSuccess ? 'success' : ''}`}
+            >
+              중복확인
+            </button>
+          </div>
         </div>
         {(!phoneValid && phone.length > 0) && (
           <div className="errorMessageWrap">전화번호를 정확히 입력해주세요.</div>
@@ -342,13 +370,15 @@ export default function SignUp() {
             value={nickname}
             onChange={handleNickname}
           />
-          <button
-            className="check-nickname"
-            onClick={handleDoubleCheckNickname}
-            disabled={!nicknameValid}
-          >
-            중복확인
-          </button>
+          <div className='check-usernickname'>
+            <button
+              onClick={handleDoubleCheckNickname}
+              // disabled={!nicknameValid}
+              className={`checkButton ${nicknameCheckSuccess ? 'success' : ''}`}
+            >
+              중복확인
+            </button>
+          </div>
         </div>
         {(!nicknameValid && nickname.length > 0) && (
           <div className="errorMessageWrap">닉네임은 10자 이하로 입력해주세요.</div>

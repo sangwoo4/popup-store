@@ -72,9 +72,9 @@
     color: #dadada;
 }
 
-.check-email,
-.check-phone,
-.check-nickname {
+.check-useremail,
+.check-userphone,
+.check-usernickname {
     position: absolute;
     right: 10px;
     top: 50%;
@@ -82,12 +82,28 @@
     height: 30px;
     display: flex;
     align-items: center;
-    background-color: #4430f4;
     color: white;
     border: none;
     padding: 0 10px;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.checkButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.checkButton.success {
+    background-color: #28a745; /* 성공 시 색상 */
+}
+
+.checkButton:disabled {
+    background-color: #6c757d; /* 비활성화 시 색상 */
+    cursor: not-allowed;
 }
 
 .genderInputs {
@@ -128,9 +144,9 @@
         align-items: flex-start;
     }
 
-    .check-email,
-    .check-phone,
-    .check-nickname {
+    .check-useremail,
+    .check-userphone,
+    .check-usernickname {
         top: 5px;
         right: 5px;
         transform: none;

@@ -47,7 +47,7 @@ export default function Login() {
   };
 
   const onClickConfirmButton = () => {
-    fetch("http://localhost:8080/auth/service/login", {
+    fetch("http://localhost:8080/auth/user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;"

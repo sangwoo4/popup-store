@@ -381,7 +381,7 @@ export default function SignUp_Company() {
             value={postcode}
             readOnly
           />
-          <button 
+          <button
             onClick={handleAddressSearch}
             className="searchButton"
           >
