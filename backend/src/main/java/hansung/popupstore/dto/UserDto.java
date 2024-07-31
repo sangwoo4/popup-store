@@ -22,6 +22,11 @@ public class UserDto {
     private String gender;
     private String phone;
     private String username;
+    private String postcode;
+    private String address;
+    private String detailAddress;
+    private String mapx;
+    private String mapy;
     private Set<CategoryDto> categories = new HashSet<>();
 
 }

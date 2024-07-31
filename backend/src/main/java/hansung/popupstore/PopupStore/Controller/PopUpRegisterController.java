@@ -22,6 +22,12 @@ public class PopUpRegisterController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @GetMapping("/register")
+    public ResponseEntity<ResponseDto<?>> getRegisterPage() {
+        ResponseDto<?> response = ResponseDto.setSuccess("페이지 접근이 허용되었습니다.");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PutMapping("/register/update/{id}")
     public ResponseEntity<ResponseDto<?>> update(@PathVariable("id") Long id, @RequestBody PopupStoreDto registerDto) {
         ResponseDto<?> result = popUpRegisterService.updatePopUp(id, registerDto);

@@ -25,4 +25,5 @@ public class ResponseDto<D> {
     public static <D> ResponseDto<D> setFailedData(String message, D data){
         return ResponseDto.set(false, message, data);
     }
+
 }

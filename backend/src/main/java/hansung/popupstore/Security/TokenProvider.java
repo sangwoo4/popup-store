@@ -1,56 +1,58 @@
 package hansung.popupstore.Security;
 
-import java.security.Key;
-import io.jsonwebtoken.*;
+import hansung.popupstore.model.Company;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
 
+import java.security.Key;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
+import java.util.Set;
+
 @Service
 public class TokenProvider {
-    Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-    private static final String SECURITY_KEY = "inputYourSecurityKey";
 
+    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+
+    // 토큰 검증 및 클레임 추출
     public String validateJwt(String token) {
         try {
-            // 서명 확인을 통한 JWT 검증
             Jws<Claims> claims = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
 
-            // 토큰의 만료 시간 확인
             Date expiration = claims.getBody().getExpiration();
             Date now = new Date();
             if (expiration.before(now)) {
-                // 토큰이 만료된 경우
-                System.out.println("토큰 만료");
-                return null;
+                return null; // 토큰 만료
             }
 
-            // 토큰이 유효한 경우
-            return claims.getBody().getSubject();
-        } catch (ExpiredJwtException e) {
-            // 토큰이 만료된 경우
-            System.out.println("토큰 만료");
-            return null;
+            return claims.getBody().getSubject(); // 유효한 경우
         } catch (Exception e) {
-            // 서명이 유효하지 않은 경우
-            System.out.println("서명이 유효하지 않은 토큰");
-            return null;
+            return null; // 검증 실패
         }
     }
-
-    public String generateToken(String email, int duration) {
+    // 토큰 생성
+    public String generateToken(Long companyId, Set<String> roles, int duration) {
         Instant now = Instant.now();
-        Instant exprTime = now.plusSeconds(duration);
-
+        Instant expirationTime = now.plusSeconds(duration);
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(String.valueOf(companyId)) // 회사 ID를 주체로 설정
+                .claim("roles", roles) // 사용자 역할 정보 추가
                 .setIssuedAt(Date.from(now))
-                .setExpiration(Date.from(exprTime))
+                .setExpiration(Date.from(expirationTime))
                 .signWith(key)
                 .compact();
+    }
+    // Key 반환 메서드
+    public Key getKey() {
+        return key;
     }
 }

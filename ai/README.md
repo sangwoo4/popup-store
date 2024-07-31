@@ -85,3 +85,5 @@
 # 변경사항
 1. 24/07/23 dotenv 라이브러리 추가, StoreDays 추가
 2. 24/07/26 API 하나로 통합, 학습 모델 변경
+3. 24/07/29 최신 버전: category-v2-3-7-10:9qBNO9eN
+4. 24/07/30 New 폴더 생성: store_recommend(ai 추천 팝업)

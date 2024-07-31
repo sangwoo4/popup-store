@@ -1,21 +1,19 @@
 package hansung.popupstore.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Getter
-@Data
+@Setter
 @Table(name = "user")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,12 +32,28 @@ public class User {
     @Column(unique = true)
     private String nickname;
 
+    @Column
+    private String mapx;
+
+    @Column
+    private String address;
+
+    @Column
+    private String mapy;
+
+    @Column(nullable = false)
+    private String postcode;
+
+    @Column(nullable = false)
+    private String detailAddress;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @Builder.Default // 기본값 설정
     private Set<Role> roles = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -48,19 +62,6 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
+    @Builder.Default // 기본값 설정
     private Set<Category> categories = new HashSet<>();
-
-    @Builder
-    public User(Long id, String email, String password, String username, String birth, String gender, String phone, String nickname, Set<Role> roles, Set<Category> categories) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.username = username;
-        this.birth = birth;
-        this.gender = gender;
-        this.phone = phone;
-        this.nickname = nickname;
-        this.roles = roles != null ? roles : new HashSet<>();
-        this.categories = categories != null ? categories : new HashSet<>();
-    }
 }

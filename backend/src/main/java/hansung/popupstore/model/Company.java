@@ -1,8 +1,10 @@
 package hansung.popupstore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.util.HashSet;
@@ -40,10 +42,11 @@ public class Company {
     private String companyId;
 
     @Column(nullable = false)
-    private String postcode;
+    private String postCode;
 
     @Column(nullable = false)
     private String detailAddress;
+
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
@@ -53,11 +56,12 @@ public class Company {
     )
     private Set<Role> roles = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PopupStore> popupStores = new HashSet<>();
 
     @Builder
-    public Company(Long id, String companyName, String managerName, String address, String email, String password, String companyId, Set<Role> roles, Set<PopupStore> popupStores, String postcode, String detailAddress) {
+    public Company(Long id, String companyName, String managerName, String address, String email, String password, String companyId, Set<Role> roles, Set<PopupStore> popupStores, String postCode, String detailAddress) {
         this.id = id;
         this.companyName = companyName;
         this.managerName = managerName;
@@ -67,7 +71,7 @@ public class Company {
         this.companyId = companyId;
         this.roles = roles != null ? roles : new HashSet<>();
         this.detailAddress = detailAddress;
-        this.postcode = postcode;
+        this.postCode = postCode;
         this.popupStores = popupStores != null ? popupStores : new HashSet<>();
     }
 }

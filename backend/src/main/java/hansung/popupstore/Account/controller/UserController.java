@@ -5,6 +5,7 @@ import hansung.popupstore.Util.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,5 +29,8 @@ public class UserController {
         ResponseDto<?> result = userService.getAllCategories();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+//    @PostMapping("/likes")
+//    public ResponseDto<ResponseDto<?>> likePost(@PathVariable Long postId,)
 
 }

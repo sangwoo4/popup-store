@@ -16,6 +16,6 @@ public class CompanyDto {
     private String password;
     private String address;
     private String managerName;
-    private String postcode;
+    private String postCode;
     private String detailAddress;
 }

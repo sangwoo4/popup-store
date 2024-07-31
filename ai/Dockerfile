@@ -15,10 +15,10 @@ COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
 # Copy the FastAPI app code
-COPY Recommend /app/Recommend
+COPY category_recommend /app/category_recommend
 
 # Expose the port FastAPI is running on
 EXPOSE 8000
 
 # Run the FastAPI application with --reload
-CMD ["uvicorn", "Recommend.Combine:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "category_recommend.Combine:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

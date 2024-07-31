@@ -1,26 +1,22 @@
 package hansung.popupstore.Account.service;
 
 import hansung.popupstore.Account.Dto.*;
-import hansung.popupstore.Account.Repository.RoleRepository;
 import hansung.popupstore.Account.Repository.UserRepository;
-import hansung.popupstore.dto.CategoryDto;
-import hansung.popupstore.PopupStore.Repository.CategoryRepository;
-import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.Security.TokenProvider;
 import hansung.popupstore.dto.UserDto;
 import hansung.popupstore.model.Category;
 import hansung.popupstore.model.Role;
 import hansung.popupstore.model.User;
-import hansung.popupstore.Util.PasswordEncoderUtil;
+import hansung.popupstore.Util.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +24,9 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
-    private final RoleRepository roleRepository;
-    private final CategoryRepository categoryRepository;
+    private final RoleService roleService;
+    private final CategoryService categoryService;
+    private final PasswordService passwordService;
 
     @Transactional
     public ResponseDto<?> userSignUp(UserDto dto) {
@@ -38,7 +35,8 @@ public class UserService {
             userRepository.save(user);
 
             addDefaultRoleToUser(user);
-            saveOrUpdateCategories(dto.getCategories(), user);
+            Set<Category> categories = categoryService.saveOrUpdateCategories(dto.getCategories());
+            user.setCategories(categories);
             userRepository.save(user);
 
             return ResponseDto.setSuccessData("회원 생성 성공.", user.getId());
@@ -48,7 +46,7 @@ public class UserService {
     }
 
     private User buildUserEntity(UserDto dto) {
-        String hashedPassword = PasswordEncoderUtil.encode(dto.getPassword());
+        String hashedPassword = passwordService.encodePassword(dto.getPassword());
         return User.builder()
                 .email(dto.getEmail())
                 .password(hashedPassword)
@@ -57,39 +55,40 @@ public class UserService {
                 .nickname(dto.getNickname())
                 .phone(dto.getPhone())
                 .username(dto.getUsername())
+                .mapx(dto.getMapx())
+                .mapy(dto.getMapy())
+                .postcode(dto.getPostcode())
+                .address(dto.getAddress())
+                .detailAddress(dto.getDetailAddress())
                 .build();
     }
 
     private void addDefaultRoleToUser(User user) {
-        Role userRole = roleRepository.findByRole("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("Role not found."));
+        Role userRole = roleService.getRoleByRoleName("ROLE_USER");
         user.getRoles().add(userRole);
-    }
-
-    private void saveOrUpdateCategories(Set<CategoryDto> categoryDtos, User user) {
-        Set<Category> savedCategories = new HashSet<>();
-        for (CategoryDto categoryDto : categoryDtos) {
-            Optional<Category> existingCategory = categoryRepository.findByCategory(categoryDto.getCategory());
-            existingCategory.ifPresent(savedCategories::add);
-        }
-        user.setCategories(savedCategories);
     }
 
     public ResponseDto<LoginResponseDto> userLogin(UserLoginDto dto) {
         try {
             Optional<User> userOptional = userRepository.findByEmail(dto.getEmail());
-            if (userOptional.isPresent() && isPasswordValid(dto.getPassword(), userOptional.get().getPassword())) {
-                String token = tokenProvider.generateToken(dto.getEmail(), 3600);
-                return ResponseDto.setSuccessData("로그인에 성공하였습니다.", new LoginResponseDto(token, 3600));
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                if (passwordService.matchesPassword(dto.getPassword(), user.getPassword())) {
+                    Set<String> roles = user.getRoles().stream()
+                            .map(Role::getName)
+                            .collect(Collectors.toSet());
+
+                    // 사용자 ID를 주체로 사용하는 경우
+                    String token = tokenProvider.generateToken(user.getId(), roles, 3600);
+
+                    return ResponseDto.setSuccessData("로그인에 성공하였습니다.", new LoginResponseDto(token, 3600));
+                }
             }
             return ResponseDto.setFailed("입력하신 로그인 정보가 존재하지 않습니다.");
         } catch (Exception e) {
+            e.printStackTrace(); // 로그 추가 필요
             return ResponseDto.setFailed("데이터베이스 연결에 실패하였습니다.");
         }
-    }
-
-    private boolean isPasswordValid(String rawPassword, String storedHashedPassword) {
-        return PasswordEncoderUtil.matches(rawPassword, storedHashedPassword);
     }
 
     public ResponseDto<UserDto> checkEmail(UserDto dto) {
@@ -117,8 +116,7 @@ public class UserService {
     }
 
     public ResponseDto<List<Category>> getAllCategories(){
-        List<Category> allCategories = categoryRepository.findAll();
+        List<Category> allCategories = categoryService.getAllCategories().getData();
         return ResponseDto.setSuccessData("카테고리 조회 성공", allCategories);
     }
-
 }

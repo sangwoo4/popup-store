@@ -51,13 +51,13 @@ public class PopupStore {
     @Column(name = "mapy", length = 15)
     private String mapy;
 
-    @Lob
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "link", length = 50)
     private String link;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
@@ -74,5 +74,6 @@ public class PopupStore {
     @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<StoreDay> storeDays = new HashSet<>();
+
 
 }
