@@ -23,8 +23,8 @@ public class PopUpAiService {
     private final RestOperations restTemplate = new RestTemplate();
 
     // 엔드포인트 URL
-    private static final String CATEGORIZE_URL = "http://localhost:8000/categorize";
-//    private static final String CATEGORIZE_URL = "http://fastapi-app:8000/categorize";
+    //private static final String CATEGORIZE_URL = "http://localhost:8000/categorize";
+    private static final String CATEGORIZE_URL = "http://fastapi-app:8000/categorize";
     //private static final String NAVER_CATEGORY_URL = "http://localhost:8000/navercategory";
 
     public List<PopupStoreDto> convertCategoryAPI(String queryResult) throws JsonProcessingException {
