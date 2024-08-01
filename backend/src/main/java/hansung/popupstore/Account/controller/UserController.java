@@ -15,10 +15,9 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/nickname")
-    public ResponseEntity<String> login(@RequestHeader("Authorization") String authorizationHeader) {
+    public ResponseEntity<String> userNickName(@RequestHeader("Authorization") String authorizationHeader) {
         // Authorization 헤더에서 토큰 추출, "Bearer " 문자열 제거
         String token = authorizationHeader.replace("Bearer ", "");
-        System.out.println("got token " + token);
         String nickname = userService.getNicknameByToken(token);
         // 클라이언트에게 닉네임 반환
         return ResponseEntity.ok(nickname);

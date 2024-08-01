@@ -33,10 +33,10 @@ public class SecurityConfig {
     public DefaultSecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
 //                        .requestMatchers("/company/**").hasAnyRole("COMPANY", "ADMIN")
-                        .requestMatchers("/popup/register/**").hasAnyRole("COMPANY", "ADMIN")
-                        .requestMatchers("/**").permitAll()
+                                .requestMatchers("/popup/register/**").hasAnyRole("COMPANY", "ADMIN")
+                                .requestMatchers("/**").permitAll()
 
                 )
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)

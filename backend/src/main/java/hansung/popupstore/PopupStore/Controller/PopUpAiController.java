@@ -15,7 +15,6 @@ public class PopUpAiController {
     public String update(@RequestBody String request) {
         System.out.println("request =========" + request);
         String result = popUpAiService.sendRequestToApi(request);
-        System.out.println("result =============================!!!!!!!!!!!!!!!!!" + result);
         return result;
     }
 

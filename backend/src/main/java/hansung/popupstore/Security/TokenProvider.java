@@ -9,10 +9,8 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.time.Instant;
-import java.util.ArrayList;
+import java.time.Instant;;
 import java.util.Date;
-import java.util.Optional;
 import java.util.Set;
 
 @Service

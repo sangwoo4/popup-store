@@ -8,6 +8,7 @@ import hansung.popupstore.dto.CompanyDto;
 import hansung.popupstore.model.Company;
 import hansung.popupstore.model.PopupStore;
 import hansung.popupstore.model.Role;
+import hansung.popupstore.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -111,5 +112,10 @@ public class CompanyService {
         List<PopupStore> popupStoresList = popupStoresSet.stream().collect(Collectors.toList());
 
         return ResponseDto.setSuccessData("기업 게시물 조회 성공", popupStoresList);
+    }
+
+    public String getCompanyNameByToken(String token) {
+        Long companyId = Long.valueOf(tokenProvider.validateJwt(token));
+        return companyRepository.findById(companyId).map(Company::getCompanyName).orElse(null);
     }
 }

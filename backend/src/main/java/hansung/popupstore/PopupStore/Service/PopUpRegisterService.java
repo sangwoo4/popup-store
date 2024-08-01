@@ -31,6 +31,7 @@ public class PopUpRegisterService {
     public ResponseDto<?> createPopUp(PopupStoreDto dto) {
         // Create PopupStore entity
         PopupStore popupStore = buildPopupStoreEntity(dto);
+        System.out.println("popupStore" + popupStore);
 
         // Save PopupStore entity
         popupStoreRepository.save(popupStore);
@@ -92,8 +93,14 @@ public class PopUpRegisterService {
     }
 
     private PopupStore buildPopupStoreEntity(PopupStoreDto dto) {
-        Company company = companyRepository.findById(dto.getCompanyId())
-                .orElseThrow(() -> new RuntimeException("회사를 찾을 수 없습니다. ID: " + dto.getCompanyId()));
+        // 회사 ID가 null인 경우에 대한 처리
+        Company company = null;
+        if (dto.getCompanyId() != null) {
+            company = companyRepository.findById(dto.getCompanyId())
+                    .orElseThrow(() -> new RuntimeException("회사를 찾을 수 없습니다. ID: " + dto.getCompanyId()));
+        }
+
+        // PopupStore 엔티티 생성
         return PopupStore.builder()
                 .title(dto.getTitle())
                 .address(dto.getAddress())
@@ -106,7 +113,7 @@ public class PopUpRegisterService {
                 .link(dto.getLink())
                 .mapx(dto.getMapx())
                 .mapy(dto.getMapy())
-                .company(company) // 회사 정보 설정
+                .company(company) // 회사 정보 설정 (null일 수 있음)
                 .build();
     }
 

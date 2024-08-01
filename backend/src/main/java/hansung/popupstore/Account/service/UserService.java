@@ -39,12 +39,15 @@ public class UserService {
             user.setCategories(categories);
             userRepository.save(user);
 
-            return ResponseDto.setSuccessData("회원 생성 성공.", user.getId());
+            return ResponseDto.setSuccess("회원 생성 성공.");
         } catch (Exception e) {
-            return ResponseDto.setFailed("회원 생성 실패.");
+            // 예외 로그
+            e.printStackTrace();
+            // 트랜잭션 롤백 상태로 마크
+            // 필요 시 Custom Exception으로 재던지기
+            throw new RuntimeException("회원 생성 실패", e);
         }
     }
-
     private User buildUserEntity(UserDto dto) {
         String hashedPassword = passwordService.encodePassword(dto.getPassword());
         return User.builder()
@@ -111,8 +114,8 @@ public class UserService {
     }
 
     public String getNicknameByToken(String token) {
-        String userEmail = tokenProvider.validateJwt(token);
-        return userRepository.findByEmail(userEmail).map(User::getNickname).orElse(null);
+        Long userId = Long.valueOf(tokenProvider.validateJwt(token));
+        return userRepository.findById(userId).map(User::getNickname).orElse(null);
     }
 
     public ResponseDto<List<Category>> getAllCategories(){
