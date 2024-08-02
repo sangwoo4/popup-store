@@ -1,6 +1,7 @@
 package hansung.popupstore.dto;
 
 import hansung.popupstore.model.Company;
+import hansung.popupstore.model.PopupImage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,5 +31,5 @@ public class PopupStoreDto {
     private Long companyId;
     private Set<CategoryDto> categories = new HashSet<>();
     private Set<StoreDayDto> storeDays = new HashSet<>();
-
+    private Set<PopupImageDto> popupImages = new HashSet<>();
 }

@@ -1,5 +1,6 @@
 package hansung.popupstore.PopupStore.Controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.Security.TokenUtils;
 import hansung.popupstore.Util.ResponseDto;
@@ -12,7 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -25,12 +29,16 @@ public class PopUpRegisterController {
     private final PopupStoreRepository popupStoreRepository;
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseDto<?>> submit(@RequestHeader("Authorization") String token,
-                                                 @RequestBody PopupStoreDto registerDto) {
+    public ResponseEntity<ResponseDto<?>> submit(
+            @RequestHeader("Authorization") String token,
+            @RequestPart(value = "dto") PopupStoreDto dto,
+            @RequestPart(value = "images", required = false) List<MultipartFile> images) throws IOException {
         String jwtToken = tokenUtils.extractToken(token);
         Long companyId = tokenUtils.extractCompanyIdFromToken(jwtToken);
-        registerDto.setCompanyId(companyId);
-        ResponseDto<?> result = popUpRegisterService.createPopUp(registerDto);
+        dto.setCompanyId(companyId);
+        System.out.printf("images==2222" + images);
+
+        ResponseDto<?> result = popUpRegisterService.registerPopUpWithImage(dto, images);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

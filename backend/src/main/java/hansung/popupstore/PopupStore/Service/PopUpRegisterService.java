@@ -1,22 +1,23 @@
 package hansung.popupstore.PopupStore.Service;
 
 import hansung.popupstore.Account.Repository.CompanyRepository;
+import hansung.popupstore.PopupStore.Repository.*;
 import hansung.popupstore.dto.CategoryDto;
+import hansung.popupstore.dto.PopupImageDto;
 import hansung.popupstore.dto.PopupStoreDto;
 import hansung.popupstore.dto.StoreDayDto;
-import hansung.popupstore.PopupStore.Repository.CategoryRepository;
-import hansung.popupstore.PopupStore.Repository.DayRepository;
-import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
-import hansung.popupstore.PopupStore.Repository.StoreDayRepository;
 import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class PopUpRegisterService {
     private final DayRepository dayRepository;
     private final StoreDayRepository storeDayRepository;
     private final CompanyRepository companyRepository;
+    private final PopupImageRepository popupImageRepository;
 
     @Transactional
     public ResponseDto<?> createPopUp(PopupStoreDto dto) {
@@ -43,6 +45,80 @@ public class PopUpRegisterService {
         saveOrUpdateCategories(dto.getCategories(), popupStore);
 
         return ResponseDto.setSuccess("PopupStore created successfully.");
+    }
+
+    public ResponseDto<?> registerPopUpWithImage(PopupStoreDto dto, List<MultipartFile> images) throws IOException {
+        // 팝업 스토어 엔티티 빌드 및 저장
+        PopupStore popupStore = buildPopupStoreEntity(dto);
+        popupStoreRepository.save(popupStore);
+
+        // 저장된 팝업 스토어의 날짜, 카테고리 및 이미지 업데이트
+        saveOrUpdateStoreDays(dto.getStoreDays(), popupStore);
+        saveOrUpdateCategories(dto.getCategories(), popupStore);
+
+        System.out.printf("images==11" + images);
+        // 파일이 제공된 경우 이미지 저장
+        if (images != null && !images.isEmpty()) {
+            saveOrUpdatePopupImages(dto.getPopupImages(), popupStore, images);
+        }
+
+        return ResponseDto.setSuccess("PopupStore created successfully.");
+    }
+
+    private void saveOrUpdatePopupImages(Set<PopupImageDto> popupImages, PopupStore popupStore, List<MultipartFile> images) throws IOException {
+        if (images == null || images.isEmpty()) {
+            // 파일이 없을 경우의 처리
+            return;
+        }
+
+        // 파일 저장 디렉토리 정의 및 생성
+        Path directoryPath = Paths.get(System.getProperty("user.dir"), "uploads");
+        if (!Files.exists(directoryPath)) {
+            Files.createDirectories(directoryPath);
+        }
+
+        // 기존의 이미지 데이터 삭제 (옵션: 필요에 따라)
+        //popupImageRepository.deleteByPopupStore(popupStore);
+
+        // 기존 이미지 저장 처리
+        for (PopupImageDto popupImageDto : popupImages) {
+            PopupImage popupImage = PopupImage.builder()
+                    .imageUrl(popupImageDto.getImageUrl())
+                    .popupStore(popupStore)
+                    .build();
+            popupImageRepository.save(popupImage);
+        }
+
+        // 새로 업로드된 이미지 저장 처리
+        for (MultipartFile image : images) {
+            if (image == null || image.isEmpty()) {
+                // 파일이 없을 경우의 처리
+                continue;
+            }
+
+            String originalFilename = image.getOriginalFilename();
+            if (originalFilename == null || originalFilename.isEmpty()) {
+                throw new IOException("파일명이 유효하지 않습니다.");
+            }
+
+            // 파일명 정제 및 고유 파일명 생성
+            String sanitizedFilename = originalFilename.replaceAll("[^a-zA-Z0-9.-]", "_");
+            String uniqueFilename = UUID.randomUUID().toString() + "_" + sanitizedFilename;
+
+            // 전체 파일 경로 정의 및 파일 전송
+            Path filePath = directoryPath.resolve(uniqueFilename);
+            image.transferTo(filePath.toFile());
+
+            // 파일 URL 생성
+            String fileUrl = filePath.toUri().toString();
+
+            // 현재 업로드된 파일의 정보를 PopupImage로 저장
+            PopupImage uploadedImage = PopupImage.builder()
+                    .imageUrl(fileUrl)
+                    .popupStore(popupStore)
+                    .build();
+            popupImageRepository.save(uploadedImage);
+        }
     }
 
     @Transactional
@@ -134,6 +210,9 @@ public class PopUpRegisterService {
         }
         popupStore.setCategories(savedCategories);
     }
+
+
+
 
     private void saveOrUpdateStoreDays(Set<StoreDayDto> storeDayDtos, PopupStore popupStore) {
         for (StoreDayDto storeDayDto : storeDayDtos) {
