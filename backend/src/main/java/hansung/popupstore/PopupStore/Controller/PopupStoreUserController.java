@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("popup/user")
+@RequestMapping("/popup/user")
 public class PopupStoreUserController {
 
     private final PopUpStoreManagementService popUpRegisterService;

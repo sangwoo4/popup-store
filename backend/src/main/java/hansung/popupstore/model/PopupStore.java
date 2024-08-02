@@ -54,7 +54,7 @@ public class PopupStore {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "link", length = 50)
+    @Column(name = "link", length = 250)
     private String link;
 
     @JsonIgnore
