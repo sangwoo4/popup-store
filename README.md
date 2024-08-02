@@ -1,6 +1,6 @@
 1. docker 실행 방법
   - 도커 실행
-  - 프로젝트 directory(docker-compose.yml가 있는)에서 docker-compose up (cmd, terminal)
+  - 프로젝트 directory(docker-compose.yml가 있는)에서 docker-compose up --build(cmd, terminal)
   - 실행 시 spring boot가 에러나면 docker desktop에서 popupstore-container만 재실행
 
 2. MySql
