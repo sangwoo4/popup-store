@@ -76,6 +76,6 @@ public class PopupStore {
     private Set<StoreDay> storeDays = new HashSet<>();
 
     @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<PopupImage> images = new HashSet<>();
+    private Set<PopupImage> popupImages = new HashSet<>();
 
 }

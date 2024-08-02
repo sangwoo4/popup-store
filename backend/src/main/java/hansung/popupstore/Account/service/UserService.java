@@ -2,6 +2,8 @@ package hansung.popupstore.Account.service;
 
 import hansung.popupstore.Account.Dto.*;
 import hansung.popupstore.Account.Repository.UserRepository;
+import hansung.popupstore.PopupStore.Service.PopupStoreCategoryService;
+import hansung.popupstore.PopupStore.Service.UserCategoryService;
 import hansung.popupstore.Security.TokenProvider;
 import hansung.popupstore.dto.UserDto;
 import hansung.popupstore.model.Category;
@@ -25,7 +27,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
     private final RoleService roleService;
-    private final CategoryService categoryService;
+    private final UserCategoryService categoryService;
     private final PasswordService passwordService;
 
     @Transactional
@@ -35,7 +37,7 @@ public class UserService {
             userRepository.save(user);
 
             addDefaultRoleToUser(user);
-            Set<Category> categories = categoryService.saveOrUpdateCategories(dto.getCategories());
+            Set<Category> categories = categoryService.saveOrUpdateUserCategories(dto.getCategories());
             user.setCategories(categories);
             userRepository.save(user);
 
