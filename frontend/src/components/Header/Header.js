@@ -1,48 +1,112 @@
 /*
-  24.07.21 수정사항
-  로그인 상태 코드 삽입 중
+  24.08.04 수정사항
+  유저와 기업 간 메뉴 활성화 다르게 설정
 */
 
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { IoHome } from "react-icons/io5";
-import { GoHeart } from "react-icons/go";
-import { GoPerson } from "react-icons/go";
+import { GoHeart, GoPerson } from "react-icons/go";
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [companyName, setCompanyName] = useState('');
-  const [role, setRole] = useState(""); // 사용자 역할 상태 추가
+  const [isCompanyLoggedIn, setIsCompanyLoggedIn] = useState(false);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const [nickname, setNickname] = useState('');
+  const [homeLink, setHomeLink] = useState('/');
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    console.log("Token from localStorage:", token);
+
     if (token) {
-      setIsLoggedIn(true);
-      // 사용자 정보 가져오기
-      fetch("http://localhost:8080/user/nickname", {
+      fetch("http://localhost:8080/company/companyname", {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`
         }
       })
-      .then((res) => res.json())
       .then(res => {
+        console.log("Company name fetch status:", res.status);
+        if (res.ok) {
+          return res.text();
+        } else {
+          throw new Error('Failed to fetch company name');
+        }
+      })
+      .then(res => {
+        console.log("Company name response:", res);
         if (res) {
-          setCompanyName(res.companyName);
-          setRole(res.role);
+          setIsCompanyLoggedIn(true);
+          setNickname(res);
+          setHomeLink('/auth/company/homepage');
+        } else {
+          checkUserLogin(token);
         }
       })
       .catch(error => {
-        console.error('사용자 정보 가져오기 중 오류 발생:', error);
+        console.error('Error fetching company name:', error);
+        checkUserLogin(token);
       });
     } else {
-      setIsLoggedIn(false);
+      setIsCompanyLoggedIn(false);
+      setIsUserLoggedIn(false);
     }
-  }, [window.location.pathname]);
+  }, []);
+
+  const checkUserLogin = (token) => {
+    fetch("http://localhost:8080/user/nickname", {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    })
+    .then(res => {
+      console.log("User nickname fetch status:", res.status);
+      if (res.ok) {
+        return res.text();
+      } else {
+        throw new Error('Failed to fetch user nickname');
+      }
+    })
+    .then(resText => {
+      console.log("User nickname response (text):", resText);
+      try {
+        const res = JSON.parse(resText);
+        console.log("User nickname response (parsed):", res);
+        if (res && res.username) {
+          setIsUserLoggedIn(true);
+          setNickname(res.username);
+          setHomeLink('/');
+        } else {
+          console.warn('No username found in response');
+        }
+      } catch (error) {
+        console.error('Error parsing JSON response:', error);
+        // Assuming the response is plain text in this case
+        setIsUserLoggedIn(true);
+        setNickname(resText);
+        setHomeLink('/');
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching user nickname:', error);
+    });
+  };
+
+  useEffect(() => {
+    console.log("Company logged in state:", isCompanyLoggedIn);
+    console.log("User logged in state:", isUserLoggedIn);
+    console.log("Nickname state:", nickname);
+    console.log("Home link state:", homeLink);
+  }, [isCompanyLoggedIn, isUserLoggedIn, nickname, homeLink]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setIsLoggedIn(false);
+    setIsCompanyLoggedIn(false);
+    setIsUserLoggedIn(false);
+    setNickname('');
+    console.log("Logged out, token removed from localStorage");
+    window.location.href = "/";
   };
 
   return (
@@ -51,27 +115,31 @@ const Header = () => {
       메뉴화면, 로그인, 회원가입, 마이페이지 <br/><br/>
 
       <IoHome />
-      <Link className="home" to="/">홈</Link>
+      <Link className="home" to={homeLink}>홈</Link>
       &nbsp; | &nbsp;
 
-      <GoHeart />
-      <Link to="/reservation.details">예약내역</Link>
-      &nbsp; | &nbsp;
+      {isUserLoggedIn && (
+        <>
+          <GoHeart />
+          <Link to="/reservation.details">예약내역</Link>
+          &nbsp; | &nbsp;
+        </>
+      )}
 
       <GoPerson />
       <Link to="/mypage">마이 페이지</Link>
       &nbsp; | &nbsp;
 
       <div style={{ display: 'inline-block' }}>
-        {isLoggedIn && (
+        {isCompanyLoggedIn && (
           <>
             <Link to="/popup.registration">기업 팝업 등록하기</Link>
             &nbsp; | &nbsp;
           </>
         )}
-        {isLoggedIn ? (
+        {isUserLoggedIn || isCompanyLoggedIn ? (
           <div style={{ display: 'inline-block' }}>
-            <p className="success-Login" style={{ display: 'inline-block', margin: '0 10px' }}>{companyName}님, 안녕하세요!</p>
+            <p className="success-Login" style={{ display: 'inline-block', margin: '0 10px' }}>{nickname}님, 안녕하세요!</p>
             <button className="logoutButton" onClick={handleLogout}>
               로그아웃
             </button>
@@ -90,80 +158,140 @@ export default Header;
 
 
 
-// 24.07.21 닉네임 받아오기 코드 삽입 전
+
+
+
+
+
+
+
+
+//// 24.08.04 로그인 별 메뉴버튼 다르게 설정 전
 // import React, { useState, useEffect } from "react";
 // import { Link } from "react-router-dom";
-
-// //아이콘 삽입
-// import { IoHome } from "react-icons/io5"; // 홈아이콘
-// import { GoHeart } from "react-icons/go"; //예약내역 아이콘
-// import { GoPerson } from "react-icons/go"; //마이페이지 아이콘
+// import { IoHome } from "react-icons/io5";
+// import { GoHeart, GoPerson } from "react-icons/go";
 
 // const Header = () => {
-//   const [isLoggedIn, setIsLoggedIn] = useState(false);
-//   const [nickname, setNickname] = useState(""); // 닉네임 상태 추가
+//   const [isCompanyLoggedIn, setIsCompanyLoggedIn] = useState(false);
+//   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+//   const [nickname, setNickname] = useState('');
+//   const [homeLink, setHomeLink] = useState('/');
 
-//   // 페이지가 로드될 때마다 로컬 스토리지에서 토큰을 확인하여 로그인 상태를 업데이트
 //   useEffect(() => {
 //     const token = localStorage.getItem("token");
+//     console.log("Token from localStorage:", token); // 로그 추가
+
 //     if (token) {
-//       setIsLoggedIn(true);
-//       // 토큰이 있는 경우, 닉네임 가져오기
-//       fetch("http://localhost:8080/user/nickname", {
+//       fetch("http://localhost:8080/company/companyname", {
 //         method: "GET",
 //         headers: {
 //           "Authorization": `Bearer ${token}`
 //         }
 //       })
-//       .then((res) => res.text())
 //       .then(res => {
+//         console.log("Company name fetch status:", res.status); // 응답 상태 코드 로그
+//         if (res.ok) {
+//           return res.text(); 
+//         } else {
+//           throw new Error('Failed to fetch company name');
+//         }
+//       })
+//       .then(res => {
+//         console.log("Company name response:", res); // 로그 추가
 //         if (res) {
+//           setIsCompanyLoggedIn(true);
 //           setNickname(res);
+//           setHomeLink('/auth/company/homepage');
+//         } else {
+//           checkUserLogin(token);
 //         }
 //       })
 //       .catch(error => {
-//         console.error('닉네임 가져오기 중 오류 발생:', error);
+//         console.error('기업 이름 가져오기 중 오류 발생:', error);
+//         checkUserLogin(token);
 //       });
 //     } else {
-//       setIsLoggedIn(false);
-//     }
-//   }, [window.location.pathname]); // 경로가 변경될 때마다 실행
-
-//   useEffect(() => {
-//     // 페이지 로딩 시 로컬 스토리지에서 토큰을 가져와 로그인 상태 확인
-//     const token = localStorage.getItem("token");
-//     if (token) {
-//       setIsLoggedIn(true);
+//       setIsCompanyLoggedIn(false);
+//       setIsUserLoggedIn(false);
 //     }
 //   }, []);
 
+//   const checkUserLogin = (token) => {
+//     fetch("http://localhost:8080/user/nickname", {
+//       method: "GET",
+//       headers: {
+//         "Authorization": `Bearer ${token}`
+//       }
+//     })
+//     .then(res => {
+//       console.log("User nickname fetch status:", res.status); // 응답 상태 코드 로그
+//       if (res.ok) {
+//         return res.json();
+//       } else {
+//         throw new Error('Failed to fetch user nickname');
+//       }
+//     })
+//     .then(res => {
+//       console.log("User nickname response:", res);
+//       if (res && res.username) {
+//         setIsUserLoggedIn(true);
+//         setNickname(res.username);
+//         setHomeLink('/');
+//       } else {
+//         console.warn('No username found in response'); // 사용자 이름이 없을 때 경고
+//       }
+//     })
+//     .catch(error => {
+//       console.error('사용자 닉네임 가져오기 중 오류 발생:', error);
+//     });
+//   };
+
+//   useEffect(() => {
+//     console.log("Company logged in state:", isCompanyLoggedIn); // 로그 추가
+//     console.log("User logged in state:", isUserLoggedIn); // 로그 추가
+//     console.log("Nickname state:", nickname); // 로그 추가
+//     console.log("Home link state:", homeLink); // 로그 추가
+//   }, [isCompanyLoggedIn, isUserLoggedIn, nickname, homeLink]);
+
 //   const handleLogout = () => {
-//     // 로그아웃 시 토큰 제거
 //     localStorage.removeItem("token");
-//     setIsLoggedIn(false);
+//     setIsCompanyLoggedIn(false);
+//     setIsUserLoggedIn(false);
+//     setNickname(''); // Clear nickname on logout
+//     console.log("Logged out, token removed from localStorage"); // 로그 추가
+//     window.location.href = "/"; // 로그아웃 후 새로고침
 //   };
 
 //   return (
 //     <header>
 //       헤더 부분 표시 <br/>
-//       메뉴화면, 로그인, 회원가입, 마이페이지 <br/> <br/>
+//       메뉴화면, 로그인, 회원가입, 마이페이지 <br/><br/>
 
 //       <IoHome />
-//       <Link className="home" to="/">홈</Link>
+//       <Link className="home" to={homeLink}>홈</Link>
 //       &nbsp; | &nbsp;
 
-//       <GoHeart />
-//       <Link to="/reservation.details">예약내역</Link>
-//       &nbsp; | &nbsp;
+//       {isUserLoggedIn && (
+//         <>
+//           <GoHeart />
+//           <Link to="/reservation.details">예약내역</Link>
+//           &nbsp; | &nbsp;
+//         </>
+//       )}
 
 //       <GoPerson />
 //       <Link to="/mypage">마이 페이지</Link>
 //       &nbsp; | &nbsp;
 
 //       <div style={{ display: 'inline-block' }}>
-//         <Link to="/popup.registration">기업 팝업 등록하기</Link>
-//         &nbsp; | &nbsp;
-//         {isLoggedIn ? (
+//         {isCompanyLoggedIn && (
+//           <>
+//             <Link to="/popup.registration">기업 팝업 등록하기</Link>
+//             &nbsp; | &nbsp;
+//           </>
+//         )}
+//         {isUserLoggedIn || isCompanyLoggedIn ? (
 //           <div style={{ display: 'inline-block' }}>
 //             <p className="success-Login" style={{ display: 'inline-block', margin: '0 10px' }}>{nickname}님, 안녕하세요!</p>
 //             <button className="logoutButton" onClick={handleLogout}>

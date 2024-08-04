@@ -140,7 +140,6 @@ export default function SignUp_Company() {
     
     setShowPostcodeModal(false);
   };
-  
 
   const onClickConfirmButton = () => {
     // 유효성 검사
@@ -152,7 +151,7 @@ export default function SignUp_Company() {
       fetch("http://localhost:8080/auth/company/signup", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json; charset=utf-8"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           companyName: companyName,
@@ -172,7 +171,8 @@ export default function SignUp_Company() {
   
         if (res.result) {
           alert("회원가입이 정상적으로 되었습니다");
-          window.open("http://localhost:3000/auth/company/login"); // window.location.href 이동 대신 새로고침 기능인 open 함수로 바꿈
+          // 페이지 이동을 위해 window.location.href를 설정합니다.
+          window.location.href = "http://localhost:3000/auth/company/login";
         } else {
           console.error("회원가입 실패 사유: ", res.message || "Unknown error");
           alert("회원가입에 실패했습니다. 다시 시도해주세요.");
@@ -185,12 +185,10 @@ export default function SignUp_Company() {
       alert('모든 필드를 올바르게 입력해 주세요.');
     }
   };
-  
 
   const handleDoubleCheckCompanyEmail = () => {
-    if (email.trim().length === 0) {
-      alert("이메일을 입력해주세요.");
-      setEmailValid(false);
+    if (!emailValid) {
+      alert("유효한 이메일 형식이 아닙니다.");
       return;
     }
 
@@ -210,11 +208,9 @@ export default function SignUp_Company() {
 
       if (res.result) {
         alert("사용 가능한 이메일입니다.");
-        setEmailValid(true);
         setEmailCheckSuccess(true); // 중복 확인 성공 시 상태 업데이트
       } else {
         alert("이미 사용 중인 이메일입니다.");
-        setEmailValid(false);
         setEmailCheckSuccess(false); // 중복 확인 실패 시 상태 업데이트
       }
       setDoubleCheckCompanyEmail(true); // API 응답 후에 설정
@@ -225,9 +221,8 @@ export default function SignUp_Company() {
   };
 
   const handleDoubleCheckCompanyId = () => {
-    if (companyId.trim().length === "") {
-      alert("사업자번호를 입력해주세요.");
-      setCompanyIdValid(false);
+    if (!companyIdValid) {
+      alert("유효한 사업자번호 형식이 아닙니다.");
       return;
     }
 
@@ -247,14 +242,12 @@ export default function SignUp_Company() {
 
       if (res.result) {
         alert("등록 가능한 사업자번호입니다.");
-        setCompanyIdValid(true);
         setCompanyIdCheckSuccess(true); // 중복 확인 성공 시 상태 업데이트
       } else {
         alert("등록 불가능한 사업자번호입니다.");
-        setCompanyIdValid(false);
         setCompanyIdCheckSuccess(false); // 중복 확인 실패 시 상태 업데이트
       }
-      setDoubleCheckCompanyId(true);
+      setDoubleCheckCompanyId(true); // API 응답 후에 설정
     })
     .catch(error => {
       console.error('사업자번호 중복 확인 중 오류 발생:', error);
@@ -443,6 +436,8 @@ export default function SignUp_Company() {
     </div>
   );
 }
+
+
 
 
 

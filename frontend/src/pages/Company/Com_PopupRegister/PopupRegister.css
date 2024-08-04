@@ -1,13 +1,14 @@
 /* 팝업 등록 양식 컨테이너 */
 .popup-registration {
-    max-width: 500px;
-    max-height: 1200px;
+    width: 500px;
+    height: 100vh;
     margin: 20px auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative; /* 모달을 위치시키기 위한 상대적 위치 설정 */
+    position: relative;
+    overflow-y: auto;
 }
 
 /* 제목 스타일 */
@@ -42,9 +43,12 @@
 
 /* 자동 확장 텍스트 영역 */
 .popup-registration textarea {
-    resize: none; /* 크기 조절 방지 */
-    overflow: hidden; /* 오버플로우 숨기기 */
+    resize: both; /* 크기 조정을 허용하여 사용자가 조절 가능 */
+    overflow: auto; /* 스크롤바 표시 */
+    height: auto; /* 높이 자동 조정 */
+    white-space: pre-wrap; /* 줄바꿈과 공백을 그대로 유지 */
 }
+
 
 /* 날짜 선택기 컨테이너 */
 .popup-registration .date-picker-container {
@@ -65,20 +69,22 @@
 
 /* 시간 선택기 컨테이너 */
 .popup-registration .time-picker-container {
-    display: flex;
-    gap: 10px;
-    align-items: center; /* 정렬을 가운데로 설정 */
+    display: flex; /* 수평 정렬 */
+    gap: 10px; /* 요소 간의 간격 */
+    margin-left: 20px; /* 체크박스와의 간격 설정 */
+    width: 250px; /* 원하는 너비로 조정 */
 }
 
 /* 시간 선택기 입력 너비 조정 */
 .popup-registration .time-picker-container .react-time-picker__wrapper {
-    width: 100%;
+    width: 100%; /* 부모 컨테이너의 너비에 맞춤 */
 }
 
 /* 시간 선택기 폰트 크기 */
 .popup-registration .react-time-picker__inputGroup__input {
     font-size: 1em;
 }
+
 
 /* 운영 요일 컨테이너 */
 .operating-days-container {
@@ -90,9 +96,9 @@
 /* 요일 컨테이너 */
 .day-container {
     display: flex;
-    align-items: center;
+    align-items: center; /* 세로 중앙 정렬 */
     gap: 10px;
-    position: relative; /* 자식 요소의 위치를 위한 상대적 위치 설정 */
+    flex-wrap: wrap; /* 공간이 부족할 때 줄 바꿈 */
 }
 
 /* 체크박스와 시간 선택기 컨테이너 분리 */
@@ -105,7 +111,7 @@
 /* 시간 선택기 표시 상태 설정 */
 .time-picker-container {
     display: none; /* 기본적으로 숨김 */
-    margin-left: 20px; /* 체크박스와의 간격 설정 */
+    flex-direction: row; /* 수평 정렬 */
 }
 
 /* 체크박스가 체크된 경우 시간 선택기 표시 */
@@ -182,13 +188,13 @@
     background: #fff;
     position: absolute;
     z-index: 10;
-  }
+}
   
-  .category-suggestions li {
+.category-suggestions li {
     padding: 10px;
     cursor: pointer;
-  }
+}
   
-  .category-suggestions li:hover {
+.category-suggestions li:hover {
     background: #f0f0f0;
-  }
+}

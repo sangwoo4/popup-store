@@ -1,0 +1,164 @@
+.popup-registration {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.popup-registration h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.popup-registration label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #555;
+}
+
+.popup-registration input[type="text"],
+.popup-registration input[type="tel"],
+.popup-registration input[type="url"],
+.popup-registration textarea,
+.popup-registration select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.popup-registration textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.popup-registration .date-picker-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.popup-registration .date-picker-container input {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.popup-registration .postcode-container {
+  display: flex;
+  align-items: center;
+}
+
+.popup-registration .postcode-container input {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.popup-registration .searchButton {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.popup-registration .searchButton:hover {
+  background-color: #0056b3;
+}
+
+.popup-registration .road-address {
+  margin-bottom: 15px;
+}
+
+.popup-registration .categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.popup-registration .category-box2 {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.popup-registration .operating-days {
+  margin-bottom: 20px;
+}
+
+.popup-registration .operating-days div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.popup-registration .operating-days input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.popup-registration .operating-days select {
+  margin-right: 10px;
+}
+
+.popup-registration button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #28a745;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.popup-registration button[type="submit"]:hover {
+  background-color: #218838;
+}
+
+.popup-registration .postcode-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-registration .postcode-modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  position: relative;
+}
+
+.popup-registration .postcode-modal-content button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.popup-registration .postcode-modal-content button:hover {
+  background: #c82333;
+}

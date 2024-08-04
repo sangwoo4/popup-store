@@ -156,3 +156,21 @@
         flex-direction: column;
     }
 }
+
+.categoriesWrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .categoryButton {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .categoryButton.selected {
+    background-color: #007bff;
+    color: white;
+  }

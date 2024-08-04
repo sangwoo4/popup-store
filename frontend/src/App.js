@@ -13,6 +13,7 @@ import SignUp_Company from './pages/Company/Com_Login_SignUp/SignUp_Company';
 import Login_Company from './pages/Company/Com_Login_SignUp/Login_Company';
 import LoginPage from './pages/Login/LoginPage';
 import Home_Company from './pages/Company/Com_Home/Home_Company';
+import Update_Company from './pages/Company/Com_Update/Update_Company';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/auth/company/login" element={<Login_Company/>}/>
         <Route path="/select/login" element={<LoginPage/>}/>
         <Route path="/auth/company/homepage" element={<Home_Company/>}/>
+        <Route path="/popup.update/:location" element={<Update_Company/>}/>
       </Routes>
   );
 }

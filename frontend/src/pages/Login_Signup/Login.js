@@ -4,12 +4,9 @@
     2. 모든 코드 재수정 
 */
 
-
 import React, { useEffect, useState, useRef } from 'react';
 import './Login.css';
 import { Link, useNavigate } from "react-router-dom";
-import SignUp from './SignUp';
-import FindIDPW from './FindIDPW';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -60,12 +57,11 @@ export default function Login() {
     .then((res) => res.json())
     .then(res => {
       console.log("백엔드: ", res);
-      console.log(res.data.token);
 
-      if (res.data.token) {
+      if (res.data && res.data.token) {
         alert("로그인 되었습니다.");
-        window.localStorage.setItem('token', res.data.token);
-        navigate('/'); // 로그인 성공 시 '/' 경로로 이동
+        window.localStorage.setItem('token', res.data.token); // 토큰 저장
+        window.location.href = '/';
       } else {
         alert("이메일 또는 비밀번호가 일치하지 않습니다.");
       }
@@ -74,7 +70,6 @@ export default function Login() {
       console.error('백엔드와의 통신 중 오류 발생:', error);
     });
   };
-
   const handleEmailKeyDown = (e) => {
     if (e.key === 'Enter') {
       passwordInputRef.current.focus();

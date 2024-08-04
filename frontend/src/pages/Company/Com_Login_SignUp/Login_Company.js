@@ -11,7 +11,6 @@ export default function Login_Company() {
   const [notAllow, setNotAllow] = useState(true);
 
   const passwordInputRef = useRef(null);
-  const confirmButtonRef = useRef(null);
 
   const navigate = useNavigate();
 
@@ -51,12 +50,11 @@ export default function Login_Company() {
     .then((res) => res.json())
     .then(res => {
       console.log("백엔드: ", res);
-      console.log(res.data.token);
 
       if (res.data.token) {
         alert("로그인 되었습니다.");
+        window.location.href = '/auth/company/homepage'; 
         window.localStorage.setItem('token', res.data.token);
-        window.location.href = '/auth/company/homepage';  // 로그인 성공 시 기업 전용 홈페이지로 이동
       } else {
         alert("이메일 또는 비밀번호가 일치하지 않습니다.");
       }
