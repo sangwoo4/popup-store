@@ -94,4 +94,5 @@
 3. 24/07/29 최신 버전: category-v2-3-7-10:9qBNO9eN
 4. 24/07/30 New 폴더 생성: store_recommend(ai 추천 팝업)
 5. 24/08/02 학습 데이터셋 추가
-6. 24/06/04 store_recommend 파일 추가, ai 추천 팝업스토어 기능
+6. 24/08/04 store_recommend 파일 추가, ai 추천 팝업스토어 기능
+6. 24/08/04 popup_store 데이터베이스 연결(로컬기준)

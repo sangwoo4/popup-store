@@ -13,6 +13,7 @@ cache = LRUCache(maxsize=1000)
 logger = logging.getLogger('cache')
 logger.setLevel(logging.INFO)
 handler = logging.StreamHandler()
+# formatter = logging.Formatter('%(asctime)s - %(name)s - %(levellevel)s - %(message)s')
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
@@ -27,7 +28,7 @@ def set_cache(key: str, value: Any):
 # 캐시에서 값을 가져오는 함수
 def get_cache(key: str):
     compressed_value = cache.get(key)
-    if (compressed_value):
+    if compressed_value:
         logger.info(f"캐시 히트: {key}")
         # 직렬화된 JSON 문자열을 해제
         return json.loads(gzip.decompress(compressed_value).decode())
