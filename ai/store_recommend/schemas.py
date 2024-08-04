@@ -36,8 +36,6 @@ class User(BaseModel):
 # 추천 요청 스키마
 class RecommendRequest(BaseModel):
     user: User
-    popup_stores: List[PopupStore]
-    num_recommendations: int = 3
 
 # 추천 응답 아이템 스키마
 class RecommendResponseItem(BaseModel):

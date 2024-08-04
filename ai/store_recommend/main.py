@@ -1,5 +1,4 @@
 # main.py
-# main.py
 
 from fastapi import FastAPI, HTTPException
 from contextlib import asynccontextmanager
@@ -35,7 +34,7 @@ try:
     logger.info("모델 로드 성공")
 except Exception as e:
     logger.error(f"모델 로드 실패: {e}")
-    model = create_ncf(num_users=1000, num_items=500)
+    model = create_ncf(num_users=1500, num_items=1000)
     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
     logger.info("새 모델 생성 및 컴파일 완료")
 
@@ -108,17 +107,18 @@ def fetch_popup_stores_from_db():
 
 @app.post("/recommend", response_model=schemas.RecommendResponse)
 async def recommendations(request: schemas.RecommendRequest):
-    logger.info(f"추천 요청 수신: 사용자 ID = {request.user.id}, 추천 개수 = {request.num_recommendations}")
-    logger.info(f"Request data: {request.json()}")  # 요청 데이터 전체 로깅
+    logger.info(f"추천 요청 수신: 사용자 ID = {request.user.id}")
+    logger.info(f"user_coords: {request.user.mapy}, {request.user.mapx}")
+    
+    num_recommendations = 3  # 추천 개수를 직접 지정
     
     try:
         user_id_input = np.array([request.user.id])
         user_coords = (request.user.mapy, request.user.mapx)  # 사용자 좌표
-        logger.info(f"user_coords: {user_coords}")
 
         # 팝업 스토어 캐시 확인
         popup_stores_data = get_cache("popup_stores")
-        if (popup_stores_data):
+        if popup_stores_data:
             popup_stores = [schemas.PopupStore(**store) for store in popup_stores_data]
             logger.info(f"캐시에서 팝업 스토어 데이터 로드: {popup_stores}")
         else:
@@ -146,7 +146,7 @@ async def recommendations(request: schemas.RecommendRequest):
         ncf_recommendations = []
         seen = set()
         for idx in top_ncf_indices:
-            if len(ncf_recommendations) >= request.num_recommendations:
+            if len(ncf_recommendations) >= num_recommendations:
                 break
             if filtered_popup_stores[idx].id not in seen:
                 ncf_recommendations.append(schemas.NfcRecommendation(
@@ -169,7 +169,7 @@ async def recommendations(request: schemas.RecommendRequest):
         distance_recommendations = []
         seen.clear()
         for idx in top_distance_indices:
-            if len(distance_recommendations) >= request.num_recommendations:
+            if len(distance_recommendations) >= num_recommendations:
                 break
             if filtered_popup_stores[idx].id not in seen:
                 distance_recommendations.append(schemas.RecommendResponseItem(

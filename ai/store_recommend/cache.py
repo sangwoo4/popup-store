@@ -7,7 +7,7 @@ import logging
 import os
 
 # 최대 1000개의 아이템을 저장할 수 있는 LRUCache 생성
-cache = LRUCache(maxsize=1000)
+cache = LRUCache(maxsize=500)
 
 # 로거 설정
 logger = logging.getLogger('cache')
