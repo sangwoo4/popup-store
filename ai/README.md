@@ -38,6 +38,12 @@
 ### pip install uvicorn
 ### pip install python-dotenv
 
+# 2-2. 새로운 라이브러리 설치 필수!!!!!!!!!!!!
+### pip install tensorflow
+### pip install cachetools
+### pip install numpy
+### pip install geopy
+
 # 3. AI 소스코드 실행 1
 ### uvicorn Recommend.Combine:app --reload
 
@@ -88,3 +94,4 @@
 3. 24/07/29 최신 버전: category-v2-3-7-10:9qBNO9eN
 4. 24/07/30 New 폴더 생성: store_recommend(ai 추천 팝업)
 5. 24/08/02 학습 데이터셋 추가
+6. 24/06/04 store_recommend 파일 추가, ai 추천 팝업스토어 기능
