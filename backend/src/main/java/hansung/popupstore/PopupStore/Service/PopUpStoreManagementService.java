@@ -1,14 +1,8 @@
 package hansung.popupstore.PopupStore.Service;
 
-import hansung.popupstore.dto.CategoryDto;
-import hansung.popupstore.dto.PopupStoreDto;
-import hansung.popupstore.dto.PopupImageDto;
+import hansung.popupstore.dto.*;
 import hansung.popupstore.Util.ResponseDto;
-import hansung.popupstore.dto.StoreDayDto;
-import hansung.popupstore.model.Category;
-import hansung.popupstore.model.PopupImage;
-import hansung.popupstore.model.PopupStore;
-import hansung.popupstore.model.StoreDay;
+import hansung.popupstore.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,7 +58,7 @@ public class PopUpStoreManagementService {
 
     public ResponseDto<?> getDetail(Long id) {
         PopupStore popupStore = popupStoreService.getPopupStore(id);
-        PopupStoreDto popupStoreDto = convertToDto(popupStore);
+        PopupStoreDto popupStoreDto = popupStoreService.convertToDto(popupStore);
         return ResponseDto.setSuccessData("Success", popupStoreDto);
     }
 
@@ -73,47 +67,51 @@ public class PopUpStoreManagementService {
         return ResponseDto.setSuccess("PopupStore deleted successfully.");
     }
 
-    private PopupStoreDto convertToDto(PopupStore popupStore) {
-        Set<StoreDayDto> storeDayDtos = new HashSet<>();
-        for (StoreDay storeDay : popupStore.getStoreDays()) {
-            storeDayDtos.add(StoreDayDto.builder()
-                    .day(storeDay.getDay().getDay())
-                    .openTime(storeDay.getOpenTime())
-                    .closeTime(storeDay.getCloseTime())
-                    .build());
-        }
-
-        Set<CategoryDto> categoryDtos = new HashSet<>();
-        for (Category category : popupStore.getCategories()) {
-            categoryDtos.add(CategoryDto.builder()
-                    .category(category.getCategory())
-                    .build());
-        }
-
-        Set<PopupImageDto> popupImageDtos = new HashSet<>();
-        for (PopupImage popupImage : popupStore.getPopupImages()) {
-            popupImageDtos.add(PopupImageDto.builder()
-                    .id(popupImage.getId())
-                    .imageUrl(popupImage.getImageUrl())
-                    .build());
-        }
-
-        return PopupStoreDto.builder()
-                .id(popupStore.getId())
-                .title(popupStore.getTitle())
-                .address(popupStore.getAddress())
-                .roadAddress(popupStore.getRoadAddress())
-                .startDate(popupStore.getStartDate())
-                .endDate(popupStore.getEndDate())
-                .telephone(popupStore.getTelephone())
-                .subway(popupStore.getSubway())
-                .description(popupStore.getDescription())
-                .link(popupStore.getLink())
-                .mapx(popupStore.getMapx())
-                .mapy(popupStore.getMapy())
-                .categories(categoryDtos)
-                .storeDays(storeDayDtos)
-                .popupImages(popupImageDtos)
-                .build();
-    }
+//    private PopupStoreDto convertToDto(PopupStore popupStore) {
+//        Set<StoreDayDto> storeDayDtos = new HashSet<>();
+//        for (StoreDay storeDay : popupStore.getStoreDays()) {
+//            storeDayDtos.add(StoreDayDto.builder()
+//                    .day(storeDay.getDay().getDay())
+//                    .openTime(storeDay.getOpenTime())
+//                    .closeTime(storeDay.getCloseTime())
+//                    .build());
+//        }
+//
+//        String companyName = popupStore.getCompany().getCompanyName();
+//
+//        Set<CategoryDto> categoryDtos = new HashSet<>();
+//        for (Category category : popupStore.getCategories()) {
+//            categoryDtos.add(CategoryDto.builder()
+//                    .category(category.getCategory())
+//                    .build());
+//        }
+//
+//        Set<PopupImageDto> popupImageDtos = new HashSet<>();
+//        for (PopupImage popupImage : popupStore.getPopupImages()) {
+//            popupImageDtos.add(PopupImageDto.builder()
+//                    .id(popupImage.getId())
+//                    .imageUrl(popupImage.getImageUrl())
+//                    .build());
+//        }
+//
+//        return PopupStoreDto.builder()
+//                .id(popupStore.getId())
+//                .title(popupStore.getTitle())
+//                .address(popupStore.getAddress())
+//                .detailAddress(popupStore.getDetailAddress())
+//                .postCode(popupStore.getPostCode())
+//                .startDate(popupStore.getStartDate())
+//                .endDate(popupStore.getEndDate())
+//                .telephone(popupStore.getTelephone())
+//                .subway(popupStore.getSubway())
+//                .description(popupStore.getDescription())
+//                .link(popupStore.getLink())
+//                .mapx(popupStore.getMapx())
+//                .mapy(popupStore.getMapy())
+//                .companyName(companyName)
+//                .categories(categoryDtos)
+//                .storeDays(storeDayDtos)
+//                .popupImages(popupImageDtos)
+//                .build();
+//    }
 }

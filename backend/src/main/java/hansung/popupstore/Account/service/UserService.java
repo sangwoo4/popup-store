@@ -2,9 +2,10 @@ package hansung.popupstore.Account.service;
 
 import hansung.popupstore.Account.Dto.*;
 import hansung.popupstore.Account.Repository.UserRepository;
-import hansung.popupstore.PopupStore.Service.PopupStoreCategoryService;
+import hansung.popupstore.PopupStore.Repository.CategoryRepository;
 import hansung.popupstore.PopupStore.Service.UserCategoryService;
 import hansung.popupstore.Security.TokenProvider;
+import hansung.popupstore.dto.CategoryDto;
 import hansung.popupstore.dto.UserDto;
 import hansung.popupstore.model.Category;
 import hansung.popupstore.model.Role;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
     private final TokenProvider tokenProvider;
     private final RoleService roleService;
     private final UserCategoryService categoryService;
@@ -123,5 +125,23 @@ public class UserService {
     public ResponseDto<List<Category>> getAllCategories(){
         List<Category> allCategories = categoryService.getAllCategories().getData();
         return ResponseDto.setSuccessData("카테고리 조회 성공", allCategories);
+    }
+
+public UserRecommendDto userCategoryAndAddressFindByUserId(Long userId) {
+    Optional<User> userOptional = userRepository.findById(userId);
+
+        User user = userOptional.get();
+
+        UserRecommendDto userRecommendDto = new UserRecommendDto();
+        userRecommendDto.setId(user.getId());
+        userRecommendDto.setMapx(user.getMapx());
+        userRecommendDto.setMapy(user.getMapy());
+
+        Set<CategoryDto> categoryDtos = user.getCategories().stream()
+                .map(category -> new CategoryDto(category.getId(), category.getCategory()))
+                .collect(Collectors.toSet());
+        userRecommendDto.setCategories(categoryDtos);
+
+    return userRecommendDto;
     }
 }

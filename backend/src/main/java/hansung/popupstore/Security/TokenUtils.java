@@ -25,4 +25,12 @@ public class TokenUtils {
         }
         return Long.parseLong(companyIdStr);
     }
+
+    public Long extractUserIdFromToken(String token){
+        String userIdStr = tokenProvider.validateJwt(token);
+        if(userIdStr == null){
+            throw new IllegalArgumentException("유호하지 않은 토큰입니다.");
+        }
+        return Long.parseLong(userIdStr);
+    }
 }

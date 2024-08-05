@@ -6,7 +6,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import hansung.popupstore.Account.Dto.UserRecommendDto;
+import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.dto.PopupStoreDto;
+import hansung.popupstore.model.User;
+import org.aspectj.weaver.patterns.PerThisOrTargetPointcutVisitor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -14,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,35 +26,130 @@ public class PopUpStoreAiService {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final RestOperations restTemplate = new RestTemplate();
-
+    private final PopupStoreService popupStoreService;
     // 엔드포인트 URL
     //private static final String CATEGORIZE_URL = "http://localhost:8000/categorize";
     private static final String CATEGORIZE_URL = "http://fastapi-app:8000/categorize";
     //private static final String NAVER_CATEGORY_URL = "http://localhost:8000/navercategory";
+    private static final String RECOMMEND_URL = "http://localhost:8000/recommend";
+
+    public PopUpStoreAiService(PopupStoreService popupStoreService) {
+        this.popupStoreService = popupStoreService;
+    }
 
     public List<PopupStoreDto> convertCategoryAPI(String queryResult) throws JsonProcessingException {
-        // Convert queryResult JSON string to JsonNode
         JsonNode queryNode = objectMapper.readTree(queryResult);
-
-        // Create JSON array and populate it with the converted data
-        ArrayNode jsonArray = createJsonArray(queryNode);
-
-        // Convert JSON array to string and send HTTP request
+        ArrayNode jsonArray = createJsonArrayCategory(queryNode);
         String response = sendHttpPostRequest(CATEGORIZE_URL, jsonArray);
         System.out.println("response ======" + response);
-        // Process the response and update the queryNode
         JsonNode updatedQueryNode = processResponse(response, queryNode);
-
-        // Convert updated JSON node to PopupStoreDto list
         return convertToJson(updatedQueryNode);
     }
 
-    private ArrayNode createJsonArray(JsonNode queryNode) {
+    public ResponseDto<PopupStoreDto> convertRecommendPopupByCategory(UserRecommendDto userRecommendDto) throws JsonProcessingException {
+        JsonNode queryNode = objectMapper.valueToTree(userRecommendDto);
+        ArrayNode jsonArray = createJsonArrayRecommendByCategory(queryNode);
+
+        String response = sendHttpPostRequest(RECOMMEND_URL, jsonArray);
+        JsonNode responseJsonNode = objectMapper.readTree(response);
+
+        List<PopupStoreDto> popupStoreDtos = new ArrayList<>();
+
+        // Parse the JSON array directly
+        if (responseJsonNode.isArray()) {
+            for (JsonNode recommendation : responseJsonNode) {
+                Long id = recommendation.get("id").asLong();
+                // Create PopupStoreDto for each id
+                PopupStoreDto popupStoreDto = popupStoreService.getPopupStoreDtoById(id);
+
+                popupStoreDtos.add(popupStoreDto);
+            }
+        }
+
+        return (ResponseDto<PopupStoreDto>) popupStoreDtos;
+    }
+
+    public ResponseDto<PopupStoreDto> convertRecommendPopupByDistance(UserRecommendDto userRecommendDto) throws JsonProcessingException {
+        JsonNode queryNode = objectMapper.valueToTree(userRecommendDto);
+        ArrayNode jsonArray = createJsonArrayRecommendByDistance(queryNode);
+
+
+        String response = sendHttpPostRequest(RECOMMEND_URL, jsonArray);
+        JsonNode responseJsonNode = objectMapper.readTree(response);
+
+        List<PopupStoreDto> popupStoreDtos = new ArrayList<>();
+
+        // Parse the JSON array directly
+        if (responseJsonNode.isArray()) {
+            for (JsonNode recommendation : responseJsonNode) {
+                Long id = recommendation.get("id").asLong();
+                double distance = recommendation.get("distance").asDouble();
+
+                // Create PopupStoreDto for each id
+                PopupStoreDto popupStoreDto = popupStoreService.getPopupStoreDtoById(id);
+                popupStoreDto.setDistance(distance);
+
+                popupStoreDtos.add(popupStoreDto);
+            }
+        }
+
+        return (ResponseDto<PopupStoreDto>) popupStoreDtos;
+    }
+
+
+    private ArrayNode createJsonArrayCategory(JsonNode queryNode) {
         ArrayNode jsonArray = objectMapper.createArrayNode();
         ObjectNode jsonObject = objectMapper.createObjectNode();
         jsonObject.put("title", queryNode.get("title").asText());
         jsonObject.put("categories", queryNode.get("category").asText()); // "categories"로 변환
         jsonObject.put("description", queryNode.get("description").asText());
+        jsonArray.add(jsonObject);
+        return jsonArray;
+    }
+
+    private ArrayNode createJsonArrayRecommendByCategory(JsonNode queryNode) {
+        ArrayNode jsonArray = objectMapper.createArrayNode();
+        ObjectNode jsonObject = objectMapper.createObjectNode();
+
+        // JsonNode에서 필요한 필드만 추출
+        JsonNode categoriesNode = queryNode.get("categories"); // categories 필드 가져오기
+        JsonNode idNode = queryNode.get("id");
+
+        // mapx, mapy, id 필드 추가
+        jsonObject.put("id", idNode.asText());
+
+        // categories 필드를 문자열로 변환
+        if (categoriesNode.isArray()) {
+            StringBuilder categoriesBuilder = new StringBuilder();
+            for (JsonNode categoryNode : categoriesNode) {
+                // 카테고리 값을 문자열로 추가
+                if (categoriesBuilder.length() > 0) {
+                    categoriesBuilder.append(", ");
+                }
+                categoriesBuilder.append(categoryNode.get("category").asText());
+            }
+            jsonObject.put("categories", categoriesBuilder.toString());
+        } else {
+            jsonObject.put("categories", categoriesNode.asText());
+        }
+
+        // JSON 배열에 객체 추가
+        jsonArray.add(jsonObject);
+        return jsonArray;
+    }
+
+    private ArrayNode createJsonArrayRecommendByDistance(JsonNode queryNode) {
+        ArrayNode jsonArray = objectMapper.createArrayNode();
+        ObjectNode jsonObject = objectMapper.createObjectNode();
+
+        JsonNode mapxNode = queryNode.get("mapx");
+        JsonNode mapyNode = queryNode.get("mapy");
+        JsonNode idNode = queryNode.get("id");
+
+        jsonObject.put("id", idNode.asText());
+        jsonObject.put("mapx", mapxNode.asText());
+        jsonObject.put("mapy", mapyNode.asText());
+
         jsonArray.add(jsonObject);
         return jsonArray;
     }
@@ -72,6 +172,8 @@ public class PopUpStoreAiService {
             throw new RuntimeException("HTTP 요청 중 오류 발생", e);
         }
     }
+
+
 
     private JsonNode processResponse(String response, JsonNode queryNode) throws JsonProcessingException {
         JsonNode responseJsonNode = objectMapper.readTree(response);

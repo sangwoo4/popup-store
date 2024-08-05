@@ -28,8 +28,11 @@ public class PopupStore {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "road_address")
-    private String roadAddress;
+    @Column(name = "post-code")
+    private String postCode;
+
+    @Column(name = "detail_address")
+    private String detailAddress;
 
     @Column(name = "start_date", length = 10)
     private String startDate;

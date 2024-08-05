@@ -37,13 +37,13 @@ public class PopupStoreManagementController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("register")
+    @GetMapping("/register")
     public ResponseEntity<ResponseDto<?>> getRegisterPage() {
         ResponseDto<?> response = ResponseDto.setSuccess("페이지 접근이 허용되었습니다.");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<ResponseDto<?>> update(@PathVariable("id") Long id,
                                                  @RequestHeader("Authorization") String token,
                                                  @RequestPart(value = "dto") PopupStoreDto dto,

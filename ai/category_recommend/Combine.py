@@ -42,7 +42,7 @@ class ChatResponse(BaseModel):
 # 지정된 카테고리 목록
 CATEGORY_LIST = [
     "화장품", "캐릭터", "도서/음반", "패션", "인테리어", "전시/체험", "주류",
-    "향수", "음식", "음료", "장난감", "문구", "가정", "생활용품", "기타행사"
+    "향수", "음식", "음료", "장난감", "문구", "가전", "생활용품", "기타행사", "게임"
 ]
 
 # 보호된 카테고리 목록
@@ -90,7 +90,7 @@ async def chat(requests: List[ChatRequest]):
         )
             # OpenAI Fine-Tuning Model 호출
             response = await client.completions.create(
-                model="ft:davinci-002:personal:category-v2-3-7-10:9qBNO9eN",
+                model="ft:davinci-002:category:category-06v:9sPR7LXX",
                 prompt=detailed_prompt,
                 max_tokens=30,
                 temperature=0.75,
