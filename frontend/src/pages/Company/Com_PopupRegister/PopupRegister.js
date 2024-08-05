@@ -1,12 +1,3 @@
-/*
-    수정사항 예정 [24.07.27]
-    1. 운영기간 수정 - 시작 캘린터 선택 후 자동으로 종료 캘린더로 넘어가도록 설정
-                      종료 캘린더에서 날짜를 설정하면 캘린더가 닫히도록 설정
-    2. 운영시간 수정 - 날짜를 모두 드롭다운으로 설정
-                    - 운영요일 및 시간 영역 빈 공간을 클릭하면 월요일 체크박스가 활성화됨
-    3. title과 description 입력 시 이벤트리스너를 사용하여 실시간 카테고리 추천 호출
-*/
-
 // //2024.07.28 카테고리 api 호출 관련 코드
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +11,7 @@ const PopupRegistration = () => {
   const [companyName, setCompanyName] = useState('');
   const [operatingStartDate, setOperatingStartDate] = useState(null);
   const [operatingEndDate, setOperatingEndDate] = useState(null);
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [telephone, setPhoneNumber] = useState('');
   const [postcode, setPostcode] = useState('');
   const [address, setAddress] = useState('');
   const [roadAddress, setRoadAddress] = useState('');
@@ -28,8 +19,7 @@ const PopupRegistration = () => {
   const [subway, setSubway] = useState('');
   const [category, setCategory] = useState([]);
   const [description, setDescription] = useState('');
-  const [imageUrls, setImageUrls] = useState([]);
-  const [imageFiles, setImageFiles] = useState([]);
+  const [imageUrl, setImageFiles] = useState([]);
   const [link, setLink] = useState('');
   const [operatingDays, setOperatingDays] = useState({
     월요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
@@ -52,7 +42,6 @@ const PopupRegistration = () => {
       setIsLoggedIn(true);
       setToken(token);
 
-      // 닉네임 받아서 주최사에 저장
       fetch("http://localhost:8080/company/companyname", {
         method: "GET",
         headers: {
@@ -116,9 +105,6 @@ const PopupRegistration = () => {
       console.error('네이버 지도 API를 로드하지 못했습니다.');
     }
   };
-  
-  
-  
 
   const fetchCategorySuggestions = async (title, description) => {
     try {
@@ -136,6 +122,7 @@ const PopupRegistration = () => {
       const data = await response.json();
       console.log('Received categories:', data);
 
+      // Ensure we are receiving an array and each item has a categories array
       if (Array.isArray(data)) {
         const allCategories = data.flatMap(item => item.categories || []);
         console.log('Flattened categories:', allCategories);
@@ -150,71 +137,78 @@ const PopupRegistration = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    // JSON 데이터 생성
+    const jsonData = {
+      title,
+      postcode,
+      address,
+      roadAddress,
+      detailAddress,
+      startDate: operatingStartDate ? operatingStartDate.toISOString().split('T')[0] : '',
+      endDate: operatingEndDate ? operatingEndDate.toISOString().split('T')[0] : '',
+      telephone,
+      subway,
+      description,
+      link,
+      mapx: coordinates.mapx,
+      mapy: coordinates.mapy,
+      categories: category.map(cat => ({ category: cat.category })),
+      storeDays: Object.keys(operatingDays)
+        .filter(day => operatingDays[day].isSelected)
+        .map(day => ({
+          openTime: operatingDays[day].startTime,
+          closeTime: operatingDays[day].endTime,
+          day
+        }))
+    };
+  
+    // FormData 객체 생성
     const formData = new FormData();
-    formData.append('title', title);
-    formData.append('address', address);
-    formData.append('roadAddress', roadAddress);
-    formData.append('detailAddress', detailAddress);
-    formData.append('postcode', postcode);
-    formData.append('startDate', operatingStartDate ? operatingStartDate.toISOString().split('T')[0] : '');
-    formData.append('endDate', operatingEndDate ? operatingEndDate.toISOString().split('T')[0] : '');
-    formData.append('telephone', phoneNumber);
-    formData.append('subway', subway);
-    formData.append('description', description);
-    formData.append('link', link);
-    formData.append('mapx', coordinates.mapx);
-    formData.append('mapy', coordinates.mapy);
-
-    // 카테고리 포맷 맞추기
-    formData.append('categories', JSON.stringify(
-        category.map(cat => ({ category: cat }))
-    ));
-    
-    // 운영 요일 포맷 맞추기
-    formData.append('storeDays', JSON.stringify(
-        Object.keys(operatingDays)
-            .filter(day => operatingDays[day].isSelected)
-            .map(day => ({
-                day,
-                openTime: operatingDays[day].startTime,
-                closeTime: operatingDays[day].endTime
-            }))
-    ));
-    
-    // 이미지 데이터 포맷 맞추기
-    imageFiles.forEach((file, index) => {
-        formData.append('popupImages', file); // 파일 직접 전송
+    formData.append('dto', JSON.stringify(jsonData));
+  
+    imageUrl.forEach((file) => {
+      formData.append('popupImages', file); // 키값을 popupImages로 설정
     });
-
-    console.log('FormData to be sent:', Array.from(formData.entries()));
-
-    fetch('http://localhost:8080/popup/company/register', {
+  
+    // 콘솔에 데이터 출력
+    console.log('JSON 데이터:', JSON.stringify(jsonData, null, 2));
+    console.log('FormData 객체:');
+    formData.forEach((value, key) => {
+      console.log(key, value);
+    });
+  
+    try {
+      const response = await fetch('http://localhost:8080/popup/company/register', {
         method: 'POST',
         headers: {
-            "Authorization": `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
         },
         body: formData
-    })
-    .then(res => {
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return res.json();
-    })
-    .then(data => {
-        console.log('Success:', data);
-        alert('등록되었습니다!');
-        navigate('/auth/company/homepage');
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        alert('등록에 실패했습니다. 다시 시도해주세요.');
-    });
-};
-
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const result = await response.json();
+      console.log('Success:', result);
+  
+      alert('등록되었습니다!');
+      navigate('/auth/company/homepage');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('등록에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
+  
+  
+  
+  
+  
+  
   
 
   const handleAddressSearch = () => {
@@ -293,11 +287,14 @@ const PopupRegistration = () => {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    setImageFiles(prevFiles => [...prevFiles, ...files]);
+    console.log('Selected files:', files); // 콘솔에 로그 출력
+    setImageFiles(files); // Use setImageFiles
   };
 
   const handleRemoveImage = (index) => {
-    setImageFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+    const newFiles = imageUrl.filter((_, i) => i !== index);
+    console.log('Removed file index:', index); // 콘솔에 로그 출력
+    setImageFiles(newFiles);
   };
   
   useEffect(() => {
@@ -385,16 +382,16 @@ const PopupRegistration = () => {
           전화번호:
           <input
             type="tel"
-            value={phoneNumber}
+            value={telephone}
             onChange={(e) => setPhoneNumber(e.target.value)}
             required
           />
         </label>
 
         <label>
-          우편번호:
-          <div className="postcode-container">
-            <input
+           우편번호:
+           <div className="postcode-container">
+             <input
               type="text"
               value={postcode}
               readOnly
@@ -471,7 +468,7 @@ const PopupRegistration = () => {
           이미지 삽입
           <input type="file" accept="image/*" multiple onChange={handleImageChange} />
           <div className="image-preview">
-            {imageFiles.map((file, index) => (
+            {imageUrl.map((file, index) => (
               <div key={index} className="image-container">
                 <img src={URL.createObjectURL(file)} alt={`Preview ${index}`} />
                 <button type="button" onClick={() => handleRemoveImage(index)}>제거</button>
@@ -546,6 +543,7 @@ const PopupRegistration = () => {
 };
 
 export default PopupRegistration;
+
 
 
 
