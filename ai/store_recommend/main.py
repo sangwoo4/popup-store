@@ -1,5 +1,3 @@
-# main.py
-
 from fastapi import FastAPI, HTTPException
 from contextlib import asynccontextmanager
 import numpy as np
@@ -105,15 +103,14 @@ def fetch_popup_stores_from_db():
         traceback.print_exc()
         raise HTTPException(status_code=500, detail="팝업 스토어 정보를 로드하는 중 오류가 발생했습니다.")
 
-@app.post("/recommend", response_model=schemas.RecommendResponse)
-async def recommendations(request: schemas.RecommendRequest):
+@app.post("/recommend/distance", response_model=schemas.DistanceResponse)
+async def distance_recommendations(request: schemas.DistanceRequest):
     logger.info(f"추천 요청 수신: 사용자 ID = {request.user.id}")
     logger.info(f"user_coords: {request.user.mapy}, {request.user.mapx}")
     
     num_recommendations = 3  # 추천 개수를 직접 지정
     
     try:
-        user_id_input = np.array([request.user.id])
         user_coords = (request.user.mapy, request.user.mapx)  # 사용자 좌표
 
         # 팝업 스토어 캐시 확인
@@ -128,9 +125,62 @@ async def recommendations(request: schemas.RecommendRequest):
             set_cache("popup_stores", [store.dict() for store in popup_stores])
             logger.info(f"데이터베이스에서 팝업 스토어 데이터 로드 및 캐시에 저장: {popup_stores}")
 
+        # 거리 기반 추천 계산 및 중복 제거
+        distances = []
+        for store in popup_stores:
+            store_coords = (store.mapy / 10000000.0, store.mapx / 10000000.0)  # 좌표 변환
+            logger.info(f"store_coords: {store_coords}")  # 상점 좌표 로그
+            distance = calculate_distance(user_coords, store_coords)
+            distances.append(distance)
+            logger.info(f"Distance to store {store.id}: {distance}")
+
+        distances = np.array(distances)
+        top_distance_indices = np.argsort(distances)
+        distance_recommendations = []
+        seen = set()
+        for idx in top_distance_indices:
+            if len(distance_recommendations) >= num_recommendations:
+                break
+            if popup_stores[idx].id not in seen:
+                distance_recommendations.append(schemas.RecommendResponseItem(
+                    id=popup_stores[idx].id,
+                    distance=distances[idx]
+                ))
+                seen.add(popup_stores[idx].id)
+        logger.info(f"거리 기반 추천 완료: {distance_recommendations}")
+
+        return schemas.DistanceResponse(distance_recommendations)
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        logger.error(f"추천 처리 중 오류 발생: {str(e)}")
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail="추천 처리 중 오류 발생")
+
+@app.post("/recommend/category", response_model=schemas.NfcResponse)
+async def category_recommendations(request: schemas.CategoryRequest):
+    logger.info(f"추천 요청 수신: 사용자 ID = {request.user.id}")
+    
+    num_recommendations = 3  # 추천 개수를 직접 지정
+    
+    try:
+        user_id_input = np.array([request.user.id])
+
+        # 팝업 스토어 캐시 확인
+        popup_stores_data = get_cache("popup_stores")
+        if popup_stores_data:
+            popup_stores = [schemas.PopupStore(**store) for store in popup_stores_data]
+            logger.info(f"캐시에서 팝업 스토어 데이터 로드: {popup_stores}")
+        else:
+            popup_stores = fetch_popup_stores_from_db()
+            if not popup_stores:
+                raise HTTPException(status_code=500, detail="팝업 스토어 데이터를 로드하지 못했습니다.")
+            set_cache("popup_stores", [store.dict() for store in popup_stores])
+            logger.info(f"데이터베이스에서 팝업 스토어 데이터 로드 및 캐시에 저장: {popup_stores}")
+
         # 사용자 선호 카테고리 필터링
-        preferred_categories = request.user.preferred_categories.split(', ')
-        filtered_popup_stores = [store for store in popup_stores if any(cat in preferred_categories for cat in store.categories.split(', '))]
+        categories = request.user.categories.split(', ')
+        filtered_popup_stores = [store for store in popup_stores if any(cat in categories for cat in store.categories.split(', '))]
         
         item_ids_input = np.array([store.id for store in filtered_popup_stores])
         predictions = model.predict([user_id_input.repeat(len(filtered_popup_stores)), item_ids_input])
@@ -154,35 +204,8 @@ async def recommendations(request: schemas.RecommendRequest):
                 ))
                 seen.add(filtered_popup_stores[idx].id)
         logger.info(f"NCF 추천 완료: {ncf_recommendations}")
-        
-        # 거리 기반 추천 계산 및 중복 제거
-        distances = []
-        for store in filtered_popup_stores:
-            store_coords = (store.mapy / 10000000.0, store.mapx / 10000000.0)  # 좌표 변환
-            logger.info(f"store_coords: {store_coords}")  # 상점 좌표 로그
-            distance = calculate_distance(user_coords, store_coords)
-            distances.append(distance)
-            logger.info(f"Distance to store {store.id}: {distance}")
 
-        distances = np.array(distances)
-        top_distance_indices = np.argsort(distances)
-        distance_recommendations = []
-        seen.clear()
-        for idx in top_distance_indices:
-            if len(distance_recommendations) >= num_recommendations:
-                break
-            if filtered_popup_stores[idx].id not in seen:
-                distance_recommendations.append(schemas.RecommendResponseItem(
-                    id=filtered_popup_stores[idx].id,
-                    distance=distances[idx]
-                ))
-                seen.add(filtered_popup_stores[idx].id)
-        logger.info(f"거리 기반 추천 완료: {distance_recommendations}")
-
-        return schemas.RecommendResponse(
-            ncf_recommendations=ncf_recommendations,
-            distance_recommendations=distance_recommendations
-        )
+        return schemas.NfcResponse(ncf_recommendations)
     except HTTPException as e:
         raise e
     except Exception as e:
@@ -230,6 +253,8 @@ if __name__ == "__main__":
         exit(1)
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
 
 
 
