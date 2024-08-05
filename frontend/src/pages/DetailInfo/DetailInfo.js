@@ -34,7 +34,7 @@ const DetailInfo = () => {
         console.log(data); // 데이터 구조 확인용
 
         if (data && data.data) {
-          const { title, address, detailInfo, telephone, description, image, link, categories, storeDays, mapx, mapy, startDate, endDate } = data.data;
+          const { companyName, title, address, detailInfo, telephone, description, popupImages, link, categories, storeDays, mapx, mapy, startDate, endDate } = data.data;
 
           // LatLng 객체 생성
           const latlng = new window.naver.maps.LatLng(parseFloat(mapy) / 1e7, parseFloat(mapx) / 1e7);
@@ -47,12 +47,13 @@ const DetailInfo = () => {
           };
 
           setLocationInfo({
+            companyName: companyName,
             title: title || 'No Title',
             address: address || 'No Address Available',
             detailInfo: detailInfo || '',
             telephone: telephone || 'Not available',
             description: description || 'No description available.',
-            image: image || '/images/image1.png',
+            popupImages: popupImages || '/images/image1.png',
             link: link || '',
             categories: categories || [],
             storeDays: storeDays || [],
@@ -137,7 +138,7 @@ const DetailInfo = () => {
   return (
     <div className="detail-info-container">
       <div className="banner">
-        <img src={locationInfo.image} alt="Banner" className="banner-image" />
+        <img src={locationInfo.popupImages} alt="Banner" className="banner-image" />
       </div>
       <nav className="menu">
         <button className={`menu-button ${activeMenu === 'info' ? 'active' : ''}`} onClick={() => setActiveMenu('info')}>상세정보</button>
