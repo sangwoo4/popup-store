@@ -1,3 +1,5 @@
+# main.py
+
 from fastapi import FastAPI, HTTPException
 from contextlib import asynccontextmanager
 import numpy as np
@@ -11,6 +13,12 @@ import asyncio
 import mysql.connector
 import traceback
 from typing import List
+from dotenv import load_dotenv
+import os
+import re
+from openai import AsyncOpenAI
+
+load_dotenv()
 
 app = FastAPI()
 
@@ -25,6 +33,17 @@ DB_CONFIG = {
     'host': 'localhost',
     'database': 'popup'
 }
+
+# OpenAI API 키 설정(시스템 환경변수에 설정으로 외부에 노출 가능성 하락)
+auto_category_key = os.getenv("AUTO_CATEGORY_KEY")
+if not auto_category_key:
+    raise ValueError("API 키가 설정되지 않았습니다.")
+
+# OpenAI 클라이언트 설정
+client = AsyncOpenAI(
+    api_key=auto_category_key,
+    organization="org-QigtX2MxI0U14ilnGQQSbGHy"
+)
 
 # 모델 로딩 또는 초기화
 try:
@@ -223,61 +242,65 @@ async def category_recommendations(request: List[schemas.CategoryRequest]):
         traceback.print_exc()
         raise HTTPException(status_code=500, detail="추천 처리 중 오류 발생")
 
-@app.post("/recommend/category", response_model=schemas.NfcResponse)
-async def category_recommendations(request: schemas.CategoryRequest):
-    logger.info(f"추천 요청 수신: 사용자 ID = {request.user.id}")
-    
-    num_recommendations = 3  # 추천 개수를 직접 지정
-    
-    try:
-        user_id_input = np.array([request.user.id])
+@app.post("/categorize", response_model=List[schemas.ChatResponse])
+async def categorize(requests: List[schemas.ChatRequest]):
+    responses = []
+    for request in requests:
+        try:
+            logger.info(f"요청받음 1: {request}")
 
-        # 팝업 스토어 캐시 확인
-        popup_stores_data = get_cache("popup_stores")
-        if popup_stores_data:
-            popup_stores = [schemas.PopupStore(**store) for store in popup_stores_data]
-            logger.info(f"캐시에서 팝업 스토어 데이터 로드: {popup_stores}")
-        else:
-            popup_stores = fetch_popup_stores_from_db()
-            if not popup_stores:
-                raise HTTPException(status_code=500, detail="팝업 스토어 데이터를 로드하지 못했습니다.")
-            set_cache("popup_stores", [store.dict() for store in popup_stores])
-            logger.info(f"데이터베이스에서 팝업 스토어 데이터 로드 및 캐시에 저장: {popup_stores}")
+            category_prompt = ", ".join(CATEGORY_LIST)
+            detailed_prompt = (
+                "당신은 분류 어시스턴트입니다. 당신의 임무는 이벤트나 제품의 제목과 카테고리를 읽고, "
+                "다음 목록에서 가장 적합한 카테고리를 선택하는 것입니다: "
+                f"{category_prompt}.\n\n"
+                "가능한 한 정확하게 선택해 주세요. 여기 세부 정보가 있습니다:\n"
+                f"제목: {request.title}\n"
+                f"설명: {request.description}\n"
+                f"카테고리: {request.categories}\n"
+                "카테고리: "
+            )
+            response = await client.completions.create(
+                model="ft:davinci-002:personal:category-v2-3-7-10:9qBNO9eN",
+                prompt=detailed_prompt,
+                max_tokens=30,
+                temperature=0.75,
+                top_p=0.75,
+                frequency_penalty=1.90,
+                presence_penalty=0.75,
+            )
+            text_response = response.choices[0].text.strip()
+            logger.info(f"OpenAI로부터 받은 원시 응답: {text_response}")
 
-        # 사용자 선호 카테고리 필터링
-        categories = request.user.categories.split(', ')
-        filtered_popup_stores = [store for store in popup_stores if any(cat in categories for cat in store.categories.split(', '))]
+            if not text_response:
+                raise HTTPException(status_code=500, detail="OpenAI로부터 응답이 없습니다")
+
+            protected_text = protect_categories(text_response)
+            categories = [category.strip() for category in re.split(r'[/, ]+', protected_text) if category.strip()]
+            categories = [restore_categories(category) for category in categories]
+            logger.info(f"응답에서 추출한 카테고리: {categories}")
+
+            matched_categories = list(set(category for category in categories if category in CATEGORY_LIST))
+            logger.info(f"일치하는 카테고리: {matched_categories}")
+
+            if len(matched_categories) < 1:
+                raise HTTPException(status_code=500, detail="일치하는 카테고리를 찾을 수 없습니다")
+
+            categories_response = [schemas.Category(category=category) for category in matched_categories[:3]]
+            logger.info(f"최종 카테고리 응답: {categories_response}")
+
+            chat_response = schemas.ChatResponse(
+                categories=categories_response
+            )
+            responses.append(chat_response)
         
-        item_ids_input = np.array([store.id for store in filtered_popup_stores])
-        predictions = model.predict([user_id_input.repeat(len(filtered_popup_stores)), item_ids_input])
-        predictions = np.round(predictions.flatten(), 5)  # 점수 소수점 3자리로 반올림
-        logger.info(f"NCF 모델을 사용한 예측 완료: {predictions}")
-
-        # 점수와 팝업 스토어 ID 매칭 로그 추가
-        for store, score in zip(filtered_popup_stores, predictions):
-            logger.info(f"Store ID: {store.id}, Score: {score}")
-
-        # NCF 추천 순위 계산 및 중복 제거
-        top_ncf_indices = np.argsort(-predictions)
-        ncf_recommendations = []
-        seen = set()
-        for idx in top_ncf_indices:
-            if len(ncf_recommendations) >= num_recommendations:
-                break
-            if filtered_popup_stores[idx].id not in seen:
-                ncf_recommendations.append(schemas.NfcRecommendation(
-                    id=filtered_popup_stores[idx].id
-                ))
-                seen.add(filtered_popup_stores[idx].id)
-        logger.info(f"NCF 추천 완료: {ncf_recommendations}")
-
-        return schemas.NfcResponse(ncf_recommendations)
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        logger.error(f"추천 처리 중 오류 발생: {str(e)}")
-        traceback.print_exc()
-        raise HTTPException(status_code=500, detail="추천 처리 중 오류 발생")
+        except Exception as e:
+            logger.error(f"오류 발생: {e}")
+            responses.append(schemas.ChatResponse(
+                categories=[schemas.Category(category="기타행사")],
+            ))
+    
+    return responses
 
 @app.post("/save_cache")
 async def save_cache():
@@ -319,6 +342,29 @@ if __name__ == "__main__":
         exit(1)
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+# 유틸리티 함수들
+CATEGORY_LIST = [
+    "화장품", "캐릭터", "도서/음반", "패션", "인테리어", "전시/체험", "향수", "음식", "주류", 
+    "음료", "문구", "가정", "생활용품", "스포츠", "게임", "전자제품", "인물", "건강/웰빙","자동차", 
+    "식물", "여행/레저", "드라마/영화", "가전제품", "기타행사"
+]
+
+PROTECTED_CATEGORIES = ["전시/체험", "도서/음반", "드라마/영화", "여행/레저", "건강/웰빙"]
+
+def protect_categories(text):
+    for category in PROTECTED_CATEGORIES:
+        protected = category.replace('/', '|')
+        text = text.replace(category, protected)
+    return text
+
+def restore_categories(text):
+    for category in PROTECTED_CATEGORIES:
+        protected = category.replace('/', '|')
+        text = text.replace(protected, category)
+    return text
+
+
 
 
 
