@@ -1,46 +1,90 @@
+/* LoginPage.css */
+
 .selection-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background: #f0f0f0;
-  }
-  
-  .title {
-    font-size: 36px;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .subtitle {
-    font-size: 20px;
-    margin-bottom: 40px;
-    color: #666;
-  }
-  
-  .button-group {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  display: flex;
+  justify-content: center; /* 화면 중앙에 섹션을 배치 */
+  align-items: center; /* 화면 중앙에 섹션을 배치 */
+  height: 80vh;
+  margin: 0;
+  padding: 0;
+  background: #ffffff; /* 전체 배경 색상 */
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90%; /* 섹션 너비 설정 */
+  height: 50%;
+  max-width: 500px; /* 최대 너비 설정 */
+  min-width: 400px; /* 최소 너비 설정 */
+  border-radius: 15px; /* 모서리 둥글게 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 섹션 그림자 */
+  padding: 20px; /* 내부 여백 */
+  margin: 0 10px; /* 좌우 여백 */
+}
+
+.section.left {
+  background: #c8f09f; /* 왼쪽 섹션 배경 색상 */
+  color: white;
+}
+
+.section.right {
+  background: #f8f9fa; /* 오른쪽 섹션 배경 색상 */
+  color: #333; /* 텍스트 색상 */
+}
+
+.title {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.subtitle {
+  font-size: 18px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.option-button {
+  padding: 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px; /* 부드러운 모서리 */
+  background: #ffffff; /* 버튼 배경색 */
+  color: #007bff; /* 버튼 텍스트 색상 */
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 버튼 그림자 */
+  width: 100%; /* 버튼 너비를 섹션 너비에 맞추기 */
+}
+
+.option-button:hover {
+  background: #e0e0e0; /* 버튼 호버 색상 */
+  transform: translateY(-2px); /* 버튼 약간의 이동 효과 */
+}
+
+.option-button:active {
+  background: #d0d0d0; /* 버튼 클릭 시 색상 */
+  transform: translateY(1px); /* 버튼 클릭 시 이동 효과 */
+}
+
+@media (max-width: 768px) {
+  .section {
+    width: 100%; /* 모바일에서 섹션 너비 조정 */
+    margin: 10px 0; /* 모바일에서 상하 여백 조정 */
   }
   
   .option-button {
-    padding: 15px 30px;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
-    background: #007bff;
-    color: white;
-    cursor: pointer;
-    transition: background 0.3s ease;
+    width: 100%; /* 모바일에서 버튼 너비 조정 */
   }
-  
-  .option-button:hover {
-    background: #0056b3;
-  }
-  
-  .option-button:active {
-    background: #004085;
-  }
-  
+}
