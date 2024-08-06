@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import DaumPostcode from 'react-daum-postcode';
-import './PopupRegister.css';
+import './PopupRegister_Company.css';
 
-const PopupRegistration = () => {
+const PopupRegister_Company = () => {
   const [title, setTitle] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [operatingStartDate, setOperatingStartDate] = useState(null);
@@ -19,7 +19,7 @@ const PopupRegistration = () => {
   const [subway, setSubway] = useState('');
   const [category, setCategory] = useState([]);
   const [description, setDescription] = useState('');
-  const [imageUrl, setImageFiles] = useState([]);
+  const [imageFiles, setImageFiles] = useState([]);
   const [link, setLink] = useState('');
   const [operatingDays, setOperatingDays] = useState({
     월요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
@@ -71,6 +71,7 @@ const PopupRegistration = () => {
     setShowPostcodeModal(false);
   };
 
+  // 네이버 지도 좌표 변환 코드 (다음 주소에서 주소를 받아 네이버 api에서 좌표 변환)
   const fetchCoordinates = (address) => {
     if (window.naver && window.naver.maps && window.naver.maps.Service) {
       const geocoder = window.naver.maps.Service;
@@ -106,7 +107,7 @@ const PopupRegistration = () => {
     }
   };
   
-
+  // title과 description 입력 시 ai 호출 요청
   const fetchCategorySuggestions = async (title, description) => {
     try {
       console.log('Fetching category suggestions for:', title, description);
@@ -123,10 +124,9 @@ const PopupRegistration = () => {
       const data = await response.json();
       console.log('Received categories:', data);
 
-      // Ensure we are receiving an array and each item has a categories array
       if (Array.isArray(data)) {
         const allCategories = data.flatMap(item => item.categories || []);
-        console.log('Flattened categories:', allCategories);
+        console.log('categories:', allCategories);
         setCategory(allCategories);
       } else {
         console.error('Received categories data is not in the expected format:', data);
@@ -168,26 +168,14 @@ const PopupRegistration = () => {
   
     // FormData 객체 생성
     const formData = new FormData();
-    
-    // JSON 데이터를 Blob으로 변환하고 FormData에 추가
-    const json = JSON.stringify(jsonData);
-    const blob = new Blob([json], { type: 'application/json' });
-    formData.append('dto', blob);
   
-   // 이미지 파일과 메타데이터 추가
-    imageUrl.forEach((file, index) => {
-    // 메타데이터를 JSON 형태로 Blob으로 변환
-    const fileMetadata = {
-      id: index + 1,  // 예시로 인덱스를 ID로 사용
-      imageUrl: URL.createObjectURL(file),  // 실제 서버에서는 이 URL을 사용하지 않음
-      popupStoreId: null
-    };
-    const metadataBlob = new Blob([JSON.stringify(fileMetadata)], { type: 'application/json' });
-    formData.append(`popupImagesMetadata[${index}]`, metadataBlob);
-    
-    // 실제 파일 추가
-    formData.append('popupImages', file);
-  });
+    // JSON 데이터를 FormData에 추가
+    formData.append('dto', new Blob([JSON.stringify(jsonData)], { type: 'application/json' }));
+  
+    // 이미지 파일 추가
+    imageFiles.forEach((file, index) => {
+      formData.append('images', file);
+    });
   
     // 콘솔에 데이터 출력
     console.log('JSON 데이터:', JSON.stringify(jsonData, null, 2));
@@ -222,9 +210,6 @@ const PopupRegistration = () => {
   
   
   
-
-  
-
   const handleAddressSearch = () => {
     setShowPostcodeModal(true);
   };
@@ -266,7 +251,7 @@ const PopupRegistration = () => {
     setTitle(newTitle);
 
     if (e.inputType === 'insertText' && e.data === ' ') {
-      console.log('Triggering API Call for Title');
+      console.log('API Call for Title');
       fetchCategorySuggestions(newTitle, description);
     }
   };
@@ -275,40 +260,14 @@ const PopupRegistration = () => {
     const newDescription = e.target.value;
     setDescription(newDescription);
 
-    if (e.inputType === 'insertText' && (e.data === '.' || e.data === '\n')) {
-      console.log('Triggering API Call for Description');
+    if (e.inputType === 'insertText' && (e.data === '.' || e.data === '!' || e.data === '~' || e.data === '?' || e.data === ',')) {
+      console.log('API Call for Description');
       fetchCategorySuggestions(title, newDescription);
     }
-
-    e.target.style.height = 'auto';
-    e.target.style.height = `${e.target.scrollHeight}px`;
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      return;
-    }
-    if (e.key === '.' || e.key === 'Enter') {
-      if (!e.shiftKey) {
-        e.preventDefault(); // 폼 제출을 방지
-      }
-      console.log('Title:', title);
-      console.log('Description:', description);
-  
-      fetchCategorySuggestions(title, description);
-    }
-  };
-
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    console.log('Selected files:', files); // 콘솔에 로그 출력
-    setImageFiles(files); // Use setImageFiles
-  };
-
-  const handleRemoveImage = (index) => {
-    const newFiles = imageUrl.filter((_, i) => i !== index);
-    console.log('Removed file index:', index); // 콘솔에 로그 출력
-    setImageFiles(newFiles);
+  const handleFileChange = (e) => {
+    setImageFiles([...e.target.files]);
   };
   
   useEffect(() => {
@@ -473,22 +432,16 @@ const PopupRegistration = () => {
             id="description-textarea"
             value={description}
             onChange={handleDescriptionChange}
-            onKeyDown={handleKeyDown}
+            // onKeyDown={handleKeyDown}
             required
           />
         </label>
 
         <label>
           이미지 삽입
-          <input type="file" accept="image/*" multiple onChange={handleImageChange} />
-          <div className="image-preview">
-            {imageUrl.map((file, index) => (
-              <div key={index} className="image-container">
-                <img src={URL.createObjectURL(file)} alt={`Preview ${index}`} />
-                <button type="button" onClick={() => handleRemoveImage(index)}>제거</button>
-              </div>
-            ))}
-          </div>
+          <div className="form-group">
+          <input type="file" id="imageFiles" multiple accept="image/*" onChange={handleFileChange} />
+        </div>
         </label>
 
         <label>
@@ -556,7 +509,7 @@ const PopupRegistration = () => {
   );
 };
 
-export default PopupRegistration;
+export default PopupRegister_Company;
 
 
 
@@ -571,15 +524,15 @@ export default PopupRegistration;
 
 
 
-// //24.08.02 등록하기 링크 및 이미지 삽입 전
+// //24.08.07 이미지 백엔드에서 처리 전 - 나는 변환 완료
 // import React, { useState, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
 // import DatePicker from 'react-datepicker';
 // import 'react-datepicker/dist/react-datepicker.css';
 // import DaumPostcode from 'react-daum-postcode';
-// import './PopupRegister.css';
+// import './PopupRegister_Company.css';
 
-// const PopupRegistration = () => {
+// const PopupRegister_Company = () => {
 //   const [title, setTitle] = useState('');
 //   const [companyName, setCompanyName] = useState('');
 //   const [operatingStartDate, setOperatingStartDate] = useState(null);
@@ -592,7 +545,7 @@ export default PopupRegistration;
 //   const [subway, setSubway] = useState('');
 //   const [category, setCategory] = useState([]);
 //   const [description, setDescription] = useState('');
-//   const [imageUrl, setImageFiles] = useState([]);
+//   const [imageFiles, setImageFiles] = useState([]);
 //   const [link, setLink] = useState('');
 //   const [operatingDays, setOperatingDays] = useState({
 //     월요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
@@ -644,6 +597,7 @@ export default PopupRegistration;
 //     setShowPostcodeModal(false);
 //   };
 
+//   // 네이버 지도 좌표 변환 코드 (다음 주소에서 주소를 받아 네이버 api에서 좌표 변환)
 //   const fetchCoordinates = (address) => {
 //     if (window.naver && window.naver.maps && window.naver.maps.Service) {
 //       const geocoder = window.naver.maps.Service;
@@ -679,7 +633,7 @@ export default PopupRegistration;
 //     }
 //   };
   
-
+//   // title과 description 입력 시 ai 호출 요청
 //   const fetchCategorySuggestions = async (title, description) => {
 //     try {
 //       console.log('Fetching category suggestions for:', title, description);
@@ -696,10 +650,9 @@ export default PopupRegistration;
 //       const data = await response.json();
 //       console.log('Received categories:', data);
 
-//       // Ensure we are receiving an array and each item has a categories array
 //       if (Array.isArray(data)) {
 //         const allCategories = data.flatMap(item => item.categories || []);
-//         console.log('Flattened categories:', allCategories);
+//         console.log('categories:', allCategories);
 //         setCategory(allCategories);
 //       } else {
 //         console.error('Received categories data is not in the expected format:', data);
@@ -741,26 +694,14 @@ export default PopupRegistration;
   
 //     // FormData 객체 생성
 //     const formData = new FormData();
-    
-//     // JSON 데이터를 Blob으로 변환하고 FormData에 추가
-//     const json = JSON.stringify(jsonData);
-//     const blob = new Blob([json], { type: 'application/json' });
-//     formData.append('dto', blob);
   
-//    // 이미지 파일과 메타데이터 추가
-//     imageUrl.forEach((file, index) => {
-//     // 메타데이터를 JSON 형태로 Blob으로 변환
-//     const fileMetadata = {
-//       id: index + 1,  // 예시로 인덱스를 ID로 사용
-//       imageUrl: URL.createObjectURL(file),  // 실제 서버에서는 이 URL을 사용하지 않음
-//       popupStoreId: null
-//     };
-//     const metadataBlob = new Blob([JSON.stringify(fileMetadata)], { type: 'application/json' });
-//     formData.append(`popupImagesMetadata[${index}]`, metadataBlob);
-    
-//     // 실제 파일 추가
-//     formData.append('popupImages', file);
-//   });
+//     // JSON 데이터를 FormData에 추가
+//     formData.append('dto', new Blob([JSON.stringify(jsonData)], { type: 'application/json' }));
+  
+//     // 이미지 파일 추가
+//     imageFiles.forEach((file, index) => {
+//       formData.append('images', file);
+//     });
   
 //     // 콘솔에 데이터 출력
 //     console.log('JSON 데이터:', JSON.stringify(jsonData, null, 2));
@@ -795,9 +736,6 @@ export default PopupRegistration;
   
   
   
-
-  
-
 //   const handleAddressSearch = () => {
 //     setShowPostcodeModal(true);
 //   };
@@ -839,7 +777,7 @@ export default PopupRegistration;
 //     setTitle(newTitle);
 
 //     if (e.inputType === 'insertText' && e.data === ' ') {
-//       console.log('Triggering API Call for Title');
+//       console.log('API Call for Title');
 //       fetchCategorySuggestions(newTitle, description);
 //     }
 //   };
@@ -848,40 +786,14 @@ export default PopupRegistration;
 //     const newDescription = e.target.value;
 //     setDescription(newDescription);
 
-//     if (e.inputType === 'insertText' && (e.data === '.' || e.data === '\n')) {
-//       console.log('Triggering API Call for Description');
+//     if (e.inputType === 'insertText' && (e.data === '.' || e.data === '!' || e.data === '~' || e.data === '?' || e.data === ',')) {
+//       console.log('API Call for Description');
 //       fetchCategorySuggestions(title, newDescription);
 //     }
-
-//     e.target.style.height = 'auto';
-//     e.target.style.height = `${e.target.scrollHeight}px`;
 //   };
 
-//   const handleKeyDown = (e) => {
-//     if (e.key === 'Enter' && !e.shiftKey) {
-//       return;
-//     }
-//     if (e.key === '.' || e.key === 'Enter') {
-//       if (!e.shiftKey) {
-//         e.preventDefault(); // 폼 제출을 방지
-//       }
-//       console.log('Title:', title);
-//       console.log('Description:', description);
-  
-//       fetchCategorySuggestions(title, description);
-//     }
-//   };
-
-//   const handleImageChange = (e) => {
-//     const files = Array.from(e.target.files);
-//     console.log('Selected files:', files); // 콘솔에 로그 출력
-//     setImageFiles(files); // Use setImageFiles
-//   };
-
-//   const handleRemoveImage = (index) => {
-//     const newFiles = imageUrl.filter((_, i) => i !== index);
-//     console.log('Removed file index:', index); // 콘솔에 로그 출력
-//     setImageFiles(newFiles);
+//   const handleFileChange = (e) => {
+//     setImageFiles([...e.target.files]);
 //   };
   
 //   useEffect(() => {
@@ -1046,22 +958,16 @@ export default PopupRegistration;
 //             id="description-textarea"
 //             value={description}
 //             onChange={handleDescriptionChange}
-//             onKeyDown={handleKeyDown}
+//             // onKeyDown={handleKeyDown}
 //             required
 //           />
 //         </label>
 
 //         <label>
 //           이미지 삽입
-//           <input type="file" accept="image/*" multiple onChange={handleImageChange} />
-//           <div className="image-preview">
-//             {imageUrl.map((file, index) => (
-//               <div key={index} className="image-container">
-//                 <img src={URL.createObjectURL(file)} alt={`Preview ${index}`} />
-//                 <button type="button" onClick={() => handleRemoveImage(index)}>제거</button>
-//               </div>
-//             ))}
-//           </div>
+//           <div className="form-group">
+//           <input type="file" id="imageFiles" multiple accept="image/*" onChange={handleFileChange} />
+//         </div>
 //         </label>
 
 //         <label>
@@ -1129,4 +1035,4 @@ export default PopupRegistration;
 //   );
 // };
 
-// export default PopupRegistration;
+// export default PopupRegister_Company;

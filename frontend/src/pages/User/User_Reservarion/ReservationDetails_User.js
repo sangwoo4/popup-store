@@ -1,6 +1,6 @@
 import React from "react";
 
-const ReservationDetails = () => {
+const ReservationDetails_User = () => {
     return (
         <div>
             <h1>예약내역 페이지</h1>
@@ -8,4 +8,4 @@ const ReservationDetails = () => {
     );
 };
 
-export default ReservationDetails;
+export default ReservationDetails_User;

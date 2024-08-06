@@ -12,7 +12,7 @@ export default function Login_Company() {
 
   const passwordInputRef = useRef(null);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     if (emailValid && pwValid) {

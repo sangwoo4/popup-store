@@ -3,11 +3,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
-import './Home.css';
+import './Home_User.css';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const Home = () => {
+const Home_User = () => {
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -145,7 +145,7 @@ function SamplePrevArrow(props) {
   );
 }
 
-export default Home;
+export default Home_User;
 
 
 

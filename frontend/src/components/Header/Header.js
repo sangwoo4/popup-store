@@ -121,7 +121,7 @@ const Header = () => {
       {isUserLoggedIn && (
         <>
           <GoHeart />
-          <Link to="/reservation.details">예약내역</Link>
+          <Link to="/popup/my.reservation">예약내역</Link>
           &nbsp; | &nbsp;
         </>
       )}
@@ -133,7 +133,7 @@ const Header = () => {
       <div style={{ display: 'inline-block' }}>
         {isCompanyLoggedIn && (
           <>
-            <Link to="/popup.registration">기업 팝업 등록하기</Link>
+            <Link to="/popup/company/register">기업 팝업 등록하기</Link>
             &nbsp; | &nbsp;
           </>
         )}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import './SignUp.css';
+import './SignUp_User.css';
 
-export default function SignUp() {
+export default function SignUp_User() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');

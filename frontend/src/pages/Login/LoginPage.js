@@ -14,10 +14,10 @@ export default function LoginPage() {
         <Link to="/auth/company/signup">
           <button className="option-button">기업 회원가입</button>
         </Link>
-        <Link to="/login">
+        <Link to="/auth/user/login">
           <button className="option-button">고객 로그인</button>
         </Link>
-        <Link to="/signup">
+        <Link to="/auth/user/signup">
           <button className="option-button">고객 회원가입</button>
         </Link>
       </div>

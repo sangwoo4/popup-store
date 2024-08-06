@@ -185,7 +185,7 @@
     border-radius: 4px;
     max-height: 150px;
     overflow-y: auto;
-    background: #fff;
+    background: #24890d;
     position: absolute;
     z-index: 10;
 }
@@ -196,5 +196,5 @@
 }
   
 .category-suggestions li:hover {
-    background: #f0f0f0;
+    background: #24890d;
 }

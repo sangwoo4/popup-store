@@ -3,9 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import DaumPostcode from 'react-daum-postcode';
-import './Update_Company.css';
+import './PopupUpdate_Company.css';
 
-const PopupUpdate = () => {
+const PopupUpdate_Company = () => {
   const { id } = useParams();
   const [title, setTitle] = useState('');
   const [operatingStartDate, setOperatingStartDate] = useState(null);
@@ -582,7 +582,7 @@ const PopupUpdate = () => {
   );
 };
 
-export default PopupUpdate;
+export default PopupUpdate_Company;
 
 
 

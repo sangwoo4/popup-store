@@ -1,59 +1,56 @@
-import './DetailInfo.css';
+import './DetailInfo_Company.css';
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
-const DetailInfo = () => {
+const DetailInfo_Company = () => {
   const { location } = useParams();
+  const navigate = useNavigate(); // useNavigate 훅을 추가하여 페이지 이동 처리
   const [activeMenu, setActiveMenu] = useState('info');
   const [locationInfo, setLocationInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const mapElement = useRef(null);
 
-  // --------------------------백엔드 GET 통신--------------------------------------
   useEffect(() => {
-    if (!location) {
-      setError(new Error('Location parameter is missing.'));
-      setLoading(false);
-      return;
-    }
-
     const fetchLocationInfo = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/popup/user/detail/${location}`, {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          throw new Error('User is not authenticated');
+        }
+    
+        const response = await fetch(`http://localhost:8080/popup/company/detail/${location}`, {
           method: "GET",
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
           },
         });
+    
         if (!response.ok) {
-          throw new Error('Network response was not ok...');
+          throw new Error(`Network response was not ok: ${response.statusText}`);
         }
+    
         const data = await response.json();
-
-        console.log(data); // 데이터 구조 확인용
-
         if (data && data.data) {
-          const { companyName, title, address, detailInfo, telephone, description, popupImages, link, categories, storeDays, mapx, mapy, startDate, endDate } = data.data;
-
-          // LatLng 객체 생성
+          const { companyName, title, address, detailAddress, telephone, description, popupImages, link, categories, storeDays, mapx, mapy, startDate, endDate } = data.data;
+    
           const latlng = new window.naver.maps.LatLng(parseFloat(mapy) / 1e7, parseFloat(mapx) / 1e7);
-
-          // 날짜 형식 처리
+    
           const parseDate = (dateString) => {
             if (!dateString) return 'N/A';
             const date = new Date(dateString);
             return isNaN(date.getTime()) ? 'N/A' : date.toISOString().split('T')[0];
           };
-
+    
           setLocationInfo({
             companyName: companyName,
             title: title || 'No Title',
             address: address || 'No Address Available',
-            detailInfo: detailInfo || '',
+            detailAddress: detailAddress || '',
             telephone: telephone || 'Not available',
             description: description || 'No description available.',
-            popupImages: popupImages || '/images/image1.png',
+            popupImages: popupImages.length > 0 ? popupImages : ['/images/image1.png'], // 이미지 배열 처리
             link: link || '',
             categories: categories || [],
             storeDays: storeDays || [],
@@ -63,9 +60,9 @@ const DetailInfo = () => {
           });
         } else {
           console.error("Received data does not have a 'data' property:", data);
-          setLocationInfo(null); // Fallback to null if data is not present
+          setLocationInfo(null);
         }
-
+    
         setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -76,7 +73,6 @@ const DetailInfo = () => {
 
     fetchLocationInfo();
   }, [location]);
-  // --------------------------백엔드 GET 통신--------------------------------------
 
   useEffect(() => {
     if (activeMenu === 'map' && mapElement.current && window.naver && locationInfo && locationInfo.latlng) {
@@ -112,16 +108,40 @@ const DetailInfo = () => {
 
       infowindow.open(map, marker);
 
-      // Clean up function
       return () => {
         if (mapElement.current) {
-          mapElement.current.innerHTML = ''; // Clear the map element
+          mapElement.current.innerHTML = '';
         }
         infowindow.close();
         marker.setMap(null);
       };
     }
   }, [activeMenu, locationInfo]);
+
+  const handleDelete = async () => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(`http://localhost:8080/popup/register/update/${location}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error(`Network response was not ok: ${response.statusText}`);
+        }
+
+        alert('삭제되었습니다.');
+        navigate('/auth/company/homepage'); // 삭제 후 홈으로 이동
+      } catch (error) {
+        console.error('Error deleting data:', error);
+        alert('삭제에 실패했습니다.');
+      }
+    }
+  };
 
   if (loading) {
     return <p>Loading...</p>;
@@ -138,7 +158,15 @@ const DetailInfo = () => {
   return (
     <div className="detail-info-container">
       <div className="banner">
-        <img src={locationInfo.popupImages} alt="Banner" className="banner-image" />
+        {locationInfo.popupImages.length > 0 ? (
+          <div className="banner-images">
+            {locationInfo.popupImages.map((imageUrl, index) => (
+              <img key={index} src={imageUrl} alt={`Banner ${index + 1}`} className="banner-image" />
+            ))}
+          </div>
+        ) : (
+          <img src="/images/image1.png" alt="Default Banner" className="banner-image" />
+        )}
       </div>
       <nav className="menu">
         <button className={`menu-button ${activeMenu === 'info' ? 'active' : ''}`} onClick={() => setActiveMenu('info')}>상세정보</button>
@@ -150,7 +178,7 @@ const DetailInfo = () => {
           <div className="info-content">
             <h2>{locationInfo.title}</h2>
             <p>기간: {locationInfo.startDate} ~ {locationInfo.endDate}</p>
-            <p>장소: {locationInfo.address} {locationInfo.detailInfo}</p>
+            <p>장소: {locationInfo.address} {locationInfo.detailAddress}</p>
             <p>전화: {locationInfo.telephone}</p>
             <div className="categories">
               {locationInfo.categories && locationInfo.categories.length > 0 ? (
@@ -158,7 +186,7 @@ const DetailInfo = () => {
                   <div key={index} className="category-box2">{category.category}</div>
                 ))
               ) : (
-                <p>No categories available.</p>
+                <p>카테고리가 없습니다.</p>
               )}
             </div>
             <p>{locationInfo.description}</p>
@@ -171,7 +199,7 @@ const DetailInfo = () => {
                   </div>
                 ))
               ) : (
-                <p>No store hours available.</p>
+                <p>운영 시간이 없습니다.</p>
               )}
             </div>
             <p>{locationInfo.link}</p>
@@ -179,6 +207,8 @@ const DetailInfo = () => {
           <div className='warning-content'>
             <p>안내사항 문구가 입력됩니다</p>
           </div>
+          {/* 삭제하기 버튼 추가 */}
+          <button className="delete-button" onClick={handleDelete}>삭제하기</button>
         </div>
       )}
 
@@ -196,7 +226,7 @@ const DetailInfo = () => {
   );
 };
 
-export default DetailInfo;
+export default DetailInfo_Company;
 
 
 
@@ -209,12 +239,15 @@ export default DetailInfo;
 
 
 
-// // 2024.07.11 상세정보 화면 백엔드 api 설정 완료
-// import './DetailInfo.css';
+
+
+
+// // 2024.08.07 상세정보 화면 백엔드 api 설정 완료
+// import './DetailInfo_Company.css';
 // import React, { useEffect, useRef, useState } from 'react';
 // import { useParams } from 'react-router-dom';
 
-// const DetailInfo = () => {
+// const DetailInfo_Company = () => {
 //   const { location } = useParams();
 //   const [activeMenu, setActiveMenu] = useState('info');
 //   const [locationInfo, setLocationInfo] = useState(null);
@@ -222,49 +255,46 @@ export default DetailInfo;
 //   const [error, setError] = useState(null);
 //   const mapElement = useRef(null);
 
-//   // --------------------------백엔드 GET 통신--------------------------------------
 //   useEffect(() => {
-//     if (!location) {
-//       setError(new Error('Location parameter is missing.'));
-//       setLoading(false);
-//       return;
-//     }
-
 //     const fetchLocationInfo = async () => {
 //       try {
-//         const response = await fetch(`http://localhost:8080/popup/detail/${location}`, {
+//         const token = localStorage.getItem("token");
+//         if (!token) {
+//           throw new Error('User is not authenticated');
+//         }
+    
+//         const response = await fetch(`http://localhost:8080/popup/company/detail/${location}`, {
 //           method: "GET",
 //           headers: {
 //             'Content-Type': 'application/json',
+//             'Authorization': `Bearer ${token}`
 //           },
 //         });
+    
 //         if (!response.ok) {
-//           throw new Error('Network response was not ok...');
+//           throw new Error(`Network response was not ok: ${response.statusText}`);
 //         }
+    
 //         const data = await response.json();
-
-//         console.log(data); // 데이터 구조 확인용
-
 //         if (data && data.data) {
-//           const { title, address, detailInfo, telephone, description, image, link, categories, storeDays, mapx, mapy, startDate, endDate } = data.data;
-
-//           // LatLng 객체 생성
+//           const { companyName, title, address, detailAddress, telephone, description, popupImages, link, categories, storeDays, mapx, mapy, startDate, endDate } = data.data;
+    
 //           const latlng = new window.naver.maps.LatLng(parseFloat(mapy) / 1e7, parseFloat(mapx) / 1e7);
-
-//           // 날짜 형식 처리
+    
 //           const parseDate = (dateString) => {
 //             if (!dateString) return 'N/A';
 //             const date = new Date(dateString);
 //             return isNaN(date.getTime()) ? 'N/A' : date.toISOString().split('T')[0];
 //           };
-
+    
 //           setLocationInfo({
+//             companyName: companyName,
 //             title: title || 'No Title',
 //             address: address || 'No Address Available',
-//             detailInfo: detailInfo || '',
+//             detailAddress: detailAddress || '',
 //             telephone: telephone || 'Not available',
 //             description: description || 'No description available.',
-//             image: image || '/images/image1.png',
+//             popupImages: popupImages.length > 0 ? popupImages : ['/images/image1.png'], // 이미지 배열 처리
 //             link: link || '',
 //             categories: categories || [],
 //             storeDays: storeDays || [],
@@ -274,9 +304,9 @@ export default DetailInfo;
 //           });
 //         } else {
 //           console.error("Received data does not have a 'data' property:", data);
-//           setLocationInfo(null); // Fallback to null if data is not present
+//           setLocationInfo(null);
 //         }
-
+    
 //         setLoading(false);
 //       } catch (error) {
 //         console.error('Error fetching data:', error);
@@ -284,10 +314,10 @@ export default DetailInfo;
 //         setLoading(false);
 //       }
 //     };
+    
 
 //     fetchLocationInfo();
 //   }, [location]);
-//   // --------------------------백엔드 GET 통신--------------------------------------
 
 //   useEffect(() => {
 //     if (activeMenu === 'map' && mapElement.current && window.naver && locationInfo && locationInfo.latlng) {
@@ -323,10 +353,9 @@ export default DetailInfo;
 
 //       infowindow.open(map, marker);
 
-//       // Clean up function
 //       return () => {
 //         if (mapElement.current) {
-//           mapElement.current.innerHTML = ''; // Clear the map element
+//           mapElement.current.innerHTML = '';
 //         }
 //         infowindow.close();
 //         marker.setMap(null);
@@ -347,64 +376,73 @@ export default DetailInfo;
 //   }
 
 //   return (
-//     <div className="detail-info-container">
-//       <div className="banner">
-//         <img src={locationInfo.image} alt="Banner" className="banner-image" />
+// <div className="detail-info-container">
+//   <div className="banner">
+//     {locationInfo.popupImages.length > 0 ? (
+//       <div className="banner-images">
+//         {locationInfo.popupImages.map((imageUrl, index) => (
+//           <img key={index} src={imageUrl} alt={`Banner ${index + 1}`} className="banner-image" />
+//         ))}
 //       </div>
-//       <nav className="menu">
-//         <button className={`menu-button ${activeMenu === 'info' ? 'active' : ''}`} onClick={() => setActiveMenu('info')}>상세정보</button>
-//         <button className={`menu-button ${activeMenu === 'map' ? 'active' : ''}`} onClick={() => setActiveMenu('map')}>지도</button>
-//         <button className={`menu-button ${activeMenu === 'review' ? 'active' : ''}`} onClick={() => setActiveMenu('review')}>후기</button>
-//       </nav>
-//       {activeMenu === 'info' && locationInfo && (
-//         <div className='detail-info'>
-//           <div className="info-content">
-//             <h2>{locationInfo.title}</h2>
-//             <p>기간: {locationInfo.startDate} ~ {locationInfo.endDate}</p>
-//             <p>장소: {locationInfo.address} {locationInfo.detailInfo}</p>
-//             <p>전화: {locationInfo.telephone}</p>
-//             <div className="categories">
-//               {locationInfo.categories && locationInfo.categories.length > 0 ? (
-//                 locationInfo.categories.map((category, index) => (
-//                   <div key={index} className="category-box2">{category.category}</div>
-//                 ))
-//               ) : (
-//                 <p>No categories available.</p>
-//               )}
-//             </div>
-//             <p>{locationInfo.description}</p>
-//             <div className="store-days">
-//               <h3>운영 시간</h3>
-//               {locationInfo.storeDays && locationInfo.storeDays.length > 0 ? (
-//                 locationInfo.storeDays.map((day, index) => (
-//                   <div key={index}>
-//                     <p>{day.day}: {day.openTime} ~ {day.closeTime}</p>
-//                   </div>
-//                 ))
-//               ) : (
-//                 <p>No store hours available.</p>
-//               )}
-//             </div>
-//             <p>{locationInfo.link}</p>
-//           </div>
-//           <div className='warning-content'>
-//             <p>안내사항 문구가 입력됩니다</p>
-//           </div>
+//     ) : (
+//       <img src="/images/image1.png" alt="Default Banner" className="banner-image" />
+//     )}
+//   </div>
+//   <nav className="menu">
+//     <button className={`menu-button ${activeMenu === 'info' ? 'active' : ''}`} onClick={() => setActiveMenu('info')}>상세정보</button>
+//     <button className={`menu-button ${activeMenu === 'map' ? 'active' : ''}`} onClick={() => setActiveMenu('map')}>지도</button>
+//     <button className={`menu-button ${activeMenu === 'review' ? 'active' : ''}`} onClick={() => setActiveMenu('review')}>후기</button>
+//   </nav>
+//   {activeMenu === 'info' && locationInfo && (
+//     <div className='detail-info'>
+//       <div className="info-content">
+//         <h2>{locationInfo.title}</h2>
+//         <p>기간: {locationInfo.startDate} ~ {locationInfo.endDate}</p>
+//         <p>장소: {locationInfo.address} {locationInfo.detailAddress}</p>
+//         <p>전화: {locationInfo.telephone}</p>
+//         <div className="categories">
+//           {locationInfo.categories && locationInfo.categories.length > 0 ? (
+//             locationInfo.categories.map((category, index) => (
+//               <div key={index} className="category-box2">{category.category}</div>
+//             ))
+//           ) : (
+//             <p>카테고리가 없습니다.</p>
+//           )}
 //         </div>
-//       )}
-
-//       {activeMenu === 'map' && (
-//         <div ref={mapElement} className="map-content" />
-//       )}
-
-//       {activeMenu === 'review' && (
-//         <div className="review-content">
-//           <h2>후기</h2>
-//           <p>이 장소에 대한 후기를 작성해주세요.</p>
+//         <p>{locationInfo.description}</p>
+//         <div className="store-days">
+//           <h3>운영 시간</h3>
+//           {locationInfo.storeDays && locationInfo.storeDays.length > 0 ? (
+//             locationInfo.storeDays.map((day, index) => (
+//               <div key={index}>
+//                 <p>{day.day}: {day.openTime} ~ {day.closeTime}</p>
+//               </div>
+//             ))
+//           ) : (
+//             <p>운영 시간이 없습니다.</p>
+//           )}
 //         </div>
-//       )}
+//         <p>{locationInfo.link}</p>
+//       </div>
+//       <div className='warning-content'>
+//         <p>안내사항 문구가 입력됩니다</p>
+//       </div>
 //     </div>
+//   )}
+
+//   {activeMenu === 'map' && (
+//     <div ref={mapElement} className="map-content" />
+//   )}
+
+//   {activeMenu === 'review' && (
+//     <div className="review-content">
+//       <h2>후기</h2>
+//       <p>이 장소에 대한 후기를 작성해주세요.</p>
+//     </div>
+//   )}
+// </div>
+
 //   );
 // };
 
-// export default DetailInfo;
+// export default DetailInfo_Company;

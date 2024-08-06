@@ -5,10 +5,10 @@
 */
 
 import React, { useEffect, useState, useRef } from 'react';
-import './Login.css';
+import './Login_User.css';
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function Login_User() {
   const [email, setEmail] = useState('');
   const [password, setPw] = useState('');
 

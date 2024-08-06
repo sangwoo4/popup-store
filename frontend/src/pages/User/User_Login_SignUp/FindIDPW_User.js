@@ -6,9 +6,9 @@
 
 
 import React, { useEffect, useState } from 'react';
-import './FindIDPW.css';
+import './FindIDPW_User.css';
 
-const FindIDPW = () => {
+const FindIDPW_User = () => {
     const [selectedTab, setSelectedTab] = useState('findEmail');
 
     useEffect(() => { //url변경시키기
@@ -143,4 +143,4 @@ const FindIDPW = () => {
     );
 }
 
-export default FindIDPW;
+export default FindIDPW_User;

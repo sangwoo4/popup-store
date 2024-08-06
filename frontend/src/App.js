@@ -1,50 +1,46 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import React from "react";
 
-import Home from "./pages/Home/Home";
-import DetailInfo from "./pages/DetailInfo/DetailInfo";
-import MyPage from "./pages/MyPage/MyPage";
-import ReservationDetails from "./pages/Reservation/ReservationDetails";
-import PopupRegistration from './pages/Company/Com_PopupRegister/PopupRegister';
-import FindIDPW from './pages/Login_Signup/FindIDPW';
-import Login from './pages/Login_Signup/Login';
-import SignUp from './pages/Login_Signup/SignUp';
-import SignUp_Company from './pages/Company/Com_Login_SignUp/SignUp_Company';
-import Login_Company from './pages/Company/Com_Login_SignUp/Login_Company';
-import LoginPage from './pages/Login/LoginPage';
-import Home_Company from './pages/Company/Com_Home/Home_Company';
-import Update_Company from './pages/Company/Com_Update/Update_Company';
+import LoginPage from "./pages/Login/LoginPage";
+
+import Home_User from "./pages/User/User_Home/Home_User";
+import DetailInfo_User from "./pages/User/User_DetailInfo/DetailInfo_User";
+import SignUp_User from "./pages/User/User_Login_SignUp/SignUp_User";
+import Login_User from "./pages/User/User_Login_SignUp/Login_User";
+import FindIDPW_User from "./pages/User/User_Login_SignUp/FindIDPW_User";
+import MyPage_User from "./pages/User/User_Mypage/Mypage_User";
+import ReservationDetails_User from "./pages/User/User_Reservarion/ReservationDetails_User";
+
+import Home_Company from "./pages/Company/Com_Home/Home_Company";
+import DetailInfo_Company from "./pages/Company/Com_DetailInfo/DetailInfo_Company";
+import Login_Company from "./pages/Company/Com_Login_SignUp/Login_Company";
+import SignUp_Company from "./pages/Company/Com_Login_SignUp/SignUp_Company";
+import PopupRegister_Company from "./pages/Company/Com_PopupRegister/PopupRegister_Company";
+import Update_Company from "./pages/Company/Com_Update/PopupUpdate_Company";
+
+
 
 function App() {
   return (
       <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/popup.details/:location" element={<DetailInfo/>}/>
-        <Route path="/reservation.details" element={<ReservationDetails/>}/>
-        <Route path="/mypage" element={<MyPage/>}/>
-        <Route path='/login' element={<Login/>}/>
-        <Route path="/signup" element={<SignUp/>}/>
-        <Route path="/fintidpw" element={<FindIDPW/>}/>
-        <Route path="/popup.registration" element={<PopupRegistration/>}/>
+        <Route path="/select/login" element={<LoginPage/>}/>
+
+        <Route path="/" element={<Home_User/>}/>
+        <Route path="/popup/user/detail/:location" element={<DetailInfo_User/>}/>
+        <Route path="/auth/user/signup" element={<SignUp_User/>}/>
+        <Route path="/auth/user/login" element={<Login_User/>}/>
+        <Route path="/auth/user/fincidpw" element={<FindIDPW_User/>}/>
+        <Route path="/auth/user/mypage" element={<MyPage_User/>}/>
+        <Route path="/popup/my.reservation" element={<ReservationDetails_User/>}/>
+
+        <Route path="/auth/company/homepage" element={<Home_Company/>}/>
+        <Route path="/popup/company/detail/:location" element={<DetailInfo_Company/>}/>
         <Route path="/auth/company/signup" element={<SignUp_Company/>}/>
         <Route path="/auth/company/login" element={<Login_Company/>}/>
-        <Route path="/select/login" element={<LoginPage/>}/>
-        <Route path="/auth/company/homepage" element={<Home_Company/>}/>
-        <Route path="/popup.update/:location" element={<Update_Company/>}/>
+        <Route path="/popup/company/register" element={<PopupRegister_Company/>}/>
+        <Route path="/popup/company/update/:location" element={<Update_Company/>}/>
       </Routes>
   );
 }
 
 export default App;
-
-
-{/*
-      <Routes>
-      <Route path="/" element={<Home/>}/>
-      <Route path="/popup.details" element={<DetailInfo/>}/>
-      <Route path="/reservation.details" element={<ReservationDetails/>}/>
-      <Route path="/mypage" element={<MyPage/>}/>
-      <Route path="/login" element={<Login/>}/>
-
-    </Routes>
-  */}
