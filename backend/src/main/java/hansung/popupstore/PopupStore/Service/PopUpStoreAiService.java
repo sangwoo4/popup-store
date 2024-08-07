@@ -29,9 +29,11 @@ public class PopUpStoreAiService {
     private final PopupStoreService popupStoreService;
     // 엔드포인트 URL
     //private static final String CATEGORIZE_URL = "http://localhost:8000/categorize";
-    private static final String CATEGORIZE_URL = "http://fastapi-app:8000/categorize";
+    private static final String CATEGORIZE_URL = "http://fastapi-category:8000/categorize";
     //private static final String NAVER_CATEGORY_URL = "http://localhost:8000/navercategory";
-    private static final String RECOMMEND_URL = "http://localhost:8000/recommend";
+    private static final String DISTANCE_RECOMMEND_URL = "http://fastapi-store:8000/recommend/distance";
+    private static final String CATEGORY_RECOMMEND_URL = "http://fastapi-store:8000/recommend/category";
+
 
     public PopUpStoreAiService(PopupStoreService popupStoreService) {
         this.popupStoreService = popupStoreService;
@@ -46,35 +48,46 @@ public class PopUpStoreAiService {
         return convertToJson(updatedQueryNode);
     }
 
-    public ResponseDto<PopupStoreDto> convertRecommendPopupByCategory(UserRecommendDto userRecommendDto) throws JsonProcessingException {
+
+    public ResponseDto<List<PopupStoreDto>> convertRecommendPopupByCategory(UserRecommendDto userRecommendDto) throws JsonProcessingException {
+        // 사용자 추천 DTO를 JSON 노드로 변환
         JsonNode queryNode = objectMapper.valueToTree(userRecommendDto);
+        System.out.println("queryNode======" + queryNode);
+
+        // FastAPI에 요청할 JSON 배열을 생성
         ArrayNode jsonArray = createJsonArrayRecommendByCategory(queryNode);
+        System.out.println("jsonArray=====" + jsonArray);
 
-        String response = sendHttpPostRequest(RECOMMEND_URL, jsonArray);
+        // FastAPI에 HTTP POST 요청을 보내고 응답을 받아옴
+        String response = sendHttpPostRequest(CATEGORY_RECOMMEND_URL, jsonArray);
+        System.out.println("response: " + response);
+
+        // 응답을 JSON 노드로 변환
         JsonNode responseJsonNode = objectMapper.readTree(response);
-
+        System.out.println("responseJsonNode" + responseJsonNode);
         List<PopupStoreDto> popupStoreDtos = new ArrayList<>();
 
-        // Parse the JSON array directly
+        // JSON 배열을 파싱하여 PopupStoreDto 리스트로 변환
         if (responseJsonNode.isArray()) {
             for (JsonNode recommendation : responseJsonNode) {
                 Long id = recommendation.get("id").asLong();
-                // Create PopupStoreDto for each id
+                // PopupStoreDto 객체를 생성
                 PopupStoreDto popupStoreDto = popupStoreService.getPopupStoreDtoById(id);
-
+                System.out.println("dto======" + popupStoreDto);
                 popupStoreDtos.add(popupStoreDto);
             }
         }
-
-        return (ResponseDto<PopupStoreDto>) popupStoreDtos;
+        // ResponseDto로 감싸서 반환
+        return ResponseDto.setSuccessData("추천 팝업 스토어 정보를 성공적으로 로드했습니다.", popupStoreDtos);
     }
 
-    public ResponseDto<PopupStoreDto> convertRecommendPopupByDistance(UserRecommendDto userRecommendDto) throws JsonProcessingException {
+    public ResponseDto<List<PopupStoreDto>> convertRecommendPopupByDistance(UserRecommendDto userRecommendDto) throws JsonProcessingException {
         JsonNode queryNode = objectMapper.valueToTree(userRecommendDto);
         ArrayNode jsonArray = createJsonArrayRecommendByDistance(queryNode);
 
-
-        String response = sendHttpPostRequest(RECOMMEND_URL, jsonArray);
+        System.out.println("distance======" +jsonArray);
+        String response = sendHttpPostRequest(DISTANCE_RECOMMEND_URL, jsonArray);
+        System.out.println("distance--------------" + response);
         JsonNode responseJsonNode = objectMapper.readTree(response);
 
         List<PopupStoreDto> popupStoreDtos = new ArrayList<>();
@@ -93,7 +106,7 @@ public class PopUpStoreAiService {
             }
         }
 
-        return (ResponseDto<PopupStoreDto>) popupStoreDtos;
+        return ResponseDto.setSuccessData("추천 팝업 스토어 정보를 성공적으로 로드했습니다.", popupStoreDtos);
     }
 
 
@@ -115,14 +128,13 @@ public class PopUpStoreAiService {
         JsonNode categoriesNode = queryNode.get("categories"); // categories 필드 가져오기
         JsonNode idNode = queryNode.get("id");
 
-        // mapx, mapy, id 필드 추가
-        jsonObject.put("id", idNode.asText());
+        // id 필드 추가
+        jsonObject.put("id", idNode.asInt());
 
         // categories 필드를 문자열로 변환
         if (categoriesNode.isArray()) {
             StringBuilder categoriesBuilder = new StringBuilder();
             for (JsonNode categoryNode : categoriesNode) {
-                // 카테고리 값을 문자열로 추가
                 if (categoriesBuilder.length() > 0) {
                     categoriesBuilder.append(", ");
                 }

@@ -34,6 +34,9 @@ public class PopupStore {
     @Column(name = "detail_address")
     private String detailAddress;
 
+    @Column
+    private String roadAddress;
+
     @Column(name = "start_date", length = 10)
     private String startDate;
 

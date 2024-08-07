@@ -41,6 +41,9 @@ public class User {
     @Column
     private String mapy;
 
+    @Column
+    private String roadAddress;
+
     @Column(nullable = false)
     private String postcode;
 

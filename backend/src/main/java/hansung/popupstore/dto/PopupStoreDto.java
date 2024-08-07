@@ -32,6 +32,7 @@ public class PopupStoreDto {
     private Long companyId;
     private String companyName;
     private Double distance;
+    private String roadAddress;
     private Set<CategoryDto> categories = new HashSet<>();
     private Set<StoreDayDto> storeDays = new HashSet<>();
     private Set<PopupImageDto> popupImages = new HashSet<>();

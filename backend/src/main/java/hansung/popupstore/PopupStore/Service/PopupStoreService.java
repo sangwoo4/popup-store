@@ -67,6 +67,7 @@ public class PopupStoreService {
                 .postCode(dto.getPostCode())
                 .detailAddress(dto.getDetailAddress())
                 .startDate(dto.getStartDate())
+                .roadAddress(dto.getRoadAddress())
                 .endDate(dto.getEndDate())
                 .telephone(dto.getTelephone())
                 .subway(dto.getSubway())
@@ -84,6 +85,7 @@ public class PopupStoreService {
         popupStore.setPostCode(dto.getPostCode());
         popupStore.setStartDate(dto.getStartDate());
         popupStore.setEndDate(dto.getEndDate());
+        popupStore.setRoadAddress(dto.getRoadAddress());
         popupStore.setTelephone(dto.getTelephone());
         popupStore.setSubway(dto.getSubway());
         popupStore.setDescription(dto.getDescription());
@@ -102,7 +104,8 @@ public class PopupStoreService {
                     .build());
         }
 
-        String companyName = popupStore.getCompany().getCompanyName();
+        String companyName = (popupStore.getCompany() != null) ? popupStore.getCompany().getCompanyName() : "회사 없음";
+
 
         Set<CategoryDto> categoryDtos = new HashSet<>();
         for (Category category : popupStore.getCategories()) {
@@ -128,6 +131,7 @@ public class PopupStoreService {
                 .startDate(popupStore.getStartDate())
                 .endDate(popupStore.getEndDate())
                 .telephone(popupStore.getTelephone())
+                .roadAddress(popupStore.getRoadAddress())
                 .subway(popupStore.getSubway())
                 .description(popupStore.getDescription())
                 .link(popupStore.getLink())

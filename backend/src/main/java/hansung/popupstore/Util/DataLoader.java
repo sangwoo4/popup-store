@@ -27,6 +27,16 @@ public class DataLoader {
                 categoryRepository.save(new Category("문구"));
                 categoryRepository.save(new Category("가정"));
                 categoryRepository.save(new Category("생활용품"));
+                categoryRepository.save(new Category("스포츠"));
+                categoryRepository.save(new Category("게임"));
+                categoryRepository.save(new Category("전자제품"));
+                categoryRepository.save(new Category("인물"));
+                categoryRepository.save(new Category("건강/웰빙"));
+                categoryRepository.save(new Category("자동차"));
+                categoryRepository.save(new Category("식물"));
+                categoryRepository.save(new Category("여행/레저"));
+                categoryRepository.save(new Category("드라마/영화"));
+                categoryRepository.save(new Category("가전제품"));
                 categoryRepository.save(new Category("기타행사"));
             }
         };

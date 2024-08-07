@@ -27,6 +27,7 @@ public class UserDto {
     private String detailAddress;
     private String mapx;
     private String mapy;
+    private String roadAddress;
     private Set<CategoryDto> categories = new HashSet<>();
 
 }

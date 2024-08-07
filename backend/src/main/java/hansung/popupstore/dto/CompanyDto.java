@@ -20,4 +20,5 @@ public class CompanyDto {
     private String managerName;
     private String postCode; // 이 필드가 설정되어야 합니다.
     private String detailAddress;
+    private String roadAddress;
 }

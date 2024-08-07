@@ -66,7 +66,9 @@ public class PopupStoreImageService {
                 Path filePath = directoryPath.resolve(uniqueFilename);
                 image.transferTo(filePath.toFile());
 
-                String fileUrl = filePath.toUri().toString();
+                // 서버에서 접근 가능한 URL로 변경
+                String fileUrl = "/app/uploads/" + uniqueFilename;
+
                 PopupImage uploadedImage = PopupImage.builder()
                         .imageUrl(fileUrl)
                         .popupStore(popupStore)
@@ -75,8 +77,7 @@ public class PopupStoreImageService {
             }
         }
 
-        // 2. 기존 이미지 처리 (Optional, 필요에 따라 사용)
-        // 기존 이미지를 업데이트하거나 새로운 이미지를 추가할 때 필요한 경우에만 사용하세요
+        // 2. 기존 이미지 처리 (Optional)
         for (PopupImageDto popupImageDto : popupImages) {
             PopupImage popupImage = PopupImage.builder()
                     .imageUrl(popupImageDto.getImageUrl())

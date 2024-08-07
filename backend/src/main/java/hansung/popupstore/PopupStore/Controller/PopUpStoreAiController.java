@@ -38,7 +38,7 @@ public class PopUpStoreAiController {
         String jwtToken = tokenUtils.extractToken(token);
         Long userId = tokenUtils.extractUserIdFromToken(jwtToken);
         UserRecommendDto userRecommendDto =  userService.userCategoryAndAddressFindByUserId(userId);
-        ResponseDto<PopupStoreDto> result = popUpAiService.convertRecommendPopupByCategory(userRecommendDto);
+        ResponseDto<List<PopupStoreDto>> result = popUpAiService.convertRecommendPopupByCategory(userRecommendDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -47,7 +47,7 @@ public class PopUpStoreAiController {
         String jwtToken = tokenUtils.extractToken(token);
         Long userId = tokenUtils.extractUserIdFromToken(jwtToken);
         UserRecommendDto userRecommendDto =  userService.userCategoryAndAddressFindByUserId(userId);
-        ResponseDto<PopupStoreDto> result = popUpAiService.convertRecommendPopupByDistance(userRecommendDto);
+        ResponseDto<List<PopupStoreDto>> result = popUpAiService.convertRecommendPopupByDistance(userRecommendDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

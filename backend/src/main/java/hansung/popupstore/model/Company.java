@@ -47,6 +47,9 @@ public class Company {
     @Column(nullable = false)
     private String detailAddress;
 
+    @Column
+    private String roadAddress;
+
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
@@ -61,7 +64,7 @@ public class Company {
     private Set<PopupStore> popupStores = new HashSet<>();
 
     @Builder
-    public Company(Long id, String companyName, String managerName, String address, String email, String password, String companyId, Set<Role> roles, Set<PopupStore> popupStores, String postCode, String detailAddress) {
+    public Company(Long id, String companyName, String managerName, String address, String email, String password, String companyId, Set<Role> roles, Set<PopupStore> popupStores, String postCode, String detailAddress, String roadAddress) {
         this.id = id;
         this.companyName = companyName;
         this.managerName = managerName;
