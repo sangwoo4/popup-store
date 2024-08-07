@@ -61,16 +61,15 @@ public class PopupStoreImageService {
                     throw new IOException("Invalid file name.");
                 }
 
+                // 파일명 정리 및 고유한 이름 생성
                 String sanitizedFilename = originalFilename.replaceAll("[^a-zA-Z0-9.-]", "_");
                 String uniqueFilename = UUID.randomUUID().toString() + "_" + sanitizedFilename;
                 Path filePath = directoryPath.resolve(uniqueFilename);
                 image.transferTo(filePath.toFile());
 
-                // 서버에서 접근 가능한 URL로 변경
-                String fileUrl = "/app/uploads/" + uniqueFilename;
-
+                // 파일명을 데이터베이스에 저장
                 PopupImage uploadedImage = PopupImage.builder()
-                        .imageUrl(fileUrl)
+                        .imageUrl(uniqueFilename)  // URL 대신 파일명만 저장
                         .popupStore(popupStore)
                         .build();
                 popupImageRepository.save(uploadedImage);
