@@ -18,8 +18,6 @@ services:
     container_name: popupstore-container
     depends_on:
       - mysql
-      - fastapi-category
-      - fastapi-store
     networks:
       - docker-network
     ports:
@@ -28,34 +26,18 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/popup
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 1234
-      FASTAPI_CATEGORY_URL: http://fastapi-category-container:8000
-      FASTAPI_STORE_URL: http://fastapi-store-container:8001
 
-  fastapi-category:
+  fastapi-app:
     build:
       context: ./ai
-      dockerfile: Dockerfile
-    container_name: fastapi-category-container
+      dockerfile: Dockerfile  # 명시적 Dockerfile 경로
+    container_name: fastapi-app-container
     ports:
       - "8000:8000"
     networks:
       - docker-network
     environment:
       AUTO_CATEGORY_KEY: sk-proj-VXwcPzlcS0gr1vjm62FVT3BlbkFJHgphK3z9HJbEJ0JdTLyw
-    command: ["uvicorn", "category_recommend.Combine:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
-
-  fastapi-store:
-    build:
-      context: ./ai
-      dockerfile: Dockerfile
-    container_name: fastapi-store-container
-    ports:
-      - "8001:8000"
-    networks:
-      - docker-network
-    environment:
-      AUTO_CATEGORY_KEY: sk-proj-VXwcPzlcS0gr1vjm62FVT3BlbkFJHgphK3z9HJbEJ0JdTLyw
-    command: ["uvicorn", "store_recommend.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
 networks:
   docker-network:

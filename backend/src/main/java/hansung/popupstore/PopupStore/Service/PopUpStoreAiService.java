@@ -9,8 +9,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import hansung.popupstore.Account.Dto.UserRecommendDto;
 import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.dto.PopupStoreDto;
-import hansung.popupstore.model.User;
-import org.aspectj.weaver.patterns.PerThisOrTargetPointcutVisitor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -29,10 +27,10 @@ public class PopUpStoreAiService {
     private final PopupStoreService popupStoreService;
     // 엔드포인트 URL
     //private static final String CATEGORIZE_URL = "http://localhost:8000/categorize";
-    private static final String CATEGORIZE_URL = "http://fastapi-category:8000/categorize";
+    private static final String CATEGORIZE_URL = "http://fastapi-app:8000/categorize";
     //private static final String NAVER_CATEGORY_URL = "http://localhost:8000/navercategory";
-    private static final String DISTANCE_RECOMMEND_URL = "http://fastapi-store:8000/recommend/distance";
-    private static final String CATEGORY_RECOMMEND_URL = "http://fastapi-store:8000/recommend/category";
+    private static final String DISTANCE_RECOMMEND_URL = "http://fastapi-app:8000/recommend/distance";
+    private static final String CATEGORY_RECOMMEND_URL = "http://fastapi-app:8000/recommend/category";
 
 
     public PopUpStoreAiService(PopupStoreService popupStoreService) {

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, RootModel
+from pydantic import BaseModel, RootModel, Field
 from typing import List
 
 # 카테고리 요청 스키마
@@ -36,3 +36,16 @@ class NfcResponse(RootModel[List[NfcRecommendation]]):
 # 거리 추천 응답 스키마
 class DistanceResponse(RootModel[List[RecommendResponseItem]]):
     pass
+
+# Category 관련 스키마
+class Category(BaseModel):
+    category: str = Field(default="")
+
+class ChatRequest(BaseModel):
+    title: str = Field(default="")
+    description: str = Field(default="")
+    category: str = Field(default="")
+    categories: str = Field(default="")
+
+class ChatResponse(BaseModel):
+    categories: List[Category]

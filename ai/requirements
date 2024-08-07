@@ -3,9 +3,13 @@ pydantic
 openai
 uvicorn
 python-dotenv
+-----------------------------------------------------------------
+2. tensorflow AI 방식
+fastapi
+uvicorn
 cachetools
 geopy
 tensorflow
 numpy
 mysql-connector-python
-h5py==3.7.0  # 바이너리 버전 사용
+pydantic
