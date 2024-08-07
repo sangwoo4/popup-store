@@ -33,7 +33,7 @@ public class PopUpStoreAiController {
     }
 
 
-    @PostMapping("/recommend/category")
+    @GetMapping("/recommend/category")
     public ResponseEntity<ResponseDto<?>> recommendByCategory(@RequestHeader("Authorization") String token) throws JsonProcessingException {
         String jwtToken = tokenUtils.extractToken(token);
         Long userId = tokenUtils.extractUserIdFromToken(jwtToken);
@@ -42,7 +42,7 @@ public class PopUpStoreAiController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping("/recommend/distance")
+    @GetMapping("/recommend/distance")
     public ResponseEntity<ResponseDto<?>> recommendByDistance(@RequestHeader("Authorization") String token) throws JsonProcessingException {
         String jwtToken = tokenUtils.extractToken(token);
         Long userId = tokenUtils.extractUserIdFromToken(jwtToken);

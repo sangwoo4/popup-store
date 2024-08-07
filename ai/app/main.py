@@ -18,8 +18,6 @@ from app.model_definition import create_ncf
 from app import schemas
 from app.cache import set_cache, get_cache, save_cache_to_file, load_cache_from_file, get_cache_content, clear_cache
 
-
-
 load_dotenv()
 
 app = FastAPI()
@@ -29,22 +27,16 @@ logger = logging.getLogger(__name__)
 
 CACHE_FILE = "cache_data.json"
 MODEL_FILE = "ncf_model.keras"
-# DB_CONFIG = {
-#     'user': 'root',
-#     'password': '0000',
-#     'host': 'localhost',
-#     'database': 'popup'
-# }
 
 DB_CONFIG = {
     'user': 'root',
     'password': '1234',
     'host': 'mysql-container',
-    'port' : 3306,
+    'port': 3306,
     'database': 'popup'
 }
 
-# OpenAI API 키 설정(시스템 환경변수에 설정으로 외부에 노출 가능성 하락)
+# OpenAI API 키 설정
 auto_category_key = os.getenv("AUTO_CATEGORY_KEY")
 if not auto_category_key:
     raise ValueError("API 키가 설정되지 않았습니다.")
@@ -79,11 +71,26 @@ async def save_cache_periodically(interval: int = 600):
         await asyncio.sleep(interval)
         save_cache_to_file(CACHE_FILE)
 
+# 주기적으로 팝업 스토어 캐시를 업데이트하는 함수
+async def update_popup_stores_cache_periodically(interval: int = 600):
+    while True:
+        await asyncio.sleep(interval)
+        try:
+            popup_stores = fetch_popup_stores_from_db()
+            if popup_stores:
+                set_cache("popup_stores", [store.dict() for store in popup_stores])
+                logger.info("데이터베이스에서 팝업 스토어 데이터를 조회하여 캐시를 업데이트했습니다.")
+            else:
+                logger.warning("데이터베이스에서 팝업 스토어 데이터를 조회하지 못했습니다.")
+        except Exception as e:
+            logger.error(f"데이터베이스 조회 중 오류 발생: {str(e)}")
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     load_cache_from_file(CACHE_FILE)
     cache_task = asyncio.create_task(save_cache_periodically())
     model_task = asyncio.create_task(save_model_periodically())
+    update_cache_task = asyncio.create_task(update_popup_stores_cache_periodically())
 
     try:
         yield
@@ -92,9 +99,11 @@ async def lifespan(app: FastAPI):
         model.save(MODEL_FILE)
         cache_task.cancel()
         model_task.cancel()
+        update_cache_task.cancel()
         try:
             await cache_task
             await model_task
+            await update_cache_task
         except asyncio.CancelledError:
             pass
 
@@ -195,6 +204,7 @@ async def distance_recommendations(request: List[schemas.DistanceRequest]):
         logger.error(f"추천 처리 중 오류 발생: {str(e)}")
         traceback.print_exc()
         raise HTTPException(status_code=500, detail="추천 처리 중 오류 발생")
+
 
 @app.post("/recommend/category", response_model=List[schemas.NfcRecommendation])
 async def category_recommendations(request: List[schemas.CategoryRequest]):
@@ -373,6 +383,7 @@ def restore_categories(text):
         protected = category.replace('/', '|')
         text = text.replace(protected, category)
     return text
+
 
 
 

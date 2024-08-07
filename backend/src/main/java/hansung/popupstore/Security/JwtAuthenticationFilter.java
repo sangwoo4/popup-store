@@ -32,7 +32,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = resolveToken(request);
 
         if (token != null && tokenProvider.validateJwt(token) != null) { // Ensure validateJwt returns boolean
-            System.out.println("token==" + token);
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(tokenProvider.getKey())
                     .build()
@@ -44,7 +43,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // Extract roles from claims and convert to Set<GrantedAuthority>
             @SuppressWarnings("unchecked")
             List<String> roles = (List<String>) claims.get("roles");
-            System.out.println("roles" + roles);
             Set<GrantedAuthority> authorities = roles.stream()
                     .map(role -> role)  // Prefix with "ROLE_" if needed
                     .map(SimpleGrantedAuthority::new)
