@@ -51,8 +51,6 @@ const Home_Company = () => {
     return <p>Error: {error.message}</p>;
   }
 
-  const baseUrl = 'http://localhost:8080';
-
   return (
     <div>
       <h1>기업 전용 페이지입니다.</h1>
@@ -61,36 +59,38 @@ const Home_Company = () => {
         {locations.length === 0 ? (
           <p>등록된 팝업스토어가 없습니다.</p>
         ) : (
-          locations.map(location => (
-            <div key={location.id} className='company-popup-item'>
-              <Link to={`/popup/company/detail/${location.id}`} className='company-popup-link'>
-                <div className="company-category-box">
-                  {location.popupImages && location.popupImages.length > 0 ? (
-                    location.popupImages.map((image, index) => (
+          locations.map(location => {
+            const images = location.popupImages && location.popupImages.length > 0 
+              ? location.popupImages.map(image => `http://localhost:8080/${image.imageUrl}`) : ['/images/image1.png'];
+            console.log('Converted Image URLs:', images); // 이미지 URL 변환 확인용
+
+            return (
+              <div key={location.id} className='company-popup-item'>
+                <Link to={`/popup/company/detail/${location.id}`} className='company-popup-link'>
+                  <div className="company-category-box">
+                    {images.map((image, index) => (
                       <img
-                        key={index}
-                        src={`${baseUrl}${image.imageUrl}`} // 서버에서 제공하는 이미지 URL에 도메인을 붙여 사용
-                        alt={`Image ${index + 1}`}
+                        key={index} 
+                        src={image} 
+                        alt={`Banner ${index + 1}`} 
                         className="company-popup-image"
                       />
-                    ))
-                  ) : (
-                    <img src="/images/image1.png" alt="Default Image" className="company-popup-image" />
-                  )}
-                </div>
-                <div className='company-popup-details'>
-                  <h3>{location.title}</h3>
-                  <p>{location.description}</p>
-                  <div className="company-category-box">
-                    {location.categories && location.categories.map((category, index) => (
-                      <div key={index} className="company-category-item">{category.category}</div>
                     ))}
                   </div>
-                </div>
-              </Link>
-              <Link to={`/popup/company/update/${location.id}`} className='company-popup-edit-link'>수정하기</Link>
-            </div>
-          ))
+                  <div className='company-popup-details'>
+                    <h3>{location.title}</h3>
+                    <p>{location.description}</p>
+                    <div className="company-category-box">
+                      {location.categories && location.categories.map((category, index) => (
+                        <div key={index} className="company-category-item">{category.category}</div>
+                      ))}
+                    </div>
+                  </div>
+                </Link>
+                <Link to={`/popup/company/update/${location.id}`} className='company-popup-edit-link'>수정하기</Link>
+              </div>
+            );
+          })
         )}
       </div>
     </div>
@@ -98,6 +98,7 @@ const Home_Company = () => {
 };
 
 export default Home_Company;
+
 
 
 
@@ -157,6 +158,8 @@ export default Home_Company;
 //     return <p>Error: {error.message}</p>;
 //   }
 
+//   const baseUrl = 'http://localhost:8080';
+
 //   return (
 //     <div>
 //       <h1>기업 전용 페이지입니다.</h1>
@@ -173,7 +176,7 @@ export default Home_Company;
 //                     location.popupImages.map((image, index) => (
 //                       <img
 //                         key={index}
-//                         src={image.imageUrl} // 서버에서 제공하는 이미지 URL을 직접 사용
+//                         src={`${baseUrl}${image.imageUrl}`}
 //                         alt={`Image ${index + 1}`}
 //                         className="company-popup-image"
 //                       />

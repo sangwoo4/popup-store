@@ -1,4 +1,75 @@
-.loginLink {
+.header {
+    background-color: #f8f9fa;
+    padding: 20px 30px;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  
+  .nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .nav-link {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #333;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-link .icon {
+    margin-right: 5px;
+  }
+  
+  .home {
+    font-weight: bold;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .welcome-message {
+    margin: 0 10px;
+    font-size: 16px;
+    color: #000000;
+  }
+  
+  .logout-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 14px;
+  }
+  
+  .logout-button:hover {
+    background-color: #c82333;
+  }
+  
+  .login-link {
+    font-size: 17px;
+    color: #000000;
+  }
+  
+  .loginLink,
+  .success-Login,
+  .logoutButton {
+    position: static; /* 전역 스타일링은 position static으로 변경 */
+    cursor: pointer;
+    font-size: 16px;
+    font-style: normal;
+    color: rgb(0, 0, 0); /* 기본 검은색으로 설정 */
+  }
+  
+
+
+/* .loginLink {
     position: absolute;
     top: 6%;
     left: 80%;
@@ -26,4 +97,4 @@
     font-size: 13px;
     font-style: italic;
     color: rgb(25, 0, 255);
-}
+} */

@@ -216,40 +216,58 @@ export default function SignUp_User() {
   };
 
   const onClickConfirmButton = () => {
+    // 로그 추가: 버튼 클릭 여부 확인
+    console.log("가입하기 버튼이 클릭되었습니다.");
+  
+    // 중복 확인 상태 출력
+    console.log("중복 확인 상태:", {
+      doubleCheckEmail,
+      doubleCheckPhone,
+      doubleCheckNickname
+    });
+  
+    // 중복 확인이 완료되지 않았다면 경고
     if (!doubleCheckEmail || !doubleCheckPhone || !doubleCheckNickname) {
       alert("중복확인을 모두 완료해주세요.");
       return;
     }
+  
+    // 데이터 준비
+    const requestData = {
+      email: email,
+      password: password,
+      username: username,
+      gender: gender,
+      birth: birth,
+      phone: phone,
+      nickname: nickname,
+      postcode: postcode,
+      address: address,
+      detailAddress: detailAddress,
+      mapx: mapx,
+      mapy: mapy,
+      categories: categorySelections.map(cat => ({ category: cat })),
+    };
+  
+    // 데이터 로그
+    console.log("서버로 전송할 데이터:", JSON.stringify(requestData, null, 2));
 
+  
+    // 서버에 데이터 전송
     fetch("http://localhost:8080/auth/user/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8"
       },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-        username: username,
-        gender: gender,
-        birth: birth,
-        phone: phone,
-        nickname: nickname,
-        postcode: postcode,
-        address: address,
-        detailAddress: detailAddress,
-        mapx: mapx,
-        mapy: mapy,
-        categories: categorySelections.map(cat => ({ category: cat })),
-      }),
+      body: JSON.stringify(requestData),
     })
       .then((res) => res.json())
       .then(res => {
-        console.log("=============");
-        console.log("백엔드: ", res);
-
+        console.log("백엔드 응답:", res);
+  
         if (res.result) {
           alert("회원가입이 정상적으로 되었습니다");
-          window.location.href = "http://localhost:3000/Login";
+          window.location.href = "http://localhost:3000/auth/user/login";
         } else {
           alert("회원가입에 실패했습니다. 다시 시도해주세요.");
         }
@@ -258,6 +276,7 @@ export default function SignUp_User() {
         console.error('백엔드와의 통신 중 오류 발생:', error);
       });
   };
+  
 
   const handlePostcodeSearch = () => {
     new window.daum.Postcode({

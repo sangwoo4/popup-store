@@ -16,7 +16,7 @@ import DetailInfo_Company from "./pages/Company/Com_DetailInfo/DetailInfo_Compan
 import Login_Company from "./pages/Company/Com_Login_SignUp/Login_Company";
 import SignUp_Company from "./pages/Company/Com_Login_SignUp/SignUp_Company";
 import PopupRegister_Company from "./pages/Company/Com_PopupRegister/PopupRegister_Company";
-import Update_Company from "./pages/Company/Com_Update/PopupUpdate_Company";
+import PopupUpdate_Company from './pages/Company/Com_Update/PopupUpdate_Company';
 
 
 
@@ -38,7 +38,7 @@ function App() {
         <Route path="/auth/company/signup" element={<SignUp_Company/>}/>
         <Route path="/auth/company/login" element={<Login_Company/>}/>
         <Route path="/popup/company/register" element={<PopupRegister_Company/>}/>
-        <Route path="/popup/company/update/:location" element={<Update_Company/>}/>
+        <Route path="/popup/company/update/:id" element={<PopupUpdate_Company/>}/>
       </Routes>
   );
 }

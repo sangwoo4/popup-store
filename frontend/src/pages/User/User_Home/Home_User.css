@@ -1,11 +1,3 @@
-/*
- ----- 07.11 css수정사항 예정 -----
-    1. 추천 팝업 회색 창(recommended-popup-wrapper) height 줄이기 500 -> 3~400
-    2. 팝업 상세 창(popup-item)도 함께 줄여서 너비와 크기 맞출 것
-    3. 각 디스플레이 별 고정 방식이 있는지 알아보기
-    4. 카드 왼쪽과 오른쪽 간격 맞추기
-*/
-
 body {
     font-family: Arial, sans-serif;
 }
@@ -221,3 +213,70 @@ h1 {
         max-width: 100%;
     }
 }
+
+.category-slider-wrapper {
+    padding: 20px;
+  }
+  
+  .category-section {
+    margin-bottom: 40px;
+  }
+  
+  .category-section h2 {
+    margin-bottom: 20px;
+    color: #333;
+    border-bottom: 2px solid #007BFF;
+    display: inline-block;
+    padding-bottom: 5px;
+  }
+  
+/* 하단 카테고리별 팝업 리스트 */
+.lower-popup-wrapper {
+    width: 90%;
+    margin: 0 auto;
+  }
+  
+  .lower-popup-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    width: 100%; /* 항목이 컨테이너의 전체 너비를 차지하도록 설정 */
+    box-sizing: border-box; /* 패딩과 테두리를 포함하여 요소의 총 너비와 높이에 포함됨 */
+  }
+  
+  .lower-popup-link {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    width: 100%; /* 링크가 컨테이너의 전체 너비를 차지하도록 설정 */
+  }
+  
+  .lower-popup-image {
+    max-width: 150px; /* 이미지의 최대 너비 설정 */
+    height: auto; /* 이미지가 비율을 유지하도록 설정 */
+    margin-right: 20px;
+    flex-shrink: 0; /* 이미지가 줄어들지 않도록 설정 */
+  }
+  
+  .lower-popup-details {
+    flex-grow: 1; /* 이 섹션이 남는 공간을 차지하도록 설정 */
+  }
+  
+  .lower-category-box {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  
+  .lower-category-item {
+    background-color: #eee;
+    padding: 5px 10px;
+    margin: 5px;
+    border-radius: 5px;
+  }

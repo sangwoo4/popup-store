@@ -46,6 +46,11 @@ const DetailInfo_User = () => {
             return isNaN(date.getTime()) ? 'N/A' : date.toISOString().split('T')[0];
           };
 
+          // 이미지 URL 배열 처리
+          const images = popupImages && popupImages.length > 0 
+            ? popupImages.map(image => `http://localhost:8080/${image.imageUrl}`)
+            : ['/images/image1.png'];
+
           setLocationInfo({
             companyName: companyName,
             title: title || 'No Title',
@@ -53,7 +58,7 @@ const DetailInfo_User = () => {
             detailInfo: detailInfo || '',
             telephone: telephone || 'Not available',
             description: description || 'No description available.',
-            popupImages: popupImages || '/images/image1.png',
+            popupImages: images,
             link: link || '',
             categories: categories || [],
             storeDays: storeDays || [],
@@ -138,7 +143,11 @@ const DetailInfo_User = () => {
   return (
     <div className="detail-info-container">
       <div className="banner">
-        <img src={locationInfo.popupImages} alt="Banner" className="banner-image" />
+        <div className="banner-images">
+          {locationInfo.popupImages.map((image, index) => (
+            <img key={index} src={image} alt={`Banner ${index + 1}`} className="banner-image" />
+          ))}
+        </div>
       </div>
       <nav className="menu">
         <button className={`menu-button ${activeMenu === 'info' ? 'active' : ''}`} onClick={() => setActiveMenu('info')}>상세정보</button>
@@ -209,12 +218,13 @@ export default DetailInfo_User;
 
 
 
-// // 2024.07.11 상세정보 화면 백엔드 api 설정 완료
-// import './DetailInfo.css';
+
+// // 2024.08.07 이미지 수정 전
+// import './DetailInfo_User.css';
 // import React, { useEffect, useRef, useState } from 'react';
 // import { useParams } from 'react-router-dom';
 
-// const DetailInfo = () => {
+// const DetailInfo_User = () => {
 //   const { location } = useParams();
 //   const [activeMenu, setActiveMenu] = useState('info');
 //   const [locationInfo, setLocationInfo] = useState(null);
@@ -232,7 +242,7 @@ export default DetailInfo_User;
 
 //     const fetchLocationInfo = async () => {
 //       try {
-//         const response = await fetch(`http://localhost:8080/popup/detail/${location}`, {
+//         const response = await fetch(`http://localhost:8080/popup/user/detail/${location}`, {
 //           method: "GET",
 //           headers: {
 //             'Content-Type': 'application/json',
@@ -246,7 +256,7 @@ export default DetailInfo_User;
 //         console.log(data); // 데이터 구조 확인용
 
 //         if (data && data.data) {
-//           const { title, address, detailInfo, telephone, description, image, link, categories, storeDays, mapx, mapy, startDate, endDate } = data.data;
+//           const { companyName, title, address, detailInfo, telephone, description, popupImages, link, categories, storeDays, mapx, mapy, startDate, endDate } = data.data;
 
 //           // LatLng 객체 생성
 //           const latlng = new window.naver.maps.LatLng(parseFloat(mapy) / 1e7, parseFloat(mapx) / 1e7);
@@ -259,12 +269,13 @@ export default DetailInfo_User;
 //           };
 
 //           setLocationInfo({
+//             companyName: companyName,
 //             title: title || 'No Title',
 //             address: address || 'No Address Available',
 //             detailInfo: detailInfo || '',
 //             telephone: telephone || 'Not available',
 //             description: description || 'No description available.',
-//             image: image || '/images/image1.png',
+//             popupImages: popupImages || '/images/image1.png',
 //             link: link || '',
 //             categories: categories || [],
 //             storeDays: storeDays || [],
@@ -349,7 +360,7 @@ export default DetailInfo_User;
 //   return (
 //     <div className="detail-info-container">
 //       <div className="banner">
-//         <img src={locationInfo.image} alt="Banner" className="banner-image" />
+//         <img src={locationInfo.popupImages} alt="Banner" className="banner-image" />
 //       </div>
 //       <nav className="menu">
 //         <button className={`menu-button ${activeMenu === 'info' ? 'active' : ''}`} onClick={() => setActiveMenu('info')}>상세정보</button>
@@ -407,4 +418,4 @@ export default DetailInfo_User;
 //   );
 // };
 
-// export default DetailInfo;
+// export default DetailInfo_User;
