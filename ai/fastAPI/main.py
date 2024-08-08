@@ -5,9 +5,9 @@ from contextlib import asynccontextmanager
 import numpy as np
 from tensorflow.keras.models import load_model
 from geopy.distance import geodesic
-from model_definition import create_ncf
-import schemas
-from cache import set_cache, get_cache, save_cache_to_file, load_cache_from_file, get_cache_content, clear_cache
+# from model_definition import create_ncf
+# import schemas
+# from cache import set_cache, get_cache, save_cache_to_file, load_cache_from_file, get_cache_content, clear_cache
 import logging
 import asyncio
 import mysql.connector
@@ -18,6 +18,11 @@ import os
 import re
 from openai import AsyncOpenAI
 
+# 절대 경로로 모듈을 가져옴
+from app.model_definition import create_ncf
+from app import schemas
+from app.cache import set_cache, get_cache, save_cache_to_file, load_cache_from_file, get_cache_content, clear_cache
+
 load_dotenv()
 
 app = FastAPI()
@@ -27,12 +32,23 @@ logger = logging.getLogger(__name__)
 
 CACHE_FILE = "cache_data.json"
 MODEL_FILE = "ncf_model.keras"
+
+# Docker
 DB_CONFIG = {
     'user': 'root',
-    'password': '0000',
-    'host': 'localhost',
+    'password': '1234',
+    'host': 'mysql-container',
+    'port': 3306,
     'database': 'popup'
 }
+
+#localhost
+# DB_CONFIG = {
+#     'user': 'root',
+#     'password': '0000',
+#     'host': 'localhost',
+#     'database': 'popup'
+# }
 
 # OpenAI API 키 설정(시스템 환경변수에 설정으로 외부에 노출 가능성 하락)
 auto_category_key = os.getenv("AUTO_CATEGORY_KEY")
@@ -69,11 +85,26 @@ async def save_cache_periodically(interval: int = 600):
         await asyncio.sleep(interval)
         save_cache_to_file(CACHE_FILE)
 
+# 주기적으로 팝업 스토어 캐시를 업데이트하는 함수
+async def update_popup_stores_cache_periodically(interval: int = 600):
+    while True:
+        await asyncio.sleep(interval)
+        try:
+            popup_stores = fetch_popup_stores_from_db()
+            if popup_stores:
+                set_cache("popup_stores", [store.dict() for store in popup_stores])
+                logger.info("데이터베이스에서 팝업 스토어 데이터를 조회하여 캐시를 업데이트했습니다.")
+            else:
+                logger.warning("데이터베이스에서 팝업 스토어 데이터를 조회하지 못했습니다.")
+        except Exception as e:
+            logger.error(f"데이터베이스 조회 중 오류 발생: {str(e)}")
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     load_cache_from_file(CACHE_FILE)
     cache_task = asyncio.create_task(save_cache_periodically())
     model_task = asyncio.create_task(save_model_periodically())
+    update_cache_task = asyncio.create_task(update_popup_stores_cache_periodically())
 
     try:
         yield
@@ -82,9 +113,11 @@ async def lifespan(app: FastAPI):
         model.save(MODEL_FILE)
         cache_task.cancel()
         model_task.cancel()
+        update_cache_task.cancel()
         try:
             await cache_task
             await model_task
+            await update_cache_task
         except asyncio.CancelledError:
             pass
 
@@ -131,8 +164,8 @@ async def distance_recommendations(request: List[schemas.DistanceRequest]):
     
     try:
         user_id_input = np.array([req.id for req in request])
-        mapx_input = np.array([req.mapx for req in request])
         mapy_input = np.array([req.mapy for req in request])
+        mapx_input = np.array([req.mapx for req in request])
 
         if len(user_id_input) != 1:
             raise HTTPException(status_code=400, detail="Request must contain exactly one user id")
@@ -261,13 +294,13 @@ async def categorize(requests: List[schemas.ChatRequest]):
                 "카테고리: "
             )
             response = await client.completions.create(
-                model="ft:davinci-002:category:category-v2-4-2:9soQfBry",
+                model="ft:davinci-002:category:category-mix11:9tfsfAym",
                 prompt=detailed_prompt,
                 max_tokens=30,
-                temperature=0.75,
-                top_p=0.75,
-                frequency_penalty=1.90,
-                presence_penalty=0.75,
+                temperature=1.0,
+                top_p=1.0,
+                frequency_penalty=1.0,
+                presence_penalty=1.0,
             )
             text_response = response.choices[0].text.strip()
             logger.info(f"OpenAI로부터 받은 원시 응답: {text_response}")
