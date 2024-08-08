@@ -26,11 +26,13 @@ public class PopUpStoreAiService {
     private final RestOperations restTemplate = new RestTemplate();
     private final PopupStoreService popupStoreService;
     // 엔드포인트 URL
-    //private static final String CATEGORIZE_URL = "http://localhost:8000/categorize";
+//    private static final String CATEGORIZE_URL = "http://localhost:8000/categorize";
     private static final String CATEGORIZE_URL = "http://fastapi-app:8000/categorize";
-    //private static final String NAVER_CATEGORY_URL = "http://localhost:8000/navercategory";
+    private static final String NAVER_CATEGORY_URL = "http://localhost:8000/navercategory";
     private static final String DISTANCE_RECOMMEND_URL = "http://fastapi-app:8000/recommend/distance";
     private static final String CATEGORY_RECOMMEND_URL = "http://fastapi-app:8000/recommend/category";
+//    private static final String DISTANCE_RECOMMEND_URL = "http://localhost:8000/recommend/distance";
+//    private static final String CATEGORY_RECOMMEND_URL = "http://localhost:8000/recommend/category";
 
 
     public PopUpStoreAiService(PopupStoreService popupStoreService) {
