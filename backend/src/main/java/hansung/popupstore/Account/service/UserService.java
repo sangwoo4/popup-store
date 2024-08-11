@@ -3,7 +3,6 @@ package hansung.popupstore.Account.service;
 import hansung.popupstore.Account.Dto.*;
 import hansung.popupstore.Account.Repository.UserRepository;
 import hansung.popupstore.PopupStore.Repository.CategoryRepository;
-import hansung.popupstore.PopupStore.Service.UserCategoryService;
 import hansung.popupstore.Security.TokenProvider;
 import hansung.popupstore.dto.CategoryDto;
 import hansung.popupstore.dto.UserDto;

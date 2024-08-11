@@ -1,4 +1,4 @@
-package hansung.popupstore.PopupStore.Service;
+package hansung.popupstore.Account.service;
 
 import hansung.popupstore.PopupStore.Repository.CategoryRepository;
 import hansung.popupstore.Util.ResponseDto;

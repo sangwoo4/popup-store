@@ -32,9 +32,4 @@ public class StoreDay {
     @Column(name = "close_time")
     private String closeTime;
 
-    @Column(name = "total")
-    private Long total;
-
-    @Column(name = "reservation")
-    private Long reservation;
 }
