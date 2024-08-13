@@ -12,6 +12,7 @@ import MyPage_User from "./pages/User/User_Mypage/Mypage_User";
 import ReservationDetails_User from "./pages/User/User_Reservarion/ReservationDetails_User";
 
 import Home_Company from "./pages/Company/Com_Home/Home_Company";
+import Dashboard_Company from "./pages/Company/Com_Dashboard/Dashboard_Company";
 import DetailInfo_Company from "./pages/Company/Com_DetailInfo/DetailInfo_Company";
 import Login_Company from "./pages/Company/Com_Login_SignUp/Login_Company";
 import SignUp_Company from "./pages/Company/Com_Login_SignUp/SignUp_Company";
@@ -34,6 +35,7 @@ function App() {
         <Route path="/popup/my.reservation" element={<ReservationDetails_User/>}/>
 
         <Route path="/auth/company/homepage" element={<Home_Company/>}/>
+        <Route path="/auth/company/dashboard" element={<Dashboard_Company/>}/>
         <Route path="/popup/company/detail/:location" element={<DetailInfo_Company/>}/>
         <Route path="/auth/company/signup" element={<SignUp_Company/>}/>
         <Route path="/auth/company/login" element={<Login_Company/>}/>

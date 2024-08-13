@@ -1,4 +1,3 @@
-// //2024.07.28 카테고리 api 호출 관련 코드
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
@@ -34,6 +33,19 @@ const PopupRegister_Company = () => {
   const [showPostcodeModal, setShowPostcodeModal] = useState(false);
   const [token, setToken] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const [totalReservation, setTotalReservation] = useState('');
+  const [currentReservation, setCurrentReservation] = useState('');
+  const [reservation, setReservation] = useState(false);
+  const [companyReservation, setCompanyReservation] = useState([]);
+  const [popupReservation, setPopupReservation] = useState([]);
+  const [reservationInterval, setReservationInterval] = useState(30); // 예약 슬롯 간격 (분)
+  const [reservationCapacity, setReservationCapacity] = useState(10); // 슬롯당 수용 인원
+  const [selectedDay, setSelectedDay] = useState('');
+  const [startTime, setStartTime] = useState('00:00');
+  const [endTime, setEndTime] = useState('23:59');
+
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -156,6 +168,9 @@ const PopupRegister_Company = () => {
       link,
       mapx: coordinates.mapx,
       mapy: coordinates.mapy,
+      totalReservation,
+      currentReservation,
+      reservation,
       categories: category.map(cat => ({ category: cat.category })),
       storeDays: Object.keys(operatingDays)
         .filter(day => operatingDays[day].isSelected)
@@ -163,16 +178,13 @@ const PopupRegister_Company = () => {
           openTime: operatingDays[day].startTime,
           closeTime: operatingDays[day].endTime,
           day
-        }))
+        })),
+      companyReservation
     };
-  
-    // FormData 객체 생성
+
     const formData = new FormData();
-  
-    // JSON 데이터를 FormData에 추가
     formData.append('dto', new Blob([JSON.stringify(jsonData)], { type: 'application/json' }));
   
-    // 이미지 파일 추가
     imageFiles.forEach((file, index) => {
       formData.append('images', file);
     });
@@ -208,8 +220,6 @@ const PopupRegister_Company = () => {
     }
   };
   
-  
-  
   const handleAddressSearch = () => {
     setShowPostcodeModal(true);
   };
@@ -227,14 +237,14 @@ const PopupRegister_Company = () => {
   };
 
   const handleDayChange = (day) => {
-    setOperatingDays((prevDays) => ({
-      ...prevDays,
-      [day]: {
-        ...prevDays[day],
-        isSelected: !prevDays[day].isSelected,
-      },
-    }));
+    setOperatingDays(prevDays => {
+      const updatedDays = { ...prevDays, [day]: { ...prevDays[day], isSelected: !prevDays[day].isSelected } };
+      const newSelectedDays = Object.keys(updatedDays).filter(day => updatedDays[day].isSelected);
+      setSelectedDay(newSelectedDays.length > 0 ? newSelectedDays[0] : '');
+      return updatedDays;
+    });
   };
+
 
   const handleTimeChange = (day, timeType, time) => {
     setOperatingDays((prevDays) => ({
@@ -290,6 +300,36 @@ const PopupRegister_Company = () => {
       timeOptions.push(formattedTime);
     }
   }
+
+  const handleReservationIntervalChange = (e) => {
+    setReservationInterval(Number(e.target.value));
+  };
+
+  const handleReservationCapacityChange = (e) => {
+    setReservationCapacity(Number(e.target.value));
+  };
+
+  const handleAddReservationSlot = () => {
+    const selectedDays = Object.keys(operatingDays).filter(day => operatingDays[day].isSelected);
+
+    if (selectedDays.length === 0) {
+      alert('요일을 선택해 주세요.');
+      return;
+    }
+  
+    const newSlots = selectedDays.map(day => ({
+      day,
+      interval: reservationInterval,
+      capacity: reservationCapacity,
+      startTime,
+      endTime
+    }));
+
+    setPopupReservation(prevSlots => [
+      ...prevSlots,
+      ...newSlots
+    ]);
+  };
 
   return (
     <div className="popup-registration">
@@ -494,6 +534,51 @@ const PopupRegister_Company = () => {
 
         <br/>
 
+        <label>
+          사전 예약 활성화:
+          <input
+            type="checkbox"
+            checked={reservation}
+            onChange={(e) => setReservation(e.target.checked)}
+          />
+        </label>
+
+        {reservation && (
+          <>
+            <label>
+              예약 간격 (분):
+              <input
+                type="number"
+                value={reservationInterval}
+                onChange={handleReservationIntervalChange}
+              />
+            </label>
+            <label>
+              슬롯당 수용 인원:
+              <input
+                type="number"
+                value={reservationCapacity}
+                onChange={handleReservationCapacityChange}
+              />
+            </label>
+            <button type="button" onClick={handleAddReservationSlot}>
+              예약 슬롯 추가
+            </button>
+            <div>
+              <h3>예약 슬롯</h3>
+              {popupReservation.map((slot, index) => (
+                <div key={index}>
+                  <p>요일: {slot.day}, 간격: {slot.interval}분, 수용 인원: {slot.capacity}명</p>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+
+
+        <br/>
+
         <button type="submit">등록</button>
       </form>
 
@@ -520,11 +605,7 @@ export default PopupRegister_Company;
 
 
 
-
-
-
-
-// //24.08.07 이미지 백엔드에서 처리 전 - 나는 변환 완료
+// // //2024.08.11 기본 등록하기 코드
 // import React, { useState, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
 // import DatePicker from 'react-datepicker';
@@ -690,15 +771,12 @@ export default PopupRegister_Company;
 //           closeTime: operatingDays[day].endTime,
 //           day
 //         }))
+        
 //     };
-  
-//     // FormData 객체 생성
+
 //     const formData = new FormData();
-  
-//     // JSON 데이터를 FormData에 추가
 //     formData.append('dto', new Blob([JSON.stringify(jsonData)], { type: 'application/json' }));
   
-//     // 이미지 파일 추가
 //     imageFiles.forEach((file, index) => {
 //       formData.append('images', file);
 //     });
@@ -733,8 +811,6 @@ export default PopupRegister_Company;
 //       alert('등록에 실패했습니다. 다시 시도해주세요.');
 //     }
 //   };
-  
-  
   
 //   const handleAddressSearch = () => {
 //     setShowPostcodeModal(true);

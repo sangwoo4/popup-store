@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { IoHome } from "react-icons/io5";
 import { GoHeart, GoPerson } from "react-icons/go";
-import './Header.css'; // CSS 파일을 import
+import { MdOutlineDashboardCustomize, MdOutlineFiberNew } from "react-icons/md";
+import { CiLogin } from "react-icons/ci";
+import { FaPagelines } from "react-icons/fa";
+import './Header.css';
 
 const Header = () => {
   const [isCompanyLoggedIn, setIsCompanyLoggedIn] = useState(false);
@@ -109,22 +112,30 @@ const Header = () => {
     <header className="header">
       <nav className="nav-bar">
         <Link className="nav-link home" to={homeLink}><IoHome className="icon" />홈</Link>
+
         {isUserLoggedIn && (
           <>
             <Link className="nav-link" to="/popup/my.reservation"><GoHeart className="icon" />예약내역</Link>
           </>
         )}
-        <Link className="nav-link" to="/auth/user/mypage"><GoPerson className="icon" />마이 페이지</Link>
-        {isCompanyLoggedIn && (
-          <Link className="nav-link" to="/popup/company/register">기업 팝업 등록하기</Link>
+
+        {isCompanyLoggedIn ? (
+          <Link className="nav-link" to="/auth/company/dashboard"><MdOutlineDashboardCustomize className="icon" />대시보드</Link>
+        ) : (
+          <Link className="nav-link" to="/auth/user/mypage"><GoPerson className="icon" />마이 페이지</Link>
         )}
+
+        {isCompanyLoggedIn && (
+          <Link className="nav-link" to="/popup/company/register"> <MdOutlineFiberNew className="icon" />기업 팝업 등록하기</Link>
+        )}
+
         {isUserLoggedIn || isCompanyLoggedIn ? (
           <div className="user-info">
-            <p className="welcome-message">{nickname}님, 안녕하세요!</p>
-            <button className="logout-button" onClick={handleLogout}>로그아웃</button>
+            <p className="welcome-message"><FaPagelines className="icon" />{nickname}님, 안녕하세요!</p>
+            <button className="logout-button" onClick={handleLogout}> 로그아웃</button>
           </div>
         ) : (
-          <Link className="nav-link login-link" to="/select/login">로그인</Link>
+          <Link className="nav-link login-link" to="/select/login"><CiLogin className="icon" />로그인</Link>
         )}
       </nav>
       <hr />
@@ -145,11 +156,12 @@ export default Header;
 
 
 
-//// 24.08.08 로그인 별 권한부여 설정
+// // 24.08.08 로그인 별 권한부여 설정
 // import React, { useState, useEffect } from "react";
 // import { Link } from "react-router-dom";
 // import { IoHome } from "react-icons/io5";
 // import { GoHeart, GoPerson } from "react-icons/go";
+// import './Header.css'; // CSS 파일을 import
 
 // const Header = () => {
 //   const [isCompanyLoggedIn, setIsCompanyLoggedIn] = useState(false);
@@ -253,45 +265,28 @@ export default Header;
 //   };
 
 //   return (
-//     <header>
-//       헤더 부분 표시 <br/>
-//       메뉴화면, 로그인, 회원가입, 마이페이지 <br/><br/>
-
-//       <IoHome />
-//       <Link className="home" to={homeLink}>홈</Link>
-//       &nbsp; | &nbsp;
-
-//       {isUserLoggedIn && (
-//         <>
-//           <GoHeart />
-//           <Link to="/popup/my.reservation">예약내역</Link>
-//           &nbsp; | &nbsp;
-//         </>
-//       )}
-
-//       <GoPerson />
-//       <Link to="/mypage">마이 페이지</Link>
-//       &nbsp; | &nbsp;
-
-//       <div style={{ display: 'inline-block' }}>
-//         {isCompanyLoggedIn && (
+//     <header className="header">
+//       <nav className="nav-bar">
+//         <Link className="nav-link home" to={homeLink}><IoHome className="icon" />홈</Link>
+//         {isUserLoggedIn && (
 //           <>
-//             <Link to="/popup/company/register">기업 팝업 등록하기</Link>
-//             &nbsp; | &nbsp;
+//             <Link className="nav-link" to="/popup/my.reservation"><GoHeart className="icon" />예약내역</Link>
 //           </>
 //         )}
+//         <Link className="nav-link" to="/auth/user/mypage"><GoPerson className="icon" />마이 페이지</Link>
+//         {isCompanyLoggedIn && (
+//           <Link className="nav-link" to="/popup/company/register">기업 팝업 등록하기</Link>
+//         )}
 //         {isUserLoggedIn || isCompanyLoggedIn ? (
-//           <div style={{ display: 'inline-block' }}>
-//             <p className="success-Login" style={{ display: 'inline-block', margin: '0 10px' }}>{nickname}님, 안녕하세요!</p>
-//             <button className="logoutButton" onClick={handleLogout}>
-//               로그아웃
-//             </button>
+//           <div className="user-info">
+//             <p className="welcome-message">{nickname}님, 안녕하세요!</p>
+//             <button className="logout-button" onClick={handleLogout}>로그아웃</button>
 //           </div>
 //         ) : (
-//           <Link to="/select/login">로그인</Link>
+//           <Link className="nav-link login-link" to="/select/login">로그인</Link>
 //         )}
-//       </div>
-//       <hr/>
+//       </nav>
+//       <hr />
 //     </header>
 //   );
 // };

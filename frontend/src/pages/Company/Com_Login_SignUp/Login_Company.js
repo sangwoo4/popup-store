@@ -51,7 +51,7 @@ export default function Login_Company() {
     .then(res => {
       console.log("백엔드: ", res);
 
-      if (res.data.token) {
+      if (res.data && res.data.token) {
         alert("로그인 되었습니다.");
         window.location.href = '/auth/company/homepage'; 
         window.localStorage.setItem('token', res.data.token);
