@@ -1,5 +1,6 @@
 package hansung.popupstore.PopupStore.Service;
 
+<<<<<<< HEAD
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hansung.popupstore.PopupStore.Controller.PopUpAiController;
@@ -20,15 +21,26 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+=======
+import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
+import hansung.popupstore.dto.CategoryDto;
+import hansung.popupstore.dto.PopupImageDto;
+import hansung.popupstore.dto.PopupStoreDto;
+import hansung.popupstore.dto.StoreDayDto;
+import hansung.popupstore.model.*;
+import hansung.popupstore.Account.Repository.CompanyRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+>>>>>>> 950e11a771cbb0c4716d1425a55e11d4b684fce1
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class PopupStoreService {
+<<<<<<< HEAD
     private static final Logger logger = LoggerFactory.getLogger(PopupStoreService.class);
     private PopupStoreRepository popupStoreRepository;
     private ObjectMapper objectMapper;
@@ -51,79 +63,96 @@ public class PopupStoreService {
         this.objectMapper = objectMapper;
         this.categoryRepository = categoryRepository;
         this.popUpAiController = popUpAiController;
+=======
+    private final PopupStoreRepository popupStoreRepository;
+    private final CompanyRepository companyRepository;
+
+    @Transactional
+    public PopupStore createPopupStore(PopupStoreDto dto) {
+        PopupStore popupStore = buildPopupStoreEntity(dto);
+        popupStoreRepository.save(popupStore);
+        return popupStore;
+>>>>>>> 950e11a771cbb0c4716d1425a55e11d4b684fce1
     }
 
-    public static String removeHtmlTags(String html) {
-        return Jsoup.clean(html, Whitelist.none());
+    @Transactional
+    public PopupStore updatePopupStore(Long id, PopupStoreDto dto) {
+        PopupStore popupStore = popupStoreRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("PopupStore not found with id: " + id));
+        updatePopupStoreEntity(popupStore, dto);
+        popupStoreRepository.save(popupStore);
+        return popupStore;
     }
 
-    public void savePopupStores(String result) {
-        Set<String> existingTitles = this.popupStoreRepository.findAll().stream()
-                .map(PopupStore::getTitle)
-                .collect(Collectors.toSet());
-        Set<String> titleSet = new HashSet<>(existingTitles);
-        List<PopupStore> storesToSave = new ArrayList<>();
+    @Transactional(readOnly = true)
+    public PopupStore getPopupStore(Long id) {
+        return popupStoreRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("PopupStore not found with id: " + id));
+    }
 
-        try {
-            JsonNode rootNode = this.objectMapper.readTree(result);
-            JsonNode itemsNode = rootNode.path("items");
-            Iterator<JsonNode> var7 = itemsNode.iterator();
+    @Transactional
+    public void deletePopupStore(Long id) {
+        popupStoreRepository.deleteById(id);
+    }
 
-            while (var7.hasNext()) {
-                JsonNode itemNode = var7.next();
-                String originalTitle = itemNode.path("title").asText();
-                String cleanedTitle = removeHtmlTags(originalTitle);
-                if (!titleSet.contains(cleanedTitle)) {
-                    PopupStoreDto popupStoreDto = PopupStoreDto.builder()
-                            .id(itemNode.path("id").asLong())
-                            .title(cleanedTitle)
-                            .address(itemNode.path("address").asText())
-                            .roadAddress(itemNode.path("roadAddress").asText())
-                            .telephone(itemNode.path("telephone").asText())
-                            .description(itemNode.path("description").asText())
-                            .link(itemNode.path("link").asText())
-                            .mapx(itemNode.path("mapx").asText())
-                            .mapy(itemNode.path("mapy").asText())
-                            .build();
-                    PopupStore popupStore = this.popupStoreRepository.save(popupStoreDto.toEntity());
-                    storesToSave.add(popupStore);
-                }
-            }
+    public PopupStoreDto getPopupStoreDtoById(Long id) {
+        PopupStore popupStore = popupStoreRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("PopupStore not found"));
+        return convertToDto(popupStore);
+    }
 
-            this.popupStoreRepository.saveAll(storesToSave);
-            logger.info("총 {}개의 팝업 스토어를 저장했습니다.", storesToSave.size());
-        } catch (IOException var12) {
-            logger.error("JSON 처리 중 오류 발생: ", var12);
+    private PopupStore buildPopupStoreEntity(PopupStoreDto dto) {
+        Company company = null;
+        if (dto.getCompanyId() != null) {
+            company = companyRepository.findById(dto.getCompanyId())
+                    .orElseThrow(() -> new RuntimeException("Company not found with ID: " + dto.getCompanyId()));
         }
-    }
 
-    public String fetchNaverSearchResults(String query) {
-        URI uri = UriComponentsBuilder.fromUriString("https://openapi.naver.com")
-                .path("/v1/search/local.json")
-                .queryParam("query", query)
-                .queryParam("display", 5)
-                .queryParam("start", 1)
-                .queryParam("sort", "random")
-                .encode()
-                .build()
-                .toUri();
 
-        RequestEntity<Void> requestEntity = RequestEntity.get(uri)
-                .header("X-Naver-Client-Id", this.clientId)
-                .header("X-Naver-Client-Secret", this.clientSecret)
+        return PopupStore.builder()
+                .title(dto.getTitle())
+                .address(dto.getAddress())
+                .postCode(dto.getPostCode())
+                .detailAddress(dto.getDetailAddress())
+                .startDate(dto.getStartDate())
+                .roadAddress(dto.getRoadAddress())
+                .endDate(dto.getEndDate())
+                .telephone(dto.getTelephone())
+                .subway(dto.getSubway())
+                .description(dto.getDescription())
+                .link(dto.getLink())
+                .mapx(dto.getMapx())
+                .mapy(dto.getMapy())
+                .company(company)
                 .build();
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        try {
-            ResponseEntity<String> response = restTemplate.exchange(requestEntity, String.class);
-            return response.getBody();
-        } catch (Exception var6) {
-            logger.error("Naver API 요청 중 오류 발생: ", var6);
-            throw new RuntimeException("Naver API 요청 중 오류 발생", var6);
-        }
     }
 
+    void updatePopupStoreEntity(PopupStore popupStore, PopupStoreDto dto) {
+        popupStore.setTitle(dto.getTitle());
+        popupStore.setAddress(dto.getAddress());
+        popupStore.setPostCode(dto.getPostCode());
+        popupStore.setStartDate(dto.getStartDate());
+        popupStore.setEndDate(dto.getEndDate());
+        popupStore.setRoadAddress(dto.getRoadAddress());
+        popupStore.setTelephone(dto.getTelephone());
+        popupStore.setSubway(dto.getSubway());
+        popupStore.setDescription(dto.getDescription());
+        popupStore.setLink(dto.getLink());
+        popupStore.setMapx(dto.getMapx());
+        popupStore.setMapy(dto.getMapy());
+    }
+
+    public PopupStoreDto convertToDto(PopupStore popupStore) {
+        Set<StoreDayDto> storeDayDtos = new HashSet<>();
+        for (StoreDay storeDay : popupStore.getStoreDays()) {
+            storeDayDtos.add(StoreDayDto.builder()
+                    .day(storeDay.getDay().getDay())
+                    .openTime(storeDay.getOpenTime())
+                    .closeTime(storeDay.getCloseTime())
+                    .build());
+        }
+
+<<<<<<< HEAD
     @Transactional
     public String getNewPopupStores(String result) {
         Set<String> existingTitles = popupStoreRepository.findAll().stream()
@@ -236,9 +265,46 @@ public class PopupStoreService {
     public List<PopupStore> getAllPopupStores() {
         return this.popupStoreRepository.findAll();
     }
+=======
+        String companyName = (popupStore.getCompany() != null) ? popupStore.getCompany().getCompanyName() : "회사 없음";
+>>>>>>> 950e11a771cbb0c4716d1425a55e11d4b684fce1
 
-    public Optional<PopupStore> searchPopupStores(String query) {
-        return this.popupStoreRepository.findByTitleContaining(query);
+
+        Set<CategoryDto> categoryDtos = new HashSet<>();
+        for (Category category : popupStore.getCategories()) {
+            categoryDtos.add(CategoryDto.builder()
+                    .category(category.getCategory())
+                    .build());
+        }
+
+        Set<PopupImageDto> popupImageDtos = new HashSet<>();
+        for (PopupImage popupImage : popupStore.getPopupImages()) {
+            popupImageDtos.add(PopupImageDto.builder()
+                    .id(popupImage.getId())
+                    .imageUrl(popupImage.getImageUrl())
+                    .build());
+        }
+
+        return PopupStoreDto.builder()
+                .id(popupStore.getId())
+                .title(popupStore.getTitle())
+                .address(popupStore.getAddress())
+                .detailAddress(popupStore.getDetailAddress())
+                .postCode(popupStore.getPostCode())
+                .startDate(popupStore.getStartDate())
+                .endDate(popupStore.getEndDate())
+                .telephone(popupStore.getTelephone())
+                .roadAddress(popupStore.getRoadAddress())
+                .subway(popupStore.getSubway())
+                .description(popupStore.getDescription())
+                .link(popupStore.getLink())
+                .mapx(popupStore.getMapx())
+                .mapy(popupStore.getMapy())
+                .companyName(companyName)
+                .categories(categoryDtos)
+                .storeDays(storeDayDtos)
+                .popupImages(popupImageDtos)
+                .build();
     }
 
 //    // AI가 선정한 카테고리 저장

@@ -9,10 +9,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Getter
+<<<<<<< HEAD
 @Setter
 @NoArgsConstructor
+=======
+>>>>>>> 950e11a771cbb0c4716d1425a55e11d4b684fce1
 @AllArgsConstructor
 @Builder
+@Setter
 @Entity
 @Table(name = "category")
 public class Category {
@@ -20,11 +24,21 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", length = 50)
-    private String name;
+    @Column(name = "category", length = 50)
+    private String category;
 
     @ManyToMany(mappedBy = "categories")
     @JsonIgnore
     private Set<PopupStore> popupStores = new HashSet<>();
+
+    @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
+    private Set<User> users = new HashSet<>();
+
+    public Category() {}
+
+    public Category(String category) {
+        this.category = category;
+    }
 
 }

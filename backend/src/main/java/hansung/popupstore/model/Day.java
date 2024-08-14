@@ -1,16 +1,15 @@
 package hansung.popupstore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -20,12 +19,17 @@ public class Day {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long dayCode;
+    private int id;
 
     @NotNull
     @Column(name="day", length=10)
     private String day;
 
-    @ManyToMany(mappedBy = "days")
-    private Set<PopupStore> popupStores = new HashSet<>();
+    @OneToMany(mappedBy = "day", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<StoreDay> storeDays = new HashSet<>();
+
+    public Day(String day) {
+        this.day = day;
+    }
 }

@@ -1,5 +1,6 @@
 package hansung.popupstore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -27,7 +28,13 @@ public class PopupStore {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "road_address")
+    @Column(name = "post-code")
+    private String postCode;
+
+    @Column(name = "detail_address")
+    private String detailAddress;
+
+    @Column
     private String roadAddress;
 
     @Column(name = "start_date", length = 10)
@@ -35,12 +42,6 @@ public class PopupStore {
 
     @Column(name = "end_date", length = 10)
     private String endDate;
-
-    @Column(name = "start_time", length = 10)
-    private String startTime;
-
-    @Column(name = "end_time", length = 10)
-    private String endTime;
 
     @Column(name = "telephone", length = 15)
     private String telephone;
@@ -56,13 +57,17 @@ public class PopupStore {
     @Column(name = "mapy", length = 15)
     private String mapy;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 950e11a771cbb0c4716d1425a55e11d4b684fce1
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "link", length = 50)
+    @Column(name = "link", length = 250)
     private String link;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
@@ -75,13 +80,12 @@ public class PopupStore {
     )
     private Set<Category> categories = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable (
-            name ="store_day",
-            joinColumns = @JoinColumn(name = "popup_store_id"),
-            inverseJoinColumns = @JoinColumn(name = "day_code")
-    )
 
-    private Set<Day> days = new HashSet<>();
+    @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<StoreDay> storeDays = new HashSet<>();
+
+    @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PopupImage> popupImages = new HashSet<>();
 
 }
