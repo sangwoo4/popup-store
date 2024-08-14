@@ -37,24 +37,6 @@ public class PopupStoreManagementController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-//    @PostMapping("/register")
-//    public ResponseEntity<ResponseDto<?>> submit(
-//            @RequestHeader("Authorization") String token,
-//            @RequestPart(value = "dto") PopupStoreDto dto,
-//            @RequestPart(value = "images", required = false) List<MultipartFile> images) throws IOException {
-//        try {
-//            String jwtToken = tokenUtils.extractToken(token);
-//            Long companyId = tokenUtils.extractCompanyIdFromToken(jwtToken);
-//            dto.setCompanyId(companyId);
-//            ResponseDto<?> result = popUpStoreManagementService.registerPopUpWithImage(dto, images);
-//            return new ResponseEntity<>(result, HttpStatus.OK);
-//        } catch (Exception e) {
-//            // Handle specific exceptions and return appropriate HTTP status and message
-//            return new ResponseEntity<>(new ResponseDto<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Registration failed"), HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-
-
     @GetMapping("/register")
     public ResponseEntity<ResponseDto<?>> getRegisterPage() {
         ResponseDto<?> response = ResponseDto.setSuccess("페이지 접근이 허용되었습니다.");

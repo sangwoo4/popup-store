@@ -1,10 +1,7 @@
 package hansung.popupstore.PopupStore.Service;
 
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
-import hansung.popupstore.dto.CategoryDto;
-import hansung.popupstore.dto.PopupImageDto;
-import hansung.popupstore.dto.PopupStoreDto;
-import hansung.popupstore.dto.StoreDayDto;
+import hansung.popupstore.dto.*;
 import hansung.popupstore.model.*;
 import hansung.popupstore.Account.Repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +57,6 @@ public class PopupStoreService {
                     .orElseThrow(() -> new RuntimeException("Company not found with ID: " + dto.getCompanyId()));
         }
 
-
         return PopupStore.builder()
                 .title(dto.getTitle())
                 .address(dto.getAddress())
@@ -75,6 +71,9 @@ public class PopupStoreService {
                 .link(dto.getLink())
                 .mapx(dto.getMapx())
                 .mapy(dto.getMapy())
+                .currentReservation(dto.getCurrentReservation())
+                .totalReservation(dto.getTotalReservation())
+                .detailAddress(dto.getDetailAddress())
                 .company(company)
                 .build();
     }
@@ -87,11 +86,16 @@ public class PopupStoreService {
         popupStore.setEndDate(dto.getEndDate());
         popupStore.setRoadAddress(dto.getRoadAddress());
         popupStore.setTelephone(dto.getTelephone());
+        popupStore.setReservation(dto.getReservation());
+        popupStore.setCurrentReservation(dto.getCurrentReservation());
+        popupStore.setTotalReservation(dto.getTotalReservation());
         popupStore.setSubway(dto.getSubway());
         popupStore.setDescription(dto.getDescription());
         popupStore.setLink(dto.getLink());
         popupStore.setMapx(dto.getMapx());
         popupStore.setMapy(dto.getMapy());
+        popupStore.setPostCode(dto.getPostCode());
+        popupStore.setDetailAddress(dto.getDetailAddress());
     }
 
     public PopupStoreDto convertToDto(PopupStore popupStore) {
@@ -122,6 +126,16 @@ public class PopupStoreService {
                     .build());
         }
 
+        Set<PopupReservationDto> popupReservationDtos = new HashSet<>();
+        for (PopupReservation popupReservation : popupStore.getPopupReservations()) {
+            popupReservationDtos.add(PopupReservationDto.builder()
+                    .day(popupReservation.getDay().getDay())
+                    .startTime(popupReservation.getStartTime())
+                    .totalReservation(popupReservation.getTotalReservation())
+                    .currentReservation(popupReservation.getCurrentReservation())
+                    .build());
+        }
+
         return PopupStoreDto.builder()
                 .id(popupStore.getId())
                 .title(popupStore.getTitle())
@@ -137,10 +151,15 @@ public class PopupStoreService {
                 .link(popupStore.getLink())
                 .mapx(popupStore.getMapx())
                 .mapy(popupStore.getMapy())
+                .reservation(popupStore.getReservation())
+                .currentReservation(popupStore.getCurrentReservation())
+                .totalReservation(popupStore.getTotalReservation())
+                .detailAddress(popupStore.getDetailAddress())
                 .companyName(companyName)
                 .categories(categoryDtos)
                 .storeDays(storeDayDtos)
                 .popupImages(popupImageDtos)
+                .popupReservations(popupReservationDtos)
                 .build();
     }
 }

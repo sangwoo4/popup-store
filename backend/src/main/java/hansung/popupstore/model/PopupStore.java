@@ -68,6 +68,16 @@ public class PopupStore {
     @JoinColumn(name = "company_id")
     private Company company;
 
+    @Column
+    private Boolean reservation = false;
+
+    @Column(name = "total_reservation")
+    private Integer totalReservation;
+
+    @Column(name = "current_reservation")
+    private Integer currentReservation;
+
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable (
             name ="store_category",
@@ -83,5 +93,9 @@ public class PopupStore {
 
     @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PopupImage> popupImages = new HashSet<>();
+
+    @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<PopupReservation> popupReservations = new HashSet<>();
 
 }

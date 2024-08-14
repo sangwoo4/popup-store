@@ -19,6 +19,7 @@ public class PopUpStoreManagementService {
     private final PopupStoreImageService popupImageService;
     private final PopupStoreCategoryService categoryService;
     private final PopupStoreDayService storeDayService;
+    private final PopupReservationService popupReservationService;
 
     public ResponseDto<?> createPopUp(PopupStoreDto dto) {
         PopupStore popupStore = popupStoreService.createPopupStore(dto);
@@ -30,8 +31,10 @@ public class PopUpStoreManagementService {
     }
 
     public ResponseDto<?> registerPopUpWithImage(PopupStoreDto dto, List<MultipartFile> images) throws IOException {
+        System.out.println("dto" +dto);
         PopupStore popupStore = popupStoreService.createPopupStore(dto);
         storeDayService.saveOrUpdateStoreDays(dto.getStoreDays(), popupStore);
+        popupReservationService.saveOrUpdatePopupReservations(dto.getPopupReservations(), popupStore);
         Set<Category> categories = categoryService.saveOrUpdatePopUpCategories(dto.getCategories(), popupStore);
         popupStore.setCategories(categories);
         popupStoreService.updatePopupStoreEntity(popupStore, dto);
@@ -43,12 +46,14 @@ public class PopUpStoreManagementService {
         return ResponseDto.setSuccess("PopupStore created successfully.");
     }
 
+
     public ResponseDto<?> updatePopUp(Long id, PopupStoreDto dto,  List<MultipartFile> images) throws IOException {
         PopupStore popupStore = popupStoreService.updatePopupStore(id, dto);
         popupImageService.deleteAllPopupImages(popupStore);
         storeDayService.saveOrUpdateStoreDays(dto.getStoreDays(), popupStore);
         Set<Category> categories = categoryService.saveOrUpdatePopUpCategories(dto.getCategories(), popupStore);
         popupStore.setCategories(categories);
+        popupReservationService.saveOrUpdatePopupReservations(dto.getPopupReservations(), popupStore);
         popupStoreService.updatePopupStoreEntity(popupStore, dto);
         if (images != null && !images.isEmpty()) {
             popupImageService.saveOrUpdatePopupImages(dto.getPopupImages(), popupStore, images);
