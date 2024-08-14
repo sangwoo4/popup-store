@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 import numpy as np
 from tensorflow.keras.models import load_model
 from geopy.distance import geodesic
-# from model_definition import create_ncf
+# from ncf_model import create_ncf
 # import schemas
 # from cache import set_cache, get_cache, save_cache_to_file, load_cache_from_file, get_cache_content, clear_cache
 import logging
@@ -73,20 +73,20 @@ except Exception as e:
     logger.info("새 모델 생성 및 컴파일 완료")
 
 # 모델을 주기적으로 파일에 저장하는 함수
-async def save_model_periodically(interval: int = 600):
+async def save_model_periodically(interval: int = 300):
     while True:
         await asyncio.sleep(interval)
         model.save(MODEL_FILE)
         logger.info(f"모델이 파일에 저장되었습니다: {MODEL_FILE}")
 
 # 주기적으로 캐시를 파일에 저장하는 함수
-async def save_cache_periodically(interval: int = 600):
+async def save_cache_periodically(interval: int = 300):
     while True:
         await asyncio.sleep(interval)
         save_cache_to_file(CACHE_FILE)
 
 # 주기적으로 팝업 스토어 캐시를 업데이트하는 함수
-async def update_popup_stores_cache_periodically(interval: int = 600):
+async def update_popup_stores_cache_periodically(interval: int = 300):
     while True:
         await asyncio.sleep(interval)
         try:
@@ -160,7 +160,7 @@ def fetch_popup_stores_from_db():
 async def distance_recommendations(request: List[schemas.DistanceRequest]):
     logger.info(f"추천 요청 수신: {request}")
     
-    num_recommendations = 3
+    num_recommendations = 5
     
     try:
         user_id_input = np.array([req.id for req in request])
@@ -223,7 +223,7 @@ async def distance_recommendations(request: List[schemas.DistanceRequest]):
 async def category_recommendations(request: List[schemas.CategoryRequest]):
     logger.info(f"추천 요청 수신: {request}")
     
-    num_recommendations = 3
+    num_recommendations = 5
 
     try:
         user_id_input = np.array([req.id for req in request])
@@ -293,13 +293,14 @@ async def categorize(requests: List[schemas.ChatRequest]):
 )
         
             response = await client.completions.create(
-                model="ft:davinci-002:category:categoryfinal:9tutU94B",
+                model="ft:davinci-002:category:categoryfinal03:9ve3FVGx",
                 prompt=detailed_prompt,
-                max_tokens=13,
+                max_tokens=15,
                 temperature=0.3,
                 top_p=0.5,
                 frequency_penalty=0.1,
                 presence_penalty=0.1,
+                # stop = [","]
             )
             text_response = response.choices[0].text.strip()
             logger.info(f"OpenAI로부터 받은 원시 응답: {text_response}")
@@ -378,7 +379,7 @@ if __name__ == "__main__":
 # 유틸리티 함수들
 CATEGORY_LIST = [
     "화장품", "캐릭터", "도서/음반", "패션", "인테리어", "전시/체험", "향수", "음식", "주류", 
-    "음료", "문구", "가정", "생활용품", "스포츠", "게임", "전자제품", "인물", "건강/웰빙","자동차", 
+    "음료", "문구", "생활용품", "스포츠", "게임", "전자제품", "인물", "건강/웰빙", "자동차", 
     "식물", "여행/레저", "드라마/영화", "가전제품", "기타행사"
 ]
 
