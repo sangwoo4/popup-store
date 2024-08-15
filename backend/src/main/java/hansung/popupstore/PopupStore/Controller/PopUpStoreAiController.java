@@ -7,7 +7,9 @@ import hansung.popupstore.Account.service.UserService;
 import hansung.popupstore.PopupStore.Service.PopUpStoreAiService;
 import hansung.popupstore.Security.TokenUtils;
 import hansung.popupstore.Util.ResponseDto;
+import hansung.popupstore.dto.PopupStoreDistanceResponseDto;
 import hansung.popupstore.dto.PopupStoreDto;
+import hansung.popupstore.dto.PopupStoreResponseDto;
 import hansung.popupstore.model.PopupStore;
 import hansung.popupstore.model.User;
 import lombok.AllArgsConstructor;
@@ -38,7 +40,7 @@ public class PopUpStoreAiController {
         String jwtToken = tokenUtils.extractToken(token);
         Long userId = tokenUtils.extractUserIdFromToken(jwtToken);
         UserRecommendDto userRecommendDto =  userService.userCategoryAndAddressFindByUserId(userId);
-        ResponseDto<List<PopupStoreDto>> result = popUpAiService.convertRecommendPopupByCategory(userRecommendDto);
+        ResponseDto<List<PopupStoreResponseDto>> result = popUpAiService.convertRecommendPopupByCategory(userRecommendDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -47,7 +49,7 @@ public class PopUpStoreAiController {
         String jwtToken = tokenUtils.extractToken(token);
         Long userId = tokenUtils.extractUserIdFromToken(jwtToken);
         UserRecommendDto userRecommendDto =  userService.userCategoryAndAddressFindByUserId(userId);
-        ResponseDto<List<PopupStoreDto>> result = popUpAiService.convertRecommendPopupByDistance(userRecommendDto);
+        ResponseDto<List<PopupStoreDistanceResponseDto>> result = popUpAiService.convertRecommendPopupByDistance(userRecommendDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

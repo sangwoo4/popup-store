@@ -1,22 +1,16 @@
 package hansung.popupstore.PopupStore.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import hansung.popupstore.Account.Dto.UserRecommendDto;
 import hansung.popupstore.Util.ResponseDto;
+import hansung.popupstore.dto.PopupStoreDistanceResponseDto;
 import hansung.popupstore.dto.PopupStoreDto;
+import hansung.popupstore.dto.PopupStoreResponseDto;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestOperations;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,34 +39,19 @@ public class PopUpStoreAiService {
         return dtoConversionService.convertToJson(updatedQueryNode);
     }
 
-    public ResponseDto<List<PopupStoreDto>> convertRecommendPopupByCategory(UserRecommendDto userRecommendDto) throws JsonProcessingException {
+    public ResponseDto<List<PopupStoreResponseDto>> convertRecommendPopupByCategory(UserRecommendDto userRecommendDto) throws JsonProcessingException {
         JsonNode queryNode = objectMapper.valueToTree(userRecommendDto);
         ArrayNode jsonArray = jsonProcessingService.createJsonArrayRecommendByCategory(queryNode);
         String response = apiRequestService.sendHttpPostRequest(CATEGORY_RECOMMEND_URL, jsonArray);
-        JsonNode responseJsonNode = objectMapper.readTree(response);
-        List<PopupStoreDto> popupStoreDtos = dtoConversionService.convertRecommendations(response);
+        List<PopupStoreResponseDto> popupStoreDtos = dtoConversionService.convertCategoryRecommendations(response);
         return ResponseDto.setSuccessData("추천 팝업 스토어 정보를 성공적으로 로드했습니다.", popupStoreDtos);
     }
 
-    public ResponseDto<List<PopupStoreDto>> convertRecommendPopupByDistance(UserRecommendDto userRecommendDto) throws JsonProcessingException {
+    public ResponseDto<List<PopupStoreDistanceResponseDto>> convertRecommendPopupByDistance(UserRecommendDto userRecommendDto) throws JsonProcessingException {
         JsonNode queryNode = objectMapper.valueToTree(userRecommendDto);
         ArrayNode jsonArray = jsonProcessingService.createJsonArrayRecommendByDistance(queryNode);
         String response = apiRequestService.sendHttpPostRequest(DISTANCE_RECOMMEND_URL, jsonArray);
-        JsonNode responseJsonNode = objectMapper.readTree(response);
-
-        List<PopupStoreDto> popupStoreDtos = new ArrayList<>();
-
-        if (responseJsonNode.isArray()) {
-            for (JsonNode recommendation : responseJsonNode) {
-                Long id = recommendation.get("id").asLong();
-                double distance = recommendation.get("distance").asDouble();
-                PopupStoreDto popupStoreDto = popupStoreService.getPopupStoreDtoById(id);
-                popupStoreDto.setDistance(distance);
-
-                popupStoreDtos.add(popupStoreDto);
-            }
-        }
-
+        List<PopupStoreDistanceResponseDto> popupStoreDtos = dtoConversionService.convertDistanceRecommendations(response);
         return ResponseDto.setSuccessData("추천 팝업 스토어 정보를 성공적으로 로드했습니다.", popupStoreDtos);
     }
 

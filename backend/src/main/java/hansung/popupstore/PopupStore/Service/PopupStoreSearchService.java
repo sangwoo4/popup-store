@@ -4,9 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import hansung.popupstore.PopupStore.PopupStoreMapper;
 import hansung.popupstore.dto.PopupStoreDto;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.Util.ResponseDto;
+import hansung.popupstore.dto.PopupStoreResponseDto;
 import hansung.popupstore.model.PopupStore;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -147,23 +149,28 @@ public class PopupStoreSearchService {
         return getQueryPopupStores(searchQuery);
     }
 
-    public ResponseDto<?> getAllPopupStores(){
-        List<PopupStore> optionalPopupStore = popupStoreRepository.findAll();
-        return ResponseDto.setSuccessData("팝업 스토어 조회 성공", optionalPopupStore);
+    // 팝업 스토어의 모든 항목을 조회
+    public ResponseDto<?> getAllPopupStores() {
+        List<PopupStore> allPopupStores = popupStoreRepository.findAll();
+        List<PopupStoreResponseDto> popupStoreDtos = PopupStoreMapper.toDtoList(allPopupStores);
+        return ResponseDto.setSuccessData("팝업 스토어 조회 성공", popupStoreDtos);
     }
 
-
-    public ResponseDto<?> getQueryPopupStores(String query){
+    // 쿼리에 맞는 팝업 스토어를 조회
+    public ResponseDto<?> getQueryPopupStores(String query) {
         String removePopup = query.replace("팝업", "").trim(); // 문자열 앞뒤 공백 제거
-        System.out.println("removePopup: " + removePopup);
 
+        // 제목에 쿼리 문자열이 포함된 팝업 스토어를 조회
         List<PopupStore> popupStores = popupStoreRepository.findByTitleContaining(removePopup);
+        List<PopupStoreResponseDto> popupStoreDtos = PopupStoreMapper.toDtoList(popupStores);
 
+        // 결과가 없을 경우
         if (popupStores.isEmpty()) {
             return ResponseDto.setFailedData("팝업 스토어 조회 성공, 결과가 없습니다.", Collections.emptyList());
         }
 
-        return ResponseDto.setSuccessData("팝업 스토어 조회 성공", popupStores);
+        // 결과가 있을 경우
+        return ResponseDto.setSuccessData("팝업 스토어 조회 성공", popupStoreDtos);
     }
 
 }
