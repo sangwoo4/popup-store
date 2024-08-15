@@ -22,8 +22,6 @@ public class PopupReservationService {
     @Transactional
     public void saveOrUpdatePopupReservations(Set<PopupReservationDto> popupReservationDtos, PopupStore popupStore) {
         for (PopupReservationDto popupReservationDto : popupReservationDtos) {
-            System.out.println("popupReservationDtos: " + popupReservationDtos);
-            System.out.println("popupReservationDto: " + popupReservationDto);
 
             // Day entity lookup or creation
             Day day = dayRepository.findByDay(popupReservationDto.getDay())

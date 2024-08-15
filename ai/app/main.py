@@ -271,23 +271,23 @@ async def categorize(requests: List[schemas.ChatRequest]):
 
             category_prompt = ", ".join(CATEGORY_LIST)
             detailed_prompt = (
-                "당신은 분류 어시스턴트입니다. 당신의 임무는 이벤트나 제품의 제목과 카테고리를 읽고, "
-                "다음 목록에서 가장 적합한 카테고리를 선택하는 것입니다: "
-                f"{category_prompt}.\n\n"
-                "가능한 한 정확하게 선택해 주세요. 여기 세부 정보가 있습니다:\n"
-                f"제목: {request.title}\n"
-                f"설명: {request.description}\n"
-                f"카테고리: {request.categories}\n"
-                "카테고리: "
-            )
+            f"당신은 카테고리 선정 어시스턴트입니다. 당신의 임무는 전달 받은 팝업스토어의 title, 그리고 description의 문장을 단어 사용 빈도에 초점을 둬서 읽어줘.\n"
+            "다음 목록에서 적합한 카테고리들을 최대 3개 선정하는 것입니다: "
+            f"{category_prompt}.\n\n"
+            f"중복 응답을 자제 해주세요. 여기 세부 정보가 있습니다:\n"
+            f"제목: {request.title}\n"
+            f"설명: {request.description}\n"
+)
+        
             response = await client.completions.create(
-                model="ft:davinci-002:category:category-v2-4-2:9soQfBry",
+                model="ft:davinci-002:category:categoryfinal03:9ve3FVGx",
                 prompt=detailed_prompt,
-                max_tokens=30,
-                temperature=0.75,
-                top_p=0.75,
-                frequency_penalty=1.90,
-                presence_penalty=0.75,
+                max_tokens=15,
+                temperature=0.3,
+                top_p=0.5,
+                frequency_penalty=0.1,
+                presence_penalty=0.1,
+                # stop = [","]
             )
             text_response = response.choices[0].text.strip()
             logger.info(f"OpenAI로부터 받은 원시 응답: {text_response}")
@@ -366,7 +366,7 @@ if __name__ == "__main__":
 # 유틸리티 함수들
 CATEGORY_LIST = [
     "화장품", "캐릭터", "도서/음반", "패션", "인테리어", "전시/체험", "향수", "음식", "주류", 
-    "음료", "문구", "가정", "생활용품", "스포츠", "게임", "전자제품", "인물", "건강/웰빙","자동차", 
+    "음료", "문구", "가정", "생활용품", "스포츠", "게임", "전자제품", "인물", "건강/웰빙", "자동차", 
     "식물", "여행/레저", "드라마/영화", "가전제품", "기타행사"
 ]
 

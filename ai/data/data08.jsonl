@@ -1,3 +1,350 @@
+<<<<<<< HEAD
+{"prompt": "교보", "completion": " 도서/음반"}
+{"prompt": "렌터카", "completion": " 여행/레저"}
+{"prompt": "이탈리아 명품", "completion": " 패션"}
+{"prompt": "침대 헤드", "completion": " 인테리어"}
+{"prompt": "콜리플라워", "completion": " 식물"}
+{"prompt": "클렌징 폼", "completion": " 화장품"}
+{"prompt": "휴지", "completion": " 생활용품"}
+{"prompt": "자연치유", "completion": " 건강/웰빙"}
+{"prompt": "복싱", "completion": " 스포츠"}
+{"prompt": "마블", "completion": " 캐릭터"}
+{"prompt": "수소차", "completion": " 자동차"}
+{"prompt": "뮤지컬 영화", "completion": " 드라마/영화"}
+{"prompt": "커피", "completion": " 음료"}
+{"prompt": "카카오프랜즈", "completion": " 문구"}
+{"prompt": "여행자보험", "completion": " 여행/레저"}
+{"prompt": "에르메스 향수", "completion": " 향수"}
+{"prompt": "게임 컨트롤러", "completion": " 게임"}
+{"prompt": "아이맥", "completion": " 전자제품"}
+{"prompt": "CASS", "completion": " 주류"}
+{"prompt": "설화수", "completion": " 화장품"}
+{"prompt": "전자레인지", "completion": " 가전제품"}
+{"prompt": "초콜릿", "completion": " 음식"}
+{"prompt": "토마토", "completion": " 식물"}
+{"prompt": "로에베", "completion": " 패션"} 
+{"prompt": "웰빙 프로그램", "completion": " 건강/웰빙"}
+{"prompt": "롤스로이스", "completion": " 자동차"}
+{"prompt": "CD", "completion": " 도서/음반"}
+{"prompt": "테마 전시", "completion": " 전시/체험"}
+{"prompt": "푸마", "completion": " 스포츠"}
+{"prompt": "타일", "completion": " 인테리어"}
+{"prompt": "영화 4DX", "completion": " 드라마/영화"}
+{"prompt": "휴양지", "completion": " 여행/레저"}
+{"prompt": "아이스 커피", "completion": " 음료"}
+{"prompt": "유니", "completion": " 문구"}
+{"prompt": "허브", "completion": " 식물"}
+{"prompt": "커피포트", "completion": " 가전제품"}
+{"prompt": "비누", "completion": " 생활용품"}
+{"prompt": "언더아머 레깅스", "completion": " 건강/웰빙"}
+{"prompt": "게임 장비", "completion": " 게임"}
+{"prompt": "구찌 향수", "completion": " 향수"}
+{"prompt": "춘식이", "completion": " 캐릭터"}
+{"prompt": "짬뽕", "completion": " 음식"}
+{"prompt": "프린터", "completion": " 전자제품"}
+{"prompt": "토드 백", "completion": " 패션"}
+{"prompt": "문학", "completion": " 도서/음반"}
+{"prompt": "넷플릭스", "completion": " 드라마/영화"}
+{"prompt": "페이스 오일", "completion": " 화장품"}
+{"prompt": "맥주", "completion": " 주류"}
+{"prompt": "뉴발란스", "completion": " 스포츠"}
+{"prompt": "혼다", "completion": " 자동차"}
+{"prompt": "체험관", "completion": " 전시/체험"}
+{"prompt": "투어", "completion": " 여행/레저"}
+{"prompt": "롤렉스", "completion": " 패션"}
+{"prompt": "심리상담", "completion": " 건강/웰빙"}
+{"prompt": "시디즈", "completion": " 인테리어"}
+{"prompt": "이모티콘", "completion": " 캐릭터"}
+{"prompt": "모닝글로리", "completion": " 식물"}
+{"prompt": "짜장면", "completion": " 음식"}
+{"prompt": "모니터", "completion": " 전자제품"}
+{"prompt": "행주", "completion": " 생활용품"}
+{"prompt": "파나소닉", "completion": " 가전제품"}
+{"prompt": "발렌시아가", "completion": " 패션"}
+{"prompt": "과일주스", "completion": " 음료"}
+{"prompt": "스파이시 향", "completion": " 향수"}
+{"prompt": "EA", "completion": " 게임"}
+{"prompt": "사운드북", "completion": " 도서/음반"}
+{"prompt": "테크니크", "completion": " 문구"}
+{"prompt": "애플 TV+", "completion": " 드라마/영화"}
+{"prompt": "세제", "completion": " 생활용품"}
+{"prompt": "미디어아트 전시", "completion": " 전시/체험"}
+{"prompt": "에어비앤비", "completion": " 여행/레저"}
+{"prompt": "모이스처라이저", "completion": " 화장품"}
+{"prompt": "테슬라 모델 S", "completion": " 자동차"}
+{"prompt": "피카츄", "completion": " 캐릭터"}
+{"prompt": "스쿼시", "completion": " 스포츠"}
+{"prompt": "해바라기", "completion": " 식물"}
+{"prompt": "스타일러", "completion": " 가전제품"}
+{"prompt": "토리버치", "completion": " 패션"}
+{"prompt": "로봇청소기", "completion": " 전자제품"}
+{"prompt": "심신 안정", "completion": " 건강/웰빙"}
+{"prompt": "옷장", "completion": " 인테리어"}
+{"prompt": "샤넬", "completion": " 화장품"}
+{"prompt": "액티비티", "completion": " 여행/레저"}
+{"prompt": "장갑", "completion": " 생활용품"}
+{"prompt": "인터스텔라", "completion": " 드라마/영화"}
+{"prompt": "디아블로", "completion": " 게임"}
+{"prompt": "치즈", "completion": " 음식"}
+{"prompt": "아이더", "completion": " 패션"}
+{"prompt": "네스프레소", "completion": " 음료"}
+{"prompt": "전통문화센터 체험", "completion": " 전시/체험"}
+{"prompt": "올리브 영", "completion": " 화장품"}
+{"prompt": "도서/음반 리뷰", "completion": " 도서/음반"}
+{"prompt": "손오공", "completion": " 캐릭터"}
+{"prompt": "필기구", "completion": " 문구"}
+{"prompt": "아로마틱 향", "completion": " 향수"}
+{"prompt": "쓰레기봉투", "completion": " 생활용품"}
+{"prompt": "블루베리", "completion": " 식물"}
+{"prompt": "Desker", "completion": " 인테리어"}
+{"prompt": "서핑", "completion": " 스포츠"}
+{"prompt": "페라리", "completion": " 자동차"}
+{"prompt": "스마트램프", "completion": " 전자제품"}
+{"prompt": "미국여행", "completion": " 여행/레저"}
+{"prompt": "겨울왕국", "completion": " 드라마/영화"}
+{"prompt": "루피", "completion": " 캐릭터"}
+{"prompt": "백팩", "completion": " 패션"}
+{"prompt": "위스키", "completion": " 주류"}
+{"prompt": "스마트램프", "completion": " 가전제품"}
+{"prompt": "두리안", "completion": " 식물"}
+{"prompt": "해태 허니버터칩", "completion": " 음식"}
+{"prompt": "책장", "completion": " 인테리어"}
+{"prompt": "오디오북", "completion": " 도서/음반"}
+{"prompt": "살로몬", "completion": " 스포츠"}
+{"prompt": "자기관리", "completion": " 건강/웰빙"}
+{"prompt": "홀리데이인 호텔", "completion": " 여행/레저"}
+{"prompt": "액션 어드벤처", "completion": " 게임"}
+{"prompt": "경차", "completion": " 자동차"}
+{"prompt": "승리호", "completion": " 드라마/영화"}
+{"prompt": "청소도구", "completion": " 생활용품"}
+{"prompt": "문화체험", "completion": " 전시/체험"}
+{"prompt": "수딩 젤", "completion": " 화장품"}
+{"prompt": "Krush", "completion": " 주류"}
+{"prompt": "핸드폰", "completion": " 전자제품"}
+{"prompt": "드링크에이드", "completion": " 음료"}
+{"prompt": "아쿠아 디 파르마", "completion": " 향수"}
+{"prompt": "미나리", "completion": " 식물"}
+{"prompt": "피트니스 센터", "completion": " 건강/웰빙"}
+{"prompt": "스케치북", "completion": " 문구"}
+{"prompt": "에어프라이어", "completion": " 가전제품"}
+{"prompt": "여행가이드", "completion": " 여행/레저"}
+{"prompt": "람보르기니", "completion": " 자동차"}
+{"prompt": "스누피", "completion": " 캐릭터"}
+{"prompt": "오디오 제품", "completion": " 도서/음반"}
+{"prompt": "거울", "completion": " 인테리어"}
+{"prompt": "브라이트닝 제품", "completion": " 화장품"}
+{"prompt": "의류", "completion": " 패션"} 
+{"prompt": "액션 영화", "completion": " 드라마/영화"}
+{"prompt": "카프콤", "completion": " 게임"}
+{"prompt": "빵", "completion": " 음식"}
+{"prompt": "필라테스", "completion": " 건강/웰빙"}
+{"prompt": "나이키", "completion": " 스포츠"}
+{"prompt": "호두", "completion": " 식물"}
+{"prompt": "물티슈", "completion": " 생활용품"}
+{"prompt": "교보문고", "completion": " 도서/음반"} 
+{"prompt": "잭 다니엘스", "completion": " 주류"}
+{"prompt": "칠성 사이다", "completion": " 음료"}
+{"prompt": "에이서", "completion": " 전자제품"}
+{"prompt": "마스카라", "completion": " 화장품"}
+{"prompt": "리조트", "completion": " 여행/레저"}
+{"prompt": "피지앤핏 명상쿠션", "completion": " 건강/웰빙"}
+{"prompt": "드래곤볼", "completion": " 캐릭터"}
+{"prompt": "디올", "completion": " 패션"}
+{"prompt": "리그 오브 레전드", "completion": " 게임"}
+{"prompt": "폭스바겐", "completion": " 자동차"}
+{"prompt": "전기밥솥", "completion": " 가전제품"}
+{"prompt": "에이스 침대", "completion": " 인테리어"}
+{"prompt": "햄", "completion": " 음식"}
+{"prompt": "영풍문고", "completion": " 도서/음반"}
+{"prompt": "디올 향수", "completion": " 향수"}
+{"prompt": "라임", "completion": " 식물"}
+{"prompt": "유도", "completion": " 스포츠"}
+{"prompt": "베니스 영화제", "completion": " 드라마/영화"}
+{"prompt": "노트북", "completion": " 전자제품"}
+{"prompt": "데킬라", "completion": " 주류"} 
+{"prompt": "관광", "completion": " 여행/레저"}
+{"prompt": "화이트보드", "completion": " 문구"}
+{"prompt": "물리치료", "completion": " 건강/웰빙"}
+{"prompt": "섬유유연제", "completion": " 생활용품"}
+{"prompt": "립스틱", "completion": " 화장품"}
+{"prompt": "팬케이크", "completion": " 음식"}
+{"prompt": "네스카페", "completion": " 음료"}
+{"prompt": "핑구", "completion": " 캐릭터"}
+{"prompt": "워크래프트", "completion": " 게임"}
+{"prompt": "휠라", "completion": " 패션"}
+{"prompt": "상추", "completion": " 식물"}
+{"prompt": "쉐보레", "completion": " 자동차"}
+{"prompt": "보디빌딩", "completion": " 스포츠"}
+{"prompt": "칵테일", "completion": " 주류"}
+{"prompt": "욕실 장식", "completion": " 인테리어"}
+{"prompt": "어도비", "completion": " 전자제품"}
+{"prompt": "아고다", "completion": " 여행/레저"}
+{"prompt": "파인애플", "completion": " 식물"}
+{"prompt": "리얼테크닉스 마사지 도구", "completion": " 건강/웰빙"}
+{"prompt": "건조기", "completion": " 생활용품"}
+{"prompt": "조 말론", "completion": " 향수"}
+{"prompt": "디지털 음반", "completion": " 도서/음반"}
+{"prompt": "블리자드", "completion": " 게임"}
+{"prompt": "포스트잇", "completion": " 문구"}
+{"prompt": "애스턴 마틴", "completion": " 자동차"}
+{"prompt": "레몬", "completion": " 식물"}
+{"prompt": "판타지 영화", "completion": " 드라마/영화"}
+{"prompt": "소니", "completion": " 전자제품"}
+{"prompt": "필링", "completion": " 화장품"}
+{"prompt": "예술의 전당", "completion": " 전시/체험"}
+{"prompt": "스포츠웨어", "completion": " 패션"}
+{"prompt": "스시", "completion": " 음식"}
+{"prompt": "건강식품", "completion": " 건강/웰빙"}
+{"prompt": "체조", "completion": " 스포츠"}
+{"prompt": "오브제", "completion": " 가전제품"}
+{"prompt": "주방장갑", "completion": " 생활용품"}
+{"prompt": "익스피디아", "completion": " 여행/레저"}
+{"prompt": "뽀로로", "completion": " 캐릭터"}
+{"prompt": "까사미아", "completion": " 인테리어"}
+{"prompt": "영화감독", "completion": " 드라마/영화"}
+{"prompt": "소주", "completion": " 주류"}
+{"prompt": "마늘", "completion": " 식물"}
+{"prompt": "리스테린", "completion": " 화장품"}
+{"prompt": "토시바", "completion": " 전자제품"}
+{"prompt": "플래너", "completion": " 문구"}
+{"prompt": "압력밥솥", "completion": " 가전제품"}
+{"prompt": "불가리 향수", "completion": " 향수"}
+{"prompt": "자율주행 자동차", "completion": " 자동차"}
+{"prompt": "케이크", "completion": " 음식"}
+{"prompt": "PlayStation", "completion": " 게임"}
+{"prompt": "고무장갑", "completion": " 생활용품"}
+{"prompt": "아티스트", "completion": " 도서/음반"}
+{"prompt": "골프", "completion": " 스포츠"}
+{"prompt": "IKEA", "completion": " 인테리어"}
+{"prompt": "웰니스", "completion": " 건강/웰빙"}
+{"prompt": "남성의류", "completion": " 패션"}
+{"prompt": "기차여행", "completion": " 여행/레저"}
+{"prompt": "라이온 킹", "completion": " 캐릭터"}
+{"prompt": "롯데시네마", "completion": " 드라마/영화"}
+{"prompt": "도미노피자", "completion": " 음식"}
+{"prompt": "레드불", "completion": " 음료"}
+{"prompt": "선인장", "completion": " 식물"}
+{"prompt": "OB맥주", "completion": " 주류"}
+{"prompt": "하이라이터", "completion": " 화장품"}
+{"prompt": "가스레인지", "completion": " 가전제품"}
+{"prompt": "마세라티", "completion": " 자동차"}
+{"prompt": "과학관 전시회", "completion": " 전시/체험"}
+{"prompt": "고추", "completion": " 식물"}
+{"prompt": "태블릿", "completion": " 전자제품"}
+{"prompt": "볼펜", "completion": " 문구"}
+{"prompt": "냄비", "completion": " 생활용품"}
+{"prompt": "헬스용품", "completion": " 건강/웰빙"}
+{"prompt": "북클럽", "completion": " 도서/음반"}
+{"prompt": "페인트", "completion": " 인테리어"} 
+{"prompt": "RPG", "completion": " 게임"}
+{"prompt": "아디다스", "completion": " 스포츠"}
+{"prompt": "서핑", "completion": " 여행/레저"}
+{"prompt": "로봇청소기", "completion": " 가전제품"}
+{"prompt": "트렌드", "completion": " 패션"}
+{"prompt": "참이슬", "completion": " 주류"}
+{"prompt": "기생충", "completion": " 드라마/영화"}
+{"prompt": "톰과 제리", "completion": " 캐릭터"}
+{"prompt": "아로마테라피", "completion": " 건강/웰빙"}
+{"prompt": "쿠키", "completion": " 음식"}
+{"prompt": "TV", "completion": " 전자제품"}
+{"prompt": "에센스", "completion": " 화장품"}
+{"prompt": "파프리카", "completion": " 식물"}
+{"prompt": "수세미", "completion": " 생활용품"}
+{"prompt": "향수", "completion": " 향수"}
+{"prompt": "테슬라 모델 Y", "completion": " 자동차"}
+{"prompt": "컬링", "completion": " 스포츠"}
+{"prompt": "모바일 게임", "completion": " 게임"}
+{"prompt": "샤프", "completion": " 문구"}
+{"prompt": "올리브", "completion": " 식물"}
+{"prompt": "이케아", "completion": " 인테리어"}
+{"prompt": "배낭여행", "completion": " 여행/레저"}
+{"prompt": "코카콜라", "completion": " 음료"}
+{"prompt": "요가매트", "completion": " 건강/웰빙"}
+{"prompt": "갤러리 전시회", "completion": " 전시/체험"}
+{"prompt": "아마존 오리지널", "completion": " 드라마/영화"}
+{"prompt": "셰리", "completion": " 주류"}
+{"prompt": "LG트롬", "completion": " 가전제품"}
+{"prompt": "로맨스 소설", "completion": " 도서/음반"}
+{"prompt": "땅콩", "completion": " 식물"}
+{"prompt": "세미포멀", "completion": " 패션"}
+{"prompt": "IKEA", "completion": " 생활용품"}
+{"prompt": "오뚜기 진라면", "completion": " 음식"}
+{"prompt": "화장지", "completion": " 생활용품"}
+{"prompt": "게임 콘솔", "completion": " 전자제품"}
+{"prompt": "게임 콘솔", "completion": " 게임"}
+{"prompt": "미니언즈", "completion": " 캐릭터"}
+{"prompt": "일룸", "completion": " 인테리어"}
+{"prompt": "아이섀도", "completion": " 화장품"}
+{"prompt": "탁구", "completion": " 스포츠"}
+{"prompt": "맥라렌", "completion": " 자동차"}
+{"prompt": "다이어트", "completion": " 건강/웰빙"}
+{"prompt": "어벤져스", "completion": " 드라마/영화"}
+{"prompt": "하얏트 호텔", "completion": " 여행/레저"}
+{"prompt": "대선 소주", "completion": " 주류"}
+{"prompt": "망고", "completion": " 식물"}
+{"prompt": "사운드트랙", "completion": " 도서/음반"}
+{"prompt": "아이리시 커피", "completion": " 음료"}
+{"prompt": "아트센터", "completion": " 전시/체험"}
+{"prompt": "믹서기", "completion": " 가전제품"}
+{"prompt": "사무 용품", "completion": " 문구"}
+{"prompt": "게이머", "completion": " 게임"}
+{"prompt": "시몬스 침대", "completion": " 인테리어"}
+{"prompt": "필라테스", "completion": " 스포츠"}
+{"prompt": "오버사이즈", "completion": " 패션"}
+{"prompt": "주방 가구", "completion": " 생활용품"}
+{"prompt": "스마트 티비", "completion": " 전자제품"}
+{"prompt": "스포츠카", "completion": " 자동차"}
+{"prompt": "향수", "completion": " 화장품"}
+{"prompt": "맥도날드", "completion": " 음식"}
+{"prompt": "당근", "completion": " 식물"}
+{"prompt": "처음처럼", "completion": " 주류"}
+{"prompt": "삐뚤이", "completion": " 캐릭터"}
+{"prompt": "박람회", "completion": " 전시/체험"}
+{"prompt": "뉴발란스 러닝화", "completion": " 건강/웰빙"}
+{"prompt": "노보텔 호텔", "completion": " 여행/레저"}
+{"prompt": "호박", "completion": " 식물"}
+{"prompt": "매드맥스", "completion": " 드라마/영화"}
+{"prompt": "벽지", "completion": " 인테리어"}
+{"prompt": "다이슨 무선청소기", "completion": " 가전제품"}
+{"prompt": "이온음료", "completion": " 음료"}
+{"prompt": "록", "completion": " 도서/음반"}
+{"prompt": "향수 오일", "completion": " 향수"}
+{"prompt": "키친타월", "completion": " 생활용품"}
+{"prompt": "모닝 글로리", "completion": " 문구"}
+{"prompt": "버버리", "completion": " 패션"}
+{"prompt": "육상", "completion": " 스포츠"}
+{"prompt": "시몬스 침대", "completion": " 생활용품"}
+{"prompt": "트레킹", "completion": " 여행/레저"}
+{"prompt": "록시땅", "completion": " 화장품"}
+{"prompt": "패트와 매트", "completion": " 캐릭터"}
+{"prompt": "이누스 헬스케어 기기", "completion": " 건강/웰빙"}
+{"prompt": "닌텐도", "completion": " 전자제품"}
+{"prompt": "신제품 자동차", "completion": " 자동차"}
+{"prompt": "에어컨", "completion": " 가전제품"}
+{"prompt": "전통놀이", "completion": " 전시/체험"}
+{"prompt": "새로", "completion": " 주류"}
+{"prompt": "조던", "completion": " 스포츠"}
+{"prompt": "재즈", "completion": " 도서/음반"}
+{"prompt": "석류", "completion": " 식물"}
+{"prompt": "밀크 쉐이크", "completion": " 음료"}
+{"prompt": "MMORPG", "completion": " 게임"}
+{"prompt": "크루아상", "completion": " 음식"}
+{"prompt": "주얼리", "completion": " 패션"}
+{"prompt": "칸 영화제", "completion": " 드라마/영화"}
+{"prompt": "욕조", "completion": " 인테리어"}
+{"prompt": "코롱", "completion": " 향수"}
+{"prompt": "살균제", "completion": " 생활용품"}
+{"prompt": "도라에몽", "completion": " 캐릭터"}
+{"prompt": "튤립", "completion": " 식물"}
+{"prompt": "마커", "completion": " 문구"}
+{"prompt": "부티크호텔", "completion": " 여행/레저"}
+{"prompt": "BB크림", "completion": " 화장품"}
+{"prompt": "양궁", "completion": " 스포츠"}
+{"prompt": "건강검진", "completion": " 건강/웰빙"}
+{"prompt": "진로", "completion": " 주류"}
+{"prompt": "테팔", "completion": " 생활용품"}
+{"prompt": "아카데미 시상식", "completion": " 드라마/영화"}
+=======
 {"prompt": "컬렉터즈 아이템", "completion": " 도서/음반"}
 {"prompt": "클렌징 폼", "completion": " 화장품"}
 {"prompt": "사운드북", "completion": " 도서/음반"}
@@ -351,10 +698,410 @@
 {"prompt": "테팔", "completion": " 가전"}
 {"prompt": "아카데미 시상식", "completion": " 드라마/영화"}
 {"prompt": "오 드 뚜왈렛", "completion": " 향수"}
+>>>>>>> 950e11a771cbb0c4716d1425a55e11d4b684fce1
 {"prompt": "다이슨", "completion": " 전자제품"}
 {"prompt": "아디다스", "completion": " 패션"}
 {"prompt": "발로란트", "completion": " 게임"}
 {"prompt": "공연장", "completion": " 전시/체험"}
+<<<<<<< HEAD
+{"prompt": "동화", "completion": " 도서/음반"}
+{"prompt": "미키 마우스", "completion": " 캐릭터"}
+{"prompt": "배추", "completion": " 식물"}
+{"prompt": "링컨", "completion": " 자동차"}
+{"prompt": "캠핑", "completion": " 여행/레저"}
+{"prompt": "샤워부스", "completion": " 인테리어"}
+{"prompt": "선블록", "completion": " 화장품"}
+{"prompt": "브랜디", "completion": " 주류"}
+{"prompt": "포카리스웨트", "completion": " 음료"}
+{"prompt": "애플", "completion": " 전자제품"}
+{"prompt": "CGV", "completion": " 드라마/영화"}
+{"prompt": "방향제", "completion": " 생활용품"}
+{"prompt": "문구, 필기구, 수첩, 플래너", "completion": " 문구"}
+{"prompt": "언더아머", "completion": " 스포츠"}
+{"prompt": "부리또", "completion": " 음식"}
+{"prompt": "마이클 코어스", "completion": " 패션"}
+{"prompt": "루나틱 마사지기", "completion": " 건강/웰빙"}
+{"prompt": "싱글 앨범", "completion": " 도서/음반"} 
+{"prompt": "전기포트", "completion": " 가전제품"}
+{"prompt": "스티커", "completion": " 캐릭터"}
+{"prompt": "가지", "completion": " 식물"}
+{"prompt": "포드", "completion": " 자동차"}
+{"prompt": "입생로랑 향수", "completion": " 향수"}
+{"prompt": "부킹닷컴", "completion": " 여행/레저"}
+{"prompt": "플스", "completion": " 게임"}
+{"prompt": "영화제", "completion": " 전시/체험"}
+{"prompt": "싱글몰트", "completion": " 주류"}
+{"prompt": "나이트 크림", "completion": " 화장품"}
+{"prompt": "라라랜드", "completion": " 드라마/영화"}
+{"prompt": "카메라", "completion": " 전자제품"}
+{"prompt": "아웃백 스테이크하우스", "completion": " 음식"}
+{"prompt": "셀린느", "completion": " 패션"}
+{"prompt": "다이소", "completion": " 문구"}
+{"prompt": "천장 조명", "completion": " 인테리어"}
+{"prompt": "피스타치오", "completion": " 식물"}
+{"prompt": "야구", "completion": " 스포츠"}
+{"prompt": "다이소", "completion": " 생활용품"}
+{"prompt": "카카오프렌즈", "completion": " 캐릭터"}
+{"prompt": "스팀청소기", "completion": " 가전제품"}
+{"prompt": "차", "completion": " 음료"}
+{"prompt": "조커", "completion": " 드라마/영화"}
+{"prompt": "컨투어", "completion": " 화장품"}
+{"prompt": "라미트론 웰빙 기기", "completion": " 건강/웰빙"}
+{"prompt": "카스", "completion": " 주류"}
+{"prompt": "지역축제 체험", "completion": " 전시/체험"}
+{"prompt": "고전 문학", "completion": " 도서/음반"}
+{"prompt": "지오다노", "completion": " 패션"} 
+{"prompt": "귤", "completion": " 식물"}
+{"prompt": "래프팅", "completion": " 여행/레저"}
+{"prompt": "파스타", "completion": " 음식"}
+{"prompt": "오 드 뚜왈렛", "completion": " 향수"}
+{"prompt": "테슬라", "completion": " 자동차"}
+{"prompt": "모니터", "completion": " 전자제품"}
+{"prompt": "프라이머", "completion": " 화장품"}
+{"prompt": "FPS", "completion": " 게임"}
+{"prompt": "TV", "completion": " 가전제품"}
+{"prompt": "수박", "completion": " 식물"}
+{"prompt": "비타민", "completion": " 건강/웰빙"}
+{"prompt": "소파", "completion": " 인테리어"}
+{"prompt": "핸드볼", "completion": " 스포츠"}
+{"prompt": "오둥이", "completion": " 캐릭터"}
+{"prompt": "유성마커", "completion": " 문구"}
+{"prompt": "HP", "completion": " 전자제품"}
+{"prompt": "탈취제", "completion": " 생활용품"}
+{"prompt": "게스트하우스", "completion": " 여행/레저"}
+{"prompt": "기네스", "completion": " 주류"}
+{"prompt": "영풍", "completion": " 도서/음반"} 
+{"prompt": "문화재", "completion": " 전시/체험"}
+{"prompt": "허브티", "completion": " 음료"}
+{"prompt": "베를린 영화제", "completion": " 드라마/영화"}
+{"prompt": "스파", "completion": " 건강/웰빙"}
+{"prompt": "KFC", "completion": " 음식"}
+{"prompt": "자두", "completion": " 식물"}
+{"prompt": "컨실러", "completion": " 화장품"}
+{"prompt": "마르니", "completion": " 패션"}
+{"prompt": "스포츠웨어", "completion": " 스포츠"}
+{"prompt": "영상기기", "completion": " 전자제품"}
+{"prompt": "식기건조대", "completion": " 생활용품"}
+{"prompt": "하이네켄", "completion": " 주류"}
+{"prompt": "컨버터블", "completion": " 자동차"}
+{"prompt": "식기세척기", "completion": " 가전제품"}
+{"prompt": "아메리칸항공", "completion": " 여행/레저"}
+{"prompt": "퍼퓸", "completion": " 향수"}
+{"prompt": "스팀", "completion": " 게임"}
+{"prompt": "타이타닉", "completion": " 드라마/영화"}
+{"prompt": "카카오", "completion": " 캐릭터"}
+{"prompt": "에버핏 헬스기구", "completion": " 건강/웰빙"}
+{"prompt": "나초", "completion": " 음식"}
+{"prompt": "명작, 명반", "completion": " 도서/음반"}
+{"prompt": "포도", "completion": " 식물"}
+{"prompt": "조리대", "completion": " 인테리어"}
+{"prompt": "아이스티", "completion": " 음료"}
+{"prompt": "페이스 팩", "completion": " 화장품"}
+{"prompt": "문구, 도서,음반,문구>문구,팬시용품", "completion": " 문구"}
+{"prompt": "여성의류", "completion": " 패션"}
+{"prompt": "칫솔", "completion": " 생활용품"}
+{"prompt": "흑맥주", "completion": " 주류"}
+{"prompt": "역사박물관", "completion": " 전시/체험"}
+{"prompt": "스즈키", "completion": " 자동차"}
+{"prompt": "전기자동차", "completion": " 전자제품"}
+{"prompt": "델타항공", "completion": " 여행/레저"}
+{"prompt": "삼양 라면", "completion": " 음식"}
+{"prompt": "안마 의자", "completion": " 가전제품"}
+{"prompt": "유미의 세포들", "completion": " 드라마/영화"}
+{"prompt": "명탐정 코난", "completion": " 캐릭터"}
+{"prompt": "엘머스", "completion": " 문구"}
+{"prompt": "라이브 음반", "completion": " 도서/음반"}
+{"prompt": "참외", "completion": " 식물"}
+{"prompt": "태권도", "completion": " 스포츠"}
+{"prompt": "SEGA", "completion": " 게임"}
+{"prompt": "스트릿 패션", "completion": " 패션"}
+{"prompt": "더페이스샵", "completion": " 화장품"}
+{"prompt": "요가", "completion": " 건강/웰빙"}
+{"prompt": "스마트홈", "completion": " 전자제품"}
+{"prompt": "녹차", "completion": " 음료"}
+{"prompt": "치약", "completion": " 생활용품"}
+{"prompt": "아트페어 체험", "completion": " 전시/체험"}
+{"prompt": "다이슨", "completion": " 가전제품"}
+{"prompt": "한샘", "completion": " 인테리어"}
+{"prompt": "남성용 향수", "completion": " 향수"}
+{"prompt": "보드카", "completion": " 주류"}
+{"prompt": "가솔린 자동차", "completion": " 자동차"}
+{"prompt": "클라이밍", "completion": " 스포츠"}
+{"prompt": "전자담배", "completion": " 전자제품"}
+{"prompt": "자서전", "completion": " 도서/음반"}
+{"prompt": "아이스크림", "completion": " 음식"}
+{"prompt": "다크 나이트", "completion": " 드라마/영화"}
+{"prompt": "아이언맨", "completion": " 캐릭터"}
+{"prompt": "노트", "completion": " 문구"}
+{"prompt": "비즈니스 캐주얼", "completion": " 패션"}
+{"prompt": "메이크업 리무버", "completion": " 화장품"}
+{"prompt": "스타크래프트", "completion": " 게임"}
+{"prompt": "샴푸", "completion": " 생활용품"}
+{"prompt": "아몬드", "completion": " 식물"}
+{"prompt": "전기모기채", "completion": " 가전제품"}
+{"prompt": "컴퓨터", "completion": " 전자제품"}
+{"prompt": "스키", "completion": " 여행/레저"}
+{"prompt": "데낄라", "completion": " 주류"} 
+{"prompt": "테니스", "completion": " 스포츠"}
+{"prompt": "SF 영화", "completion": " 드라마/영화"}
+{"prompt": "야외 전시", "completion": " 전시/체험"}
+{"prompt": "푸조", "completion": " 자동차"}
+{"prompt": "정수기", "completion": " 가전제품"}
+{"prompt": "배트맨", "completion": " 캐릭터"}
+{"prompt": "케어존 영양제", "completion": " 건강/웰빙"}
+{"prompt": "시금치", "completion": " 식물"}
+{"prompt": "실내 인테리어", "completion": " 인테리어"}
+{"prompt": "냄비받침", "completion": " 생활용품"}
+{"prompt": "모카", "completion": " 음료"}
+{"prompt": "리마스터", "completion": " 게임"}
+{"prompt": "트립어드바이저", "completion": " 여행/레저"}
+{"prompt": "오리온 초코파이", "completion": " 음식"}
+{"prompt": "노스페이스", "completion": " 패션"}
+{"prompt": "교과서", "completion": " 도서/음반"}
+{"prompt": "냉장고", "completion": " 전자제품"}
+{"prompt": "미스트", "completion": " 화장품"}
+{"prompt": "요가", "completion": " 스포츠"}
+{"prompt": "인피니티", "completion": " 자동차"}
+{"prompt": "루이지", "completion": " 캐릭터"}
+{"prompt": "마이키", "completion": " 문구"}
+{"prompt": "메가박스", "completion": " 드라마/영화"}
+{"prompt": "소미노프", "completion": " 주류"}
+{"prompt": "프루티 향", "completion": " 향수"}
+{"prompt": "건강 관리 앱", "completion": " 건강/웰빙"}
+{"prompt": "미술관 전시회", "completion": " 전시/체험"}
+{"prompt": "전자피아노", "completion": " 전자제품"}
+{"prompt": "쉐이크 쉑", "completion": " 음식"}
+{"prompt": "이불", "completion": " 생활용품"}
+{"prompt": "출판사", "completion": " 도서/음반"}
+{"prompt": "비행기", "completion": " 여행/레저"}
+{"prompt": "독립 영화", "completion": " 드라마/영화"}
+{"prompt": "난초", "completion": " 식물"}
+{"prompt": "파워에이드", "completion": " 음료"}
+{"prompt": "지미 추", "completion": " 패션"}
+{"prompt": "기아 자동차", "completion": " 자동차"}
+{"prompt": "멀티쿠커", "completion": " 가전제품"}
+{"prompt": "시트 마스크", "completion": " 화장품"}
+{"prompt": "게임 개발", "completion": " 게임"}
+{"prompt": "서랍정리대", "completion": " 생활용품"}
+{"prompt": "어벤져스", "completion": " 캐릭터"}
+{"prompt": "근력 운동", "completion": " 건강/웰빙"}
+{"prompt": "청하 소주", "completion": " 주류"}
+{"prompt": "다이어리", "completion": " 문구"}
+{"prompt": "등반", "completion": " 스포츠"}
+{"prompt": "왓챠", "completion": " 드라마/영화"}
+{"prompt": "화분", "completion": " 식물"}
+{"prompt": "유럽여행", "completion": " 여행/레저"}
+{"prompt": "쇼핑,유통, 천연화장품:", "completion": " 화장품"}
+{"prompt": "화분", "completion": " 인테리어"}
+{"prompt": "파파존스", "completion": " 음식"}
+{"prompt": "바디워시", "completion": " 생활용품"}
+{"prompt": "오펠", "completion": " 자동차"}
+{"prompt": "알라딘 문고", "completion": " 도서/음반"} 
+{"prompt": "전기밥솥", "completion": " 전자제품"}
+{"prompt": "페라가모 향수", "completion": " 향수"}
+{"prompt": "크랜베리", "completion": " 식물"}
+{"prompt": "비타민 음료", "completion": " 음료"}
+{"prompt": "공기청정기", "completion": " 가전제품"}
+{"prompt": "DDP", "completion": " 전시/체험"}
+{"prompt": "크롱", "completion": " 캐릭터"}
+{"prompt": "명상", "completion": " 건강/웰빙"}
+{"prompt": "항공권", "completion": " 여행/레저"}
+{"prompt": "나이키 러닝화", "completion": " 스포츠"}
+{"prompt": "반다이 남코", "completion": " 게임"}
+{"prompt": "뉴발란스", "completion": " 패션"}
+{"prompt": "전기차", "completion": " 자동차"}
+{"prompt": "립 케어", "completion": " 화장품"}
+{"prompt": "싱크대", "completion": " 생활용품"}
+{"prompt": "양주", "completion": " 주류"}
+{"prompt": "페퍼민트", "completion": " 식물"}
+{"prompt": "벽 장식", "completion": " 인테리어"}
+{"prompt": "샤프심", "completion": " 문구"}
+{"prompt": "고프로", "completion": " 전자제품"}
+{"prompt": "장난감 로봇", "completion": " 캐릭터"}
+{"prompt": "티빙", "completion": " 드라마/영화"}
+{"prompt": "미니밴", "completion": " 자동차"}
+{"prompt": "축구", "completion": " 스포츠"}
+{"prompt": "체험 마을", "completion": " 전시/체험"}
+{"prompt": "도넛", "completion": " 음식"}
+{"prompt": "자몽", "completion": " 식물"}
+{"prompt": "스타벅스", "completion": " 음료"}
+{"prompt": "에어프랑스", "completion": " 여행/레저"}
+{"prompt": "퓨어리프 마사지 오일", "completion": " 건강/웰빙"}
+{"prompt": "루이비통", "completion": " 패션"}
+{"prompt": "전기장판", "completion": " 가전제품"}
+{"prompt": "예술서적", "completion": " 도서/음반"}
+{"prompt": "배드민턴", "completion": " 스포츠"}
+{"prompt": "벨루가", "completion": " 주류"}
+{"prompt": "향수 테스트", "completion": " 향수"}
+{"prompt": "토너", "completion": " 화장품"}
+{"prompt": "여행가방", "completion": " 생활용품"}
+{"prompt": "스폰지밥", "completion": " 캐릭터"}
+{"prompt": "무선충전기", "completion": " 전자제품"}
+{"prompt": "영화배우", "completion": " 드라마/영화"}
+{"prompt": "롤", "completion": " 게임"}
+{"prompt": "팬던트 조명", "completion": " 인테리어"}
+{"prompt": "타코", "completion": " 음식"}
+{"prompt": "쿠페", "completion": " 자동차"}
+{"prompt": "근력 운동", "completion": " 건강/웰빙"}
+{"prompt": "오렌지", "completion": " 식물"}
+{"prompt": "스미소니안", "completion": " 문구"}
+{"prompt": "닥터 지, DrG", "completion": " 화장품"}
+{"prompt": "드라이기", "completion": " 가전제품"}
+{"prompt": "문구, 도서,음반,문구>문구,팬시용품, 쇼핑,유통>서점", "completion": " 도서/음반"}
+{"prompt": "인터컨티넨탈 호텔", "completion": " 여행/레저"}
+{"prompt": "카누 커피", "completion": " 음료"}
+{"prompt": "공연", "completion": " 전시/체험"}
+{"prompt": "스타워즈", "completion": " 캐릭터"}
+{"prompt": "파타고니아", "completion": " 패션"}
+{"prompt": "면도기", "completion": " 생활용품"}
+{"prompt": "싱크대", "completion": " 인테리어"}
+{"prompt": "포르쉐", "completion": " 자동차"}
+{"prompt": "아이스하키", "completion": " 스포츠"}
+{"prompt": "게임 스트리밍", "completion": " 게임"}
+{"prompt": "영화 예고편", "completion": " 드라마/영화"}
+{"prompt": "캐논 카메라", "completion": " 전자제품"}
+{"prompt": "브로콜리", "completion": " 식물"}
+{"prompt": "막걸리", "completion": " 주류"}
+{"prompt": "스텔라 매카트니", "completion": " 패션"}
+{"prompt": "메이크업 베이스", "completion": " 화장품"}
+{"prompt": "지우개", "completion": " 문구"}
+{"prompt": "텔레토비", "completion": " 캐릭터"}
+{"prompt": "사이언스 픽션", "completion": " 도서/음반"}
+{"prompt": "대형차", "completion": " 자동차"}
+{"prompt": "극장", "completion": " 전시/체험"}
+{"prompt": "조리 도구", "completion": " 인테리어"}
+{"prompt": "대한항공", "completion": " 여행/레저"}
+{"prompt": "환타", "completion": " 음료"}
+{"prompt": "그린 향", "completion": " 향수"}
+{"prompt": "아디다스 러닝화", "completion": " 스포츠"}
+{"prompt": "청소기", "completion": " 가전제품"}
+{"prompt": "헬스", "completion": " 건강/웰빙"}
+{"prompt": "장미", "completion": " 식물"}
+{"prompt": "더 보이즈", "completion": " 드라마/영화"}
+{"prompt": "미우미우", "completion": " 패션"}
+{"prompt": "게임보이", "completion": " 게임"}
+{"prompt": "조리 도구", "completion": " 생활용품"}
+{"prompt": "디지털 도어락", "completion": " 전자제품"}
+{"prompt": "형광펜", "completion": " 문구"}
+{"prompt": "샴페인", "completion": " 주류"}
+{"prompt": "토이스토리", "completion": " 캐릭터"}
+{"prompt": "관광명소", "completion": " 여행/레저"}
+{"prompt": "아이크림", "completion": " 화장품"}
+{"prompt": "지프", "completion": " 자동차"}
+{"prompt": "전문서적", "completion": " 도서/음반"}
+{"prompt": "창작공간 체험", "completion": " 전시/체험"}
+{"prompt": "펜싱", "completion": " 스포츠"}
+{"prompt": "악세서리", "completion": " 패션"}
+{"prompt": "전자책", "completion": " 전자제품"}
+{"prompt": "김치 냉장고", "completion": " 가전제품"}
+{"prompt": "피자", "completion": " 음식"}
+{"prompt": "면도날", "completion": " 생활용품"}
+{"prompt": "블랙 팬서", "completion": " 드라마/영화"}
+{"prompt": "침대", "completion": " 인테리어"}
+{"prompt": "대추", "completion": " 식물"}
+{"prompt": "프라푸치노", "completion": " 음료"}
+{"prompt": "겟앰프드", "completion": " 게임"}
+{"prompt": "스노클링", "completion": " 여행/레저"}
+{"prompt": "스트레칭", "completion": " 건강/웰빙"}
+{"prompt": "벤틀리", "completion": " 자동차"}
+{"prompt": "드레스", "completion": " 패션"}
+{"prompt": "라이츄", "completion": " 캐릭터"}
+{"prompt": "조각공원", "completion": " 전시/체험"}
+{"prompt": "미식축구", "completion": " 스포츠"}
+{"prompt": "블루투스 이어폰", "completion": " 전자제품"}
+{"prompt": "힙합", "completion": " 도서/음반"}
+{"prompt": "스피커", "completion": " 가전제품"}
+{"prompt": "텐바이텐", "completion": " 문구"}
+{"prompt": "립글로스", "completion": " 화장품"}
+{"prompt": "무", "completion": " 식물"}
+{"prompt": "우디 향", "completion": " 향수"}
+{"prompt": "방수커버", "completion": " 생활용품"}
+{"prompt": "진", "completion": " 주류"}
+{"prompt": "침대 커버", "completion": " 인테리어"}
+{"prompt": "기타행사", "completion": " 기타행사"}
+{"prompt": "미니", "completion": " 자동차"}
+{"prompt": "Xbox", "completion": " 게임"}
+{"prompt": "바베큐", "completion": " 여행/레저"}
+{"prompt": "페레로 로쉐", "completion": " 음식"}
+{"prompt": "나이키", "completion": " 패션"}
+{"prompt": "전통문화 경험", "completion": " 전시/체험"}
+{"prompt": "스타워즈", "completion": " 드라마/영화"}
+{"prompt": "디톡스", "completion": " 건강/웰빙"}
+{"prompt": "밤", "completion": " 식물"}
+{"prompt": "클렌징 오일", "completion": " 화장품"}
+{"prompt": "디지몬", "completion": " 캐릭터"}
+{"prompt": "롤", "completion": " 스포츠"}
+{"prompt": "하이볼", "completion": " 주류"}
+{"prompt": "손소독제", "completion": " 생활용품"}
+{"prompt": "스마트 리모컨", "completion": " 전자제품"}
+{"prompt": "맥심 커피", "completion": " 음료"}
+{"prompt": "스포츠 게임", "completion": " 게임"}
+{"prompt": "비즈니스 서적", "completion": " 도서/음반"}
+{"prompt": "스니커즈", "completion": " 패션"}
+{"prompt": "산악등반", "completion": " 여행/레저"}
+{"prompt": "버거킹", "completion": " 음식"}
+{"prompt": "SUV", "completion": " 자동차"}
+{"prompt": "농구", "completion": " 스포츠"}
+{"prompt": "주방 기구", "completion": " 인테리어"}
+{"prompt": "비스포크", "completion": " 가전제품"}
+{"prompt": "로즈마리", "completion": " 식물"}
+{"prompt": "파일", "completion": " 문구"}
+{"prompt": "디올, Dior", "completion": " 화장품"}
+{"prompt": "무선 마우스", "completion": " 전자제품"}
+{"prompt": "바디프렌드 안마의자", "completion": " 건강/웰빙"}
+{"prompt": "여성용 향수", "completion": " 향수"}
+{"prompt": "문학상", "completion": " 도서/음반"}
+{"prompt": "학습체험 경험", "completion": " 전시/체험"}
+{"prompt": "아사히", "completion": " 주류"}
+{"prompt": "손세정제", "completion": " 생활용품"}
+{"prompt": "미쓰비시", "completion": " 자동차"}
+{"prompt": "하이킹", "completion": " 여행/레저"}
+{"prompt": "포켓몬", "completion": " 캐릭터"}
+{"prompt": "유비소프트", "completion": " 게임"}
+{"prompt": "아메리카노", "completion": " 음료"}
+{"prompt": "공포 영화", "completion": " 드라마/영화"}
+{"prompt": "토닝 패드", "completion": " 화장품"}
+{"prompt": "프라다", "completion": " 패션"}
+{"prompt": "크라이슬러", "completion": " 자동차"}
+{"prompt": "BOSE", "completion": " 전자제품"}
+{"prompt": "테이블", "completion": " 인테리어"}
+{"prompt": "세탁기", "completion": " 가전제품"}
+{"prompt": "빨래바구니", "completion": " 생활용품"}
+{"prompt": "소설", "completion": " 도서/음반"}
+{"prompt": "아시아문화전당", "completion": " 전시/체험"}
+{"prompt": "양파", "completion": " 식물"}
+{"prompt": "운동기구", "completion": " 건강/웰빙"}
+{"prompt": "리그오브레전드", "completion": " 스포츠"}
+{"prompt": "에미레이트항공", "completion": " 여행/레저"}
+{"prompt": "스퀘어 에닉스", "completion": " 게임"}
+{"prompt": "블루투스 스피커", "completion": " 전자제품"}
+{"prompt": "캡틴 아메리카", "completion": " 캐릭터"}
+{"prompt": "삿포로", "completion": " 주류"}
+{"prompt": "소시지", "completion": " 음식"}
+{"prompt": "모자", "completion": " 패션"} 
+{"prompt": "다리미", "completion": " 생활용품"}
+{"prompt": "크리드 향수", "completion": " 향수"}
+{"prompt": "중형차", "completion": " 자동차"}
+{"prompt": "웨이브", "completion": " 드라마/영화"}
+{"prompt": "레슬링", "completion": " 스포츠"}
+{"prompt": "립틴트", "completion": " 화장품"}
+{"prompt": "벽 조명", "completion": " 인테리어"}
+{"prompt": "유나이티드항공", "completion": " 여행/레저"}
+{"prompt": "문구점", "completion": " 문구"}
+{"prompt": "빈티지 음반", "completion": " 도서/음반"}
+{"prompt": "전동칫솔", "completion": " 가전제품"}
+{"prompt": "전자칠판", "completion": " 전자제품"}
+{"prompt": "라이언", "completion": " 캐릭터"}
+{"prompt": "호박", "completion": " 식물"}
+{"prompt": "나이키 러닝화", "completion": " 건강/웰빙"}
+{"prompt": "그림 전시회", "completion": " 전시/체험"} 
+{"prompt": "수건", "completion": " 생활용품"}
+{"prompt": "에르메스", "completion": " 패션"}
+{"prompt": "피겨스케이팅", "completion": " 스포츠"}
+{"prompt": "리무진", "completion": " 자동차"}
+{"prompt": "루이비통 향수", "completion": " 향수"}
+{"prompt": "인덕션", "completion": " 가전제품"}
+=======
 {"prompt": "정신건강", "completion": " 건강/웰빙"}
 {"prompt": "블루레이", "completion": " 드라마/영화"}
 {"prompt": "심호흡", "completion": " 건강/웰빙"}
@@ -793,11 +1540,668 @@
 {"prompt": "스쿠버다이빙", "completion": " 여행/레저"}
 {"prompt": "인덕션", "completion": " 가전"}
 {"prompt": "에이펙스 헬스케어", "completion": " 건강/웰빙"}
+>>>>>>> 950e11a771cbb0c4716d1425a55e11d4b684fce1
 {"prompt": "배", "completion": " 식물"}
 {"prompt": "필립스", "completion": " 전자제품"}
 {"prompt": "레코드", "completion": " 도서/음반"}
 {"prompt": "오세아니아여행", "completion": " 여행/레저"}
 {"prompt": "세럼", "completion": " 화장품"}
+<<<<<<< HEAD
+{"prompt": "웰치스", "completion": " 음료"}
+{"prompt": "칭따오", "completion": " 주류"}
+{"prompt": "인덕션", "completion": " 인테리어"}
+{"prompt": "전쟁 영화", "completion": " 드라마/영화"}
+{"prompt": "다리미판", "completion": " 생활용품"}
+{"prompt": "전시회", "completion": " 전시/체험"}
+{"prompt": "연필", "completion": " 문구"}
+{"prompt": "건강 습관", "completion": " 건강/웰빙"}
+{"prompt": "빵빵이", "completion": " 캐릭터"}
+{"prompt": "농심 신라면", "completion": " 음식"}
+{"prompt": "양상추", "completion": " 식물"}
+{"prompt": "캠핑용품", "completion": " 여행/레저"}
+{"prompt": "부가티", "completion": " 자동차"}
+{"prompt": "스케쳐스 신발", "completion": " 스포츠"}
+{"prompt": "리그오브레전드", "completion": " 게임"}
+{"prompt": "히타치", "completion": " 전자제품"}
+{"prompt": "의자", "completion": " 인테리어"}
+{"prompt": "아르마니", "completion": " 패션"}
+{"prompt": "슈퍼맨", "completion": " 캐릭터"}
+{"prompt": "아이라이너", "completion": " 화장품"}
+{"prompt": "영화 포스터", "completion": " 드라마/영화"}
+{"prompt": "뮤직 앱", "completion": " 도서/음반"}
+{"prompt": "박물관", "completion": " 전시/체험"}
+{"prompt": "욕실용품", "completion": " 생활용품"}
+{"prompt": "아이스 아메리카노", "completion": " 음료"}
+{"prompt": "바인더", "completion": " 문구"}
+{"prompt": "자스민", "completion": " 식물"}
+{"prompt": "화웨이", "completion": " 전자제품"}
+{"prompt": "제네시스", "completion": " 자동차"}
+{"prompt": "코웨이", "completion": " 가전제품"}
+{"prompt": "운동", "completion": " 건강/웰빙"}
+{"prompt": "다큐멘터리 영화", "completion": " 드라마/영화"}
+{"prompt": "자전거 경주", "completion": " 스포츠"}
+{"prompt": "지방시 향수", "completion": " 향수"}
+{"prompt": "럼", "completion": " 주류"} 
+{"prompt": "게임 패치", "completion": " 게임"}
+{"prompt": "침구류", "completion": " 인테리어"}
+{"prompt": "디저트", "completion": " 음식"}
+{"prompt": "스크럽", "completion": " 화장품"}
+{"prompt": "온천", "completion": " 여행/레저"}
+{"prompt": "원피스", "completion": " 캐릭터"}
+{"prompt": "멜론", "completion": " 식물"}
+{"prompt": "승마", "completion": " 스포츠"}
+{"prompt": "샤워커튼", "completion": " 생활용품"}
+{"prompt": "음악 스트리밍", "completion": " 도서/음반"}
+{"prompt": "트럭", "completion": " 자동차"}
+{"prompt": "블루투스 스피커", "completion": " 가전제품"}
+{"prompt": "카누", "completion": " 음료"}
+{"prompt": "체험 프로그램", "completion": " 전시/체험"}
+{"prompt": "젠하이저", "completion": " 전자제품"}
+{"prompt": "무신사", "completion": " 패션"}
+{"prompt": "헤라", "completion": " 화장품"}
+{"prompt": "펜텔", "completion": " 문구"}
+{"prompt": "나의 아저씨", "completion": " 드라마/영화"}
+{"prompt": "힐튼 호텔", "completion": " 여행/레저"}
+{"prompt": "게임 그래픽", "completion": " 게임"}
+{"prompt": "마사지", "completion": " 건강/웰빙"}
+{"prompt": "캐딜락", "completion": " 자동차"}
+{"prompt": "슈퍼 마리오", "completion": " 캐릭터"}
+{"prompt": "베개", "completion": " 생활용품"}
+{"prompt": "뮤직 비디오", "completion": " 도서/음반"}
+{"prompt": "복숭아", "completion": " 식물"}
+{"prompt": "크리켓", "completion": " 스포츠"}
+{"prompt": "조명 디자인", "completion": " 인테리어"}
+{"prompt": "액세서리", "completion": " 패션"}
+{"prompt": "꽃향기", "completion": " 향수"}
+{"prompt": "스파", "completion": " 여행/레저"}
+{"prompt": "안티 에이징 제품", "completion": " 화장품"}
+{"prompt": "역사유적지", "completion": " 전시/체험"}
+{"prompt": "스카치", "completion": " 주류"}
+{"prompt": "아우디", "completion": " 자동차"}
+{"prompt": "닥터페퍼", "completion": " 음료"}
+{"prompt": "짱구", "completion": " 캐릭터"}
+{"prompt": "테넷", "completion": " 드라마/영화"}
+{"prompt": "니콘", "completion": " 전자제품"}
+{"prompt": "샐러드", "completion": " 음식"}
+{"prompt": "경주 게임", "completion": " 게임"}
+{"prompt": "샐러드", "completion": " 건강/웰빙"}
+{"prompt": "배구", "completion": " 스포츠"}
+{"prompt": "와인셀러", "completion": " 생활용품"}
+{"prompt": "고구마", "completion": " 식물"}
+{"prompt": "샤피", "completion": " 문구"}
+{"prompt": "카약", "completion": " 여행/레저"}
+{"prompt": "수납장", "completion": " 인테리어"}
+{"prompt": "커튼", "completion": " 생활용품"}
+{"prompt": "도요타", "completion": " 자동차"}
+{"prompt": "톰 포드", "completion": " 패션"}
+{"prompt": "파나소닉", "completion": " 전자제품"}
+{"prompt": "노래", "completion": " 도서/음반"}
+{"prompt": "스릴러 영화", "completion": " 드라마/영화"}
+{"prompt": "블러셔", "completion": " 화장품"}
+{"prompt": "스키", "completion": " 스포츠"}
+{"prompt": "춘식이", "completion": " 캐릭터"}
+{"prompt": "서브웨이", "completion": " 음식"}
+{"prompt": "배틀 로얄", "completion": " 게임"}
+{"prompt": "인터컨티넨탈 호텔", "completion": " 여행/레저"}
+{"prompt": "공예 체험", "completion": " 전시/체험"}
+{"prompt": "커피 머신", "completion": " 가전제품"}
+{"prompt": "디지털 카메라", "completion": " 전자제품"}
+{"prompt": "만년필", "completion": " 문구"}
+{"prompt": "해외 서적", "completion": " 도서/음반"}
+{"prompt": "코코넛", "completion": " 식물"}
+{"prompt": "수납장", "completion": " 생활용품"}
+{"prompt": "헬로키티", "completion": " 캐릭터"}
+{"prompt": "오 드 코롱", "completion": " 향수"}
+{"prompt": "영양제", "completion": " 건강/웰빙"}
+{"prompt": "장식장", "completion": " 인테리어"}
+{"prompt": "디젤 자동차", "completion": " 자동차"}
+{"prompt": "사케", "completion": " 주류"}
+{"prompt": "홍차", "completion": " 음료"}
+{"prompt": "스노보드", "completion": " 여행/레저"}
+{"prompt": "칼빈 클라인", "completion": " 패션"}
+{"prompt": "스마트폰", "completion": " 전자제품"}
+{"prompt": "온라인 멀티플레이", "completion": " 게임"}
+{"prompt": "당구", "completion": " 스포츠"}
+{"prompt": "전통예술", "completion": " 전시/체험"}
+{"prompt": "클렌징 밤", "completion": " 화장품"}
+{"prompt": "블록버스터 영화", "completion": " 드라마/영화"}
+{"prompt": "스테들러", "completion": " 문구"}
+{"prompt": "둘리", "completion": " 캐릭터"}
+{"prompt": "파", "completion": " 식물"}
+{"prompt": "수필", "completion": " 도서/음반"} 
+{"prompt": "블라인드", "completion": " 생활용품"}
+{"prompt": "테슬라 모델 X", "completion": " 자동차"}
+{"prompt": "스포츠웨어", "completion": " 건강/웰빙"}
+{"prompt": "햄버거", "completion": " 음식"}
+{"prompt": "오븐", "completion": " 가전제품"}
+{"prompt": "벽면 장식", "completion": " 인테리어"}
+{"prompt": "레드와인", "completion": " 주류"}
+{"prompt": "아시아여행", "completion": " 여행/레저"}
+{"prompt": "락스타 게임즈", "completion": " 게임"}
+{"prompt": "오징어 게임", "completion": " 드라마/영화"}
+{"prompt": "샤오미", "completion": " 전자제품"}
+{"prompt": "우유", "completion": " 음료"}
+{"prompt": "시트러스 향", "completion": " 향수"}
+{"prompt": "톰 브라운", "completion": " 패션"}
+{"prompt": "열기구", "completion": " 여행/레저"}
+{"prompt": "필립스", "completion": " 가전제품"}
+{"prompt": "클리오", "completion": " 화장품"}
+{"prompt": "크로스핏", "completion": " 스포츠"}
+{"prompt": "침대커버", "completion": " 생활용품"}
+{"prompt": "토심이", "completion": " 캐릭터"}
+{"prompt": "바베큐", "completion": " 음식"}
+{"prompt": "닛산", "completion": " 자동차"}
+{"prompt": "크로스핏", "completion": " 건강/웰빙"}
+{"prompt": "유적지", "completion": " 전시/체험"}
+{"prompt": "로지텍", "completion": " 전자제품"}
+{"prompt": "문학 리뷰", "completion": " 도서/음반"}
+{"prompt": "감자", "completion": " 식물"}
+{"prompt": "서랍", "completion": " 인테리어"}
+{"prompt": "컨버스", "completion": " 패션"}
+{"prompt": "크루즈", "completion": " 여행/레저"}
+{"prompt": "스티커", "completion": " 문구"}
+{"prompt": "디즈니 플러스", "completion": " 드라마/영화"}
+{"prompt": "안드로이드", "completion": " 캐릭터"}
+{"prompt": "RV", "completion": " 자동차"}
+{"prompt": "조니 워커", "completion": " 주류"}
+{"prompt": "소니 플레이스테이션", "completion": " 게임"}
+{"prompt": "카푸치노", "completion": " 음료"}
+{"prompt": "장난감 정리함", "completion": " 생활용품"}
+{"prompt": "ASUS", "completion": " 전자제품"}
+{"prompt": "공연예술", "completion": " 전시/체험"}
+{"prompt": "스팀 다리미", "completion": " 가전제품"}
+{"prompt": "디즈니", "completion": " 캐릭터"}
+{"prompt": "던킨도너츠", "completion": " 음식"}
+{"prompt": "닌텐도", "completion": " 게임"}
+{"prompt": "선크림", "completion": " 화장품"}
+{"prompt": "헬로헬스 스마트 기기", "completion": " 건강/웰빙"}
+{"prompt": "렉서스", "completion": " 자동차"}
+{"prompt": "왕좌의 게임", "completion": " 드라마/영화"}
+{"prompt": "스케이트보딩", "completion": " 스포츠"}
+{"prompt": "페어몬트 호텔", "completion": " 여행/레저"}
+{"prompt": "캐주얼", "completion": " 패션"}
+{"prompt": "아보카도", "completion": " 식물"}
+{"prompt": "수납박스", "completion": " 생활용품"}
+{"prompt": "잔망 루피", "completion": " 캐릭터"}
+{"prompt": "JBL", "completion": " 전자제품"}
+{"prompt": "다이소", "completion": " 문구"}
+{"prompt": "학술서적", "completion": " 도서/음반"}
+{"prompt": "어린이박물관", "completion": " 전시/체험"}
+{"prompt": "카페 라떼", "completion": " 음료"}
+{"prompt": "프라다 향수", "completion": " 향수"}
+{"prompt": "니베아", "completion": " 화장품"}
+{"prompt": "럭비", "completion": " 스포츠"}
+{"prompt": "샤넬", "completion": " 패션"}
+{"prompt": "토스트기", "completion": " 가전제품"}
+{"prompt": "스테이크", "completion": " 음식"}
+{"prompt": "팀 포트리스", "completion": " 게임"}
+{"prompt": "로맨스 영화", "completion": " 드라마/영화"}
+{"prompt": "체중 관리", "completion": " 건강/웰빙"}
+{"prompt": "파워퍼프걸", "completion": " 캐릭터"}
+{"prompt": "스쿠버다이빙", "completion": " 여행/레저"}
+{"prompt": "코냑", "completion": " 주류"}
+{"prompt": "재규어", "completion": " 자동차"}
+{"prompt": "옷걸이", "completion": " 생활용품"}
+{"prompt": "체리", "completion": " 식물"}
+{"prompt": "템퍼", "completion": " 인테리어"}
+{"prompt": "삼성전자", "completion": " 전자제품"}
+{"prompt": "편지 봉투", "completion": " 문구"}
+{"prompt": "전자책", "completion": " 도서/음반"}
+{"prompt": "매니큐어 리무버", "completion": " 화장품"}
+{"prompt": "리츠칼튼 호텔", "completion": " 여행/레저"}
+{"prompt": "마라톤", "completion": " 스포츠"}
+{"prompt": "탄산음료, 커피, 에이드, 스무디", "completion": " 음료"}
+{"prompt": "아이스크림 박물관", "completion": " 전시/체험"}
+{"prompt": "코미디 영화", "completion": " 드라마/영화"}
+{"prompt": "DELL", "completion": " 전자제품"}
+{"prompt": "랜드로버", "completion": " 자동차"}
+{"prompt": "큐브핏 운동기구", "completion": " 건강/웰빙"}
+{"prompt": "라이언", "completion": " 캐릭터"}
+{"prompt": "데킬라", "completion": " 주류"}
+{"prompt": "포트나이트", "completion": " 게임"}
+{"prompt": "베르사체", "completion": " 패션"}
+{"prompt": "아시아나항공", "completion": " 여행/레저"}
+{"prompt": "와플", "completion": " 음식"}
+{"prompt": "향수 샘플", "completion": " 향수"}
+{"prompt": "드라마 OST", "completion": " 도서/음반"}
+{"prompt": "CC크림", "completion": " 화장품"}
+{"prompt": "트라이애슬론", "completion": " 스포츠"}
+{"prompt": "르노", "completion": " 자동차"}
+{"prompt": "가습기", "completion": " 가전제품"}
+{"prompt": "키위", "completion": " 식물"}
+{"prompt": "휴대용 충전기", "completion": " 전자제품"}
+{"prompt": "전략 시뮬레이션 게임", "completion": " 게임"}
+{"prompt": "경험", "completion": " 전시/체험"}
+{"prompt": "더블유", "completion": " 문구"}
+{"prompt": "방충망", "completion": " 생활용품"}
+{"prompt": "찌그렁 오리, 찌오", "completion": " 캐릭터"}
+{"prompt": "샘소나이트 캐리어", "completion": " 여행/레저"}
+{"prompt": "제습기", "completion": " 가전제품"}
+{"prompt": "세면대", "completion": " 인테리어"}
+{"prompt": "데이 크림", "completion": " 화장품"}
+{"prompt": "스프라이트", "completion": " 음료"}
+{"prompt": "배틀그라운드", "completion": " 스포츠"}
+{"prompt": "에이블리", "completion": " 패션"}
+{"prompt": "하이트", "completion": " 주류"}
+{"prompt": "애플 민트", "completion": " 식물"}
+{"prompt": "영화관", "completion": " 드라마/영화"}
+{"prompt": "닌텐도 스위치", "completion": " 게임"}
+{"prompt": "레즈미르 요가팬츠", "completion": " 건강/웰빙"}
+{"prompt": "BMW", "completion": " 자동차"}
+{"prompt": "참고서", "completion": " 도서/음반"}
+{"prompt": "자전거여행", "completion": " 여행/레저"}
+{"prompt": "공기청정기", "completion": " 전자제품"}
+{"prompt": "샤넬 향수", "completion": " 향수"}
+{"prompt": "라멘", "completion": " 음식"}
+{"prompt": "인사이드 아웃", "completion": " 캐릭터"}
+{"prompt": "셋톱박스", "completion": " 가전제품"}
+{"prompt": "음식 체험", "completion": " 전시/체험"}
+{"prompt": "레드불", "completion": " 스포츠"}
+{"prompt": "방충제", "completion": " 생활용품"}
+{"prompt": "맥콜", "completion": " 음료"}
+{"prompt": "잉크", "completion": " 문구"}
+{"prompt": "이니스프리", "completion": " 화장품"}
+{"prompt": "스노보딩", "completion": " 스포츠"}
+{"prompt": "잇미샤", "completion": " 패션"}
+{"prompt": "퍼즐 게임", "completion": " 게임"}
+{"prompt": "스마트워치", "completion": " 전자제품"}
+{"prompt": "벤츠", "completion": " 자동차"}
+{"prompt": "버번", "completion": " 주류"}
+{"prompt": "딸기", "completion": " 식물"}
+{"prompt": "포시즌스 호텔", "completion": " 여행/레저"}
+{"prompt": "팝", "completion": " 도서/음반"}
+{"prompt": "심박수", "completion": " 건강/웰빙"}
+{"prompt": "계절별 장식", "completion": " 인테리어"}
+{"prompt": "하이마트", "completion": " 가전제품"}
+{"prompt": "바리스타", "completion": " 음료"}
+{"prompt": "에버노트", "completion": " 문구"}
+{"prompt": "파운데이션", "completion": " 화장품"}
+{"prompt": "나루토", "completion": " 캐릭터"}
+{"prompt": "관광지", "completion": " 전시/체험"}
+{"prompt": "PUBG", "completion": " 스포츠"}
+{"prompt": "셋톱박스", "completion": " 전자제품"}
+{"prompt": "영화 제작", "completion": " 드라마/영화"}
+{"prompt": "텀블러", "completion": " 생활용품"}
+{"prompt": "세단", "completion": " 자동차"}
+{"prompt": "배틀그라운드", "completion": " 게임"}
+{"prompt": "배스킨라빈스", "completion": " 음식"}
+{"prompt": "패션 디자이너", "completion": " 패션"}
+{"prompt": "메리어트 호텔", "completion": " 여행/레저"}
+{"prompt": "Jim Beam", "completion": " 주류"}
+{"prompt": "도토리", "completion": " 식물"}
+{"prompt": "물병", "completion": " 생활용품"}
+{"prompt": "향수, 디퓨저, 오드퍼퓸", "completion": " 향수"}
+{"prompt": "네이처리퍼블릭", "completion": " 화장품"}
+{"prompt": "스마트 도어락", "completion": " 전자제품"}
+{"prompt": "이즈미", "completion": " 문구"}
+{"prompt": "리복", "completion": " 스포츠"}
+{"prompt": "냉동고", "completion": " 가전제품"}
+{"prompt": "LP 레코드", "completion": " 도서/음반"}
+{"prompt": "구찌", "completion": " 패션"}
+{"prompt": "마인크래프트", "completion": " 게임"}
+{"prompt": "레모에이드", "completion": " 음료"}
+{"prompt": "정관장 홍삼", "completion": " 건강/웰빙"}
+{"prompt": "수상레저", "completion": " 여행/레저"}
+{"prompt": "드라마 시리즈", "completion": " 드라마/영화"}
+{"prompt": "미술 작품", "completion": " 인테리어"}
+{"prompt": "미술 작품", "completion": "전시/체험"}
+{"prompt": "유채", "completion": " 식물"}
+{"prompt": "팔도 비빔면", "completion": " 음식"}
+{"prompt": "피아트", "completion": " 자동차"}
+{"prompt": "산리오", "completion": " 캐릭터"}
+{"prompt": "전자책 리더기", "completion": " 전자제품"}
+{"prompt": "축제", "completion": " 전시/체험"}
+{"prompt": "텀블러브러쉬", "completion": " 생활용품"}
+{"prompt": "술집, 맥주, 호프", "completion": " 주류"}
+{"prompt": "호스텔", "completion": " 여행/레저"}
+{"prompt": "컬럼비아 신발", "completion": " 스포츠"}
+{"prompt": "OST", "completion": " 도서/음반"}
+{"prompt": "현대 자동차", "completion": " 자동차"}
+{"prompt": "제브라", "completion": " 문구"}
+{"prompt": "클렌징 워터", "completion": " 화장품"}
+{"prompt": "에이드", "completion": " 음료"}
+{"prompt": "에이펙스 헬스케어", "completion": " 건강/웰빙"}
+{"prompt": "아웃도어", "completion": " 패션"}
+{"prompt": "홈시어터", "completion": " 가전제품"}
+{"prompt": "주전자", "completion": " 생활용품"}
+{"prompt": "바질", "completion": " 식물"}
+{"prompt": "또봇", "completion": " 캐릭터"}
+{"prompt": "익스트림 스포츠", "completion": " 스포츠"}
+{"prompt": "칠리스", "completion": " 음식"}
+{"prompt": "태양광 패널", "completion": " 전자제품"}
+{"prompt": "루프트한자 항공", "completion": " 여행/레저"}
+{"prompt": "포크", "completion": " 도서/음반"}\
+{"prompt": "Coach", "completion": " 패션"}
+{"prompt": "VR 게임", "completion": " 게임"}
+{"prompt": "IMAX 영화", "completion": " 드라마/영화"}
+{"prompt": "자연공원", "completion": " 전시/체험"}
+{"prompt": "물통", "completion": " 생활용품"}
+{"prompt": "미술 작품", "completion": " 인테리어"}
+{"prompt": "커피 원두", "completion": " 음료"}
+{"prompt": "볼보", "completion": " 자동차"}
+{"prompt": "몽클레어", "completion": " 패션"}
+{"prompt": "인셀덤 스킨케어", "completion": " 건강/웰빙"}
+{"prompt": "테라", "completion": " 주류"}
+{"prompt": "수영", "completion": " 스포츠"}
+{"prompt": "글램핑", "completion": " 여행/레저"}
+{"prompt": "라즈베리", "completion": " 식물"}
+{"prompt": "꽃을든남자", "completion": " 화장품"}
+{"prompt": "LG전자", "completion": " 전자제품"}
+{"prompt": "모나미", "completion": " 문구"}
+{"prompt": "드립커피", "completion": " 음료"}
+{"prompt": "오 드 뚜왈렛", "completion": " 향수"}
+{"prompt": "PUBG", "completion": " 게임"}
+{"prompt": "롯데 칸쵸", "completion": " 음식"}
+{"prompt": "쿵야", "completion": " 캐릭터"}
+{"prompt": "냉장고", "completion": " 가전제품"}
+{"prompt": "현대미술관", "completion": " 전시/체험"}
+{"prompt": "테슬라 모델 3", "completion": " 자동차"}
+{"prompt": "패션 쇼", "completion": " 패션"}
+{"prompt": "칠성", "completion": " 음료"}
+{"prompt": "사과", "completion": " 식물"}
+{"prompt": "도마", "completion": " 생활용품"}
+{"prompt": "스탠드 조명", "completion": " 인테리어"}
+{"prompt": "에픽게임즈", "completion": " 게임"}
+{"prompt": "홈시어터", "completion": " 전자제품"}
+{"prompt": "책 판매점", "completion": " 도서/음반"}
+{"prompt": "입생로랑", "completion": " 화장품"}
+{"prompt": "아식스", "completion": " 스포츠"}
+{"prompt": "아디다스 트레이닝복", "completion": " 건강/웰빙"}
+{"prompt": "패러글라이딩", "completion": " 여행/레저"}
+{"prompt": "3D 영화", "completion": " 드라마/영화"}
+{"prompt": "공책", "completion": " 문구"}
+{"prompt": "딤채", "completion": " 가전제품"}
+{"prompt": "화요", "completion": " 주류"}
+{"prompt": "곰돌이 푸", "completion": " 캐릭터"}
+{"prompt": "옥수수 수염차", "completion": " 음료"}
+{"prompt": "하이브리드 자동차", "completion": " 자동차"}
+{"prompt": "스마트폰", "completion": " 전자제품"}
+{"prompt": "화장품, 미용, 피부, 케어, 스킨케어, 뷰티, 화장품","completion": " 화장품"}
+{"prompt": "캐릭터, 피규어, 애니, 만화, 굿즈, 장난감, 로봇, 레고","completion": " 캐릭터"}
+{"prompt": "도서, 책, 문학, 소설, 작가, 서점, 도서/음반","completion": " 도서/음반"}
+{"prompt": "패션, 의류, 액세서리, 코디, 브랜드, 트렌드, 패션","completion": " 패션"}
+{"prompt": "인테리어, 디자인, 가구, 리모델링, 장식, 데코, 인테리어","completion": " 인테리어"}
+{"prompt": "전시, 체험, 예술, 작품, 갤러리, 전시/체험","completion": " 전시/체험"}
+{"prompt": "향수, 향기, 퍼퓸, 디퓨저, 아로마, 프래그런스, 향수","completion": " 향수"}
+{"prompt": "음식, 요리, 레시피, 식당, 맛집, 디저트, 음식","completion": " 음식"}
+{"prompt": "음료, 커피, 주스, 차, 음료수, 스무디","completion": " 음료"}
+{"prompt": "주류, 위스키, 와인, 맥주, 칵테일, 리큐어, 주류","completion": " 주류"}
+{"prompt": "문구, 필기구, 노트, 다이어리, 스티커, 펜, 문구","completion": " 문구"}
+{"prompt": "가전, 주방, 생활, 전자제품, 청소기, 가전제품","completion": " 가전제품"}
+{"prompt": "생활용품, 수납, 정리, 청소, 주방, 욕실, 생활용품","completion": " 생활용품"}
+{"prompt": "디아블로, 블리자드, 롤, 배틀그라운드, 포트리스, 캐치마인드","completion": " 게임"}
+{"prompt": "닥터유, 마이프로틴, 핀웰스, 파마넥스, 녹십자웰빙","completion": " 건강/웰빙"}
+{"prompt": "벤츠 코리아, BMW, 기아, 현대, 쉐보레","completion": " 자동차"}
+{"prompt": "아모레퍼시픽, 올리브영, 이니스프리, 설화수, 헤라, 입생로랑, ","completion": " 화장품"}
+{"prompt": "카카오프렌즈, 라인프렌즈, 뽀로로, 마시마로, 타요, 산리오, 춘식이, 잔망루피, 헬로키티","completion": " 캐릭터"}
+{"prompt": "교보문고, 영풍문고, 예스24, 알라딘, 반디앤루니스, Melon","completion": " 도서/음반"}
+{"prompt": "무신사, 발렌시아가, 스와로브스키, 조던, 스테이지35","completion": " 패션"}
+{"prompt": "한샘, 일룸, 현대리바트, 까사미아, 듀오백","completion": " 인테리어"}
+{"prompt": "국립현대미술관, 서울시립미술관, 예술의전당, 백남준아트센터, 리움미술관, DDP","completion": " 전시/체험"}
+{"prompt": "조말론, 록시땅, 샤넬, 디올, 불가리, BOSS","completion": " 향수"}
+{"prompt": "짜파게티, 새마을식당, 죠스떡볶이, 본죽, 놀부부대찌개, 투게더, 새우깡","completion": " 음식"}
+{"prompt": "빽다방, 이디야, 카페베네, 투썸플레이스, 커피빈, 칠성사이다, 밀키스, 네스프레소","completion": " 음료"}
+{"prompt": "하이트 진로, 오비맥주, 잭 다니엘, 참이슬, KRUSH, 테라","completion": " 주류"}
+{"prompt": "모나미, 동아연필, 아트박스, 바른손, 제브라","completion": " 문구"}
+{"prompt": "비스포크, 쿠쿠, 대우전자, SK매직, 클라쎄","completion": " 가전제품"}
+{"prompt": "락앤락, 생활정원, 코렐, 휘슬러, 테팔, 에이스침대, 시몬스침대","completion": " 생활용품"}
+{"prompt": "삼성전자, LG전자, 애플, 다이슨, 어도비, 갤럭시, 아이폰, 아이패드","completion": " 전자제품"}
+{"prompt": "리그오브레전드, PUBG, 발로란트, 롤토체스, 서든어택, FC온라인, 메이플스토리","completion": " 게임"}
+{"prompt": "럭키클로버, 아이허브, 클라쎄","completion": " 건강/웰빙"}
+{"prompt": "포르쉐, 페라리, 벤틀리, 부가티, 슈퍼카, 스포츠카","completion": " 자동차"}
+{"prompt": "뷰티, 스킨케어, 화장품, 피부관리, 메이크업","completion": " 화장품"}
+{"prompt": "캐릭터, 인형, 이모티콘, 굿즈, 애니메이션","completion": " 캐릭터"}
+{"prompt": "도서, 음반, 서적, 음악, 책, 필기구, 도서/음반","completion": " 도서/음반"}
+{"prompt": "패션, 의류, 스타일, 트렌드, 액세서리, 신발, 주얼리, 입생로랑","completion": " 패션"}
+{"prompt": "인테리어, 가구, 소품, 실내 리모델링, 디자인 인테리어","completion": " 인테리어"}
+{"prompt": "전시, 체험, 활동, 프로그램, 예술, 미술, 전시/체험","completion": " 전시/체험"}
+{"prompt": "향수, 디퓨저, 오드퍼퓸, 향기, 퍼퓸, 향수","completion": " 향수"}
+{"prompt": "음식, 요리, 식재료, 디저트, 레스토랑, 음식","completion": " 음식"}
+{"prompt": "음료, 주스, 커피, 차, 탄산음료, 음료, 바리스타","completion": " 음료"}
+{"prompt": "주류, 와인, 맥주, 소주, 칵테일, 주류","completion": " 주류"}
+{"prompt": "문구, 필기도구, 노트, 수첩, 펜, 문구", "completion": " 문구"}
+{"prompt": "가전, 생활용품, 가전제품, 대우 일렉트로닉스","completion": " 가전제품"}
+{"prompt": "생활용품, 주방용품, 청소용품, 수납용품, 생활용품","completion": " 생활용품"}
+{"prompt": "전자레인지, 스타일러, 로봇 청소기, 플레이스테이션, 애플비젼, 갤럭시 링","completion": " 전자제품"}
+{"prompt": "더페이스샵, 미샤, 토니모리, 클리오, 홀리카홀리카, 네이처리퍼블릭","completion": " 화장품"}
+{"prompt": "포켓몬스터, 디즈니, 원피스, 마블, DC코믹스, 도라에몽","completion": " 캐릭터"}
+{"prompt": "북센, 리디북스, 인터파크도서, 교양과학사, 민음사, 네이버웹툰","completion": " 도서/음반"}
+{"prompt": "나이키, 아디다스, 휠라, 뉴발란스, MLB, 컬럼비아, 샤넬, 디올, 루이비통","completion": " 패션"}
+{"prompt": "라자가구, 시디즈, 에넥스, 리바트키친, 한샘키친바흐, 루헨퍼니처","completion": " 인테리어"}
+{"prompt": "롯데월드, 에버랜드, 부산국제영화제, 제주해녀문화, 국립중앙박물관, 인천아트플랫폼","completion": " 전시/체험"}
+{"prompt": "에르메스, 버버리, 페라리, 루이비통, 구찌, 베르사체, 취X","completion": " 향수"}
+{"prompt": "빙그레, 오리온, 해태, 농심, 삼양식품","completion": " 음식"}
+{"prompt": "스타벅스, 할리스커피, 엔제리너스, 커피스미스, 드롭탑, 공차, 카누, 드립커피","completion": " 음료"}
+{"prompt": "맥캘란, 발렌타인, 시바스 리갈, 예거마이스터, 아사히, 기네스","completion": " 주류"}
+{"prompt": "제브라, 유니볼, PILOT, 사라사, 하이테크, 프릭션","completion": " 문구"}
+{"prompt": "코웨이, 오케이홈, 쿠첸, 엘지하우시스, 위니아, 딤채","completion": " 가전제품"}
+{"prompt": "스카치브라이트, 질레트, 오랄비, 글래드, 코넬, 듀라렉스","completion": " 생활용품"}
+{"prompt": "비스포크, 트롬, 김치 냉장고, 아이패드, 노트북, 소프트웨어, 구글","completion": " 전자제품"}
+{"prompt": "넥슨, 엔씨소프트, 카카오 게임즈, 넷마블, 펄어비스, 크래프톤","completion": " 게임"}
+{"prompt": "title: 친환경 스킨케어 팝업스토어\ndescription: 자연 유래 성분만을 사용한 친환경 스킨케어 라인을 소개하는 팝업스토어입니다. 피부에 자극을 최소화하고 효과적인 보습을 제공합니다. 천연화장품,화장품", "completion": " 화장품"}
+{"prompt": "title: 비건 화장품 팝업 스토어\ndescription: 동물 실험 없이 제조된 비건 화장품 라인을 소개하는 팝업스토어입니다. 자연에서 얻은 성분들로 만들어져 피부에 자극이 적습니다. 천연화장품, 화장품", "completion": " 화장품"}
+{"prompt": "title: 안티에이징 스킨케어 팝업\ndescription: 주름 개선과 탄력 강화를 위한 안티에이징 스킨케어 세트를 소개하는 팝업스토어입니다. 고기능성 성분이 포함되어 있습니다. >화장품, 천연화장품", "completion": " 화장품"}
+{"prompt": "title: 어퓨 팝업스토어\ndescription: 다양한 피부 타입을 위한 자연 유래 성분의 스킨케어 제품을 선보이는 어퓨 팝업스토어입니다. 민감한 피부에도 적합한 제품들을 만나보세요. >화장품, 천연화장품", "completion": " 화장품"}
+{"prompt": "title: 샹테카이 저스트스킨 팝업스토어 현대백화점 무역센터점\ndescription: 고급 자연 성분을 활용한 샹테카이의 저스트스킨 라인을 체험할 수 있는 팝업스토어입니다. 피부를 보호하고 아름답게 가꾸어주는 제품들을 소개합니다. >화장품, 천연화장품","completion": " 화장품"}
+{"prompt": "title: 취 X 무신사 뷰티 팝업스토어\ndescription: 취 브랜드와 무신사가 협업한 뷰티 팝업스토어입니다. 천연 성분을 활용한 다양한 뷰티 제품들을 만나보세요. >천연화장품,화장품","completion": " 화장품"}
+{"prompt": "title: 닥터지 팝업 스토어\ndescription: 피부과 전문 브랜드 닥터지의 다양한 천연화장품을 체험할 수 있는 팝업스토어입니다. 피부 건강을 위한 솔루션을 제공합니다. >천연화장품, 화장품","completion": " 화장품"}
+{"prompt": "title: 애니메이션 피규어 팝업스토어\ndescription: 인기 애니메이션 캐릭터의 피규어를 소개하는 팝업스토어입니다. 정교한 디테일과 고품질 소재로 제작되어 컬렉션 아이템으로 좋습니다. 이모티콘, 캐릭터, 인형", "completion": " 캐릭터"}
+{"prompt": "title: 동물 캐릭터 인형 팝업 스토어\ndescription: 아이들을 위해 디자인된 귀여운 동물 캐릭터 인형을 소개하는 팝업스토어입니다. 안전한 소재로 제작되어 아이들이 안심하고 놀 수 있습니다. 인형, 캐릭터, 이모티콘", "completion": " 캐릭터"}
+{"prompt": "title: 게임 캐릭터 피규어 팝업\ndescription: 인기 게임 캐릭터를 모델로 한 액션 피규어를 소개하는 팝업스토어입니다. 뛰어난 디테일과 퀄리티로 팬들에게 사랑받고 있습니다. 캐릭터, 인형, 이모티콘", "completion": " 캐릭터"}
+{"prompt": "title: 산리오 팝업스토어\ndescription: 귀여운 산리오 캐릭터 상품들을 만날 수 있는 팝업스토어입니다. 다양한 인형과 이모티콘 상품이 준비되어 있습니다.\ncategory= >캐릭터, 인형, 이모티콘","completion": " 캐릭터"}
+{"prompt": "title: 동그리 팝업스토어\ndescription: 동그리 캐릭터의 다양한 상품들을 소개하는 팝업스토어입니다. 귀여운 인형과 다양한 캐릭터 아이템을 만나보세요.\ncategory= >캐릭터, 인형, 이모티콘","completion": " 캐릭터"}
+{"prompt": "title: 카카오프렌즈 팝업 스토어\ndescription: 인기 캐릭터 카카오프렌즈의 다양한 상품들을 소개하는 팝업스토어입니다. 귀여운 인형과 실용적인 아이템들을 만나보세요.\ncategory= >캐릭터, 이모티콘, 인형","completion": " 캐릭터"}
+{"prompt": "title: 춘식이 팝업스토어\ndescription: 춘식이 캐릭터의 다양한 상품들을 소개하는 팝업스토어입니다. 귀여운 인형과 다양한 캐릭터 상품이 준비되어 있습니다.\ncategory= >캐릭터, 이모티콘, 인형","completion": " 캐릭터"}
+{"prompt": "title: 고전 문학 팝업스토어\ndescription: 세계 고전 문학 작품들을 소개하는 팝업스토어입니다. 독자들에게 깊은 영감과 지식을 제공하는 이 작품집은 어떤 서재에도 잘 어울립니다. 도서, 음반, 서점", "completion": " 도서/음반"}
+{"prompt": "title: 과학 잡지 팝업 스토어\ndescription: 최신 과학 뉴스와 연구 결과를 제공하는 과학 잡지의 정기 구독 서비스를 소개하는 팝업스토어입니다. 과학에 관심 있는 독자들에게 유익한 정보를 제공합니다. 서점, 도서, 음반", "completion": " 도서/음반"}
+{"prompt": "title: 히트 팝 앨범 팝업\ndescription: 현재 인기 있는 히트 팝 음악을 담은 최신 앨범을 소개하는 팝업스토어입니다. 다양한 아티스트의 곡들이 수록되어 있습니다. 음반, 도서, 서점", "completion": " 도서/음반"}
+{"prompt": "title: 교보문고 해운대 팝업스토어\ndescription: 교보문고 해운대점에서 다양한 책과 음반을 만나볼 수 있는 팝업스토어입니다. 독서와 음악을 사랑하는 분들을 위한 특별한 공간입니다. >도서, 음반, 서점","completion": " 도서/음반"}
+{"prompt": "title: 영풍문고 팝업 스토어\ndescription: 영풍문고에서 다양한 도서와 음반을 만나볼 수 있는 팝업스토어입니다. 독서와 음악을 즐기는 이들을 위한 다양한 아이템이 준비되어 있습니다. >도서,음반, 서점","completion": " 도서/음반"}
+{"prompt": "title: 만화책 팝업스토어\ndescription: 인기 만화책 시리즈를 소개하는 팝업스토어입니다. 다양한 장르와 작가들의 작품을 만나볼 수 있습니다. 도서, 음반, 책", "completion": " 도서/음반"}
+{"prompt": "title: K-POP 팝업스토어\ndescription: 최신 K-POP 음반과 관련 도서들을 소개하는 팝업스토어입니다. K-POP 팬들을 위한 다양한 상품이 준비되어 있습니다. >음반, 도서, 서점","completion": " 도서/음반"}
+{"prompt": "title: 아이돌 팝업 스토어\ndescription: 인기 아이돌 그룹의 음반과 관련 상품들을 소개하는 팝업스토어입니다. 팬들을 위한 다양한 아이템이 준비되어 있습니다. >음반, 도서, 서점","completion": " 도서/음반"}
+{"prompt": "title: 패션 콜라보 팝업스토어\ndescription: 세계적으로 유명한 패션 디자이너와의 콜라보레이션으로 탄생한 최신 패션 컬렉션을 소개하는 팝업스토어입니다. 현대적이고 세련된 디자인을 자랑합니다. 아동의류, 여성의류, 종합의류", "completion": " 패션"}
+{"prompt": "title: 여름 패션 팝업 스토어\ndescription: 시원한 여름 패션 아이템을 소개하는 팝업스토어입니다. 다양한 스타일과 색상으로 여름철 스타일링에 최적화되어 있습니다. 아동의류, 여성의류, 종합의류", "completion": " 패션"}
+{"prompt": "title: 클래식 정장 팝업\ndescription: 고급스러운 소재와 세련된 디자인으로 구성된 클래식 정장 컬렉션을 소개하는 팝업스토어입니다. 중요한 행사나 비즈니스 모임에 적합합니다. 아동의류, 여성의류, 종합의류", "completion": " 패션"}
+{"prompt": "title: 인디럭스 한남 팝업스토어\ndescription: 인디럭스 브랜드의 최신 패션 아이템들을 소개하는 한남 팝업스토어입니다. 세련된 디자인과 고급스러운 패션 아이템이 준비되어 있습니다. >남성패션, 여성패션, 종합패션","completion": " 패션"}
+{"prompt": "title: 워셔 빈티지 팝업스토어\ndescription: 워셔 브랜드의 빈티지 패션 아이템을 소개하는 팝업스토어입니다. 빈티지 스타일을 좋아하는 이들을 위한 다양한 상품이 준비되어 있습니다. >남성패션, 여성패션, 종합패션","completion": " 패션"}
+{"prompt": "title: 코리안 좀비 더현대 서울 팝업스토어\ndescription: 코리안 좀비 브랜드의 최신 패션 아이템들을 소개하는 팝업스토어입니다. 독특하고 개성 있는 패션 아이템이 준비되어 있습니다. >여성패션, 남성패션, 종합패션","completion": " 패션"}
+{"prompt": "title: 크록스 팝업 스토어\ndescription: 편안하고 스타일리시한 크록스 신발을 체험할 수 있는 팝업스토어입니다. 다양한 디자인과 색상의 크록스를 만나보세요. >여성패션, 남성패션, 종합패션","completion": " 패션"}
+{"prompt": "title: 모던 인테리어 팝업스토어\ndescription: 모던한 디자인을 강조하는 홈 인테리어 아이템을 소개하는 팝업스토어입니다. 집안의 분위기를 완전히 새롭게 바꿀 수 있는 스타일리시한 가구와 장식품이 포함되어 있습니다. 인테리어, 가구, 실내 리모델링", "completion": " 인테리어"}
+{"prompt": "title: 스칸디나비아 스타일 팝업 스토어\ndescription: 간결하면서도 세련된 스칸디나비아 스타일의 인테리어 디자인 아이템을 소개하는 팝업스토어입니다. 자연 소재와 밝은 색상이 조화를 이루며, 아늑한 분위기를 제공합니다. 가구, 인테리어, 실내 리모델링", "completion": " 인테리어"}
+{"prompt": "title: 빈티지 인테리어 팝업\ndescription: 고전적인 아름다움을 지닌 빈티지 인테리어 소품을 소개하는 팝업스토어입니다. 이 소품들은 집안의 특별한 분위기를 연출합니다. 실내 리모델링, 인테리어, 가구 ", "completion": " 인테리어"}
+{"prompt": "title: 어티피컬\ndescription: 독특한 디자인의 가구와 인테리어 아이템을 소개하는 어티피컬 팝업스토어입니다. 현대적인 감각의 제품들이 준비되어 있습니다. >인테리어, 가구, 실내 리모델링","completion": " 인테리어"}
+{"prompt": "title: 우디크 롯데백화점 노원점 팝업스토어\ndescription: 우디크 브랜드의 다양한 가구와 인테리어 아이템을 소개하는 팝업스토어입니다. 실용적이고 스타일리시한 제품들이 준비되어 있습니다. >인테리어, 가구, 실내 리모델링","completion": " 인테리어"}
+{"prompt": "title: 스위트 모빌리아 팝업 스토어\ndescription: 스위트 모빌리아의 다양한 인테리어 아이템을 소개하는 팝업스토어입니다. 세련된 디자인과 높은 품질의 제품들이 준비되어 있습니다. >인테리어, 실내 리모델링, 가구","completion": " 인테리어"}
+{"prompt": "title: 한샘 팝업 스토어\ndescription: 한샘의 최신 인테리어 아이템을 만나볼 수 있는 팝업스토어입니다. 다양한 가구와 실내 리모델링 아이디어를 제공합니다. >인테리어, 실내 리모델링, 가구","completion": " 인테리어"}
+{"prompt": "title: 역사 사진 전시 팝업스토어\ndescription: 역사적인 순간들을 포착한 사진 전시를 소개하는 팝업스토어입니다. 방문객들은 사진을 통해 과거의 중요한 이벤트들을 생생하게 경험할 수 있습니다. 전시회, 콘서트, 체험", "completion": " 전시/체험"}
+{"prompt": "title: 현대 미술 전시 팝업 스토어\ndescription: 현대 미술 작품들을 감상할 수 있는 전시를 소개하는 팝업스토어입니다. 다양한 아티스트들의 창의적인 작품들을 한자리에서 만나볼 수 있습니다. 전시회, 콘서트, 체험", "completion": " 전시/체험"}
+{"prompt": "title: 과학 체험 전시 팝업\ndescription: 과학의 원리를 직접 체험하고 배울 수 있는 전시를 소개하는 팝업스토어입니다. 다양한 실험과 체험 프로그램이 준비되어 있습니다. 전시회, 콘서트, 체험", "completion": " 전시/체험"}
+{"prompt": "title: 대전 새로댁 새로 팝업스토어\ndescription: 대전 새로댁 브랜드의 다양한 상품과 체험 활동을 소개하는 팝업스토어입니다. 다양한 전시와 이벤트가 준비되어 있습니다. >전시회, 콘서트, 액티비티","completion": " 전시/체험"}
+{"prompt": "title: LDF HOUSE 명동\ndescription: 명동에서 열리는 LDF HOUSE 팝업스토어입니다. 다양한 전시와 체험 프로그램이 준비되어 있습니다. >전시회, 콘서트, 액티비티","completion": " 전시/체험"}
+{"prompt": "title: 뉴스뮤지엄 을지로점\ndescription: 을지로에 위치한 뉴스뮤지엄 팝업스토어입니다. 다양한 전시와 체험 프로그램이 준비되어 있습니다. >전시회, 액티비티, 콘서트","completion": " 전시/체험"}
+{"prompt": "title: 오레오 팝업 스토어\ndescription: 오레오 브랜드의 다양한 상품과 체험 활동을 소개하는 팝업스토어입니다. 다양한 이벤트와 체험 프로그램이 준비되어 있습니다. >전시회, 액티비티, 콘서트","completion": " 전시/체험"}
+{"prompt": "title: 럭셔리 향수 팝업스토어\ndescription: 프랑스에서 직접 수입된 성분을 사용한 럭셔리 향수 브랜드를 소개하는 팝업스토어입니다. 이 향수는 고급스러움과 세련됨을 강조합니다. 향수, 디퓨저, 오드퍼퓸", "completion": " 향수"}
+{"prompt": "title: 프리미엄 향수 팝업 스토어\ndescription: 최고급 원료로 만들어진 프리미엄 향수 컬렉션을 소개하는 팝업스토어입니다. 각 향수는 독특한 향을 자랑하며, 특별한 순간을 위해 디자인되었습니다. 디퓨저, 향수, 오드퍼퓸", "completion": " 향수"}
+{"prompt": "title: 자연 추출물 향수 팝업\ndescription: 자연에서 추출한 성분들로 만들어진 향수를 소개하는 팝업스토어입니다. 상쾌하고 자연스러운 향기가 특징입니다. 오드퍼퓸, 향수, 디퓨저", "completion": " 향수"}
+{"prompt": "title: 조 말론 향수 팝업\ndescription: 고급 향수 브랜드 조 말론의 다양한 향수를 체험할 수 있는 팝업스토어입니다. 고급스러운 디퓨저와 오드퍼퓸도 만나보세요. >향수, 디퓨저, 오드퍼퓸","completion": " 향수"}
+{"prompt": "title: 모스키노 향수 팝업스토어\ndescription: 모스키노 브랜드의 다양한 향수를 소개하는 팝업스토어입니다. 독특한 디자인과 향을 경험할 수 있습니다. >향수, 디퓨저, 오드퍼퓸","completion": " 향수"}
+{"prompt": "title: 메종쥬 향수 팝업 스토어\ndescription: 메종쥬 브랜드의 다양한 향수를 소개하는 팝업스토어입니다. 고급스럽고 독특한 향을 경험할 수 있습니다. >향수, 오드퍼퓸, 디퓨저","completion": " 향수"}
+{"prompt": "title: 브리오니 향수 팝업\ndescription: 브리오니 브랜드의 다양한 향수를 소개하는 팝업스토어입니다. 고급스러운 오드퍼퓸과 디퓨저도 만나보세요. >향수, 오드퍼퓸, 디퓨저","completion": " 향수"}
+{"prompt": "title: 이탈리아 요리 팝업스토어\ndescription: 전통적인 이탈리아 요리를 제공하는 팝업스토어입니다. 이곳에서는 진정한 이탈리아의 맛을 경험할 수 있습니다. 양식, 한식, 일식", "completion": " 음식"}
+{"prompt": "title: 아시아 요리 팝업 스토어\ndescription: 다양한 아시아 요리를 제공하는 전문 팝업스토어입니다. 정통 아시아 요리의 맛을 현지에서 직접 경험할 수 있습니다. 일식, 한식, 양식", "completion": " 음식"}
+{"prompt": "title: 멕시코 요리 팝업\ndescription: 정통 멕시코 요리를 제공하는 푸드트럭 팝업스토어입니다. 다양한 타코와 브리또 메뉴가 제공됩니다. 한식, 양식, 일식", "completion": " 음식"}
+{"prompt": "title: 곰표 굿즈 팝업스토어\ndescription: 곰표 브랜드의 다양한 굿즈를 소개하는 팝업스토어입니다. 한식, 양식, 일식 관련 상품이 준비되어 있습니다. >한식, 양식, 일식","completion": " 음식"}
+{"prompt": "title: 마블나인 팝업 스토어\ndescription: 마블나인 브랜드의 다양한 상품을 소개하는 팝업스토어입니다. 다양한 음식 관련 상품이 준비되어 있습니다. >한식, 양식, 일식","completion": " 음식"}
+{"prompt": "title: 투게더 50주년 팝업스토어\ndescription: 투게더 브랜드의 50주년을 기념하는 팝업스토어입니다. 한식, 일식, 양식 관련 다양한 상품이 준비되어 있습니다. >한식, 일식, 양식","completion": " 음식"}
+{"prompt": "title: 팝플리 팝업 스토어\ndescription: 팝플리 브랜드의 다양한 음식 관련 상품을 소개하는 팝업스토어입니다. 한식, 일식, 양식 관련 다양한 아이템이 준비되어 있습니다. >한식, 일식, 양식","completion": " 음식"}
+{"prompt": "title: 유기농 주스 팝업스토어\ndescription: 전적으로 유기농 과일만을 사용하여 제조된 주스를 소개하는 팝업스토어입니다. 이 주스들은 천연 성분으로 만들어져 건강에 좋습니다. 탄산음료, 음료, 전통음료", "completion": " 음료"}
+{"prompt": "title: 프리미엄 콜드브루 팝업 스토어\ndescription: 신선한 원두로 제조된 프리미엄 콜드브루 커피를 소개하는 팝업스토어입니다. 부드러운 맛과 풍부한 향을 자랑하며, 여름철에 특히 인기가 많습니다. 전통음료, 음료, 탄산음료", "completion": " 음료"}
+{"prompt": "title: 디톡스 워터 팝업\ndescription: 신선한 과일과 허브로 만든 디톡스 워터를 소개하는 팝업스토어입니다. 체내 독소 제거와 수분 보충에 도움을 줍니다. 음료, 전통음료, 탄산음료", "completion": " 음료"}
+{"prompt": "title: 밀키스 탄산음료 팝업 스토어\ndescription: 밀키스 탄산음료를 체험할 수 있는 팝업스토어입니다. 다양한 전통음료와 탄산음료도 준비되어 있습니다. >음료, 전통음료, 탄산음료","completion": " 음료"}
+{"prompt": "title: 매일유업 우유 팝업스토어\ndescription: 매일유업의 다양한 우유 제품을 소개하는 팝업스토어입니다. 전통음료와 탄산음료도 만나보세요. >음료, 전통음료, 탄산음료","completion": " 음료"}
+{"prompt": "title: 롯데필성 사이다 팝업 스토어\ndescription: 롯데필성의 다양한 사이다 제품을 소개하는 팝업스토어입니다. 전통음료와 탄산음료도 준비되어 있습니다. >음료, 탄산음료, 전통음료","completion": " 음료"}
+{"prompt": "title: Sprite 사이다 팝업스토어\ndescription: Sprite 사이다를 체험할 수 있는 팝업스토어입니다. 다양한 전통음료와 탄산음료도 준비되어 있습니다. >음료, 탄산음료, 전통음료","completion": " 음료"}
+{"prompt": "title: 프리미엄 와인 팝업스토어\ndescription: 세계 각지의 고품질 와인들로 구성된 프리미엄 와인 셀렉션을 소개하는 팝업스토어입니다. 특별한 날을 위한 완벽한 선택입니다.", "completion": " 주류"}
+{"prompt": "title: 수제 맥주 팝업 스토어\ndescription: 다양한 맛과 향을 가진 수제 맥주 세트를 소개하는 팝업스토어입니다. 맥주 애호가들에게 완벽한 선물이 될 것입니다. 맥주, 양주", "completion": " 주류"}
+{"prompt": "title: 위스키 팝업\ndescription: 여러 국가의 고급 위스키로 구성된 컬렉션을 소개하는 팝업스토어입니다. 깊고 풍부한 맛을 자랑합니다. 맥주, 소주, 양주", "completion": " 주류"}
+{"prompt": "title: 전통 소주 팝업스토어\ndescription: 전통 방식으로 제조된 소주 세트를 소개하는 팝업스토어입니다. 한국의 전통적인 맛을 즐길 수 있습니다. 양주, 맥주, 소주", "completion": " 주류"}
+{"prompt": "title: 국순당 막걸리 팝업 스토어\ndescription: 국순당 막걸리를 체험할 수 있는 팝업스토어입니다. 다양한 전통 술과 호프도 준비되어 있습니다. 주류, 술, 호프","completion": " 주류"}
+{"prompt": "title: 호가든 맥주 팝업 스토어\ndescription: 호가든 맥주를 체험할 수 있는 팝업스토어입니다. 다양한 주류와 호프도 준비되어 있습니다. >주류, 술, 호프","completion": " 주류"}
+{"prompt": "title: 참이슬 소주 팝업스토어\ndescription: 참이슬 소주를 체험할 수 있는 팝업스토어입니다. 다양한 주류와 호프도 준비되어 있습니다. >주류, 호프, 술","completion": " 주류"}
+{"prompt": "title: 위스키 팝업 스토어\ndescription: 다양한 위스키를 체험할 수 있는 팝업스토어입니다. 주류와 호프도 만나보세요. >주류, 호프, 술","completion": " 주류"}
+{"prompt": "title: 사무용품 팝업 스토어\ndescription: 현대적인 사무실 환경에 최적화된 다기능 사무용품 세트를 소개하는 팝업스토어입니다. 효율성을 극대화하도록 설계되었습니다. 문구, 필기도구, 팬시", "completion": " 문구"}
+{"prompt": "title: 친환경 노트북 팝업\ndescription: 재활용 소재로 만들어진 친환경 노트북을 소개하는 팝업스토어입니다. 환경 보호를 실천하면서도 고성능을 자랑하는 제품입니다. 팬시, 문구, 필기도구", "completion": " 문구"}
+{"prompt": "title: 다기능 펜 팝업스토어\ndescription: 다양한 기능을 갖춘 다기능 펜을 소개하는 팝업스토어입니다. 필기와 터치스크린 조작을 모두 할 수 있습니다. 필기도구, 문구, 팬시", "completion": " 문구"}
+{"prompt": "title: 리밋션 AK PLAZA 홍대\ndescription: 리밋션 브랜드의 다양한 문구와 필기도구를 소개하는 팝업스토어입니다. 다양한 수첩과 필기도구가 준비되어 있습니다. >문구, 필기도구, 팬시","completion": " 문구"}
+{"prompt": "title: 유어굿즈\ndescription: 유어굿즈 브랜드의 다양한 문구와 필기도구를 소개하는 팝업스토어입니다. 다양한 수첩과 필기도구가 준비되어 있습니다. >문구, 필기도구, 팬시","completion": " 문구"}
+{"prompt": "title: 갤러리 아투고\ndescription: 갤러리 아투고의 다양한 문구와 필기도구를 소개하는 팝업스토어입니다. 다양한 수첩과 필기도구가 준비되어 있습니다. >문구, 팬시, 필기도구","completion": " 문구"}
+{"prompt": "title: 컬러팝 홍대점\ndescription: 컬러팝 브랜드의 다양한 문구와 필기도구를 소개하는 팝업스토어입니다. 다양한 수첩과 필기도구가 준비되어 있습니다. >문구, 팬시, 필기도구","completion": " 문구"}
+{"prompt": "title: 스마트 가전 팝업 스토어\ndescription: 최신 기술이 적용된 스마트 홈 가전 제품을 소개하는 팝업스토어입니다. 이 제품들은 집안의 편리함을 증가시키며, 에너지 효율도 높입니다.", "completion": " 가전제품"}
+{"prompt": "title: 스마트 온도 조절기 팝업\ndescription: 집안의 온도를 효율적으로 관리할 수 있는 스마트 온도 조절기를 소개하는 팝업스토어입니다. 에너지 절약과 편리함을 동시에 제공합니다.", "completion": " 가전제품"}
+{"prompt": "title: 에너지 절약 세탁기 팝업스토어\ndescription: 최신 에너지 절약 기술이 적용된 세탁기를 소개하는 팝업스토어입니다. 효율적인 세탁 성능을 제공합니다.", "completion": " 가전제품"}
+{"prompt": "title: 미키마우스 어린이 날 팝업스토어\ndescription: 미키마우스 캐릭터의 다양한 상품을 소개하는 팝업스토어입니다.","completion": " 캐릭터"}
+{"prompt": "title: 정관장 팝업 스토어\ndescription: 정관장 브랜드의 다양한 건강식품을 소개하는 팝업스토어입니다.","completion": " 건강/웰빙"}
+{"prompt": "title: 인공지능 AI 청소 도구 팝업 스토어\ndescription: 전적으로 인공지능 AI가 탑재된 청소 도구를 소개하는 팝업스토어입니다. 효과적인 청소를 가능하게 하면서도 환경에 삶의 만족도를 높혀줍니다. 수납용품, 생활용품, 주방용품", "completion": " 생활용품"}
+{"prompt": "title: 친환경 재사용 빨대 팝업\ndescription: 여러 번 사용할 수 있는 친환경 재사용 빨대를 소개하는 팝업스토어입니다. 플라스틱 사용을 줄이고 환경 보호에 기여합니다. 주방용품, 생활용품, 수납용품", "completion": " 생활용품"}
+{"prompt": "title: 재활용 세제 팝업스토어\ndescription: 환경을 생각하여 제작된 재활용 가능한 세제를 소개하는 팝업스토어입니다. 깨끗하게 세척하면서도 환경에 해를 끼치지 않습니다. 생활용품, 주방용품, 수납용품", "completion": " 생활용품"}
+{"prompt": "title: 코웨이 공기청정기 팝업스토어\ndescription: 코웨이 브랜드의 다양한 공기청정기를 소개하는 팝업스토어입니다. 주방용품과 수납용품도 만나보세요. >생활용품, 주방용품, 수납용품","completion": " 생활용품"}
+{"prompt": "title: LG생활건강 팝업스토어\ndescription: LG생활건강의 다양한 생활용품을 소개하는 팝업스토어입니다. 주방용품과 수납용품도 만나보세요. >생활용품, 주방용품, 수납용품","completion": " 생활용품"}
+{"prompt": "title: 이케어 생활용품 팝업 스토어\ndescription: 이케어 브랜드의 다양한 생활용품을 소개하는 팝업스토어입니다. 주방용품과 수납용품도 만나보세요. >생활용품, 수납용품, 주방용품","completion": " 생활용품"}
+{"prompt": "title: 쿡팬 하우스 주방용품 팝업스토어\ndescription: 쿡팬 하우스 브랜드의 다양한 주방용품을 소개하는 팝업스토어입니다. 수납용품과 생활용품도 만나보세요. >생활용품, 수납용품, 주방용품","completion": " 생활용품"}
+{"prompt": "title: 블리자드 디아블로 게임 팝업 스토어\ndescription: 최신 인기 게임을 소개하는 팝업스토어입니다. 게임을 체험해볼 수 있습니다.", "completion": " 게임"}
+{"prompt": "title: 삼성 갤럭시 전자제품 팝업\ndescription: 최신 전자제품을 소개하는 팝업스토어입니다. 스마트폰, 노트북 등 다양한 전자제품을 체험해볼 수 있습니다.", "completion": " 전자제품"}
+{"prompt": "title: 포켓몬 애니메이션 팝업스토어\ndescription: 인기 애니메이션을 소개하는 팝업스토어입니다.", "completion": " 캐릭터"}
+{"prompt": "title: 바오패밀리 팝업, Every joyful moment\ndescription: 바오패밀리의 행복했던 순간들을 담은 팝업스토어가 찾아옵니다. Every joyful moment 팝업스토어에서 처음으로 선보이는 상품들과 바오패밀리의 일상을 만나보세요!","completion": " 캐릭터"}
+{"prompt": "title: 쿠키런 팝업 스토어\ndescription: 인기 게임 쿠키런의 다양한 상품을 소개하는 팝업스토어입니다. 전자제품과 애니메이션 관련 상품도 준비되어 있습니다.","completion": " 게임"}
+{"prompt": "title: 브롤스타즈 게임 팝업 스토어\ndescription: 인기 게임 브롤스타즈의 다양한 상품을 소개하는 팝업스토어입니다.","completion": " 게임"}
+{"prompt": "title: SmartThings 전자제품 팝업스토어\ndescription: SmartThings의 다양한 전자제품을 소개하는 팝업스토어입니다.","completion": " 전자제품"}
+{"prompt": "title: 프리미엄 스킨케어 팝업스토어\ndescription: 프리미엄 스킨케어 제품을 소개하는 팝업스토어입니다. 피부과 전문의와 공동 개발한 제품으로 피부를 진정시키고 보호하는 데 도움을 줍니다. 화장품,천연화장품", "completion": " 화장품"}
+{"prompt": "title: 미백 스킨케어 팝업 스토어\ndescription: 미백 효과를 제공하는 스킨케어 제품을 소개하는 팝업스토어입니다. 이 제품은 피부를 밝고 맑게 만들어 줍니다. 화장품,천연화장품", "completion": " 화장품"}
+{"prompt": "title: 천연 성분 크림 팝업\ndescription: 천연 성분으로 만든 수분 크림을 소개하는 팝업스토어입니다. 이 제품은 피부에 깊은 보습을 제공하여 촉촉함을 유지시켜줍니다 화장품,천연화장품", "completion": " 화장품"}
+{"prompt": "title: 의식있는 아름다움 TOUN28 팝업 전시\ndescription: 천연 성분을 사용한 TOUN28의 다양한 뷰티 제품을 체험할 수 있는 팝업 전시입니다. 친환경적인 제품들을 만나보세요. 화장품,천연화장품", "completion": " 화장품"}
+{"prompt": "title: 맥 맥시멀 매트 립스틱 팝업 스토어\ndescription: 맥의 맥시멀 매트 립스틱 컬렉션을 소개하는 팝업 스토어입니다. 다양한 색상과 매트한 질감을 체험할 수 있습니다. 화장품,천연화장품", "completion": " 화장품"}
+{"prompt": "title: 조 말론 런던 팝업스토어\ndescription: 조 말론 런던의 다양한 향수와 천연 화장품을 체험할 수 있는 팝업스토어입니다. 럭셔리한 향기와 제품들을 만나보세요. 화장품,천연화장품", "completion": " 화장품"}
+{"prompt": "title: 네이밍 스페이스 팝업스토어\ndescription: 네이밍 스페이스의 천연 화장품과 다양한 뷰티 제품을 소개하는 팝업스토어입니다. 친환경적인 제품들을 체험해보세요. 화장품,천연화장품", "completion": " 화장품"}
+{"prompt": "title: 동화 캐릭터 팝업스토어\ndescription: 동화 캐릭터 스티커북을 소개하는 팝업스토어입니다. 아이들의 창의력을 자극하고 색감 감각을 키울 수 있는 스티커북이 포함되어 있습니다. 이모티콘, 캐릭터,인형", "completion": " 캐릭터"}
+{"prompt": "title: 만화 캐릭터 팝업 스토어\ndescription: 만화 캐릭터 티셔츠를 소개하는 팝업스토어입니다. 인기 만화 캐릭터가 프린트된 티셔츠로 캐릭터 팬들에게 특별한 아이템입니다. 인형, 캐릭터, 이모티콘", "completion": " 캐릭터"}
+{"prompt": "title: 영화 캐릭터 팝업\ndescription: 영화 캐릭터 액션 피규어를 소개하는 팝업스토어입니다. 정교하게 표현된 피규어로 팬들에게 큰 인기를 끌고 있습니다. 캐릭터,인형,이모티콘", "completion": " 캐릭터"}
+{"prompt": "title: 포켓몬 몬스터볼 팩토리 팝업스토어\ndescription: 포켓몬 몬스터볼과 관련 상품들을 소개하는 팝업스토어입니다. 다양한 포켓몬 굿즈를 만나볼 수 있습니다. 캐릭터,인형,이모티콘","completion": " 캐릭터"}
+{"prompt": "title: 잔망 루피 팝업 스토어\ndescription: 잔망 루피 캐릭터의 다양한 상품을 소개하는 팝업스토어입니다. 귀여운 인형과 이모티콘 상품이 준비되어 있습니다. 캐릭터, 인형, 이모티콘","completion": " 캐릭터"}
+{"prompt": "title: 라인 프렌즈 팝업스토어\ndescription: 라인 프렌즈의 다양한 캐릭터 상품을 소개하는 팝업스토어입니다. 인형과 이모티콘 상품들이 준비되어 있습니다. 캐릭터,이모티콘,인형","completion": " 캐릭터"}
+{"prompt": "title: 짱구 팝업스토어\ndescription: 짱구 캐릭터의 다양한 상품을 소개하는 팝업스토어입니다. 인형과 이모티콘 상품들이 준비되어 있습니다. 캐릭터, 이모티콘, 인형","completion": " 캐릭터"}
+{"prompt": "title: 최신 과학 도서 팝업스토어\ndescription: 최신 과학 도서를 소개하는 팝업스토어입니다. 과학 이론을 쉽게 설명하여 독자들이 과학적 개념을 이해할 수 있도록 돕습니다. 음반, 도서, 책", "completion": " 도서/음반"}
+{"prompt": "title: 베스트셀러 소설 팝업 스토어\ndescription: 베스트셀러 소설 시리즈를 소개하는 팝업스토어입니다. 흥미진진한 스토리와 깊이 있는 캐릭터가 돋보입니다. 책, 음반, 도서", "completion": " 도서/음반"}
+{"prompt": "title: 클래식 음반 팝업\ndescription: 클래식 음악 애호가들을 위한 클래식 음반을 소개하는 팝업스토어입니다. 세계적인 오케스트라의 연주를 고음질로 제공합니다. 도서, 음반, 책", "completion": " 도서/음반"}
+{"prompt": "title: 영어 학습 도서 팝업 스토어\ndescription: 영어 학습을 위한 다양한 도서를 소개하는 팝업스토어입니다. 영어 학습에 도움이 되는 교재와 자료들이 준비되어 있습니다. 책, 음반, 도서", "completion": " 도서/음반"}
+{"prompt": "title: 교보문고 신논현역 팝업스토어\ndescription: 신논현역에서 열리는 교보문고 팝업스토어입니다. 다양한 도서와 음반을 만나볼 수 있습니다. 도서,음반,서점","completion": " 도서/음반"}
+{"prompt": "title: 아톰 팝업스토어\ndescription: 아톰 캐릭터와 관련된 다양한 도서와 음반을 소개하는 팝업스토어입니다. 팬들을 위한 특별한 아이템이 준비되어 있습니다. 도서, 음반, 서점","completion": " 도서/음반"}
+{"prompt": "title: 댄스가스유랑단 팝업스토어\ndescription: 댄스가스유랑단의 음반과 도서를 소개하는 팝업스토어입니다. 다양한 음악과 문학 작품을 만나볼 수 있습니다. 음반,도서,서점","completion": " 도서/음반"}
+{"prompt": "title: 영풍문고 팝업\ndescription: 교보문고에서 다양한 도서와 음반을 소개하는 팝업스토어입니다. 독서와 음악을 즐기는 분들을 위한 공간입니다. 음반, 도서, 서점","completion": " 도서/음반"}
+{"prompt": "title: 디자이너 신발 팝업스토어\ndescription: 유명 디자이너가 디자인한 신발 라인을 소개하는 팝업스토어입니다. 독창적인 디자인과 우수한 내구성을 자랑합니다 남성의류,여성의류,종합의류.", "completion": " 패션"}
+{"prompt": "title: 디자이너 액세서리 팝업 스토어\ndescription: 유명 디자이너가 디자인한 액세서리 컬렉션을 소개하는 팝업스토어입니다. 세련된 디자인과 고급 소재로 만들어져 특별한 날에 잘 어울립니다. 남성의류,여성의류,종합의류", "completion": " 패션"}
+{"prompt": "title: 가을 패션 의류 팝업\ndescription: 최신 트렌드를 반영한 가을 패션 의류를 소개하는 팝업스토어입니다. 편안하면서도 스타일리시한 디자인이 특징입니다. 남성의류,여성의류,종합의류", "completion": " 패션"}
+{"prompt": "title: TNH Lab_배럴 팝업 스토어\ndescription: TNH Lab과 배럴의 협업으로 다양한 남성 및 여성 의류를 소개하는 팝업스토어입니다. 최신 패션 트렌드를 만나보세요. 남성의류,여성의류,종합패션","completion": " 패션"}
+{"prompt": "title: 디올성수\ndescription: 디올의 다양한 남성 및 여성 패션 아이템을 소개하는 성수 팝업스토어입니다. 럭셔리한 디자인과 스타일을 만나보세요. 남성패션, 여성패션, 종합패션","completion": " 패션"}
+{"prompt": "title: 알렉산더왕 청담점\ndescription: 알렉산더왕의 다양한 남성 및 여성 패션 아이템을 소개하는 청담점 팝업스토어입니다. 독창적인 디자인과 스타일을 경험해보세요. 여성패션,남성패션,종합패션","completion": " 패션"}
+{"prompt": "title: 스테이지35 성수 마리끌레르 팝업스토어\ndescription: 스테이지35와 마리끌레르의 협업으로 다양한 남성 및 여성 의류를 소개하는 팝업스토어입니다. 최신 패션 트렌드를 만나보세요. 여성의류, 남성의류, 종합패션","completion": " 패션"}
+{"prompt": "title: 예술 작품 팝업스토어\ndescription: 현대 예술가들이 만든 예술 작품들을 소개하는 팝업스토어입니다. 독창적인 예술 작품들이 집안 장식용으로 제공됩니다. 인테리어,가구,실내 리모델링", "completion": " 인테리어"}
+{"prompt": "title: 아트 소품 팝업 스토어\ndescription: 현대 예술 작품을 모티브로 한 인테리어 소품을 소개하는 팝업스토어입니다. 이 소품들은 공간에 예술적 감각을 더해줍니다. 인테리어,가구,실내 리모델링", "completion": " 인테리어"}
+{"prompt": "title: 빈티지 소품 팝업\ndescription: 빈티지 스타일의 인테리어 소품을 소개하는 팝업스토어입니다. 독특한 디자인이 돋보입니다. 인테리어,가구,실내 리모델링", "completion": " 인테리어"}
+{"prompt": "title: 보헤미안 인테리어 팝업스토어\ndescription: 자유롭고 개성 넘치는 보헤미안 스타일의 인테리어 아이템을 소개하는 팝업스토어입니다. 집안에 따뜻하고 창의적인 분위기를 더해보세요. 인테리어, 가구, 실내 리모델링", "completion": " 인테리어"}
+{"prompt": "title: 이케아 팝업스토어\ndescription: 이케아의 다양한 인테리어 아이템과 가구를 소개하는 팝업스토어입니다. 리모델링 아이디어도 함께 제공합니다. 인테리어,가구,실내 리모델링","completion": " 인테리어"}
+{"prompt": "title: 몽제 팝업스토어 롯데백화점 동탄점\ndescription: 몽제의 다양한 가구와 인테리어 아이템을 소개하는 팝업스토어입니다. 롯데백화점 동탄점에서 만나보세요. 인테리어, 가구, 실내 리모델링","completion": " 인테리어"}
+{"prompt": "title: 삼성스토어 나주 팝업스토어\ndescription: 삼성스토어의 다양한 가구와 인테리어 아이템을 소개하는 팝업스토어입니다. 나주에서 열립니다. 인테리어,실내 리모델링,가구","completion": " 인테리어"}
+{"prompt": "title: 까사미아 팝업스토어\ndescription: 까사미아의 다양한 가구와 인테리어 아이템을 소개하는 팝업스토어입니다. 리모델링 아이디어도 함께 제공합니다. 인테리어, 실내 리모델링, 가구","completion": " 인테리어"}
+{"prompt": "title: VR 체험 팝업스토어\ndescription: 가상 현실 기술을 활용한 체험 전시를 소개하는 팝업스토어입니다. 방문객들은 VR을 통해 다양한 역사적 장면과 자연 환경을 체험할 수 있습니다. 체험, 전시회, 콘서트", "completion": " 전시/체험"}
+{"prompt": "title: 아동 체험 팝업 스토어\ndescription: 어린이들이 다양한 활동을 통해 배울 수 있는 체험 프로그램을 소개하는 팝업스토어입니다. 놀이를 통해 창의력과 상상력을 키울 수 있습니다. 콘서트, 전시회, 체험", "completion": " 전시/체험"}
+{"prompt": "title: 공예 워크숍 팝업\ndescription: 다양한 공예 기술을 직접 체험해볼 수 있는 워크숍을 소개하는 팝업스토어입니다. 손으로 만드는 즐거움과 창의력을 발휘할 수 있습니다. 전시회, 체험, 콘서트", "completion": " 전시/체험"}
+{"prompt": "title: 아트 갤러리 전시 팝업\ndescription: 다양한 현대 미술 작품을 감상할 수 있는 아트 갤러리 전시 팝업스토어입니다. 창의적인 작품들을 만나보세요. 전시회,콘서트,체험","completion": " 전시/체험"}
+{"prompt": "title: 시크릿데이 생리대 피팅룸 팝업스토어\ndescription: 시크릿데이 생리대의 피팅룸을 체험할 수 있는 팝업스토어입니다. 다양한 생리대 제품들을 직접 확인해보세요. 전시회, 콘서트, 체험","completion": " 전시/체험"}
+{"prompt": "title: 힌스 블루 다이브 팝업스토어\ndescription: 힌스 블루 다이브의 다양한 전시와 체험 프로그램을 소개하는 팝업스토어입니다. 창의적인 액티비티가 준비되어 있습니다. 전시회,체험,콘서트","completion": " 전시/체험"}
+{"prompt": "title: 마플샵 팝업스토어\ndescription: 마플샵의 다양한 상품과 체험 프로그램을 소개하는 팝업스토어입니다. 창의적인 전시와 액티비티가 준비되어 있습니다. 전시회, 체험, 콘서트","completion": " 전시/체험"}
+{"prompt": "title: 디자이너 향수 팝업스토어\ndescription: 유명 디자이너가 만든 한정판 향수를 소개하는 팝업스토어입니다. 고급스러운 향과 우아한 병 디자인을 갖추고 있습니다. 향수,디퓨저,오드퍼퓸", "completion": " 향수"}
+{"prompt": "title: 자연 향수 팝업 스토어\ndescription: 자연에서 영감을 받아 만들어진 향수를 소개하는 팝업스토어입니다. 신선한 꽃과 나무 향이 조화를 이루며 일상에서 자연의 느낌을 느낄 수 있습니다. 디퓨저, 향수,오드퍼퓸", "completion": " 향수"}
+{"prompt": "title: 플로랄 향수 팝업\ndescription: 다양한 꽃향기를 모티브로 한 플로랄 향수를 소개하는 팝업스토어입니다. 각각의 향수는 독특한 꽃의 향기를 표현합니다. 오드퍼퓸, 향수,디퓨저", "completion": " 향수"}
+{"prompt": "title: 테일러센츠 무신사 성수 팝업스토어\ndescription: 테일러센츠의 다양한 향수와 디퓨저를 소개하는 무신사 성수 팝업스토어입니다. 독특한 향기와 디자인을 체험해보세요. 향수,디퓨저,오드퍼퓸","completion": " 향수"}
+{"prompt": "title: MAC 팝업스토어 신세계면세점\ndescription: MAC의 다양한 향수와 디퓨저를 소개하는 신세계면세점 팝업스토어입니다. 럭셔리한 향기를 경험해보세요. 향수, 디퓨저, 오드퍼퓸","completion": " 향수"}
+{"prompt": "title: 샤넬 향수 팝업스토어\ndescription: 샤넬의 다양한 향수와 디퓨저를 소개하는 팝업스토어입니다. 우아하고 고급스러운 향기를 체험해보세요. 향수,오드퍼퓸,디퓨저","completion": " 향수"}
+{"prompt": "title: 겔랑 프리미엄 향수 팝업 스토어\ndescription: 겔랑의 프리미엄 향수와 디퓨저를 소개하는 팝업스토어입니다. 고급스러운 향기를 경험해보세요. 향수, 오드퍼퓸, 디퓨저","completion": " 향수"}
+{"prompt": "title: 지속 가능한 식재료 팝업스토어\ndescription: 지속 가능한 방식으로 재배된 식재료를 사용한 요리를 소개하는 팝업스토어입니다. 건강하고 맛있는 요리를 제공합니다. 한식,양식,일식", "completion": " 음식"}
+{"prompt": "title: 유기농 샐러드 팝업 스토어\ndescription: 유기농 채소로 만들어진 건강한 샐러드를 소개하는 팝업스토어입니다. 신선한 재료와 맛있는 드레싱이 특징입니다. 한식,양식,일식", "completion": " 음식"}
+{"prompt": "title: 수제 버거 팝업\ndescription: 신선한 재료로 만든 수제 버거를 제공하는 팝업스토어입니다. 각종 토핑과 다양한 맛으로 고객의 입맛을 사로잡습니다. 한식,양식,일식", "completion": " 음식"}
+{"prompt": "title: 종가 팝업스토어 KIMCHI BLAST BUSAN\ndescription: 전통 종가 김치를 소개하는 KIMCHI BLAST 팝업스토어입니다. 부산에서 다양한 김치 요리를 체험해보세요. 한식,양식,일식","completion": " 음식"}
+{"prompt": "title: 오레오 팝업스토어\ndescription: 오레오의 다양한 맛과 관련 상품을 소개하는 팝업스토어입니다. 한식, 양식, 일식 디저트도 준비되어 있습니다. 한식, 양식, 일식","completion": " 음식"}
+{"prompt": "title: 짜파게티 팝업 스토어\ndescription: 인기 라면 짜파게티의 다양한 요리를 소개하는 팝업스토어입니다. 한식, 일식, 양식 퓨전 요리도 만나보세요. 한식,일식,양식","completion": " 음식"}
+{"prompt": "title: 비비고 팝업스토어\ndescription: 비비고의 다양한 한식 요리를 소개하는 팝업스토어입니다. 한식, 일식, 양식 퓨전 요리도 만나보세요. 한식, 일식, 양식","completion": " 음식"}
+{"prompt": "title: 에너지 스무디 팝업스토어\ndescription: 천연 재료를 사용하여 만든 에너지 부스팅 스무디를 소개하는 팝업스토어입니다. 활력을 주는 동시에 영양가도 높습니다. 탄산음료, 음료, 전통음료", "completion": " 음료"}
+{"prompt": "title: 허브티 팝업 스토어\ndescription: 다양한 천연 허브를 사용하여 만든 허브티를 소개하는 팝업스토어입니다. 몸과 마음을 편안하게 해줍니다. 전통음료, 음료, 탄산음료", "completion": " 음료"}
+{"prompt": "title: 프리미엄 커피 팝업\ndescription: 전 세계 최고의 원두를 사용하여 만든 프리미엄 커피를 소개하는 팝업스토어입니다. 깊은 향과 맛을 자랑합니다. 음료, 전통음료, 탄산음료", "completion": " 음료"}
+{"prompt": "title: 카페 디올 성수\ndescription: 디올이 운영하는 카페 디올 성수에서 다양한 음료와 전통음료, 탄산음료를 체험해보세요. 럭셔리한 분위기를 만끽할 수 있습니다. 음료, 전통음료, 탄산음료","completion": " 음료"}
+{"prompt": "title: 골든피스 더현대서울 팝업스토어\ndescription: 골든피스의 다양한 음료와 전통음료, 탄산음료를 소개하는 더현대서울 팝업스토어입니다. 다양한 음료를 체험해보세요. 음료, 전통음료, 탄산음료","completion": " 음료"}
+{"prompt": "title: 밀키맨션\ndescription: 밀키맨션의 다양한 음료와 탄산음료, 전통음료를 소개하는 팝업스토어입니다. 신선한 음료를 체험해보세요. 음료,탄산음료,전통음료","completion": " 음료"}
+{"prompt": "title: 플라세르\ndescription: 플라세르의 다양한 음료와 전통음료, 탄산음료를 소개하는 팝업스토어입니다. 신선한 음료를 체험해보세요. 음료, 전통음료, 탄산음료","completion": " 음료"}
+{"prompt": "title: 스파클링 와인 팝업스토어\ndescription: 특별한 날을 위한 스파클링 와인을 소개하는 팝업스토어입니다. 청량감 있는 맛과 우아한 기포가 특징입니다.", "completion": " 주류"}
+{"prompt": "title: 고급 샴페인 팝업 스토어\ndescription: 프랑스에서 수입된 고급 샴페인을 소개하는 팝업스토어입니다. 중요한 순간을 위한 완벽한 선택입니다. 소주, 맥주, 양주", "completion": " 주류"}
+{"prompt": "title: 프리미엄 럼 팝업\ndescription: 전통적인 방법으로 제조된 프리미엄 럼을 소개하는 팝업스토어입니다. 강렬하고 깊은 맛을 자랑합니다. 맥주, 소주, 양주", "completion": " 주류"}
+{"prompt": "title: 한정판 리큐어 팝업스토어\ndescription: 특별한 이벤트를 위해 제작된 한정판 리큐어를 소개하는 팝업스토어입니다. 독특한 맛과 향을 제공합니다. 소주, 맥주, 양주", "completion": " 주류"}
+{"prompt": "title: 818 데킬라 더현대 서울 팝업스토어\ndescription: 818 데킬라의 다양한 주류와 호프를 소개하는 더현대 서울 팝업스토어입니다. 독특한 맛과 향을 경험해보세요. 주류, 술, 호프","completion": " 주류"}
+{"prompt": "title: 더현대 서울 테라 싱글몰트 팝업스토어\ndescription: 테라 싱글몰트의 다양한 주류와 호프를 소개하는 더현대 서울 팝업스토어입니다. 깊은 맛과 향을 경험해보세요. 주류, 술, 호프","completion": " 주류"}
+{"prompt": "title: SK 주유소 울산팝업스토어\ndescription: SK 주유소에서 다양한 주류와 호프를 소개하는 울산 팝업스토어입니다. 특별한 맛과 향을 체험해보세요. 주류, 호프, 술","completion": " 주류"}
+{"prompt": "title: 카스 맥주 팝업 스토어\ndescription: 카스 맥주의 다양한 맛을 체험할 수 있는 팝업스토어입니다. 다양한 주류와 호프도 준비되어 있습니다. 주류, 호프, 술","completion": " 주류"}
+{"prompt": "title: 친환경 필기 도구 팝업 스토어\ndescription: 재활용 가능한 소재로 만든 필기 도구를 소개하는 팝업스토어입니다. 환경 보호를 돕는 동시에 우수한 쓰기 품질을 제공합니다. 문구, 필기도구, 팬시", "completion": " 문구"}
+{"prompt": "title: 친환경 연필 팝업\ndescription: 재활용 가능한 소재로 만들어진 친환경 연필 세트를 소개하는 팝업스토어입니다. 환경 보호를 실천하는 동시에 필기감도 우수합니다. 문구, 필기도구, 팬시", "completion": " 문구"}
+{"prompt": "title: 다기능 노트 팝업스토어\ndescription: 다양한 기능을 갖춘 다기능 노트 세트를 소개하는 팝업스토어입니다. 일정 관리, 메모, 스케치 등 여러 용도로 활용할 수 있습니다. 문구, 필기도구, 팬시", "completion": " 문구"}
+{"prompt": "title: 하우스오브미나리마 서울 팝업스토어\ndescription: 하우스오브미나리마의 다양한 문구와 필기도구를 소개하는 팝업스토어입니다. 창의력을 키울 수 있는 다양한 수첩과 필기도구를 만나보세요. 문구, 필기도구, 팬시","completion": " 문구"}
+{"prompt": "title: 카카오프렌즈 용산역 팝업스토어\ndescription: 카카오프렌즈의 다양한 문구와 필기도구를 소개하는 용산역 팝업스토어입니다. 창의력을 키울 수 있는 다양한 수첩과 필기도구를 만나보세요. 문구, 필기도구, 팬시","completion": " 문구"}
+{"prompt": "title: 토더기 팝업스토어\ndescription: 토더기의 다양한 문구와 필기도구를 소개하는 팝업스토어입니다. 창의력을 키울 수 있는 다양한 수첩과 필기도구를 만나보세요. 문구,팬시,필기도구","completion": " 문구"}
+{"prompt": "title: 디즈니 샵\ndescription: 디즈니의 다양한 문구와 필기도구를 소개하는 팝업스토어입니다. 창의력을 키울 수 있는 다양한 수첩과 필기도구를 만나보세요. 문구, 팬시, 필기도구","completion": " 문구"}
+{"prompt": "title: 스마트 조리 도구 팝업 스토어\ndescription: 최신 기술을 적용하여 사용자의 조리 경험을 혁신하는 스마트 조리 도구를 소개하는 팝업스토어입니다. 조리 시간을 단축시키고 조리 과정을 간소화합니다.", "completion": " 가전제품"}
+{"prompt": "title: 스마트 가전 팝업\ndescription: 최신 기술이 적용된 스마트 가전제품을 소개하는 팝업스토어입니다. 이 제품들은 사용자의 편리함을 극대화하도록 설계되었습니다.", "completion": " 가전제품"}
+{"prompt": "title: 에너지 절약 냉장고 팝업스토어\ndescription: 에너지 효율을 극대화한 최신 냉장고를 소개하는 팝업스토어입니다. 스마트 기능과 함께 식품을 신선하게 보관할 수 있습니다.", "completion": " 가전제품"}
+{"prompt": "title: 다이슨 데모 스토어 사운즈 한남\ndescription: 다이슨의 다양한 가전 제품을 체험할 수 있는 데모 스토어입니다. 사운즈 한남에서 열리는 특별한 행사입니다.","completion": " 가전제품"}
+{"prompt": "title: 에이스 침대 팝업스토어\ndescription: 에이스 침대의 다양한 제품을 체험할 수 있는 팝업스토어입니다. 편안한 잠자리를 위한 다양한 침대를 만나보세요.","completion": " 가전제품"}
+{"prompt": "title: 아케아 팝업 스토어\ndescription: 아케아의 다양한 가구와 생활용품을 소개하는 팝업스토어입니다.","completion": " 생활용품"}
+{"prompt": "title: 비스포크 가구 팝업스토어\ndescription: 비스포크 가구의 다양한 제품을 소개하는 팝업스토어입니다.","completion": " 가전제품"}
+{"prompt": "title: 친환경 청소 용품 팝업 스토어\ndescription: 친환경 소재로 제작된 청소 용품 세트를 소개하는 팝업스토어입니다. 이 세트는 효과적으로 청소하면서도 환경을 보호합니다. 수납용품, 생활용품, 주방용품", "completion": " 생활용품"}
+{"prompt": "title: 에코백 팝업\ndescription: 환경을 생각하여 제작된 에코백 세트를 소개하는 팝업스토어입니다. 다양한 크기와 디자인으로 일상 생활에 편리하게 사용할 수 있습니다. 주방용품, 생활용품, 수납용품", "completion": " 생활용품"}
+{"prompt": "title: 재활용 수세미 팝업스토어\ndescription: 재활용 가능한 소재로 만들어진 수세미를 소개하는 팝업스토어입니다. 환경을 보호하면서도 뛰어난 청소 성능을 제공합니다. 생활용품, 주방용품, 수납용품", "completion": " 생활용품"}
+{"prompt": "title: 미마마스크 팝업스토어\ndescription: 미마마스크의 다양한 생활용품과 주방용품, 수납용품을 소개하는 팝업스토어입니다. 실용적인 아이템들을 만나보세요. 생활용품,주방용품,수납용품","completion": " 생활용품"}
+{"prompt": "title: 칸트 주방 팝업스토어\ndescription: 칸트 주방의 다양한 주방용품과 수납용품을 소개하는 팝업스토어입니다. 실용적인 아이템들을 만나보세요. 생활용품, 주방용품, 수납용품","completion": " 생활용품"}
+{"prompt": "title: 츄렌즈플래그십스토어 연남\ndescription: 츄렌즈의 다양한 생활용품과 주방용품, 수납용품을 소개하는 연남 플래그십스토어입니다. 실용적인 아이템들을 만나보세요. 생활용품,수납용품,주방용품","completion": " 생활용품"}
+{"prompt": "title: 로봇 청소기 생활용품 팝업스토어\ndescription: 로봇 청소기의 다양한 모델을 소개하는 생활용품 팝업스토어입니다. 최신 기술을 체험해보세요. 생활용품, 수납용품, 주방용품","completion": " 생활용품"}
+{"prompt": "title: PUBG 배틀그라운드 게임 팝업 스토어\ndescription: 최신 인기 게임을 소개하는 팝업스토어입니다. 다양한 장르의 게임을 체험해볼 수 있습니다. 애니메이션,전자제품,게임", "completion": " 게임"}
+{"prompt": "title: 하이큐 애니메이션 팝업스토어\ndescription: 인기 애니메이션을 소개하는 팝업스토어입니다.", "completion": " 캐릭터"}
+{"prompt": "title: 스마트 가전 팝업 스토어\ndescription: 최신 기술이 적용된 스마트 홈 가전 제품을 소개하는 팝업스토어입니다. 이 제품들은 집안의 편리함을 증가시키며, 에너지 효율도 높입니다.", "completion": " 전자제품"}
+{"prompt": "title: Together with HAIKYU 하이큐 팝업스토어\ndescription: 하이큐 애니메이션과 관련된 다양한 상품을 소개하는 팝업스토어입니다.","completion": " 캐릭터"}
+{"prompt": "title: 이상한 나라 <지구랜드> 팝업스토어\ndescription: 이상한 나라 지구랜드의 다양한 상품을 소개하는 팝업스토어입니다.","completion": " 건강/웰빙"}
+{"prompt": "title: 디아블로IV 더현대서울 팝업스토어\ndescription: 디아블로IV의 다양한 상품을 소개하는 더현대서울 팝업스토어입니다.","completion": " 게임"}
+{"prompt": "title: 최신 피트니스 기어 팝업스토어\ndescription: 최신 피트니스 기어와 운동 장비를 소개하는 팝업스토어입니다.","completion": " 스포츠"}
+{"prompt": "title: 요가 매트 팝업 스토어\ndescription: 다양한 요가 매트와 액세서리를 소개하는 팝업스토어입니다.","completion": " 스포츠"}
+{"prompt": "title: 축구 용품 팝업\ndescription: 축구공, 축구화, 유니폼 등 다양한 축구 용품을 소개하는 팝업스토어입니다.","completion": " 스포츠"}
+{"prompt": "title: 등산 장비 팝업 스토어\ndescription: 등산을 위한 다양한 장비와 의류를 소개하는 팝업스토어입니다.","completion": " 스포츠"}
+{"prompt": "title: 테니스 용품 팝업\ndescription: 테니스 라켓, 공, 의류 등 다양한 테니스 용품을 소개하는 팝업스토어입니다.","completion": " 스포츠"}
+{"prompt": "title: 건강 보조제 팝업 스토어\ndescription: 다양한 건강 보조제와 웰빙 제품을 소개하는 팝업스토어입니다.","completion": " 건강/웰빙"}
+{"prompt": "title: 유기농 식품 팝업\ndescription: 건강한 유기농 식품을 소개하는 팝업스토어입니다.","completion": " 건강/웰빙"}
+{"prompt": "title: 헬스케어 기기 팝업 스토어\ndescription: 최신 헬스케어 기기와 웨어러블 기기를 소개하는 팝업스토어입니다.","completion": " 건강/웰빙"}
+{"prompt": "title: 힐링 아로마 팝업\ndescription: 다양한 힐링 아로마 제품을 소개하는 팝업스토어입니다.","completion": " 건강/웰빙"}
+{"prompt": "title: 전기차 팝업 스토어\ndescription: 최신 전기차 모델과 충전 기술을 소개하는 팝업스토어입니다.","completion": " 자동차"}
+{"prompt": "title: 스포츠카 팝업\ndescription: 다양한 스포츠카 모델을 소개하는 팝업스토어입니다.","completion": " 자동차"}
+{"prompt": "title: 자율 주행차 팝업 스토어\ndescription: 자율 주행 기술이 적용된 최신 차량을 소개하는 팝업스토어입니다.","completion": " 자동차"}
+{"prompt": "title: 하이브리드 자동차 팝업\ndescription: 하이브리드 자동차와 관련 기술을 소개하는 팝업스토어입니다.","completion": " 자동차"}
+{"prompt": "title: 실내 식물 팝업 스토어\ndescription: 다양한 실내 식물과 가드닝 용품을 소개하는 팝업스토어입니다.","completion": " 식물"}
+{"prompt": "title: 희귀 식물 팝업\ndescription: 희귀하고 독특한 식물을 소개하는 팝업스토어입니다.","completion": " 식물"}
+{"prompt": "title: 다육식물 팝업 스토어\ndescription: 다양한 다육식물과 관리 용품을 소개하는 팝업스토어입니다.","completion": " 식물"}
+{"prompt": "title: 꽃집 팝업\ndescription: 다양한 꽃과 플라워 어레인지를 소개하는 팝업스토어입니다.","completion": " 식물"}
+{"prompt": "title: 국내 여행 팝업 스토어\ndescription: 국내 다양한 여행지와 관련 상품을 소개하는 팝업스토어입니다.","completion": " 여행/레저"}
+{"prompt": "title: 해외 여행 팝업\ndescription: 인기 있는 해외 여행지와 패키지 상품을 소개하는 팝업스토어입니다.","completion": " 여행/레저"}
+{"prompt": "title: 캠핑 용품 팝업 스토어\ndescription: 최신 캠핑 장비와 액세서리를 소개하는 팝업스토어입니다.","completion": " 여행/레저"}
+{"prompt": "title: 아웃도어 레저 팝업\ndescription: 다양한 아웃도어 레저 활동과 관련 장비를 소개하는 팝업스토어입니다.","completion": " 여행/레저"}
+{"prompt": "title: 영화 굿즈 팝업 스토어\ndescription: 인기 영화 관련 굿즈와 상품을 소개하는 팝업스토어입니다.","completion": " 드라마/영화"}
+{"prompt": "title: 드라마 굿즈 팝업\ndescription: 인기 드라마 관련 굿즈와 상품을 소개하는 팝업스토어입니다.","completion": " 드라마/영화"}
+{"prompt": "title: 영화 포스터 팝업 스토어\ndescription: 다양한 영화 포스터와 관련 상품을 소개하는 팝업스토어입니다.","completion": " 드라마/영화"}
+{"prompt": "title: 영화 DVD 팝업\ndescription: 다양한 영화 DVD와 블루레이를 소개하는 팝업스토어입니다.","completion": " 드라마/영화"}
+=======
 {"prompt": "애플사이더", "completion": " 주류"}
 {"prompt": "진공청소기", "completion": " 전자제품"}
 {"prompt": "아메리카노", "completion": " 음료"}
@@ -1197,3 +2601,4 @@
 {"prompt": "현대미술관", "completion": " 전시/체험"}
 {"prompt": "에이비스 렌터카", "completion": " 여행/레저"}
 {"prompt": "인셀덤 스킨케어", "completion": " 건강/웰빙"}
+>>>>>>> 950e11a771cbb0c4716d1425a55e11d4b684fce1
