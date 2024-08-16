@@ -5,20 +5,22 @@ from typing import List
 class CategoryRequest(BaseModel):
     id: int
     categories: str
+    mapx: str
+    mapy: str
 
 # 거리 요청 스키마
 class DistanceRequest(BaseModel):
     id: int
-    mapx: float
-    mapy: float
+    mapx: str
+    mapy: str
 
 # 팝업 스토어 스키마
 class PopupStore(BaseModel):
     id: int
     title: str
     address: str
-    mapx: float
-    mapy: float
+    mapx: str
+    mapy: str
     categories: str
 
 # 추천 응답 아이템 스키마
