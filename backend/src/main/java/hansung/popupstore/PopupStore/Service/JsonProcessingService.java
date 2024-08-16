@@ -48,7 +48,8 @@ public class JsonProcessingService {
         // JsonNode에서 필요한 필드만 추출
         JsonNode categoriesNode = queryNode.get("categories"); // categories 필드 가져오기
         JsonNode idNode = queryNode.get("id");
-
+        JsonNode mapxNode = queryNode.get("mapx");
+        JsonNode mapyNode = queryNode.get("mapy");
         // id 필드 추가
         jsonObject.put("id", idNode.asInt());
 
@@ -65,6 +66,8 @@ public class JsonProcessingService {
         } else {
             jsonObject.put("categories", categoriesNode.asText());
         }
+        jsonObject.put("mapx", mapxNode.asText()); // 좌표 추가
+        jsonObject.put("mapy", mapyNode.asText());
 
         // JSON 배열에 객체 추가
         jsonArray.add(jsonObject);
