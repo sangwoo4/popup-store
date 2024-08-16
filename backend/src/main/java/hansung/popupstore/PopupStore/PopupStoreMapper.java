@@ -1,5 +1,7 @@
 package hansung.popupstore.PopupStore;
 
+import hansung.popupstore.dto.CategoryDto;
+import hansung.popupstore.dto.PopupImageDto;
 import hansung.popupstore.dto.PopupStoreResponseDto;
 import hansung.popupstore.model.Category;
 import hansung.popupstore.model.PopupImage;
@@ -12,13 +14,24 @@ import java.util.stream.Collectors;
 public class PopupStoreMapper {
 
     public static PopupStoreResponseDto toDto(PopupStore popupStore) {
-        List<String> popupImages = popupStore.getPopupImages().stream()
-                .map(PopupImage::getImageUrl) // PopupImage 엔티티에서 URL 가져오기
-                .collect(Collectors.toList());
-        List<String> categories = popupStore.getCategories().stream()
-                .map(Category::getCategory)
+        // PopupImage DTO 생성
+        List<PopupImageDto> popupImages = popupStore.getPopupImages().stream()
+                .map(image -> new PopupImageDto(
+                        image.getId(),
+                        image.getImageUrl(),
+                        image.getPopupStore() != null ? image.getPopupStore().getId() : null
+                ))
                 .collect(Collectors.toList());
 
+        // Category DTO 생성
+        List<CategoryDto> categories = popupStore.getCategories().stream()
+                .map(category -> new CategoryDto(
+                        category.getId(),
+                        category.getCategory()
+                ))
+                .collect(Collectors.toList());
+
+        // PopupStoreResponseDto 생성 및 반환
         return new PopupStoreResponseDto(
                 popupStore.getId(),
                 popupStore.getTitle(),

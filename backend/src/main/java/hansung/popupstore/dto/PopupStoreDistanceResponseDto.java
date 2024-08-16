@@ -9,7 +9,7 @@ import java.util.List;
 public class PopupStoreDistanceResponseDto {
     private Long id;
     private String title;
-    private List<String> categories;
-    private List<String> popupImages;
+    private List<CategoryDto> categories;
+    private List<PopupImageDto> popupImages;
     private double distance;
 }

@@ -102,16 +102,22 @@ public class DtoConversionService {
                 if (!popupStores.isEmpty()) {
                     PopupStore popupStore = popupStores.get(0); // 리스트에서 첫 번째 팝업 스토어를 가져옴
 
+                    // CategoryDto 리스트 생성
+                    List<CategoryDto> categoryDtos = popupStore.getCategories().stream()
+                            .map(category -> new CategoryDto(category.getId(), category.getCategory()))
+                            .collect(Collectors.toList());
+
+                    // PopupImageDto 리스트 생성
+                    List<PopupImageDto> popupImageDtos = popupStore.getPopupImages().stream()
+                            .map(image -> new PopupImageDto(image.getId(), image.getImageUrl(), image.getPopupStore() != null ? image.getPopupStore().getId() : null))
+                            .collect(Collectors.toList());
+
                     // PopupStoreDistanceResponseDto 객체 생성
                     PopupStoreDistanceResponseDto popupStoreDto = new PopupStoreDistanceResponseDto(
                             popupStore.getId(),
                             popupStore.getTitle(),
-                            popupStore.getCategories().stream()
-                                    .map(Category::getCategory)
-                                    .collect(Collectors.toList()), // Category를 DTO로 변환
-                            popupStore.getPopupImages().stream()
-                                    .map(PopupImage::getImageUrl)
-                                    .collect(Collectors.toList()), // PopupImage를 DTO로 변환
+                            categoryDtos, // CategoryDto 리스트 추가
+                            popupImageDtos, // PopupImageDto 리스트 추가
                             distance
                     );
 

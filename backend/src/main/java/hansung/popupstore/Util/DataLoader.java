@@ -1,7 +1,9 @@
 package hansung.popupstore.Util;
 
 import hansung.popupstore.PopupStore.Repository.CategoryRepository;
+import hansung.popupstore.PopupStore.Repository.DayRepository;
 import hansung.popupstore.model.Category;
+import hansung.popupstore.model.Day;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,4 +43,5 @@ public class DataLoader {
             }
         };
     }
+
 }
