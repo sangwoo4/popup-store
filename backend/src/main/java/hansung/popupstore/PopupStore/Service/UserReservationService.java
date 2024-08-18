@@ -11,7 +11,6 @@ import hansung.popupstore.model.UserReservation;
 import hansung.popupstore.PopupStore.Repository.PopupReservationRepository;
 import hansung.popupstore.PopupStore.Repository.UserReservationRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
