@@ -46,17 +46,41 @@ public class PopUpStoreManagementService {
     }
 
 
-    public ResponseDto<?> updatePopUp(Long id, PopupStoreDto dto,  List<MultipartFile> images) throws IOException {
+//    public ResponseDto<?> updatePopUp(Long id, PopupStoreDto dto,  List<MultipartFile> images) throws IOException {
+//        PopupStore popupStore = popupStoreService.updatePopupStore(id, dto);
+//        popupImageService.deleteAllPopupImages(popupStore);
+//        storeDayService.saveOrUpdateStoreDays(dto.getStoreDays(), popupStore);
+//        Set<Category> categories = categoryService.saveOrUpdatePopUpCategories(dto.getCategories(), popupStore);
+//        popupStore.setCategories(categories);
+//        popupReservationService.saveOrUpdatePopupReservations(dto.getPopupReservations(), popupStore);
+//        popupStoreService.updatePopupStoreEntity(popupStore, dto);
+//        if (images != null && !images.isEmpty()) {
+//            popupImageService.saveOrUpdatePopupImages(dto.getPopupImages(), popupStore, images);
+//        }
+//        return ResponseDto.setSuccess("PopupStore updated successfully.");
+//    }
+
+    public ResponseDto<?> updatePopUp(Long id, PopupStoreDto dto, List<MultipartFile> images) throws IOException {
         PopupStore popupStore = popupStoreService.updatePopupStore(id, dto);
-        popupImageService.deleteAllPopupImages(popupStore);
+
+        // 기존 PopupReservation을 수정 또는 추가
+        popupReservationService.saveOrUpdatePopupReservations(dto.getPopupReservations(), popupStore);
+
+        // StoreDay 수정 또는 추가
         storeDayService.saveOrUpdateStoreDays(dto.getStoreDays(), popupStore);
+
+        // Category 수정 또는 추가
         Set<Category> categories = categoryService.saveOrUpdatePopUpCategories(dto.getCategories(), popupStore);
         popupStore.setCategories(categories);
-        popupReservationService.saveOrUpdatePopupReservations(dto.getPopupReservations(), popupStore);
+
+        // PopupStore의 다른 필드들 수정
         popupStoreService.updatePopupStoreEntity(popupStore, dto);
+
+        // 이미지가 있을 경우 이미지 업데이트
         if (images != null && !images.isEmpty()) {
             popupImageService.saveOrUpdatePopupImages(dto.getPopupImages(), popupStore, images);
         }
+
         return ResponseDto.setSuccess("PopupStore updated successfully.");
     }
 

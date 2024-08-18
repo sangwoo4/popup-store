@@ -129,6 +129,7 @@ public class PopupStoreService {
         Set<PopupReservationDto> popupReservationDtos = new HashSet<>();
         for (PopupReservation popupReservation : popupStore.getPopupReservations()) {
             popupReservationDtos.add(PopupReservationDto.builder()
+                    .id(popupReservation.getId())
                     .day(popupReservation.getDay().getDay())
                     .startTime(popupReservation.getStartTime())
                     .totalReservation(popupReservation.getTotalReservation())
