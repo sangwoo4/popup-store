@@ -69,7 +69,6 @@ public class PopupStoreManagementController {
                                                  @RequestHeader("Authorization") String token) {
 //        String jwtToken = tokenUtils.extractToken(token);
 //        Long companyId = tokenUtils.extractCompanyIdFromToken(jwtToken);
-
         ResponseDto<?> result = popUpStoreManagementService.deleteRegister(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

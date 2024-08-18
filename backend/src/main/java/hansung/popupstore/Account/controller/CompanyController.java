@@ -29,7 +29,6 @@ public class CompanyController {
     @GetMapping("/companyname")
     public ResponseEntity<String> companyName(@RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.replace("Bearer ", "");
-        System.out.printf("token-================" + token);
         String companyName = companyService.getCompanyNameByToken(token);
         return ResponseEntity.ok(companyName);
     }

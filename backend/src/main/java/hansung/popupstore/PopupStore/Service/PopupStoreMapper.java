@@ -1,18 +1,15 @@
-package hansung.popupstore.PopupStore;
+package hansung.popupstore.PopupStore.Service;
 
-import hansung.popupstore.dto.CategoryDto;
-import hansung.popupstore.dto.PopupImageDto;
-import hansung.popupstore.dto.PopupStoreResponseDto;
-import hansung.popupstore.model.Category;
-import hansung.popupstore.model.PopupImage;
-import hansung.popupstore.model.PopupStore;
+import hansung.popupstore.dto.*;
+import hansung.popupstore.model.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PopupStoreMapper {
 
+    // PopupStore를 PopupStoreResponseDto로 변환
     public static PopupStoreResponseDto toDto(PopupStore popupStore) {
         // PopupImage DTO 생성
         List<PopupImageDto> popupImages = popupStore.getPopupImages().stream()
@@ -40,9 +37,12 @@ public class PopupStoreMapper {
         );
     }
 
+    // List<PopupStore>를 List<PopupStoreResponseDto>로 변환
     public static List<PopupStoreResponseDto> toDtoList(List<PopupStore> popupStores) {
         return popupStores.stream()
                 .map(PopupStoreMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+
 }

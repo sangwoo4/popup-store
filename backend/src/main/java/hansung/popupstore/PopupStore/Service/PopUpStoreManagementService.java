@@ -31,7 +31,6 @@ public class PopUpStoreManagementService {
     }
 
     public ResponseDto<?> registerPopUpWithImage(PopupStoreDto dto, List<MultipartFile> images) throws IOException {
-        System.out.println("dto" +dto);
         PopupStore popupStore = popupStoreService.createPopupStore(dto);
         storeDayService.saveOrUpdateStoreDays(dto.getStoreDays(), popupStore);
         popupReservationService.saveOrUpdatePopupReservations(dto.getPopupReservations(), popupStore);

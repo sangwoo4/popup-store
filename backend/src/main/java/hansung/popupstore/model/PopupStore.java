@@ -97,5 +97,12 @@ public class PopupStore {
     @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<PopupReservation> popupReservations = new HashSet<>();
+    public void updateCurrentReservation(int numberOfPeople) {
+        if (this.currentReservation == null) {
+            this.currentReservation = 0;
+        }
+        this.currentReservation += numberOfPeople;
+    }
+
 
 }

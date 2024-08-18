@@ -14,14 +14,14 @@ public class PopupReservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "popup_store_id_reservation")
+    @JoinColumn(name = "popup_store_id")
     private PopupStore popupStore;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "day_id_reservation")
+    @JoinColumn(name = "day_id")
     private Day day;
 
     @Column(name = "start_time")
@@ -32,4 +32,11 @@ public class PopupReservation {
 
     @Column(name = "current_reservation")
     private Integer currentReservation;
+
+    @Column(name = "date")
+    private Integer date;
+
+    public void addReservations(int numberOfPeople) {
+        this.currentReservation += numberOfPeople;
+    }
 }
