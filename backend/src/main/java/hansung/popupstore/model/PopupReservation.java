@@ -37,12 +37,20 @@ public class PopupReservation {
     private Integer date;
 
     @Column(name = "is_reservation_enabled")
-    private boolean IsReservationEnabled = true;
+    private boolean isReservationEnabled = true;
 
     @Column(name = "is_reservation_full")
     private boolean isReservationFull = false;
 
     public void addReservations(int numberOfPeople) {
         this.currentReservation += numberOfPeople;
+    }
+
+    public boolean getIsReservationEnabled() {
+        return isReservationEnabled;
+    }
+
+    public Boolean getIsReservationFull() {
+        return isReservationFull;
     }
 }

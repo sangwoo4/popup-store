@@ -72,7 +72,7 @@ public class PopupStoreService {
                 .mapx(dto.getMapx())
                 .mapy(dto.getMapy())
                 .currentReservation(dto.getCurrentReservation())
-                .totalReservation(dto.getTotalReservation())
+                //.totalReservation(dto.getTotalReservation())
                 .detailAddress(dto.getDetailAddress())
                 .company(company)
                 .build();
@@ -88,7 +88,7 @@ public class PopupStoreService {
         popupStore.setTelephone(dto.getTelephone());
         popupStore.setReservation(dto.getReservation());
         popupStore.setCurrentReservation(dto.getCurrentReservation());
-        popupStore.setTotalReservation(dto.getTotalReservation());
+        //popupStore.setTotalReservation(dto.getTotalReservation());
         popupStore.setSubway(dto.getSubway());
         popupStore.setDescription(dto.getDescription());
         popupStore.setLink(dto.getLink());
@@ -134,6 +134,9 @@ public class PopupStoreService {
                     .startTime(popupReservation.getStartTime())
                     .totalReservation(popupReservation.getTotalReservation())
                     .currentReservation(popupReservation.getCurrentReservation())
+                    .isReservationEnabled(popupReservation.getIsReservationEnabled())
+                    .isReservationFull(popupReservation.getIsReservationFull())
+                    .date(popupReservation.getDate())
                     .build());
         }
 
@@ -154,7 +157,7 @@ public class PopupStoreService {
                 .mapy(popupStore.getMapy())
                 .reservation(popupStore.getReservation())
                 .currentReservation(popupStore.getCurrentReservation())
-                .totalReservation(popupStore.getTotalReservation())
+                //.totalReservation(popupStore.getTotalReservation())
                 .detailAddress(popupStore.getDetailAddress())
                 .companyName(companyName)
                 .categories(categoryDtos)

@@ -1,5 +1,6 @@
 package hansung.popupstore.PopupStore.Service;
 
+import hansung.popupstore.PopupStore.Repository.PopupReservationRepository;
 import hansung.popupstore.dto.*;
 import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.model.*;
@@ -10,7 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +24,7 @@ public class PopUpStoreManagementService {
     private final PopupStoreCategoryService categoryService;
     private final PopupStoreDayService storeDayService;
     private final PopupReservationService popupReservationService;
+    private final PopupReservationRepository popupReservationRepository;
 
     public ResponseDto<?> createPopUp(PopupStoreDto dto) {
         PopupStore popupStore = popupStoreService.createPopupStore(dto);
@@ -59,30 +64,6 @@ public class PopUpStoreManagementService {
         }
         return ResponseDto.setSuccess("PopupStore updated successfully.");
     }
-
-//    public ResponseDto<?> updatePopUp(Long id, PopupStoreDto dto, List<MultipartFile> images) throws IOException {
-//        PopupStore popupStore = popupStoreService.updatePopupStore(id, dto);
-//
-//        // 기존 PopupReservation을 수정 또는 추가
-//        popupReservationService.saveOrUpdatePopupReservations(dto.getPopupReservations(), popupStore);
-//
-//        // StoreDay 수정 또는 추가
-//        storeDayService.saveOrUpdateStoreDays(dto.getStoreDays(), popupStore);
-//
-//        // Category 수정 또는 추가
-//        Set<Category> categories = categoryService.saveOrUpdatePopUpCategories(dto.getCategories(), popupStore);
-//        popupStore.setCategories(categories);
-//
-//        // PopupStore의 다른 필드들 수정
-//        popupStoreService.updatePopupStoreEntity(popupStore, dto);
-//
-//        // 이미지가 있을 경우 이미지 업데이트
-//        if (images != null && !images.isEmpty()) {
-//            popupImageService.saveOrUpdatePopupImages(dto.getPopupImages(), popupStore, images);
-//        }
-//
-//        return ResponseDto.setSuccess("PopupStore updated successfully.");
-//    }
 
     public ResponseDto<?> getDetail(Long id) {
         PopupStore popupStore = popupStoreService.getPopupStore(id);

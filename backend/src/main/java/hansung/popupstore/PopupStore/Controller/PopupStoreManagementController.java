@@ -26,7 +26,7 @@ public class PopupStoreManagementController {
     private final PopupStoreRepository popupStoreRepository;
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseDto<?>> submit(
+    public ResponseEntity<ResponseDto<?>> create(
             @RequestHeader("Authorization") String token,
             @RequestPart(value = "dto") PopupStoreDto dto,
             @RequestPart(value = "images", required = false) List<MultipartFile> images) throws IOException {
@@ -60,6 +60,8 @@ public class PopupStoreManagementController {
         if (!companyId.equals(popupStore.getCompany().getId())) {
             return new ResponseEntity<>(ResponseDto.setFailed("토큰의 회사 ID와 요청 데이터의 회사 ID가 일치하지 않습니다."), HttpStatus.FORBIDDEN);
         }
+
+        System.out.println("sss ===== " + popupStore.getPopupReservations());
         ResponseDto<?> result = popUpStoreManagementService.updatePopUp(id, dto, images);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
