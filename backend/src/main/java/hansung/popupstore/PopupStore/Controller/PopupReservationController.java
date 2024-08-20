@@ -3,6 +3,7 @@ package hansung.popupstore.PopupStore.Controller;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.PopupStore.Service.PopupReservationService;
 import hansung.popupstore.PopupStore.Service.PopupStoreService;
+import hansung.popupstore.PopupStore.Service.ReservationStatusService;
 import hansung.popupstore.PopupStore.Service.UserReservationService;
 import hansung.popupstore.Security.TokenUtils;
 import hansung.popupstore.Util.ResponseDto;
@@ -22,6 +23,7 @@ public class PopupReservationController {
     private final UserReservationService userReservationService;
     private final PopupReservationService popupReservationService;
     private final PopupStoreRepository popupStoreRepository;
+    private final ReservationStatusService reservationStatusService;
     private final TokenUtils tokenUtils;
 
     @PostMapping("/user")
@@ -38,10 +40,8 @@ public class PopupReservationController {
     public ResponseEntity<String> markReservationAsFull(
             @RequestParam(name = "popupStoreId") Long popupStoreId,
             @RequestParam(name = "date") String date) {
-        // date로 변경
-
         try {
-            popupReservationService.markDateAsFull(popupStoreId, date);
+            reservationStatusService.markDateAsFull(popupStoreId, date);
             return ResponseEntity.ok("예약이 마감되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("예약 마감 처리 중 오류 발생: " + e.getMessage());
@@ -54,7 +54,7 @@ public class PopupReservationController {
             @RequestParam(name = "date") String date) {
 
         try {
-            popupReservationService.markDateAsActive(popupStoreId, date);
+            reservationStatusService.markDateAsActive(popupStoreId, date);
             return ResponseEntity.ok("예약이 활성화되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("예약 활성화 처리 중 오류 발생: " + e.getMessage());
@@ -67,11 +67,11 @@ public class PopupReservationController {
             @RequestParam(name = "date") String date) {
 
         try {
-            boolean isFull = popupReservationService.isReservationFull(popupStoreId, date);
+            boolean isFull = reservationStatusService.isReservationFull(popupStoreId, date);
             if (isFull) {
                 return ResponseEntity.ok("마감");
             } else {
-                boolean isEnabled = popupReservationService.isReservationEnabled(popupStoreId, date);
+                boolean isEnabled = reservationStatusService.isReservationEnabled(popupStoreId, date);
                 return ResponseEntity.ok(isEnabled ? "활성화" : "비활성화");
             }
         } catch (Exception e) {

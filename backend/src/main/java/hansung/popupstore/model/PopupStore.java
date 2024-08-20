@@ -77,6 +77,9 @@ public class PopupStore {
     @Column(name = "current_reservation")
     private Integer currentReservation;
 
+    @Column(name = "views")
+    private Long views = 0L;
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable (

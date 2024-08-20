@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -50,6 +51,21 @@ public class PopupStoreService {
         return convertToDto(popupStore);
     }
 
+    @Transactional
+    public void incrementViewCount(Long popupStoreId) {
+        PopupStore popupStore = popupStoreRepository.findById(popupStoreId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 팝업 스토어 ID입니다."));
+
+        // 조회수 증가
+        if (popupStore.getViews() == null) {
+            popupStore.setViews(1L);
+        } else {
+            popupStore.setViews(popupStore.getViews() + 1);
+        }
+
+        popupStoreRepository.save(popupStore);
+    }
+
     private PopupStore buildPopupStoreEntity(PopupStoreDto dto) {
         Company company = null;
         if (dto.getCompanyId() != null) {
@@ -74,6 +90,7 @@ public class PopupStoreService {
                 .currentReservation(dto.getCurrentReservation())
                 //.totalReservation(dto.getTotalReservation())
                 .detailAddress(dto.getDetailAddress())
+                .views(dto.getViews())
                 .company(company)
                 .build();
     }
@@ -95,6 +112,7 @@ public class PopupStoreService {
         popupStore.setMapx(dto.getMapx());
         popupStore.setMapy(dto.getMapy());
         popupStore.setPostCode(dto.getPostCode());
+        popupStore.setViews(dto.getViews());
         popupStore.setDetailAddress(dto.getDetailAddress());
     }
 
@@ -155,6 +173,7 @@ public class PopupStoreService {
                 .link(popupStore.getLink())
                 .mapx(popupStore.getMapx())
                 .mapy(popupStore.getMapy())
+                .views(popupStore.getViews())
                 .reservation(popupStore.getReservation())
                 .currentReservation(popupStore.getCurrentReservation())
                 //.totalReservation(popupStore.getTotalReservation())

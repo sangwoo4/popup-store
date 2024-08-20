@@ -61,31 +61,9 @@ public class PopupStoreManagementController {
             return new ResponseEntity<>(ResponseDto.setFailed("토큰의 회사 ID와 요청 데이터의 회사 ID가 일치하지 않습니다."), HttpStatus.FORBIDDEN);
         }
 
-        System.out.println("sss ===== " + popupStore.getPopupReservations());
         ResponseDto<?> result = popUpStoreManagementService.updatePopUp(id, dto, images);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-//    @PatchMapping("/update/{id}")
-//    public ResponseEntity<ResponseDto<?>> partialUpdate(@PathVariable("id") Long id,
-//                                                        @RequestHeader("Authorization") String token,
-//                                                        @RequestPart(value = "dto") PopupStoreDto dto,
-//                                                        @RequestPart(value = "images", required = false) List<MultipartFile> images) throws IOException {
-//        String jwtToken = tokenUtils.extractToken(token);
-//        Long companyId = tokenUtils.extractCompanyIdFromToken(jwtToken);
-//
-//        Optional<PopupStore> popupStoreOptional = popupStoreRepository.findById(id);
-//        if (!popupStoreOptional.isPresent()) {
-//            return new ResponseEntity<>(ResponseDto.setFailed("등록된 가게가 존재하지 않습니다."), HttpStatus.NOT_FOUND);
-//        }
-//        PopupStore popupStore = popupStoreOptional.get();
-//        if (!companyId.equals(popupStore.getCompany().getId())) {
-//            return new ResponseEntity<>(ResponseDto.setFailed("토큰의 회사 ID와 요청 데이터의 회사 ID가 일치하지 않습니다."), HttpStatus.FORBIDDEN);
-//        }
-//
-//        // 기존 관련 엔티티들을 유지하면서 필요한 것만 업데이트
-//        ResponseDto<?> result = popUpStoreManagementService.updatePopUp(id, dto, images);
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseDto<?>> delete(@PathVariable("id") Long id,

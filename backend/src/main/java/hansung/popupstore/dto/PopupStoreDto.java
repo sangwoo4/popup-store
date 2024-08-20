@@ -36,6 +36,7 @@ public class PopupStoreDto {
     private Boolean reservation = false;
     private Integer totalReservation;
     private Integer currentReservation;
+    private Long views;
     private Set<CategoryDto> categories = new HashSet<>();
     private Set<StoreDayDto> storeDays = new HashSet<>();
     private Set<PopupImageDto> popupImages = new HashSet<>();

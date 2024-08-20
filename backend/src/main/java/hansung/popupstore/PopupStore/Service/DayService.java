@@ -22,6 +22,8 @@ public class DayService {
                 });
     }
 
+
+
     public List<Day> getAllDays() {
         return dayRepository.findAll();
     }
