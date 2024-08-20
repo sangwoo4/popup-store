@@ -1,7 +1,7 @@
 .popup-registration {
   max-width: 900px;
-  margin: auto;
-  padding: 20px;
+  margin: 50px auto;
+  padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #fff;
@@ -161,4 +161,15 @@
 
 .popup-registration .postcode-modal-content button:hover {
   background: #c82333;
+}
+
+.image-preview {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.image-preview img {
+  border: 1px solid #ddd;
+  padding: 5px;
 }

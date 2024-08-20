@@ -1,0 +1,44 @@
+.search-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.search-form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 70%;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.search-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.search-results {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.result-item {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.result-item h2 {
+  margin: 0 0 10px;
+}
+
+.result-item p {
+  margin: 5px 0;
+}

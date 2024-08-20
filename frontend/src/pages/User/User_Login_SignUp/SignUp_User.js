@@ -28,6 +28,7 @@ export default function SignUp_User() {
   const [phoneCheckSuccess, setPhoneCheckSuccess] = useState(false);
   const [nicknameCheckSuccess, setNicknameCheckSuccess] = useState(false);
 
+  const [coordinates, setCoordinates] = useState({ mapx: '', mapy: '' });
   const [postcode, setPostcode] = useState('');
   const [address, setAddress] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
@@ -38,7 +39,8 @@ export default function SignUp_User() {
   const maxCategories = 5;
   const categories = [ "화장품", "캐릭터", "도서/음반", "패션", "인테리어", "전시/체험", "향수", "음식",
                         "주류", "음료", "문구", "가정", "생활용품", "스포츠", "게임", "전자제품", "인물",
-                        "건강/웰빙","자동차", "식물", "여행/레저", "드라마/영화", "가전제품"];
+                        "건강/웰빙","자동차", "식물", "여행/레저", "드라마/영화", "가전제품"
+                      ];
 
   useEffect(() => {
     if (
@@ -246,8 +248,8 @@ export default function SignUp_User() {
       postcode: postcode,
       address: address,
       detailAddress: detailAddress,
-      mapx: mapx,
-      mapy: mapy,
+      mapx: coordinates.mapx,
+      mapy: coordinates.mapy,
       categories: categorySelections.map(cat => ({ category: cat })),
     };
   
@@ -278,6 +280,42 @@ export default function SignUp_User() {
         console.error('백엔드와의 통신 중 오류 발생:', error);
       });
   };
+
+  // 네이버 지도 좌표 변환 코드 (다음 주소에서 주소를 받아 네이버 api에서 좌표 변환)
+  const fetchCoordinates = (address) => {
+    if (window.naver && window.naver.maps && window.naver.maps.Service) {
+      const geocoder = window.naver.maps.Service;
+
+      geocoder.geocode({ address: address }, (status, response) => {
+        console.log('Geocode response:', response); // 응답 객체 전체 출력
+        if (status === window.naver.maps.Service.Status.OK) {
+          if (response.result && response.result.items && response.result.items.length > 0) {
+            const item = response.result.items[0];
+            if (item.point) {
+              const x = item.point.x;
+              const y = item.point.y;
+              // 소수점 제거
+              const formattedX = x.toString().replace('.', '');
+              const formattedY = y.toString().replace('.', '');
+              console.log(`좌표 변환 성공: x = ${formattedX}, y = ${formattedY}`);
+              setCoordinates({ mapx: formattedX, mapy: formattedY });
+            } else {
+              console.error('응답에서 좌표 포인트를 찾을 수 없습니다.');
+              setCoordinates({ mapx: '', mapy: '' });
+            }
+          } else {
+            console.error('응답에서 항목을 찾을 수 없습니다.');
+            setCoordinates({ mapx: '', mapy: '' });
+          }
+        } else {
+          console.error('주소로부터 좌표를 가져오는데 실패했습니다.', status);
+          setCoordinates({ mapx: '', mapy: '' });
+        }
+      });
+    } else {
+      console.error('네이버 지도 API를 로드하지 못했습니다.');
+    }
+  };
   
 
   const handlePostcodeSearch = () => {
@@ -291,9 +329,13 @@ export default function SignUp_User() {
         }
         setPostcode(data.zonecode);
         setAddress(addr);
+        
+        // 여기에서 주소를 좌표로 변환하는 함수를 호출
+        fetchCoordinates(addr);
       }
     }).open();
   };
+  
 
   useEffect(() => {
     const script = document.createElement('script');

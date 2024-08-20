@@ -230,6 +230,7 @@ h1 {
     padding-bottom: 5px;
   }
   
+  
 /* 하단 카테고리별 팝업 리스트 */
 .lower-popup-wrapper {
     width: 90%;
@@ -241,7 +242,6 @@ h1 {
     flex-direction: row;
     align-items: center;
     border: 1px solid #ddd;
-    margin-bottom: 20px;
     padding: 20px;
     background-color: #f9f9f9;
     width: 100%; /* 항목이 컨테이너의 전체 너비를 차지하도록 설정 */

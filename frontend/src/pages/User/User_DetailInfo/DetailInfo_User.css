@@ -80,22 +80,12 @@
   
   .map-content {
     min-height: 400px;
-    width: 94%;  .category-button {
-    display: inline-block;
-    padding: 5px 10px;
-    border: 1px solid #007BFF;
-    border-radius: 5px;
-    background-color: #fcff45;
-    color: #007BFF;
-    margin-right: 5px; /* 각 카테고리 사이의 간격 조정 */
-    font-size: 0.9em;
-    font-weight: bold;
-  }
+    width: 94%;  
     border: 1px solid #ddd;
     border-radius: 10px;
     overflow: hidden;
   }
-  
+
   .review-content h2 {
     color: #007bff;
   }
@@ -104,3 +94,28 @@
     margin: 10px 0;
   }
   
+  /* detailInfo.css */
+
+/* 사전예약하기 버튼 스타일 */
+.reservation-button {
+  display: block;
+  width: 80%; /* 버튼 너비를 부모 컨테이너의 80%로 설정 */
+  max-width: 300px; /* 버튼 최대 너비 설정 */
+  margin: 20px auto; /* 상하 여백, 자동으로 가운데 정렬 */
+  background: linear-gradient(135deg, #77b5d9, #1d7ab8); /* 그라데이션 배경 */
+  color: white; /* 텍스트 색상 */
+  border: none;
+  border-radius: 10px; /* 둥근 테두리 */
+  padding: 15px; /* 여백 */
+  font-size: 18px; /* 폰트 크기 */
+  font-weight: bold; /* 볼드체 */
+  text-align: center; /* 가운데 정렬 */
+  text-transform: uppercase; /* 대문자 변환 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.reservation-button:hover {
+  background: linear-gradient(135deg, #77b5d9, #1d7ab8); /* 어두운 그라데이션 */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 강한 그림자 효과 */
+}

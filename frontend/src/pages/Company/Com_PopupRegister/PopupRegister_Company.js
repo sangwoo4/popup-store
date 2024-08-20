@@ -150,6 +150,57 @@ const PopupRegister_Company = () => {
     }
   };
 
+  const handleAddReservationSlot = () => {
+    const selectedDays = Object.keys(operatingDays).filter(day => operatingDays[day].isSelected);
+  
+    if (selectedDays.length === 0) {
+      alert('요일을 선택해 주세요.');
+      return;
+    }
+  
+    const newSlots = [];
+  
+    selectedDays.forEach(day => {
+      const dayData = operatingDays[day];
+      let slotStartTime = dayData.startTime;
+      let slotEndTime = calculateEndTime(slotStartTime, reservationInterval);
+  
+      while (slotEndTime <= dayData.endTime) {
+        newSlots.push({
+          day,
+          startTime: slotStartTime,
+          endTime: slotEndTime,
+          totalReservation: reservationCapacity,
+          currentReservation: 0
+        });
+  
+        // 다음 슬롯의 시작 시간 설정
+        slotStartTime = slotEndTime;
+        slotEndTime = calculateEndTime(slotStartTime, reservationInterval);
+      }
+    });
+  
+    // 새로운 예약 슬롯을 기존 예약 슬롯과 합치기
+    setPopupReservation(prevSlots => [
+      ...prevSlots,
+      ...newSlots
+    ]);
+  };
+
+  const calculateEndTime = (startTime, interval) => {
+    const [startHour, startMinute] = startTime.split(':').map(Number);
+    const startDate = new Date();
+    startDate.setHours(startHour, startMinute, 0, 0);
+  
+    // 종료 시간 계산
+    const endDate = new Date(startDate.getTime() + interval * 60000);
+    const endHour = String(endDate.getHours()).padStart(2, '0');
+    const endMinute = String(endDate.getMinutes()).padStart(2, '0');
+  
+    return `${endHour}:${endMinute}`;
+  };
+  
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -179,9 +230,9 @@ const PopupRegister_Company = () => {
           closeTime: operatingDays[day].endTime,
           day
         })),
-      companyReservation
+      popupReservations: popupReservation
     };
-
+  
     const formData = new FormData();
     formData.append('dto', new Blob([JSON.stringify(jsonData)], { type: 'application/json' }));
   
@@ -219,6 +270,7 @@ const PopupRegister_Company = () => {
       alert('등록에 실패했습니다. 다시 시도해주세요.');
     }
   };
+  
   
   const handleAddressSearch = () => {
     setShowPostcodeModal(true);
@@ -307,28 +359,6 @@ const PopupRegister_Company = () => {
 
   const handleReservationCapacityChange = (e) => {
     setReservationCapacity(Number(e.target.value));
-  };
-
-  const handleAddReservationSlot = () => {
-    const selectedDays = Object.keys(operatingDays).filter(day => operatingDays[day].isSelected);
-
-    if (selectedDays.length === 0) {
-      alert('요일을 선택해 주세요.');
-      return;
-    }
-  
-    const newSlots = selectedDays.map(day => ({
-      day,
-      interval: reservationInterval,
-      capacity: reservationCapacity,
-      startTime,
-      endTime
-    }));
-
-    setPopupReservation(prevSlots => [
-      ...prevSlots,
-      ...newSlots
-    ]);
   };
 
   return (
@@ -454,6 +484,17 @@ const PopupRegister_Company = () => {
             onChange={(e) => setSubway(e.target.value)}
           />
         </label>
+        
+        <label>
+          설명:
+          <textarea
+            id="description-textarea"
+            value={description}
+            onChange={handleDescriptionChange}
+            // onKeyDown={handleKeyDown}
+            required
+          />
+        </label>
 
         <label>
           카테고리:
@@ -464,17 +505,6 @@ const PopupRegister_Company = () => {
               </div>
             ))}
           </div>
-        </label>
-
-        <label>
-          설명:
-          <textarea
-            id="description-textarea"
-            value={description}
-            onChange={handleDescriptionChange}
-            // onKeyDown={handleKeyDown}
-            required
-          />
         </label>
 
         <label>
@@ -566,15 +596,20 @@ const PopupRegister_Company = () => {
             </button>
             <div>
               <h3>예약 슬롯</h3>
-              {popupReservation.map((slot, index) => (
-                <div key={index}>
-                  <p>요일: {slot.day}, 간격: {slot.interval}분, 수용 인원: {slot.capacity}명</p>
-                </div>
-              ))}
+              {popupReservation.length > 0 ? (
+                popupReservation.map((slot, index) => (
+                  <div key={index}>
+                    <p>요일: {slot.day}</p>
+                    <p>시간: {slot.startTime} ~ {slot.endTime}</p>
+                    <p>수용 인원: {slot.totalReservation}명</p>
+                  </div>
+                ))
+              ) : (
+                <p>추가된 예약 슬롯이 없습니다.</p>
+              )}
             </div>
           </>
         )}
-
 
 
         <br/>
@@ -605,7 +640,7 @@ export default PopupRegister_Company;
 
 
 
-// // //2024.08.11 기본 등록하기 코드
+// // 2024.08.18 사전예약 활성화 코드 - 오류 수정 전
 // import React, { useState, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
 // import DatePicker from 'react-datepicker';
@@ -641,6 +676,19 @@ export default PopupRegister_Company;
 //   const [showPostcodeModal, setShowPostcodeModal] = useState(false);
 //   const [token, setToken] = useState('');
 //   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+//   const [totalReservation, setTotalReservation] = useState('');
+//   const [currentReservation, setCurrentReservation] = useState('');
+//   const [reservation, setReservation] = useState(false);
+//   const [companyReservation, setCompanyReservation] = useState([]);
+//   const [popupReservation, setPopupReservation] = useState([]);
+//   const [reservationInterval, setReservationInterval] = useState(30); // 예약 슬롯 간격 (분)
+//   const [reservationCapacity, setReservationCapacity] = useState(10); // 슬롯당 수용 인원
+//   const [selectedDay, setSelectedDay] = useState('');
+//   const [startTime, setStartTime] = useState('00:00');
+//   const [endTime, setEndTime] = useState('23:59');
+
+
 //   const navigate = useNavigate();
 
 //   useEffect(() => {
@@ -763,6 +811,9 @@ export default PopupRegister_Company;
 //       link,
 //       mapx: coordinates.mapx,
 //       mapy: coordinates.mapy,
+//       totalReservation,
+//       currentReservation,
+//       reservation,
 //       categories: category.map(cat => ({ category: cat.category })),
 //       storeDays: Object.keys(operatingDays)
 //         .filter(day => operatingDays[day].isSelected)
@@ -770,8 +821,8 @@ export default PopupRegister_Company;
 //           openTime: operatingDays[day].startTime,
 //           closeTime: operatingDays[day].endTime,
 //           day
-//         }))
-        
+//         })),
+//       companyReservation
 //     };
 
 //     const formData = new FormData();
@@ -829,14 +880,14 @@ export default PopupRegister_Company;
 //   };
 
 //   const handleDayChange = (day) => {
-//     setOperatingDays((prevDays) => ({
-//       ...prevDays,
-//       [day]: {
-//         ...prevDays[day],
-//         isSelected: !prevDays[day].isSelected,
-//       },
-//     }));
+//     setOperatingDays(prevDays => {
+//       const updatedDays = { ...prevDays, [day]: { ...prevDays[day], isSelected: !prevDays[day].isSelected } };
+//       const newSelectedDays = Object.keys(updatedDays).filter(day => updatedDays[day].isSelected);
+//       setSelectedDay(newSelectedDays.length > 0 ? newSelectedDays[0] : '');
+//       return updatedDays;
+//     });
 //   };
+
 
 //   const handleTimeChange = (day, timeType, time) => {
 //     setOperatingDays((prevDays) => ({
@@ -892,6 +943,36 @@ export default PopupRegister_Company;
 //       timeOptions.push(formattedTime);
 //     }
 //   }
+
+//   const handleReservationIntervalChange = (e) => {
+//     setReservationInterval(Number(e.target.value));
+//   };
+
+//   const handleReservationCapacityChange = (e) => {
+//     setReservationCapacity(Number(e.target.value));
+//   };
+
+//   const handleAddReservationSlot = () => {
+//     const selectedDays = Object.keys(operatingDays).filter(day => operatingDays[day].isSelected);
+
+//     if (selectedDays.length === 0) {
+//       alert('요일을 선택해 주세요.');
+//       return;
+//     }
+  
+//     const newSlots = selectedDays.map(day => ({
+//       day,
+//       interval: reservationInterval,
+//       capacity: reservationCapacity,
+//       startTime,
+//       endTime
+//     }));
+
+//     setPopupReservation(prevSlots => [
+//       ...prevSlots,
+//       ...newSlots
+//     ]);
+//   };
 
 //   return (
 //     <div className="popup-registration">
@@ -1016,6 +1097,17 @@ export default PopupRegister_Company;
 //             onChange={(e) => setSubway(e.target.value)}
 //           />
 //         </label>
+        
+//         <label>
+//           설명:
+//           <textarea
+//             id="description-textarea"
+//             value={description}
+//             onChange={handleDescriptionChange}
+//             // onKeyDown={handleKeyDown}
+//             required
+//           />
+//         </label>
 
 //         <label>
 //           카테고리:
@@ -1026,17 +1118,6 @@ export default PopupRegister_Company;
 //               </div>
 //             ))}
 //           </div>
-//         </label>
-
-//         <label>
-//           설명:
-//           <textarea
-//             id="description-textarea"
-//             value={description}
-//             onChange={handleDescriptionChange}
-//             // onKeyDown={handleKeyDown}
-//             required
-//           />
 //         </label>
 
 //         <label>
@@ -1093,6 +1174,49 @@ export default PopupRegister_Company;
 //             </div>
 //           ))}
 //         </div>
+
+//         <br/>
+
+//         <label>
+//           사전 예약 활성화:
+//           <input
+//             type="checkbox"
+//             checked={reservation}
+//             onChange={(e) => setReservation(e.target.checked)}
+//           />
+//         </label>
+
+//         {reservation && (
+//           <>
+//             <label>
+//               예약 간격 (분):
+//               <input
+//                 type="number"
+//                 value={reservationInterval}
+//                 onChange={handleReservationIntervalChange}
+//               />
+//             </label>
+//             <label>
+//               슬롯당 수용 인원:
+//               <input
+//                 type="number"
+//                 value={reservationCapacity}
+//                 onChange={handleReservationCapacityChange}
+//               />
+//             </label>
+//             <button type="button" onClick={handleAddReservationSlot}>
+//               예약 슬롯 추가
+//             </button>
+//             <div>
+//               <h3>예약 슬롯</h3>
+//               {popupReservation.map((slot, index) => (
+//                 <div key={index}>
+//                   <p>요일: {slot.day}, 간격: {slot.interval}분, 수용 인원: {slot.capacity}명</p>
+//                 </div>
+//               ))}
+//             </div>
+//           </>
+//         )}
 
 //         <br/>
 

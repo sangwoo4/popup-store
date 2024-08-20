@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { IoHome } from "react-icons/io5";
+import { IoHome, IoSearch } from "react-icons/io5";
 import { GoHeart, GoPerson } from "react-icons/go";
 import { MdOutlineDashboardCustomize, MdOutlineFiberNew } from "react-icons/md";
 import { CiLogin } from "react-icons/ci";
@@ -112,6 +112,8 @@ const Header = () => {
     <header className="header">
       <nav className="nav-bar">
         <Link className="nav-link home" to={homeLink}><IoHome className="icon" />홈</Link>
+
+        <Link className="nav-link" to="/popup/user/search"><IoSearch className="icon" />검색</Link>
 
         {isUserLoggedIn && (
           <>

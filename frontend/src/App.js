@@ -9,7 +9,9 @@ import SignUp_User from "./pages/User/User_Login_SignUp/SignUp_User";
 import Login_User from "./pages/User/User_Login_SignUp/Login_User";
 import FindIDPW_User from "./pages/User/User_Login_SignUp/FindIDPW_User";
 import MyPage_User from "./pages/User/User_Mypage/Mypage_User";
-import ReservationDetails_User from "./pages/User/User_Reservarion/ReservationDetails_User";
+import ReservationDetails_User from "./pages/User/User_ReservarionDetails/ReservationDetails_User";
+import Search_User from './pages/User/User_Search/Search_User';
+import PopupReservation_User from './pages/User/User_PopupReservation/PopupReservation_User';
 
 import Home_Company from "./pages/Company/Com_Home/Home_Company";
 import Dashboard_Company from "./pages/Company/Com_Dashboard/Dashboard_Company";
@@ -30,9 +32,11 @@ function App() {
         <Route path="/popup/user/detail/:location" element={<DetailInfo_User/>}/>
         <Route path="/auth/user/signup" element={<SignUp_User/>}/>
         <Route path="/auth/user/login" element={<Login_User/>}/>
-        <Route path="/auth/user/fincidpw" element={<FindIDPW_User/>}/>
+        <Route path="/auth/user/findidpw" element={<FindIDPW_User/>}/>
         <Route path="/auth/user/mypage" element={<MyPage_User/>}/>
         <Route path="/popup/my.reservation" element={<ReservationDetails_User/>}/>
+        <Route path="/popup/user/search" element={<Search_User/>}/>
+        <Route path="/popup/user/popup_pre_reservation" element={<PopupReservation_User/>}/>
 
         <Route path="/auth/company/homepage" element={<Home_Company/>}/>
         <Route path="/auth/company/dashboard" element={<Dashboard_Company/>}/>

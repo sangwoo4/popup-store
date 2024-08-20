@@ -1,13 +1,15 @@
 import './DetailInfo_User.css';
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const DetailInfo_User = () => {
   const { location } = useParams();
+  const navigate = useNavigate(); // useNavigate 훅 사용
   const [activeMenu, setActiveMenu] = useState('info');
   const [locationInfo, setLocationInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [reservationEnabled, setReservationEnabled] = useState(false);
   const mapElement = useRef(null);
 
   // --------------------------백엔드 GET 통신--------------------------------------
@@ -34,7 +36,7 @@ const DetailInfo_User = () => {
         console.log(data); // 데이터 구조 확인용
 
         if (data && data.data) {
-          const { companyName, title, address, detailInfo, telephone, description, popupImages, link, categories, storeDays, mapx, mapy, startDate, endDate } = data.data;
+          const { companyName, title, address, detailInfo, telephone, description, popupImages, link, categories, storeDays, mapx, mapy, startDate, endDate, reservation } = data.data;
 
           // LatLng 객체 생성
           const latlng = new window.naver.maps.LatLng(parseFloat(mapy) / 1e7, parseFloat(mapx) / 1e7);
@@ -66,9 +68,10 @@ const DetailInfo_User = () => {
             startDate: parseDate(startDate),
             endDate: parseDate(endDate),
           });
+          setReservationEnabled(reservation === true);
         } else {
           console.error("Received data does not have a 'data' property:", data);
-          setLocationInfo(null); // Fallback to null if data is not present
+          setLocationInfo(null);
         }
 
         setLoading(false);
@@ -117,16 +120,19 @@ const DetailInfo_User = () => {
 
       infowindow.open(map, marker);
 
-      // Clean up function
       return () => {
         if (mapElement.current) {
-          mapElement.current.innerHTML = ''; // Clear the map element
+          mapElement.current.innerHTML = '';
         }
         infowindow.close();
         marker.setMap(null);
       };
     }
   }, [activeMenu, locationInfo]);
+
+  const handleReservationClick = () => {
+    navigate('/popup/user/popup_pre_reservation');
+  };
 
   if (loading) {
     return <p>Loading...</p>;
@@ -188,6 +194,10 @@ const DetailInfo_User = () => {
           <div className='warning-content'>
             <p>안내사항 문구가 입력됩니다</p>
           </div>
+
+          {reservationEnabled && (
+            <button className='reservation-button' onClick={handleReservationClick}>사전예약하기</button>
+          )}
         </div>
       )}
 
@@ -206,6 +216,8 @@ const DetailInfo_User = () => {
 };
 
 export default DetailInfo_User;
+
+
 
 
 

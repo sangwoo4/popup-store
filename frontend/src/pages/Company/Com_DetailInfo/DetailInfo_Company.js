@@ -11,6 +11,8 @@ const DetailInfo_Company = () => {
   const [error, setError] = useState(null);
   const mapElement = useRef(null);
 
+  const daysOfWeekOrder = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'];
+
   useEffect(() => {
     const fetchLocationInfo = async () => {
       try {
@@ -147,6 +149,12 @@ const DetailInfo_Company = () => {
     }
   };
 
+  const sortedStoreDays = locationInfo?.storeDays.sort((a, b) => {
+    const dayA = daysOfWeekOrder.indexOf(a.day);
+    const dayB = daysOfWeekOrder.indexOf(b.day);
+    return dayA - dayB;
+  });
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -201,8 +209,8 @@ const DetailInfo_Company = () => {
             <p>{locationInfo.description}</p>
             <div className="store-days">
               <h3>운영 시간</h3>
-              {locationInfo.storeDays && locationInfo.storeDays.length > 0 ? (
-                locationInfo.storeDays.map((day, index) => (
+              {sortedStoreDays && sortedStoreDays.length > 0 ? (
+                sortedStoreDays.map((day, index) => (
                   <div key={index}>
                     <p>{day.day}: {day.openTime} ~ {day.closeTime}</p>
                   </div>
@@ -240,24 +248,14 @@ export default DetailInfo_Company;
 
 
 
-
-
-
-
-
-
-
-
-
-
-// // 2024.08.07 이미지 띄우기 안뜨는 현상 수정 전
+// // 요일 순서대로 안뜨는 오류
 // import './DetailInfo_Company.css';
 // import React, { useEffect, useRef, useState } from 'react';
 // import { useParams, useNavigate } from 'react-router-dom';
 
 // const DetailInfo_Company = () => {
 //   const { location } = useParams();
-//   const navigate = useNavigate(); // useNavigate 훅을 추가하여 페이지 이동 처리
+//   const navigate = useNavigate();
 //   const [activeMenu, setActiveMenu] = useState('info');
 //   const [locationInfo, setLocationInfo] = useState(null);
 //   const [loading, setLoading] = useState(true);
@@ -271,7 +269,7 @@ export default DetailInfo_Company;
 //         if (!token) {
 //           throw new Error('User is not authenticated');
 //         }
-    
+
 //         const response = await fetch(`http://localhost:8080/popup/company/detail/${location}`, {
 //           method: "GET",
 //           headers: {
@@ -279,23 +277,27 @@ export default DetailInfo_Company;
 //             'Authorization': `Bearer ${token}`
 //           },
 //         });
-    
+
 //         if (!response.ok) {
 //           throw new Error(`Network response was not ok: ${response.statusText}`);
 //         }
-    
+
 //         const data = await response.json();
 //         if (data && data.data) {
 //           const { companyName, title, address, detailAddress, telephone, description, popupImages, link, categories, storeDays, mapx, mapy, startDate, endDate } = data.data;
-    
+
 //           const latlng = new window.naver.maps.LatLng(parseFloat(mapy) / 1e7, parseFloat(mapx) / 1e7);
-    
+
 //           const parseDate = (dateString) => {
 //             if (!dateString) return 'N/A';
 //             const date = new Date(dateString);
 //             return isNaN(date.getTime()) ? 'N/A' : date.toISOString().split('T')[0];
 //           };
-    
+
+//           const images = popupImages.length > 0 ? popupImages.map(image => `http://localhost:8080/${image.imageUrl}`) : ['/images/image1.png'];
+
+//           console.log('Converted Image URLs:', images); // 이미지 URL 변환 확인용
+
 //           setLocationInfo({
 //             companyName: companyName,
 //             title: title || 'No Title',
@@ -303,7 +305,7 @@ export default DetailInfo_Company;
 //             detailAddress: detailAddress || '',
 //             telephone: telephone || 'Not available',
 //             description: description || 'No description available.',
-//             popupImages: popupImages.length > 0 ? popupImages : ['/images/image1.png'], // 이미지 배열 처리
+//             popupImages: images,
 //             link: link || '',
 //             categories: categories || [],
 //             storeDays: storeDays || [],
@@ -315,7 +317,7 @@ export default DetailInfo_Company;
 //           console.error("Received data does not have a 'data' property:", data);
 //           setLocationInfo(null);
 //         }
-    
+
 //         setLoading(false);
 //       } catch (error) {
 //         console.error('Error fetching data:', error);
@@ -382,7 +384,7 @@ export default DetailInfo_Company;
 //             'Authorization': `Bearer ${token}`
 //           },
 //         });
-  
+
 //         if (!response.ok) {
 //           throw new Error(`Network response was not ok: ${response.statusText}`);
 //         }
@@ -413,8 +415,13 @@ export default DetailInfo_Company;
 //       <div className="banner">
 //         {locationInfo.popupImages.length > 0 ? (
 //           <div className="banner-images">
-//             {locationInfo.popupImages.map((imageUrl, index) => (
-//               <img key={index} src={imageUrl} alt={`Banner ${index + 1}`} className="banner-image" />
+//             {locationInfo.popupImages.map((image, index) => (
+//               <img 
+//                 key={index} 
+//                 src={image} 
+//                 alt={`Banner ${index + 1}`} 
+//                 className="banner-image" 
+//               />
 //             ))}
 //           </div>
 //         ) : (
@@ -460,7 +467,6 @@ export default DetailInfo_Company;
 //           <div className='warning-content'>
 //             <p>안내사항 문구가 입력됩니다</p>
 //           </div>
-//           {/* 삭제하기 버튼 추가 */}
 //           <button className="delete-button" onClick={handleDelete}>삭제하기</button>
 //         </div>
 //       )}
