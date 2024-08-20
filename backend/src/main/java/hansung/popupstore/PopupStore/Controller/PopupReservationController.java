@@ -34,23 +34,10 @@ public class PopupReservationController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-//    @PatchMapping("/deadline")
-//    public ResponseEntity<String> markReservationAsFull(
-//            @RequestParam(name = "popupStoreId") Long popupStoreId,
-//            @RequestParam(name = "day") String day) {
-//
-//        try {
-//            popupReservationService.markDayAsFull(popupStoreId, day);
-//            return ResponseEntity.ok("예약이 마감되었습니다.");
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body("예약 마감 처리 중 오류 발생: " + e.getMessage());
-//        }
-//    }
-
     @PatchMapping("/deadline")
     public ResponseEntity<String> markReservationAsFull(
             @RequestParam(name = "popupStoreId") Long popupStoreId,
-            @RequestParam(name = "date") Integer date) {
+            @RequestParam(name = "date") String date) {
         // date로 변경
 
         try {
@@ -64,7 +51,7 @@ public class PopupReservationController {
     @PatchMapping("/activate")
     public ResponseEntity<String> markReservationAsActive(
             @RequestParam(name = "popupStoreId") Long popupStoreId,
-            @RequestParam(name = "date") Integer date) {
+            @RequestParam(name = "date") String date) {
 
         try {
             popupReservationService.markDateAsActive(popupStoreId, date);
@@ -77,7 +64,7 @@ public class PopupReservationController {
     @GetMapping("/status")
     public ResponseEntity<String> getReservationStatus(
             @RequestParam(name = "popupStoreId") Long popupStoreId,
-            @RequestParam(name = "date") Integer date) {
+            @RequestParam(name = "date") String date) {
 
         try {
             boolean isFull = popupReservationService.isReservationFull(popupStoreId, date);

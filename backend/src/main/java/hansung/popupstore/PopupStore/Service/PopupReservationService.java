@@ -110,29 +110,9 @@
             );
         }
 
-//        @Transactional
-//        public void markDayAsFull(Long popupStoreId, String dayName) {
-//            PopupStore popupStore = popupStoreRepository.findById(popupStoreId)
-//                    .orElseThrow(() -> new IllegalArgumentException("해당 팝업 스토어를 찾을 수 없습니다: " + popupStoreId));
-//
-//            Day day = dayRepository.findByDay(dayName)
-//                    .orElseThrow(() -> new IllegalArgumentException("해당 요일을 찾을 수 없습니다: " + dayName));
-//
-//            // 해당 요일의 예약 목록 가져오기
-//            Set<PopupReservation> reservations = popupStore.getPopupReservations();
-//
-//            // 해당 요일의 모든 예약을 마감 처리
-//            reservations.stream()
-//                    .filter(reservation -> reservation.getDay().equals(day))
-//                    .forEach(reservation -> {
-//                        reservation.setReservationFull(true);  // 마감 상태 표시
-//                        reservation.setReservationEnabled(false);  // 예약 불가 상태로 설정
-//                        popupReservationRepository.save(reservation);
-//                    });
-//        }
 
         @Transactional
-        public void markDateAsFull(Long popupStoreId, Integer date) {
+        public void markDateAsFull(Long popupStoreId, String date) {
             // 팝업 스토어 찾기
             PopupStore popupStore = popupStoreRepository.findById(popupStoreId)
                     .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 팝업 스토어 ID입니다."));
@@ -169,7 +149,7 @@
         }
 
         @Transactional
-        public void markDateAsActive(Long popupStoreId, Integer date) {
+        public void markDateAsActive(Long popupStoreId, String date) {
             PopupStore popupStore = popupStoreRepository.findById(popupStoreId)
                     .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 팝업 스토어 ID입니다."));
 
@@ -195,7 +175,7 @@
         }
 
         @Transactional(readOnly = true)
-        public boolean isReservationFull(Long popupStoreId, Integer date) {
+        public boolean isReservationFull(Long popupStoreId, String date) {
             PopupStore popupStore = popupStoreRepository.findById(popupStoreId)
                     .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 팝업 스토어 ID입니다."));
 
@@ -205,7 +185,7 @@
         }
 
         @Transactional(readOnly = true)
-        public boolean isReservationEnabled(Long popupStoreId, Integer date) {
+        public boolean isReservationEnabled(Long popupStoreId, String date) {
             PopupStore popupStore = popupStoreRepository.findById(popupStoreId)
                     .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 팝업 스토어 ID입니다."));
 

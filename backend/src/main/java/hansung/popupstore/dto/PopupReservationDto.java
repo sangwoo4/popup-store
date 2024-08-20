@@ -19,5 +19,5 @@ public class PopupReservationDto {
     private Integer currentReservation; // JSON의 current_reservation과 일치하도록 변경
     private Boolean isReservationEnabled;
     private Boolean isReservationFull;
-    private Integer date;
+    private String date;
 }
