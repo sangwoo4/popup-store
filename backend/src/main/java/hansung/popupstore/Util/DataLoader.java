@@ -25,9 +25,7 @@ public class DataLoader {
                 categoryRepository.save(new Category("음식"));
                 categoryRepository.save(new Category("음료"));
                 categoryRepository.save(new Category("주류"));
-                categoryRepository.save(new Category("장난감"));
                 categoryRepository.save(new Category("문구"));
-                categoryRepository.save(new Category("가정"));
                 categoryRepository.save(new Category("생활용품"));
                 categoryRepository.save(new Category("스포츠"));
                 categoryRepository.save(new Category("게임"));

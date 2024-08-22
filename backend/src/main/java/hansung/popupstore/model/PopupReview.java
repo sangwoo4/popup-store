@@ -6,6 +6,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Entity
 @Data
 public class PopupReview {
@@ -17,5 +20,5 @@ public class PopupReview {
     private Long popupStoreId;
     private Long userId;
     private String reviewText;
-    private Integer rating;
+    private LocalDate localDate;
 }

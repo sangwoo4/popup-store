@@ -1,6 +1,7 @@
 package hansung.popupstore.PopupStore.Service;
 
-import hansung.popupstore.PopupStore.Repository.PopupReservationRepository;
+import hansung.popupstore.PopupReservation.Repository.PopupReservationRepository;
+import hansung.popupstore.PopupReservation.Service.PopupReservationService;
 import hansung.popupstore.dto.*;
 import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.model.*;
@@ -9,12 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

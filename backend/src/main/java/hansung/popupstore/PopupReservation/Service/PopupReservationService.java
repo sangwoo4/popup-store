@@ -1,7 +1,8 @@
-package hansung.popupstore.PopupStore.Service;
+package hansung.popupstore.PopupReservation.Service;
 
-import hansung.popupstore.PopupStore.Repository.PopupReservationRepository;
+import hansung.popupstore.PopupReservation.Repository.PopupReservationRepository;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
+import hansung.popupstore.PopupStore.Service.DayService;
 import hansung.popupstore.model.Day;
 import hansung.popupstore.model.PopupStore;
 import hansung.popupstore.dto.PopupReservationDto;

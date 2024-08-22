@@ -1,4 +1,4 @@
-package hansung.popupstore.PopupStore.Repository;
+package hansung.popupstore.PopupReservation.Repository;
 
 import hansung.popupstore.model.PopupReservation;
 import hansung.popupstore.model.StoreDayId; // StoreDayId가 아닌 Long으로 변경해야 할 수 있음

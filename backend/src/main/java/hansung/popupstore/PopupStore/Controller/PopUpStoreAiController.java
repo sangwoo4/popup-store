@@ -34,7 +34,6 @@ public class PopUpStoreAiController {
         return result;
     }
 
-
     @GetMapping("/recommend/category")
     public ResponseEntity<ResponseDto<?>> recommendByCategory(@RequestHeader("Authorization") String token) throws JsonProcessingException {
         String jwtToken = tokenUtils.extractToken(token);

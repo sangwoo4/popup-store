@@ -50,6 +50,4 @@ public class PopupStoreMapper {
                 .map(PopupStoreMapper::toDto)
                 .collect(Collectors.toList());
     }
-
-
 }
