@@ -91,6 +91,7 @@ public class PopupStoreService {
                 //.totalReservation(dto.getTotalReservation())
                 .detailAddress(dto.getDetailAddress())
                 .views(dto.getViews())
+                .heartCount(dto.getHeartCount())
                 .company(company)
                 .build();
     }
@@ -114,6 +115,7 @@ public class PopupStoreService {
         popupStore.setPostCode(dto.getPostCode());
         popupStore.setViews(dto.getViews());
         popupStore.setDetailAddress(dto.getDetailAddress());
+        popupStore.setHeartCount(dto.getHeartCount());
     }
 
     public PopupStoreDto convertToDto(PopupStore popupStore) {
@@ -178,6 +180,7 @@ public class PopupStoreService {
                 .currentReservation(popupStore.getCurrentReservation())
                 //.totalReservation(popupStore.getTotalReservation())
                 .detailAddress(popupStore.getDetailAddress())
+                .heartCount(popupStore.getHeartCount())
                 .companyName(companyName)
                 .categories(categoryDtos)
                 .storeDays(storeDayDtos)

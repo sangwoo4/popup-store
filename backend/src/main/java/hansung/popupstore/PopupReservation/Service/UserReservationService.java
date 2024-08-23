@@ -13,7 +13,9 @@ import hansung.popupstore.PopupStore.Repository.UserReservationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -74,6 +76,36 @@ public class UserReservationService {
 
         return ResponseDto.setSuccessData("예약 성공", responseData);
     }
+
+    public ResponseDto<List<Map<String, Object>>> userReservationList(Long userId) {
+        List<UserReservation> userReservations = userReservationRepository.findByUserId(userId);
+
+        // 유저 정보 조회
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+
+        // 예약 정보 리스트 구성
+        List<Map<String, Object>> reservationsList = new ArrayList<>();
+        for (UserReservation userReservation : userReservations) {
+            PopupReservation popupReservation = userReservation.getPopupReservation();
+            PopupStore popupStore = popupReservation.getPopupStore();
+
+            // 각 예약 정보에 대한 데이터 구성
+            Map<String, Object> reservationData = new HashMap<>();
+            reservationData.put("reservationId", popupReservation.getId());
+            reservationData.put("title", popupStore.getTitle());
+            reservationData.put("name", user.getUsername());
+            reservationData.put("date", popupReservation.getDate());
+            reservationData.put("startTime", popupReservation.getStartTime());
+            reservationData.put("numberOfPeople", userReservation.getNumberOfPeople());
+
+            reservationsList.add(reservationData);
+        }
+
+        // 성공 응답 반환
+        return ResponseDto.setSuccessData("유저 예약 조회 결과", reservationsList);
+    }
+
 
     private UserReservation buildUserReservationEntity(UserReservationDto dto) {
         PopupReservation popupReservation = popupReservationRepository.findById(dto.getPopupReservationId())

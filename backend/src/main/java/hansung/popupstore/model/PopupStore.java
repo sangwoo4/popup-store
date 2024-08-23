@@ -100,12 +100,19 @@ public class PopupStore {
     @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<PopupReservation> popupReservations = new HashSet<>();
+
+    @Column(name = "heartCount")
+    private int heartCount;
+
+    @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<Heart> hearts = new HashSet<>();
+    
     public void updateCurrentReservation(int numberOfPeople) {
         if (this.currentReservation == null) {
             this.currentReservation = 0;
         }
         this.currentReservation += numberOfPeople;
     }
-
 
 }

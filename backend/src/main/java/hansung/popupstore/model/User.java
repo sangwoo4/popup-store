@@ -67,4 +67,8 @@ public class User {
     )
     @Builder.Default // 기본값 설정
     private Set<Category> categories = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Heart> hearts = new HashSet<>();
+
 }
