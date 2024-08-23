@@ -106,6 +106,34 @@ public class UserReservationService {
         return ResponseDto.setSuccessData("유저 예약 조회 결과", reservationsList);
     }
 
+    public ResponseDto<List<Map<String, Object>>> getReservationsByPopupId(Long popupId) {
+        // PopupStoreId로 모든 PopupReservation을 가져옴
+        List<PopupReservation> popupReservations = popupReservationRepository.findByPopupStore_Id(popupId);
+
+        List<Map<String, Object>> reservationsList = new ArrayList<>();
+        for (PopupReservation popupReservation : popupReservations) {
+            // PopupReservation ID를 기반으로 모든 UserReservation을 가져옴
+            List<UserReservation> userReservations = userReservationRepository.findByPopupReservationId(popupReservation.getId());
+
+            for (UserReservation userReservation : userReservations) {
+                User user = userReservation.getUser(); // UserReservation에서 User 정보 가져오기
+                PopupStore popupStore = popupReservation.getPopupStore(); // PopupStore 정보 가져오기
+
+                // 예약 정보 구성
+                Map<String, Object> reservationData = new HashMap<>();
+                reservationData.put("reservationId", userReservation.getId());
+                reservationData.put("title", popupStore.getTitle());
+                reservationData.put("name", user.getUsername());
+                reservationData.put("date", popupReservation.getDate());
+                reservationData.put("startTime", popupReservation.getStartTime());
+                reservationData.put("numberOfPeople", userReservation.getNumberOfPeople());
+
+                reservationsList.add(reservationData);
+            }
+        }
+
+        return ResponseDto.setSuccessData("유저 예약 조회 결과", reservationsList);
+    }
 
     private UserReservation buildUserReservationEntity(UserReservationDto dto) {
         PopupReservation popupReservation = popupReservationRepository.findById(dto.getPopupReservationId())

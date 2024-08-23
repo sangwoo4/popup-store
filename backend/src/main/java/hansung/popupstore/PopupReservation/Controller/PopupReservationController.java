@@ -61,6 +61,17 @@ public class PopupReservationController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    @GetMapping("/list/{popupId}")
+    public ResponseEntity<ResponseDto<List<Map<String, Object>>>> getAllReservationsByPopup(
+            @PathVariable("popupId") Long popupId) {
+
+        // 특정 팝업 ID에 대한 모든 예약 정보를 가져옴
+        ResponseDto<List<Map<String, Object>>> responseDto = userReservationService.getReservationsByPopupId(popupId);
+
+        // 성공 응답 반환
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
     @PatchMapping("/deadline")
     public ResponseEntity<String> markReservationAsFull(
             @RequestParam(name = "popupStoreId") Long popupStoreId,
