@@ -23,7 +23,7 @@ const DetailInfo_User = () => {
 
     const fetchLocationInfo = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/popup/user/detail/${location}`, {
+        const response = await fetch(`http://localhost:8080/popup/detail/${location}`, {
           method: "GET",
           headers: {
             'Content-Type': 'application/json',

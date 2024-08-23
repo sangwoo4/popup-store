@@ -37,22 +37,22 @@ body {
   text-align: center;
 }
 
-/* 라벨 및 선택 박스 스타일 */
+/* 라벨 스타일 */
 .container label {
   display: block;
-  font-size: 16px;
-  margin-bottom: 8px;
+  font-size: 18px; /* 라벨 크기 증가 */
+  padding: 10px;
   color: #333;
 }
 
-/* 날짜 선택 박스 스타일 */
+/* 선택 박스 스타일 */
 .container select {
   width: 100%;
   padding: 12px;
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  margin-bottom: 20px;
+  margin-bottom: 25px; /* 선택 박스와 다른 요소 간의 여백 증가 */
 }
 
 /* 캘린더 스타일 */
@@ -61,6 +61,7 @@ body {
   border-radius: 10px;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px; /* 캘린더와 다른 요소 간의 여백 증가 */
 }
 
 /* 비활성화된 날짜 스타일 */
@@ -80,7 +81,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 30px; /* 시간 버튼과 다른 요소 간의 여백 증가 */
 }
 
 .time-buttons button {
@@ -105,12 +106,18 @@ body {
   color: white;
 }
 
+.time-buttons button.full {
+  background-color: #bdbdbd;
+  color: #444;
+  cursor: not-allowed;
+}
+
 /* 참여 인원 버튼 스타일 */
 .people-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 30px; /* 참여 인원 버튼과 다른 요소 간의 여백 증가 */
 }
 
 .people-buttons button {
@@ -133,6 +140,13 @@ body {
 .people-buttons button.selected {
   background-color: #519760; /* 클릭된 버튼 색상 */
   color: white;
+}
+
+/* 예약 가능 인원 수를 초과한 경우 회색으로 비활성화된 버튼 스타일 */
+.people-buttons button.disabled {
+  background-color: #bdbdbd;
+  color: #444;
+  cursor: not-allowed;
 }
 
 /* 버튼 스타일 */

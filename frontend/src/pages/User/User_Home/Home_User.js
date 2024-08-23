@@ -155,7 +155,7 @@ const Home_User = () => {
           <h2>이달의 추천 팝업 리스트</h2>
         )}
           <Slider {...settings}>
-            {locations.map(location => {
+            {locations.slice(0, 5).map(location => {
             const images = location.popupImages && location.popupImages.length > 0 
               ? location.popupImages.map(image => `http://localhost:8080/${image.imageUrl}`) 
               : ['/images/image1.png'];

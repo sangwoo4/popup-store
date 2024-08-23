@@ -31,7 +31,7 @@ const PopupReservation_User = () => {
 
     const fetchLocationInfo = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/popup/user/detail/${id}`, {
+        const response = await fetch(`http://localhost:8080/popup/detail/${id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -118,6 +118,10 @@ const PopupReservation_User = () => {
     setNumberOfPeople(people);
   };
 
+  const isPeopleButtonDisabled = (num) => {
+    return getRemainingSpots() < num;
+  };
+
   const handleReservation = () => {
     const token = localStorage.getItem('token');
     
@@ -156,11 +160,19 @@ const PopupReservation_User = () => {
 
   const isDateDisabled = (date) => {
     if (!locationInfo) return false;
-    const { startDate, endDate } = locationInfo;
+    const { startDate, endDate, popupReservations } = locationInfo;
     const dateStr = new Date(date).toLocaleDateString('en-CA');
-    const isPast = new Date(dateStr) < new Date(startDate);
-    const isFuture = new Date(dateStr) > new Date(endDate);
-    return isPast || isFuture;
+
+    const isOutOfRange = new Date(dateStr) < new Date(startDate) || new Date(dateStr) > new Date(endDate);
+    
+    // 해당 날짜의 모든 시간대가 마감된 경우
+    const allTimesFull = popupReservations
+      .filter(reservation => convertToLocalDate(reservation.date) === dateStr)
+      .every(reservation => reservation.currentReservation >= reservation.totalReservation);
+    
+    const isNotOperatingDay = !popupReservations.some(reservation => convertToLocalDate(reservation.date) === dateStr);
+    
+    return isOutOfRange || isNotOperatingDay || allTimesFull;
   };
 
   const convertToDate = (dateString) => {
@@ -191,7 +203,7 @@ const PopupReservation_User = () => {
       <h1>팝업스토어 예약하기 페이지</h1>
       <h2>{locationInfo.title}</h2>
       <p>운영 기간: {locationInfo.startDate} ~ {locationInfo.endDate}</p>
-
+  
       {reservationEnabled && (
         <>
           <label>날짜 선택:</label>
@@ -201,7 +213,7 @@ const PopupReservation_User = () => {
             tileDisabled={({ date }) => isDateDisabled(date)}
             value={selectedDate ? convertToDate(selectedDate) : null}
           />
-
+  
           {selectedDate && (
             <>
               <label>시간 선택:</label>
@@ -220,7 +232,7 @@ const PopupReservation_User = () => {
                   );
                 })}
               </div>
-
+  
               {selectedTime && (
                 <>
                   <label>참여 인원:</label>
@@ -229,14 +241,14 @@ const PopupReservation_User = () => {
                       <button
                         key={num}
                         onClick={() => handlePeopleChange(num)}
-                        className={numberOfPeople === num ? 'selected' : ''}
-                        disabled={getRemainingSpots() < num}
+                        className={`${numberOfPeople === num ? 'selected' : ''} ${isPeopleButtonDisabled(num) ? 'disabled' : ''}`}
+                        disabled={isPeopleButtonDisabled(num)}
                       >
                         {num}
                       </button>
                     ))}
                   </div>
-
+  
                   <button className="submit" onClick={handleReservation} disabled={getRemainingSpots() < numberOfPeople}>
                     사전예약하기
                   </button>
@@ -275,7 +287,6 @@ export default PopupReservation_User;
 //   const [loading, setLoading] = useState(true);
 //   const [reservationEnabled, setReservationEnabled] = useState(false);
 
-//   // 날짜 문자열을 로컬 날짜 문자열로 변환하는 함수
 //   const convertToLocalDate = (dateString) => {
 //     const date = new Date(dateString);
 //     return date.toISOString().split('T')[0];
@@ -290,7 +301,7 @@ export default PopupReservation_User;
 
 //     const fetchLocationInfo = async () => {
 //       try {
-//         const response = await fetch(`http://localhost:8080/popup/user/detail/${id}`, {
+//         const response = await fetch(`http://localhost:8080/popup/detail/${id}`, {
 //           method: 'GET',
 //           headers: {
 //             'Content-Type': 'application/json',
@@ -427,6 +438,12 @@ export default PopupReservation_User;
 //     return new Date(year, month - 1, day);
 //   };
 
+//   const getRemainingSpots = () => {
+//     const selectedSlot = availableTimes.find(slot => slot.startTime === selectedTime);
+//     if (!selectedSlot) return 0;
+//     return selectedSlot.totalReservation - selectedSlot.currentReservation;
+//   };
+
 //   if (loading) {
 //     return <div>Loading...</div>;
 //   }
@@ -459,15 +476,19 @@ export default PopupReservation_User;
 //             <>
 //               <label>시간 선택:</label>
 //               <div className="time-buttons">
-//                 {availableTimes.map((slot, index) => (
-//                   <button
-//                     key={index}
-//                     onClick={() => handleTimeChange(slot.startTime)}
-//                     className={selectedTime === slot.startTime ? 'selected' : ''}
-//                   >
-//                     {slot.startTime}
-//                   </button>
-//                 ))}
+//                 {availableTimes.map((slot, index) => {
+//                   const isFull = slot.currentReservation >= slot.totalReservation;
+//                   return (
+//                     <button
+//                       key={index}
+//                       onClick={() => handleTimeChange(slot.startTime)}
+//                       className={`${selectedTime === slot.startTime ? 'selected' : ''} ${isFull ? 'full' : ''}`}
+//                       disabled={isFull}
+//                     >
+//                       {slot.startTime} {isFull ? '(마감)' : ''}
+//                     </button>
+//                   );
+//                 })}
 //               </div>
 
 //               {selectedTime && (
@@ -479,13 +500,16 @@ export default PopupReservation_User;
 //                         key={num}
 //                         onClick={() => handlePeopleChange(num)}
 //                         className={numberOfPeople === num ? 'selected' : ''}
+//                         disabled={getRemainingSpots() < num}
 //                       >
 //                         {num}
 //                       </button>
 //                     ))}
 //                   </div>
 
-//                   <button className="submit" onClick={handleReservation}>사전예약하기</button>
+//                   <button className="submit" onClick={handleReservation} disabled={getRemainingSpots() < numberOfPeople}>
+//                     사전예약하기
+//                   </button>
 //                 </>
 //               )}
 //             </>
@@ -497,4 +521,5 @@ export default PopupReservation_User;
 // };
 
 // export default PopupReservation_User;
+
 
