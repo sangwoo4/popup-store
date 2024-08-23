@@ -44,6 +44,8 @@ const PopupRegister_Company = () => {
   const [selectedDay, setSelectedDay] = useState('');
   const [startTime, setStartTime] = useState('00:00');
   const [endTime, setEndTime] = useState('23:59');
+  const displayStartDate = operatingStartDate ? new Date(operatingStartDate).toLocaleDateString() : '';
+  const displayEndDate = operatingEndDate ? new Date(operatingEndDate).toLocaleDateString() : '';
 
 
   const navigate = useNavigate();
@@ -150,6 +152,19 @@ const PopupRegister_Company = () => {
     }
   };
 
+  const getDatesInRange = (startDate, endDate) => {
+    let dates = [];
+    let currentDate = new Date(startDate);
+  
+    while (currentDate <= endDate) {
+      dates.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+  
+    return dates;
+  };
+  
+
   const handleAddReservationSlot = () => {
     const selectedDays = Object.keys(operatingDays).filter(day => operatingDays[day].isSelected);
   
@@ -159,26 +174,39 @@ const PopupRegister_Company = () => {
     }
   
     const newSlots = [];
+    const startDate = new Date(operatingStartDate);
+    const endDate = new Date(operatingEndDate);
   
-    selectedDays.forEach(day => {
-      const dayData = operatingDays[day];
-      let slotStartTime = dayData.startTime;
-      let slotEndTime = calculateEndTime(slotStartTime, reservationInterval);
+    // 운영 기간 동안 모든 날짜를 반복합니다.
+    while (startDate <= endDate) {
+      const dayOfWeek = new Intl.DateTimeFormat('ko-KR', { weekday: 'long' }).format(startDate);
   
-      while (slotEndTime <= dayData.endTime) {
-        newSlots.push({
-          day,
-          startTime: slotStartTime,
-          endTime: slotEndTime,
-          totalReservation: reservationCapacity,
-          currentReservation: 0
-        });
+      if (selectedDays.includes(dayOfWeek)) {
+        const dayData = operatingDays[dayOfWeek];
+        let slotStartTime = dayData.startTime;
+        let slotEndTime = calculateEndTime(slotStartTime, reservationInterval);
   
-        // 다음 슬롯의 시작 시간 설정
-        slotStartTime = slotEndTime;
-        slotEndTime = calculateEndTime(slotStartTime, reservationInterval);
+        while (slotEndTime <= dayData.endTime) {
+          newSlots.push({
+            day: dayOfWeek,
+            date: startDate.toISOString().split('T')[0], // 현재 날짜를 추가합니다.
+            startTime: slotStartTime,
+            endTime: slotEndTime,
+            totalReservation: reservationCapacity, // 슬롯당 수용 인원 설정
+            currentReservation: 0, // 현재 예약된 인원 초기화
+            isReservationEnabled: true, // 예약 활성화 여부
+            isReservationFull: false // 초기 상태에서는 예약이 다 차지 않았으므로 false
+          });
+  
+          // 다음 슬롯의 시작 시간 설정
+          slotStartTime = slotEndTime;
+          slotEndTime = calculateEndTime(slotStartTime, reservationInterval);
+        }
       }
-    });
+  
+      // 날짜를 하루 증가시킵니다.
+      startDate.setDate(startDate.getDate() + 1);
+    }
   
     // 새로운 예약 슬롯을 기존 예약 슬롯과 합치기
     setPopupReservation(prevSlots => [
@@ -186,6 +214,7 @@ const PopupRegister_Company = () => {
       ...newSlots
     ]);
   };
+  
 
   const calculateEndTime = (startTime, interval) => {
     const [startHour, startMinute] = startTime.split(':').map(Number);
@@ -203,6 +232,13 @@ const PopupRegister_Company = () => {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // UTC 기준으로 날짜 변환
+    const formatDateToUTC = (date) => {
+      if (!date) return '';
+      const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+      return utcDate.toISOString().split('T')[0];
+    };
   
     // JSON 데이터 생성
     const jsonData = {
@@ -211,15 +247,14 @@ const PopupRegister_Company = () => {
       address,
       roadAddress,
       detailAddress,
-      startDate: operatingStartDate ? operatingStartDate.toISOString().split('T')[0] : '',
-      endDate: operatingEndDate ? operatingEndDate.toISOString().split('T')[0] : '',
+      startDate: formatDateToUTC(operatingStartDate),
+      endDate: formatDateToUTC(operatingEndDate),
       telephone,
       subway,
       description,
       link,
       mapx: coordinates.mapx,
       mapy: coordinates.mapy,
-      totalReservation,
       currentReservation,
       reservation,
       categories: category.map(cat => ({ category: cat.category })),
@@ -240,13 +275,6 @@ const PopupRegister_Company = () => {
       formData.append('images', file);
     });
   
-    // 콘솔에 데이터 출력
-    console.log('JSON 데이터:', JSON.stringify(jsonData, null, 2));
-    console.log('FormData 객체:');
-    formData.forEach((value, key) => {
-      console.log(key, value);
-    });
-  
     try {
       const response = await fetch('http://localhost:8080/popup/company/register', {
         method: 'POST',
@@ -261,8 +289,6 @@ const PopupRegister_Company = () => {
       }
   
       const result = await response.json();
-      console.log('Success:', result);
-  
       alert('등록되었습니다!');
       navigate('/auth/company/homepage');
     } catch (error) {
@@ -272,21 +298,31 @@ const PopupRegister_Company = () => {
   };
   
   
+  
   const handleAddressSearch = () => {
     setShowPostcodeModal(true);
   };
 
   const handleOperatingStartDateChange = (date) => {
-    setOperatingStartDate(date);
-    setOperatingEndDate(null);
-  };
-
-  const handleOperatingEndDateChange = (date) => {
-    if (operatingStartDate === null || date < operatingStartDate) {
-      setOperatingStartDate(date);
+    if (date) {
+      // 로컬 날짜를 UTC로 변환
+      const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+      setOperatingStartDate(utcDate);
+      setOperatingEndDate(null);
     }
-    setOperatingEndDate(date);
   };
+  
+  const handleOperatingEndDateChange = (date) => {
+    if (date) {
+      // 로컬 날짜를 UTC로 변환
+      const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+      if (operatingStartDate === null || utcDate < operatingStartDate) {
+        setOperatingStartDate(utcDate);
+      }
+      setOperatingEndDate(utcDate);
+    }
+  };
+  
 
   const handleDayChange = (day) => {
     setOperatingDays(prevDays => {
@@ -386,21 +422,21 @@ const PopupRegister_Company = () => {
         </label>
 
         <label>
-           운영기간:
-           <div className="date-picker-container">
-             <DatePicker
-               selected={operatingStartDate}
-               onChange={handleOperatingStartDateChange}
-               selectsStart
-               startDate={operatingStartDate}
-               endDate={operatingEndDate}
-               placeholderText="운영 시작일"
-               required
-               showMonthDropdown
-               showYearDropdown
-               dropdownMode="select"
-               withPortal
-               closeOnScroll={true}
+          운영기간:
+          <div className="date-picker-container">
+            <DatePicker
+              selected={operatingStartDate}
+              onChange={handleOperatingStartDateChange}
+              selectsStart
+              startDate={operatingStartDate}
+              endDate={operatingEndDate}
+              placeholderText="운영 시작일"
+              required
+              showMonthDropdown
+              showYearDropdown
+              dropdownMode="select"
+              withPortal
+              closeOnScroll={true}
             />
             {' ~ '}
             <DatePicker
@@ -591,26 +627,46 @@ const PopupRegister_Company = () => {
                 onChange={handleReservationCapacityChange}
               />
             </label>
-            <button type="button" onClick={handleAddReservationSlot}>
+            <button
+              type="button"
+              onClick={handleAddReservationSlot}
+              disabled={popupReservation.length > 0}  // 슬롯이 추가되면 버튼 비활성화
+            >
               예약 슬롯 추가
             </button>
             <div>
               <h3>예약 슬롯</h3>
               {popupReservation.length > 0 ? (
-                popupReservation.map((slot, index) => (
-                  <div key={index}>
-                    <p>요일: {slot.day}</p>
-                    <p>시간: {slot.startTime} ~ {slot.endTime}</p>
-                    <p>수용 인원: {slot.totalReservation}명</p>
-                  </div>
-                ))
+                <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                  <thead>
+                    <tr>
+                      <th style={{ border: "1px solid #ddd", padding: "8px" }}>날짜</th>
+                      <th style={{ border: "1px solid #ddd", padding: "8px" }}>요일</th>
+                      <th style={{ border: "1px solid #ddd", padding: "8px" }}>시간</th>
+                      <th style={{ border: "1px solid #ddd", padding: "8px" }}>수용 인원</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {popupReservation.map((slot, index) => (
+                      <tr key={index}>
+                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>{slot.date}</td>
+                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>{slot.day}</td>
+                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                          {slot.startTime}
+                        </td>
+                        <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                          {slot.totalReservation}명
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               ) : (
                 <p>추가된 예약 슬롯이 없습니다.</p>
               )}
             </div>
           </>
         )}
-
 
         <br/>
 
@@ -633,14 +689,6 @@ export default PopupRegister_Company;
 
 
 
-
-
-
-
-
-
-
-// // 2024.08.18 사전예약 활성화 코드 - 오류 수정 전
 // import React, { useState, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
 // import DatePicker from 'react-datepicker';
@@ -793,8 +841,93 @@ export default PopupRegister_Company;
 //     }
 //   };
 
+//   const getDatesInRange = (startDate, endDate) => {
+//     let dates = [];
+//     let currentDate = new Date(startDate);
+  
+//     while (currentDate <= endDate) {
+//       dates.push(new Date(currentDate));
+//       currentDate.setDate(currentDate.getDate() + 1);
+//     }
+  
+//     return dates;
+//   };
+  
+
+//   const handleAddReservationSlot = () => {
+//     const selectedDays = Object.keys(operatingDays).filter(day => operatingDays[day].isSelected);
+  
+//     if (selectedDays.length === 0) {
+//       alert('요일을 선택해 주세요.');
+//       return;
+//     }
+  
+//     const newSlots = [];
+//     const startDate = new Date(operatingStartDate);
+//     const endDate = new Date(operatingEndDate);
+  
+//     // 운영 기간 동안 모든 날짜를 반복합니다.
+//     while (startDate <= endDate) {
+//       const dayOfWeek = new Intl.DateTimeFormat('ko-KR', { weekday: 'long' }).format(startDate);
+  
+//       if (selectedDays.includes(dayOfWeek)) {
+//         const dayData = operatingDays[dayOfWeek];
+//         let slotStartTime = dayData.startTime;
+//         let slotEndTime = calculateEndTime(slotStartTime, reservationInterval);
+  
+//         while (slotEndTime <= dayData.endTime) {
+//           newSlots.push({
+//             day: dayOfWeek,
+//             date: startDate.toISOString().split('T')[0], // 현재 날짜를 추가합니다.
+//             startTime: slotStartTime,
+//             endTime: slotEndTime,
+//             totalReservation: reservationCapacity, // 슬롯당 수용 인원 설정
+//             currentReservation: 0, // 현재 예약된 인원 초기화
+//             isReservationEnabled: true, // 예약 활성화 여부
+//             isReservationFull: false // 초기 상태에서는 예약이 다 차지 않았으므로 false
+//           });
+  
+//           // 다음 슬롯의 시작 시간 설정
+//           slotStartTime = slotEndTime;
+//           slotEndTime = calculateEndTime(slotStartTime, reservationInterval);
+//         }
+//       }
+  
+//       // 날짜를 하루 증가시킵니다.
+//       startDate.setDate(startDate.getDate() + 1);
+//     }
+  
+//     // 새로운 예약 슬롯을 기존 예약 슬롯과 합치기
+//     setPopupReservation(prevSlots => [
+//       ...prevSlots,
+//       ...newSlots
+//     ]);
+//   };
+  
+
+//   const calculateEndTime = (startTime, interval) => {
+//     const [startHour, startMinute] = startTime.split(':').map(Number);
+//     const startDate = new Date();
+//     startDate.setHours(startHour, startMinute, 0, 0);
+  
+//     // 종료 시간 계산
+//     const endDate = new Date(startDate.getTime() + interval * 60000);
+//     const endHour = String(endDate.getHours()).padStart(2, '0');
+//     const endMinute = String(endDate.getMinutes()).padStart(2, '0');
+  
+//     return `${endHour}:${endMinute}`;
+//   };
+  
+  
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
+    
+//     // UTC 기준으로 날짜 변환
+//     const formatDateToUTC = (date) => {
+//       if (!date) return '';
+//       const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+//       return utcDate.toISOString().split('T')[0];
+//     };
   
 //     // JSON 데이터 생성
 //     const jsonData = {
@@ -803,15 +936,14 @@ export default PopupRegister_Company;
 //       address,
 //       roadAddress,
 //       detailAddress,
-//       startDate: operatingStartDate ? operatingStartDate.toISOString().split('T')[0] : '',
-//       endDate: operatingEndDate ? operatingEndDate.toISOString().split('T')[0] : '',
+//       startDate: formatDateToUTC(operatingStartDate),
+//       endDate: formatDateToUTC(operatingEndDate),
 //       telephone,
 //       subway,
 //       description,
 //       link,
 //       mapx: coordinates.mapx,
 //       mapy: coordinates.mapy,
-//       totalReservation,
 //       currentReservation,
 //       reservation,
 //       categories: category.map(cat => ({ category: cat.category })),
@@ -822,21 +954,14 @@ export default PopupRegister_Company;
 //           closeTime: operatingDays[day].endTime,
 //           day
 //         })),
-//       companyReservation
+//       popupReservations: popupReservation
 //     };
-
+  
 //     const formData = new FormData();
 //     formData.append('dto', new Blob([JSON.stringify(jsonData)], { type: 'application/json' }));
   
 //     imageFiles.forEach((file, index) => {
 //       formData.append('images', file);
-//     });
-  
-//     // 콘솔에 데이터 출력
-//     console.log('JSON 데이터:', JSON.stringify(jsonData, null, 2));
-//     console.log('FormData 객체:');
-//     formData.forEach((value, key) => {
-//       console.log(key, value);
 //     });
   
 //     try {
@@ -853,8 +978,6 @@ export default PopupRegister_Company;
 //       }
   
 //       const result = await response.json();
-//       console.log('Success:', result);
-  
 //       alert('등록되었습니다!');
 //       navigate('/auth/company/homepage');
 //     } catch (error) {
@@ -863,21 +986,30 @@ export default PopupRegister_Company;
 //     }
 //   };
   
+  
+  
 //   const handleAddressSearch = () => {
 //     setShowPostcodeModal(true);
 //   };
 
 //   const handleOperatingStartDateChange = (date) => {
-//     setOperatingStartDate(date);
-//     setOperatingEndDate(null);
-//   };
-
-//   const handleOperatingEndDateChange = (date) => {
-//     if (operatingStartDate === null || date < operatingStartDate) {
-//       setOperatingStartDate(date);
+//     if (date) {
+//       const adjustedDate = new Date(date.setUTCHours(0, 0, 0, 0));
+//       setOperatingStartDate(adjustedDate);
+//       setOperatingEndDate(null);
 //     }
-//     setOperatingEndDate(date);
 //   };
+  
+//   const handleOperatingEndDateChange = (date) => {
+//     if (date) {
+//       const adjustedDate = new Date(date.setUTCHours(0, 0, 0, 0));
+//       if (operatingStartDate === null || adjustedDate < operatingStartDate) {
+//         setOperatingStartDate(adjustedDate);
+//       }
+//       setOperatingEndDate(adjustedDate);
+//     }
+//   };
+  
 
 //   const handleDayChange = (day) => {
 //     setOperatingDays(prevDays => {
@@ -950,28 +1082,6 @@ export default PopupRegister_Company;
 
 //   const handleReservationCapacityChange = (e) => {
 //     setReservationCapacity(Number(e.target.value));
-//   };
-
-//   const handleAddReservationSlot = () => {
-//     const selectedDays = Object.keys(operatingDays).filter(day => operatingDays[day].isSelected);
-
-//     if (selectedDays.length === 0) {
-//       alert('요일을 선택해 주세요.');
-//       return;
-//     }
-  
-//     const newSlots = selectedDays.map(day => ({
-//       day,
-//       interval: reservationInterval,
-//       capacity: reservationCapacity,
-//       startTime,
-//       endTime
-//     }));
-
-//     setPopupReservation(prevSlots => [
-//       ...prevSlots,
-//       ...newSlots
-//     ]);
 //   };
 
 //   return (
@@ -1204,19 +1314,49 @@ export default PopupRegister_Company;
 //                 onChange={handleReservationCapacityChange}
 //               />
 //             </label>
-//             <button type="button" onClick={handleAddReservationSlot}>
+//             <button
+//               type="button"
+//               onClick={handleAddReservationSlot}
+//               disabled={popupReservation.length > 0}  // 슬롯이 추가되면 버튼 비활성화
+//             >
 //               예약 슬롯 추가
 //             </button>
 //             <div>
 //               <h3>예약 슬롯</h3>
-//               {popupReservation.map((slot, index) => (
-//                 <div key={index}>
-//                   <p>요일: {slot.day}, 간격: {slot.interval}분, 수용 인원: {slot.capacity}명</p>
-//                 </div>
-//               ))}
+//               {popupReservation.length > 0 ? (
+//                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
+//                   <thead>
+//                     <tr>
+//                       <th style={{ border: "1px solid #ddd", padding: "8px" }}>날짜</th>
+//                       <th style={{ border: "1px solid #ddd", padding: "8px" }}>요일</th>
+//                       <th style={{ border: "1px solid #ddd", padding: "8px" }}>시간</th>
+//                       <th style={{ border: "1px solid #ddd", padding: "8px" }}>수용 인원</th>
+//                     </tr>
+//                   </thead>
+//                   <tbody>
+//                     {popupReservation.map((slot, index) => (
+//                       <tr key={index}>
+//                         <td style={{ border: "1px solid #ddd", padding: "8px" }}>{slot.date}</td>
+//                         <td style={{ border: "1px solid #ddd", padding: "8px" }}>{slot.day}</td>
+//                         <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+//                           {slot.startTime}
+//                         </td>
+//                         <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+//                           {slot.totalReservation}명
+//                         </td>
+//                       </tr>
+//                     ))}
+//                   </tbody>
+//                 </table>
+//               ) : (
+//                 <p>추가된 예약 슬롯이 없습니다.</p>
+//               )}
 //             </div>
 //           </>
 //         )}
+
+
+
 
 //         <br/>
 

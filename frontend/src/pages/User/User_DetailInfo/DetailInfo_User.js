@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 const DetailInfo_User = () => {
   const { location } = useParams();
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const navigate = useNavigate(); 
   const [activeMenu, setActiveMenu] = useState('info');
   const [locationInfo, setLocationInfo] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -12,10 +12,11 @@ const DetailInfo_User = () => {
   const [reservationEnabled, setReservationEnabled] = useState(false);
   const mapElement = useRef(null);
 
-  // --------------------------백엔드 GET 통신--------------------------------------
+  const daysOfWeekOrder = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'];
+
   useEffect(() => {
     if (!location) {
-      setError(new Error('Location parameter is missing.'));
+      setError('Location parameter is missing.');
       setLoading(false);
       return;
     }
@@ -33,27 +34,25 @@ const DetailInfo_User = () => {
         }
         const data = await response.json();
 
-        console.log(data); // 데이터 구조 확인용
+        console.log(data); 
 
         if (data && data.data) {
-          const { companyName, title, address, detailInfo, telephone, description, popupImages, link, categories, storeDays, mapx, mapy, startDate, endDate, reservation } = data.data;
+          const { id, companyName, title, address, detailInfo, telephone, description, popupImages, link, categories, storeDays, mapx, mapy, startDate, endDate, reservation } = data.data;
 
-          // LatLng 객체 생성
           const latlng = new window.naver.maps.LatLng(parseFloat(mapy) / 1e7, parseFloat(mapx) / 1e7);
 
-          // 날짜 형식 처리
           const parseDate = (dateString) => {
             if (!dateString) return 'N/A';
             const date = new Date(dateString);
             return isNaN(date.getTime()) ? 'N/A' : date.toISOString().split('T')[0];
           };
 
-          // 이미지 URL 배열 처리
           const images = popupImages && popupImages.length > 0 
             ? popupImages.map(image => `http://localhost:8080/${image.imageUrl}`)
             : ['/images/image1.png'];
 
           setLocationInfo({
+            id,
             companyName: companyName,
             title: title || 'No Title',
             address: address || 'No Address Available',
@@ -84,7 +83,6 @@ const DetailInfo_User = () => {
 
     fetchLocationInfo();
   }, [location]);
-  // --------------------------백엔드 GET 통신--------------------------------------
 
   useEffect(() => {
     if (activeMenu === 'map' && mapElement.current && window.naver && locationInfo && locationInfo.latlng) {
@@ -131,8 +129,18 @@ const DetailInfo_User = () => {
   }, [activeMenu, locationInfo]);
 
   const handleReservationClick = () => {
-    navigate('/popup/user/popup_pre_reservation');
+    if (locationInfo && locationInfo.id) {
+      navigate(`/popup/user/popup_pre_reservation/${locationInfo.id}`);
+    } else {
+      console.error('Location ID is missing.');
+    }
   };
+
+  const sortedStoreDays = locationInfo?.storeDays.sort((a, b) => {
+    const dayA = daysOfWeekOrder.indexOf(a.day);
+    const dayB = daysOfWeekOrder.indexOf(b.day);
+    return dayA - dayB;
+  });
 
   if (loading) {
     return <p>Loading...</p>;
@@ -179,8 +187,8 @@ const DetailInfo_User = () => {
             <p>{locationInfo.description}</p>
             <div className="store-days">
               <h3>운영 시간</h3>
-              {locationInfo.storeDays && locationInfo.storeDays.length > 0 ? (
-                locationInfo.storeDays.map((day, index) => (
+              {sortedStoreDays && sortedStoreDays.length > 0 ? (
+                sortedStoreDays.map((day, index) => (
                   <div key={index}>
                     <p>{day.day}: {day.openTime} ~ {day.closeTime}</p>
                   </div>
@@ -216,6 +224,7 @@ const DetailInfo_User = () => {
 };
 
 export default DetailInfo_User;
+
 
 
 

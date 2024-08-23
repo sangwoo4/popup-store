@@ -1,0 +1,168 @@
+/* 전역 스타일 */
+body {
+  font-family: 'Arial', sans-serif;
+}
+
+/* 컨테이너 스타일 */
+.container {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  max-width: 600px;
+  width: 100%;
+  margin: 20px;
+}
+
+/* 제목 스타일 */
+.container h1 {
+  font-size: 28px;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+}
+
+.container h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #555;
+  text-align: center;
+}
+
+/* 설명 스타일 */
+.container p {
+  font-size: 16px;
+  color: #777;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+/* 라벨 및 선택 박스 스타일 */
+.container label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+/* 날짜 선택 박스 스타일 */
+.container select {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+/* 캘린더 스타일 */
+.react-calendar {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 비활성화된 날짜 스타일 */
+.react-calendar__tile--disabled {
+  background-color: #e0e0e0;
+  color: #aaa;
+}
+
+/* 선택된 날짜 스타일 */
+.react-calendar__tile--active {
+  background-color: #28a745;
+  color: white;
+}
+
+/* 시간 버튼 스타일 */
+.time-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.time-buttons button {
+  flex: 1 1 calc(25% - 10px);
+  background-color: #f0f0f0; /* 기본 버튼 색상 */
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.time-buttons button:hover {
+  background-color: #e0e0e0; /* 버튼 호버 색상 */
+}
+
+/* 선택된 시간 버튼 스타일 */
+.time-buttons button.selected {
+  background-color: #28a745; /* 클릭된 버튼 색상 */
+  color: white;
+}
+
+/* 참여 인원 버튼 스타일 */
+.people-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.people-buttons button {
+  flex: 1 1 calc(25% - 10px);
+  background-color: #f0f0f0; /* 기본 버튼 색상 */
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.people-buttons button:hover {
+  background-color: #e0e0e0; /* 버튼 호버 색상 */
+}
+
+/* 선택된 참여 인원 버튼 스타일 */
+.people-buttons button.selected {
+  background-color: #519760; /* 클릭된 버튼 색상 */
+  color: white;
+}
+
+/* 버튼 스타일 */
+.container button.submit {
+  width: 100%;
+  background-color: #28a745;
+  color: white;
+  padding: 15px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.container button.submit:hover {
+  background-color: #218838;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 600px) {
+  .time-buttons button,
+  .people-buttons button {
+    flex: 1 1 calc(50% - 10px);
+  }
+}
+
+@media (max-width: 400px) {
+  .time-buttons button,
+  .people-buttons button {
+    flex: 1 1 100%;
+  }
+}
