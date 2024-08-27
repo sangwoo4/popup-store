@@ -50,7 +50,13 @@ public class ReservationStatusService {
 
         reservations.forEach(reservation -> {
             reservation.setReservationEnabled(true);
-            reservation.setReservationFull(false);
+
+            // total_reservation과 current_reservation을 비교하여 reservationFull 설정
+            if (reservation.getTotalReservation().equals(reservation.getCurrentReservation())) {
+                reservation.setReservationFull(true);
+            } else {
+                reservation.setReservationFull(false);
+            }
         });
 
         popupReservationRepository.saveAll(reservations);
