@@ -54,6 +54,7 @@ public class ReservationStatusService {
             // total_reservation과 current_reservation을 비교하여 reservationFull 설정
             if (reservation.getTotalReservation().equals(reservation.getCurrentReservation())) {
                 reservation.setReservationFull(true);
+                reservation.setReservationEnabled(false);
             } else {
                 reservation.setReservationFull(false);
             }
