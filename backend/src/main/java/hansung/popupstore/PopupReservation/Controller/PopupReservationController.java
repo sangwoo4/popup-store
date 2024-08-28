@@ -46,6 +46,8 @@ public class PopupReservationController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+
+
     @GetMapping("/user/list")
     public ResponseEntity<ResponseDto<List<Map<String, Object>>>> getAllReservationsByUser(
             @RequestHeader("Authorization") String token) {
@@ -115,6 +117,16 @@ public class PopupReservationController {
         }
     }
 
+    @DeleteMapping("/user/cancel")
+    public ResponseEntity<ResponseDto<Map<String, Object>>> userCancelReservation(
+            @RequestBody UserReservationDto dto){
 
+        ResponseDto<Map<String, Object>> result = userReservationService.userCancelReservation(dto);
 
+        // HTTP 응답 반환
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }
+
+
+
