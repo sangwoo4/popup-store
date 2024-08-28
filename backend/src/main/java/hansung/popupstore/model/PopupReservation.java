@@ -1,7 +1,11 @@
 package hansung.popupstore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -41,6 +45,10 @@ public class PopupReservation {
 
     @Column(name = "is_reservation_full")
     private boolean isReservationFull = false;
+
+    @OneToMany(mappedBy = "popupReservation", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    private Set<UserReservation> userReservations = new HashSet<>();
 
 
     public boolean getIsReservationEnabled() {
