@@ -57,21 +57,3 @@
 }
 
 /* 공통 버튼 스타일 */
-button {
-  background-color: #32b376; /* 기본 배경색 */
-  border: none; /* 테두리 제거 */
-  color: white; /* 텍스트 색상 */
-  padding: 10px 20px; /* 상하좌우 여백 */
-  font-size: 16px; /* 글씨 크기 */
-  text-align: center; /* 텍스트 정렬 */
-  border-radius: 5px; /* 둥근 모서리 */
-  cursor: pointer; /* 커서 모양 */
-  transition: background-color 0.3s ease; /* 부드러운 색상 전환 효과 */
-  margin-top: 20px; /* 버튼 상단 여백 */
-  display: block; /* 버튼을 블록 요소로 설정 */
-  width: 100%; /* 버튼의 너비를 전체로 설정 */
-}
-
-button:hover {
-  background-color: #258e5d; /* 호버 색상 */
-}

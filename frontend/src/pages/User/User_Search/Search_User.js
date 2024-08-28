@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";  // useNavigate 훅 임포트
 import './Search_User.css';
 
 const Search_User = () => {
@@ -6,6 +7,8 @@ const Search_User = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();  // navigate 함수 정의
 
   const handleInputChange = (e) => {
     setQuery(e.target.value);
@@ -43,6 +46,10 @@ const Search_User = () => {
     }
   };
 
+  const handleResultClick = (id) => {
+    navigate(`/popup/user/detail/${id}`);  // id를 경로에 포함하여 상세보기 페이지로 이동
+  };
+
   return (
     <div className="search-container">
       <h1>팝업스토어 검색</h1>
@@ -63,7 +70,11 @@ const Search_User = () => {
       <div className="search-results">
         {results.length > 0 ? (
           results.map((result, index) => (
-            <div key={index} className="result-item">
+            <div
+              key={index}
+              className="result-item"
+              onClick={() => handleResultClick(result.id)} // 클릭 이벤트 추가
+            >
               <h2>{result.title}</h2>
               <div className="result-categories">
                 {result.categories.map((categoryObj, catIndex) => (
@@ -79,11 +90,11 @@ const Search_User = () => {
                   className="result-image"
                 />
               )}
-              </div>
-            ))
-          ) : (
-            !loading && <p>검색 결과가 없습니다.</p>
-          )}
+            </div>
+          ))
+        ) : (
+          !loading && <p>검색 결과가 없습니다.</p>
+        )}
       </div>
     </div>
   );
