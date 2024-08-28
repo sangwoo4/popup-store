@@ -49,7 +49,7 @@ const DetailInfo_User = () => {
 
           const images = popupImages && popupImages.length > 0 
             ? popupImages.map(image => `http://localhost:8080/${image.imageUrl}`)
-            : ['/images/image1.png'];
+            : ['/images/mainImage.png'];
 
           setLocationInfo({
             id,

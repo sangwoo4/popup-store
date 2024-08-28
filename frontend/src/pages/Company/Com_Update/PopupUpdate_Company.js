@@ -37,6 +37,7 @@ const PopupUpdate_Company = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showPostcodeModal, setShowPostcodeModal] = useState(false);
+  const [isReservationEnabled, setIsReservationEnabled] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -83,6 +84,7 @@ const PopupUpdate_Company = () => {
             토요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
             일요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
           }));
+          setIsReservationEnabled((popupData.storeDays || []).length > 0);
         }
         setLoading(false);
       })
@@ -125,6 +127,7 @@ const PopupUpdate_Company = () => {
           closeTime: operatingDays[day].endTime,
           day
         })),
+      isReservationEnabled
     };
 
     const formData = new FormData();
@@ -161,27 +164,26 @@ const PopupUpdate_Company = () => {
     }
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error.message}</p>;
-  }
-
   const handleAddressSearch = (e) => {
     e.preventDefault();
     setShowPostcodeModal(true);
   };
 
   const handleDayChange = (day) => {
-    setOperatingDays(prevDays => ({
-      ...prevDays,
-      [day]: {
-        ...prevDays[day],
-        isSelected: !prevDays[day].isSelected,
-      },
-    }));
+    setOperatingDays(prevDays => {
+      const updatedDays = {
+        ...prevDays,
+        [day]: {
+          ...prevDays[day],
+          isSelected: !prevDays[day].isSelected,
+        },
+      };
+
+      const anyDaySelected = Object.values(updatedDays).some(day => day.isSelected);
+      setIsReservationEnabled(anyDaySelected); 
+
+      return updatedDays;
+    });
   };
 
   const handleTimeChange = (day, timeType, time) => {
@@ -232,36 +234,36 @@ const PopupUpdate_Company = () => {
     }
   };
 
- // title과 description 입력 시 ai 호출 요청
- const fetchCategorySuggestions = async (title, description) => {
-  try {
-    console.log('Fetching category suggestions for:', title, description);
-    const response = await fetch('http://localhost:8080/popup/ai/category', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, description }),
-    });
+  // title과 description 입력 시 ai 호출 요청
+  const fetchCategorySuggestions = async (title, description) => {
+    try {
+      console.log('Fetching category suggestions for:', title, description);
+      const response = await fetch('http://localhost:8080/popup/ai/category', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, description }),
+      });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-    const data = await response.json();
-    console.log('Received categories:', data);
+      const data = await response.json();
+      console.log('Received categories:', data);
 
-    if (Array.isArray(data)) {
-      const allCategories = data.flatMap(item => item.categories || []);
-      console.log('categories:', allCategories);
-      setCategory(allCategories);
-    } else {
-      console.error('Received categories data is not in the expected format:', data);
+      if (Array.isArray(data)) {
+        const allCategories = data.flatMap(item => item.categories || []);
+        console.log('categories:', allCategories);
+        setCategory(allCategories);
+      } else {
+        console.error('Received categories data is not in the expected format:', data);
+        setCategory([]);
+      }
+    } catch (error) {
+      console.error('Error fetching category suggestions:', error);
       setCategory([]);
     }
-  } catch (error) {
-    console.error('Error fetching category suggestions:', error);
-    setCategory([]);
-  }
-};
+  };
 
   const debouncedFetchCategorySuggestions = debounce(fetchCategorySuggestions, 300);
 
@@ -508,9 +510,7 @@ export default PopupUpdate_Company;
 
 
 
-
-
-// // 24.08.18 이미지 들어오지 않는 코드, 카테고리를 정상 작동 수정 완료
+// // 24.08.23 사전예약 수정
 // import React, { useEffect, useState } from 'react';
 // import { useParams, useNavigate } from 'react-router-dom';
 // import DatePicker from 'react-datepicker';

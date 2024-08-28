@@ -147,7 +147,7 @@ const PopupReservation_User = () => {
           console.log('서버 응답 데이터:', data);
           if (response.ok) {
             alert('예약이 성공적으로 완료되었습니다!');
-            navigate(`/popup/user/popup_reservation/confirm`);
+            navigate(`/popup/user/popup_reservation/confirm/${data.id}`, { state: { reservationDetails: data.data }});
           } else {
             throw new Error('예약에 실패했습니다.');
           }

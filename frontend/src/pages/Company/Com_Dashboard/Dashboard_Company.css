@@ -1,0 +1,142 @@
+/* Container for the entire dashboard */
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar styling */
+.sidebar {
+  width: 250px;
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+/* Menu list styling */
+.menu-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Menu item styling */
+.menu-list li {
+  padding: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.menu-list li:hover {
+  background-color: #ddd;
+}
+
+/* Main content area styling */
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+.company-popup-list-wrapper {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.company-popup-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  width: 100%; /* 항목이 컨테이너의 전체 너비를 차지하도록 설정 */
+  box-sizing: border-box; /* 패딩과 테두리를 포함하여 요소의 총 너비와 높이에 포함됨 */
+}
+
+.company-popup-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  width: 100%; /* 링크가 컨테이너의 전체 너비를 차지하도록 설정 */
+}
+
+.company-popup-image {
+  max-width: 150px; /* 이미지의 최대 너비 설정 */
+  height: auto; /* 이미지가 비율을 유지하도록 설정 */
+  margin-right: 20px;
+  flex-shrink: 0; /* 이미지가 줄어들지 않도록 설정 */
+}
+
+.company-popup-details {
+  flex-grow: 1; /* 이 섹션이 남는 공간을 차지하도록 설정 */
+}
+
+.company-category-box {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.company-category-item {
+  background-color: #eee;
+  padding: 5px 10px;
+  margin: 5px;
+  border-radius: 5px;
+}
+
+.company-popup-edit-buttons { /* 버튼들을 감싸는 컨테이너 */
+  display: flex;
+  flex-direction: column; /* 버튼들을 수직으로 배치 */
+  margin-left: 20px; /* 이미지와의 간격 설정 */
+}
+
+.company-popup-edit-link {
+  display: inline-block;
+  width: 100px;
+  height: 25px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  text-align: center;
+  margin-bottom: 10px; /* 버튼 사이의 간격 설정 */
+}
+
+.company-popup-edit-link:last-child {
+  margin-bottom: 0; /* 마지막 버튼은 간격 제거 */
+}
+
+.company-popup-edit-link:hover {
+  background-color: #0056b3;
+}
+
+
+.reservation-status-details {
+  margin-top: 20px;
+}
+
+.reservation-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* 카드 간격 */
+}
+
+.reservation-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  flex: 1 1 calc(20% - 10px); /* 한 줄에 5개씩 */
+  box-sizing: border-box;
+}
+
+.reservation-card p {
+  margin: 5px 0;
+}
+
+/* .popup-title {
+  cursor: pointer;
+  color: #007bff;
+  text-decoration: underline;
+} */

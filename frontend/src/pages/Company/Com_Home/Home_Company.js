@@ -62,7 +62,7 @@ const Home_Company = () => {
           locations.map(location => {
             const images = location.popupImages && location.popupImages.length > 0 
               ? location.popupImages.map(image => `http://localhost:8080/${image.imageUrl}`) : ['/images/image1.png'];
-            console.log('Converted Image URLs:', images); // 이미지 URL 변환 확인용
+            console.log('Converted Image URLs:', images);
 
             return (
               <div key={location.id} className='company-popup-item'>

@@ -1,0 +1,96 @@
+/* 전체 컨테이너 스타일 */
+.container {
+  max-width: 1000px; /* 컨테이너 최대 너비 설정 */
+  width: 90%; /* 컨테이너 너비를 화면의 90%로 설정 */
+  margin: 0 auto; /* 수평 중앙 정렬 */
+  padding: 20px; /* 패딩 추가 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 */
+  border-radius: 8px; /* 둥근 모서리 */
+  background-color: #fff; /* 배경 색상 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+/* 캘린더 컨테이너 스타일 */
+.react-calendar {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 auto 25px; /* 상하 여백 및 자동 좌우 여백으로 가운데 정렬 */
+}
+
+/* 비활성화된 날짜 스타일 */
+.react-calendar__tile--inactive-period {
+  background-color: #e0e0e0; /* 비활성화된 날짜 배경색 */
+  color: #aaa; /* 비활성화된 날짜 텍스트 색상 */
+  pointer-events: none; /* 클릭 반응 제거 */
+}
+
+/* 활성화된 날짜 스타일 */
+.react-calendar__tile--active-period {
+  background-color: #ffffff; /* 활성화된 날짜 배경색 */
+  color: rgb(0, 0, 0); /* 활성화된 날짜 텍스트 색상 */
+}
+
+/* 선택된 날짜 스타일 */
+.react-calendar__tile--active {
+  background-color: #28a745;
+  color: white;
+}
+
+/* 공통 버튼 스타일 */
+.button {
+  background-color: #007bff; /* 기본 배경색 */
+  border: 1px solid #007bff; /* 기본 테두리색 */
+  color: white; /* 텍스트 색상 */
+  padding: 10px 20px; /* 상하좌우 여백 */
+  text-align: center; /* 텍스트 정렬 */
+  text-decoration: none; /* 텍스트 장식 제거 */
+  display: inline-block; /* 인라인 블록으로 표시 */
+  font-size: 16px; /* 글자 크기 */
+  margin: 10px; /* 버튼 간 여백 */
+  cursor: pointer; /* 커서 모양 */
+  border-radius: 4px; /* 둥근 모서리 */
+  transition: background-color 0.3s, border-color 0.3s; /* 부드러운 색상 전환 효과 */
+}
+
+/* 예약 마감 버튼 스타일 */
+.button.deadline {
+  background-color: #dc3545; /* 마감 상태의 배경색 */
+  border-color: #dc3545; /* 마감 상태의 테두리색 */
+}
+
+.button.deadline:hover {
+  background-color: #c82333; /* 마감 상태의 호버 색상 */
+  border-color: #c82333; /* 마감 상태의 호버 테두리 색상 */
+}
+
+/* 예약 활성화 버튼 스타일 */
+.button.activate {
+  background-color: #28a745; /* 활성화 상태의 배경색 */
+  border-color: #28a745; /* 활성화 상태의 테두리색 */
+}
+
+.button.activate:hover {
+  background-color: #218838; /* 활성화 상태의 호버 색상 */
+  border-color: #1e7e34; /* 활성화 상태의 호버 테두리 색상 */
+}
+
+/* 예약 카드 그리드 스타일 */
+.reservation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+  justify-items: center; /* 그리드 아이템 가운데 정렬 */
+}
+
+/* 예약 카드 스타일 */
+.reservation-card {
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  text-align: left; /* 카드 내부 텍스트 왼쪽 정렬 */
+}

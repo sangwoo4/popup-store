@@ -1,0 +1,77 @@
+/* 전체 컨테이너 스타일 */
+.confirmation-container {
+  max-width: 800px; /* 최대 너비 설정 */
+  width: 90%; /* 너비를 화면의 90%로 설정 */
+  margin: 40px auto; /* 상단과 하단 여백 및 중앙 정렬 */
+  padding: 20px; /* 패딩 추가 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 */
+  border-radius: 10px; /* 둥근 모서리 */
+  background-color: #fff; /* 배경 색상 */
+  font-family: 'Arial', sans-serif; /* 기본 폰트 설정 */
+}
+
+/* 제목 스타일 */
+.confirmation-container h1 {
+  font-size: 24px; /* 큰 글씨 크기 */
+  color: #333; /* 어두운 텍스트 색상 */
+  text-align: center; /* 중앙 정렬 */
+  margin-bottom: 20px; /* 하단 여백 */
+}
+
+/* 설명 텍스트 스타일 */
+.confirmation-container p {
+  font-size: 16px; /* 기본 글씨 크기 */
+  color: #555; /* 중간 밝기의 텍스트 색상 */
+  text-align: center; /* 중앙 정렬 */
+  margin-bottom: 20px; /* 하단 여백 */
+}
+
+/* 예약 세부 사항 컨테이너 */
+.confirmation-details {
+  background-color: #f7f7f7; /* 밝은 배경색 */
+  padding: 20px; /* 패딩 추가 */
+  border-radius: 8px; /* 둥근 모서리 */
+  margin-bottom: 20px; /* 하단 여백 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* 부드러운 그림자 */
+  display: flex; /* 플렉스박스로 설정 */
+  flex-direction: column; /* 세로 방향 정렬 */
+  align-items: center; /* 컨텐츠 가운데 정렬 */
+}
+
+/* 예약 세부 사항 제목 */
+.confirmation-details h2 {
+  font-size: 20px; /* 중간 크기 글씨 */
+  color: #333; /* 어두운 텍스트 색상 */
+  margin-bottom: 15px; /* 하단 여백 */
+}
+
+/* 예약 세부 사항 텍스트 */
+.confirmation-details p {
+  font-size: 16px; /* 기본 글씨 크기 */
+  color: #666; /* 조금 더 밝은 텍스트 색상 */
+  margin-bottom: 8px; /* 하단 여백 */
+  line-height: 1.5; /* 줄 간격 */
+  text-align: left; /* 텍스트 왼쪽 정렬 */
+  width: 100%; /* 텍스트를 부모 요소의 너비에 맞춤 */
+  max-width: 600px; /* 텍스트 블록의 최대 너비를 제한 */
+}
+
+/* 공통 버튼 스타일 */
+button {
+  background-color: #32b376; /* 기본 배경색 */
+  border: none; /* 테두리 제거 */
+  color: white; /* 텍스트 색상 */
+  padding: 10px 20px; /* 상하좌우 여백 */
+  font-size: 16px; /* 글씨 크기 */
+  text-align: center; /* 텍스트 정렬 */
+  border-radius: 5px; /* 둥근 모서리 */
+  cursor: pointer; /* 커서 모양 */
+  transition: background-color 0.3s ease; /* 부드러운 색상 전환 효과 */
+  margin-top: 20px; /* 버튼 상단 여백 */
+  display: block; /* 버튼을 블록 요소로 설정 */
+  width: 100%; /* 버튼의 너비를 전체로 설정 */
+}
+
+button:hover {
+  background-color: #258e5d; /* 호버 색상 */
+}

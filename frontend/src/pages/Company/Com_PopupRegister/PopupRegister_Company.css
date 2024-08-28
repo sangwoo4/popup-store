@@ -163,7 +163,7 @@
 
 .modal-close-button {
     position: absolute;
-    top: 12%;
+    top: 10%;
     right: 25%;
     background: none;
     border: none;
@@ -189,7 +189,7 @@
     position: absolute;
     z-index: 10;
 }
-  
+
 .category-suggestions li {
     padding: 10px;
     cursor: pointer;

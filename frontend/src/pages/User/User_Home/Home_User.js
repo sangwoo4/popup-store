@@ -158,7 +158,7 @@ const Home_User = () => {
             {locations.slice(0, 5).map(location => {
             const images = location.popupImages && location.popupImages.length > 0 
               ? location.popupImages.map(image => `http://localhost:8080/${image.imageUrl}`) 
-              : ['/images/image1.png'];
+              : ['/images/mainImage.png'];
 
             return (
               <div key={location.id} className='popup-item'>
@@ -213,7 +213,7 @@ const Home_User = () => {
                             />
                           ))
                         ) : (
-                          <img src='/images/image1.png' alt='Default Banner' className='lower-popup-image' />
+                          <img src='/images/mainImage.png' alt='Default Banner' className='lower-popup-image' />
                         )}
                       </div>
                       <div className='lower-popup-details'>
@@ -250,7 +250,7 @@ const Home_User = () => {
                             />
                           ))
                         ) : (
-                          <img src='/images/image1.png' alt='Default Banner' className='lower-popup-image' />
+                          <img src='/images/mainImage.png' alt='Default Banner' className='lower-popup-image' />
                         )}
                       </div>
                       <div className='lower-popup-details'>
@@ -291,7 +291,7 @@ const Home_User = () => {
                               />
                             ))
                           ) : (
-                            <img src='/images/image1.png' alt='Default Banner' className='lower-popup-image' />
+                            <img src='/images/mainImage.png' alt='Default Banner' className='lower-popup-image' />
                           )}
                         </div>
                         <div className='lower-popup-details'>
