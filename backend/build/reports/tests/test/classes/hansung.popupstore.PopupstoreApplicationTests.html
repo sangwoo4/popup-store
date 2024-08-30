@@ -229,8 +229,8 @@ Caused by: java.net.UnknownHostException: mysql
 <h2>Standard output</h2>
 <span class="code">
 <pre>Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
-18:03:07.287 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [hansung.popupstore.PopupstoreApplicationTests]: PopupstoreApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-18:03:07.327 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration hansung.popupstore.PopupstoreApplication for test class hansung.popupstore.PopupstoreApplicationTests
+18:04:13.157 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [hansung.popupstore.PopupstoreApplicationTests]: PopupstoreApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+18:04:13.199 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration hansung.popupstore.PopupstoreApplication for test class hansung.popupstore.PopupstoreApplicationTests
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -241,16 +241,16 @@ Caused by: java.net.UnknownHostException: mysql
 
  :: Spring Boot ::                (v3.3.1)
 
-2024-08-30T18:03:07.461+09:00  INFO 49266 --- [popupstore] [    Test worker] h.popupstore.PopupstoreApplicationTests  : Starting PopupstoreApplicationTests using Java 17.0.11 with PID 49266 (started by park in /Users/park/Desktop/aa/backend)
-2024-08-30T18:03:07.462+09:00  INFO 49266 --- [popupstore] [    Test worker] h.popupstore.PopupstoreApplicationTests  : No active profile set, falling back to 1 default profile: &quot;default&quot;
-2024-08-30T18:03:07.802+09:00  INFO 49266 --- [popupstore] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-08-30T18:03:07.835+09:00  INFO 49266 --- [popupstore] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 31 ms. Found 12 JPA repository interfaces.
-2024-08-30T18:03:08.021+09:00  INFO 49266 --- [popupstore] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-08-30T18:03:08.040+09:00  INFO 49266 --- [popupstore] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
-2024-08-30T18:03:08.053+09:00  INFO 49266 --- [popupstore] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2024-08-30T18:03:08.153+09:00  INFO 49266 --- [popupstore] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-08-30T18:03:08.162+09:00  INFO 49266 --- [popupstore] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2024-08-30T18:03:09.250+09:00  WARN 49266 --- [popupstore] [    Test worker] o.h.e.j.e.i.JdbcEnvironmentInitiator     : HHH000342: Could not obtain connection to query metadata
+2024-08-30T18:04:13.344+09:00  INFO 50404 --- [popupstore] [    Test worker] h.popupstore.PopupstoreApplicationTests  : Starting PopupstoreApplicationTests using Java 17.0.11 with PID 50404 (started by park in /Users/park/Desktop/aa/backend)
+2024-08-30T18:04:13.345+09:00  INFO 50404 --- [popupstore] [    Test worker] h.popupstore.PopupstoreApplicationTests  : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2024-08-30T18:04:13.736+09:00  INFO 50404 --- [popupstore] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-08-30T18:04:13.772+09:00  INFO 50404 --- [popupstore] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 34 ms. Found 12 JPA repository interfaces.
+2024-08-30T18:04:14.001+09:00  INFO 50404 --- [popupstore] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-08-30T18:04:14.019+09:00  INFO 50404 --- [popupstore] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2024-08-30T18:04:14.034+09:00  INFO 50404 --- [popupstore] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-08-30T18:04:14.151+09:00  INFO 50404 --- [popupstore] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-08-30T18:04:14.164+09:00  INFO 50404 --- [popupstore] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-08-30T18:04:15.216+09:00  WARN 50404 --- [popupstore] [    Test worker] o.h.e.j.e.i.JdbcEnvironmentInitiator     : HHH000342: Could not obtain connection to query metadata
 
 java.lang.NullPointerException: Cannot invoke &quot;org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(java.sql.SQLException, String)&quot; because the return value of &quot;org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.sqlExceptionHelper()&quot; is null
 	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:116) ~[hibernate-core-6.5.2.Final.jar:6.5.2.Final]
@@ -382,24 +382,24 @@ java.lang.NullPointerException: Cannot invoke &quot;org.hibernate.engine.jdbc.sp
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69) ~[gradle-worker.jar:na]
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74) ~[gradle-worker.jar:na]
 
-2024-08-30T18:03:09.274+09:00  WARN 49266 --- [popupstore] [    Test worker] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2024-08-30T18:03:09.274+09:00  WARN 49266 --- [popupstore] [    Test worker] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2024-08-30T18:03:09.736+09:00  INFO 49266 --- [popupstore] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2024-08-30T18:03:09.743+09:00  INFO 49266 --- [popupstore] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2024-08-30T18:03:10.755+09:00  WARN 49266 --- [popupstore] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 08S01
-2024-08-30T18:03:10.756+09:00 ERROR 49266 --- [popupstore] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : Communications link failure
+2024-08-30T18:04:15.242+09:00  WARN 50404 --- [popupstore] [    Test worker] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-08-30T18:04:15.243+09:00  WARN 50404 --- [popupstore] [    Test worker] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2024-08-30T18:04:15.697+09:00  INFO 50404 --- [popupstore] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-08-30T18:04:15.704+09:00  INFO 50404 --- [popupstore] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-08-30T18:04:16.711+09:00  WARN 50404 --- [popupstore] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 08S01
+2024-08-30T18:04:16.712+09:00 ERROR 50404 --- [popupstore] [    Test worker] o.h.engine.jdbc.spi.SqlExceptionHelper   : Communications link failure
 
 The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-2024-08-30T18:03:10.764+09:00 ERROR 49266 --- [popupstore] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution [Communications link failure
+2024-08-30T18:04:16.718+09:00 ERROR 50404 --- [popupstore] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution [Communications link failure
 
 The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.] [n/a]
-2024-08-30T18:03:10.764+09:00  WARN 49266 --- [popupstore] [    Test worker] o.s.w.c.s.GenericWebApplicationContext   : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution [Communications link failure
+2024-08-30T18:04:16.719+09:00  WARN 50404 --- [popupstore] [    Test worker] o.s.w.c.s.GenericWebApplicationContext   : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution [Communications link failure
 
 The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.] [n/a]
-2024-08-30T18:03:10.775+09:00  INFO 49266 --- [popupstore] [    Test worker] .s.b.a.l.ConditionEvaluationReportLogger : 
+2024-08-30T18:04:16.732+09:00  INFO 50404 --- [popupstore] [    Test worker] .s.b.a.l.ConditionEvaluationReportLogger : 
 
 Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
-2024-08-30T18:03:10.786+09:00 ERROR 49266 --- [popupstore] [    Test worker] o.s.boot.SpringApplication               : Application run failed
+2024-08-30T18:04:16.743+09:00 ERROR 50404 --- [popupstore] [    Test worker] o.s.boot.SpringApplication               : Application run failed
 
 org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution [Communications link failure
 
@@ -597,7 +597,7 @@ Caused by: java.net.UnknownHostException: mysql
 	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:62) ~[mysql-connector-j-8.3.0.jar:8.3.0]
 	... 148 common frames omitted
 
-2024-08-30T18:03:10.797+09:00  WARN 49266 --- [popupstore] [    Test worker] o.s.test.context.TestContextManager      : Caught exception while allowing TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener] to prepare test instance [hansung.popupstore.PopupstoreApplicationTests@230e163b]
+2024-08-30T18:04:16.752+09:00  WARN 50404 --- [popupstore] [    Test worker] o.s.test.context.TestContextManager      : Caught exception while allowing TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener] to prepare test instance [hansung.popupstore.PopupstoreApplicationTests@230e163b]
 
 java.lang.IllegalStateException: Failed to load ApplicationContext for [WebMergedContextConfiguration@135f160e testClass = hansung.popupstore.PopupstoreApplicationTests, locations = [], classes = [hansung.popupstore.PopupstoreApplication], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [], propertySourceProperties = [&quot;org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true&quot;], contextCustomizers = [org.springframework.boot.test.autoconfigure.actuate.observability.ObservabilityContextCustomizerFactory$DisableObservabilityContextCustomizer@1f, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizer@4dd02341, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@222eb8aa, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@4b6690c0, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@63a270c9, org.springframework.boot.test.context.SpringBootTestAnnotation@8fc6bcee], resourceBasePath = &quot;src/main/webapp&quot;, contextLoader = org.springframework.boot.test.context.SpringBootContextLoader, parent = null]
 	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:180) ~[spring-test-6.1.10.jar:6.1.10]
@@ -848,7 +848,7 @@ Unconditional classes:
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 8.8</a> at 2024. 8. 30. 오후 6:03:10</p>
+<a href="http://www.gradle.org">Gradle 8.8</a> at 2024. 8. 30. 오후 6:04:16</p>
 </div>
 </div>
 </body>
