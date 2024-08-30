@@ -65,7 +65,8 @@ public class UserReservationService {
 
         // 클라이언트로 전송할 데이터 구성
         Map<String, Object> responseData = new HashMap<>();
-        responseData.put("reservationId", popupReservation.getId());
+//        responseData.put("reservationId", popupReservation.getId());
+        responseData.put("id" , userReservation.getId());
         responseData.put("numberOfPeople", dto.getNumberOfPeople());
         responseData.put("date", popupReservation.getDate());
         responseData.put("startTime", popupReservation.getStartTime());
@@ -112,7 +113,7 @@ public class UserReservationService {
 
         // 클라이언트로 전송할 데이터 구성
         Map<String, Object> responseData = new HashMap<>();
-        responseData.put("reservationId", dto.getId());
+        responseData.put("Id", userReservation.getId());
         responseData.put("date", popupReservation.getDate());
         responseData.put("startTime", popupReservation.getStartTime());
         responseData.put("title", popupStore.getTitle());
@@ -137,7 +138,8 @@ public class UserReservationService {
 
             // 각 예약 정보에 대한 데이터 구성
             Map<String, Object> reservationData = new HashMap<>();
-            reservationData.put("reservationId", popupReservation.getId());
+            reservationData.put("Id", userReservation.getId());
+//            reservationData.put("reservationId", popupReservation.getId());
             reservationData.put("title", popupStore.getTitle());
             reservationData.put("name", user.getUsername());
             reservationData.put("date", popupReservation.getDate());
@@ -166,7 +168,8 @@ public class UserReservationService {
 
                 // 예약 정보 구성
                 Map<String, Object> reservationData = new HashMap<>();
-                reservationData.put("reservationId", userReservation.getId());
+//                reservationData.put("reservationId", userReservation.getId());
+                reservationData.put("Id", userReservation.getId());
                 reservationData.put("title", popupStore.getTitle());
                 reservationData.put("name", user.getUsername());
                 reservationData.put("date", popupReservation.getDate());
