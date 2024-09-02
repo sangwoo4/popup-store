@@ -32,6 +32,7 @@ const ReservationDetails_User = () => {
                 }
 
                 const data = await response.json();
+                console.log(data);
 
                 const groupedData = data.data.reduce((acc, curr) => {
                     if (!acc[curr.title]) {
@@ -53,10 +54,12 @@ const ReservationDetails_User = () => {
     }, []);
 
     const handleCardClick = (reservation) => {
-        navigate("/popup/user/popup_reservation/confirm/:id", {
-            state: { reservationDetails: reservation }
+        navigate(`/popup/user/popup_reservation/confirm/${reservation.Id}`, {
+          state: { reservationDetails: reservation }
         });
     };
+      
+      
 
     if (loading) {
         return <div>Loading...</div>;
@@ -86,7 +89,7 @@ const ReservationDetails_User = () => {
                                 <p><strong>날짜:</strong> {reservation.date}</p>
                                 <p><strong>시간:</strong> {reservation.startTime}</p>
                                 <p><strong>참여 인원:</strong> {reservation.numberOfPeople}</p>
-                                <p><strong>예약 ID:</strong> {reservation.reservationId}</p>
+                                <p><strong>예약 ID:</strong> {reservation.Id}</p>
                             </div>
                         ))}
                     </div>

@@ -39,7 +39,7 @@ function App() {
         <Route path="/popup/my.reservation" element={<ReservationDetails_User/>}/>
         <Route path="/popup/user/search" element={<Search_User/>}/>
         <Route path="/popup/user/popup_pre_reservation/:id" element={<PopupReservation_User/>}/>
-        <Route path="/popup/user/popup_reservation/confirm/:id" element={<PopupReservation_Comfirm_User/>}/>
+        <Route path="/popup/user/popup_reservation/confirm/:reservationId" element={<PopupReservation_Comfirm_User/>}/>
 
         <Route path="/auth/company/homepage" element={<Home_Company/>}/>
         <Route path="/auth/company/dashboard" element={<Dashboard_Company/>}/>

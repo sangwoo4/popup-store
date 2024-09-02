@@ -1,12 +1,18 @@
+/*
+  수정하기에 남아 있어야 하는 목록
+  수정가능: 제목, 주최사, 전화번호, 우편번호, 주소, 지하철역, 설명, 카테고리, 이미지, 링크
+  수정 불가능(read only): 운영기간, 영업요일
+  수정불가능에 대해서는 "운영 기간 및 예약 수정은 -페이지 안내 링크 걸어주기-"
+*/
+
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import DaumPostcode from 'react-daum-postcode';
 import './PopupUpdate_Company.css';
 import debounce from 'lodash.debounce';
 
 const PopupUpdate_Company = () => {
+  const location = useLocation(); 
   const { id } = useParams();
   const [title, setTitle] = useState('');
   const [companyName, setCompanyName] = useState('');
@@ -37,80 +43,119 @@ const PopupUpdate_Company = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showPostcodeModal, setShowPostcodeModal] = useState(false);
-  const [isReservationEnabled, setIsReservationEnabled] = useState(true);
+  const [isReservationEnabled, setIsReservationEnabled] = useState(false);
+  const [popupReservations, setPopupReservations] = useState([]);
+  const [companyId, setCompanyId] = useState(''); // 회사 ID (필요한 값으로 초기화)
+  const [totalReservation, setTotalReservation] = useState(0); // 총 예약 수 (필요한 값으로 초기화)
+  const [distance, setDistance] = useState('');
+  const [reservationEnabled, setReservationEnabled] = useState(false);
+
+
+  const [images, setImages] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      fetch(`http://localhost:8080/popup/company/detail/${id}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.result && data.data) {
-          const popupData = data.data;
-          setTitle(popupData.title || '');
-          setCompanyName(popupData.companyName || '');
-          setOperatingStartDate(new Date(popupData.startDate).toISOString().split('T')[0]);
-          setOperatingEndDate(new Date(popupData.endDate).toISOString().split('T')[0]);
-          setTelephone(popupData.telephone || '');
-          setPostcode(popupData.postcode || '');
-          setAddress(popupData.address || '');
-          setRoadAddress(popupData.roadAddress || '');
-          setDetailAddress(popupData.detailAddress || '');
-          setSubway(popupData.subway || '');
-          setCategories(popupData.categories.map(cat => cat.category));
-          setDescription(popupData.description || '');
-          setImage(popupData.image || '');
-          setLink(popupData.link || '');
-          setCoordinates({ mapx: popupData.mapx, mapy: popupData.mapy });
-          setOperatingDays((popupData.storeDays || []).reduce((acc, day) => {
-            acc[day.day] = {
-              startTime: day.openTime,
-              endTime: day.closeTime,
-              isSelected: true
-            };
-            return acc;
-          }, {
-            월요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
-            화요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
-            수요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
-            목요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
-            금요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
-            토요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
-            일요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
-          }));
-          setIsReservationEnabled((popupData.storeDays || []).length > 0);
-        }
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error('Error fetching popup data:', error);
-        setError(error);
-        setLoading(false);
-      });
+    const { popupImages } = location.state || {};
+  
+    if (popupImages && popupImages.length > 0) {
+      const imageUrls = popupImages.map(image => `http://localhost:8080/${image.imageUrl}`);
+      setImages(imageUrls);
     }
-  }, [id]);
+  }, [location]);
+  
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const response = await fetch(`http://localhost:8080/popup/company/detail/${id}`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          const data = await response.json();
+          console.log(data);
+
+          if (data.result && data.data) {
+            const popupData = data.data;
+  
+            setTitle(popupData.title || '');
+            setCompanyName(popupData.companyName || '');
+            setOperatingStartDate(new Date(popupData.startDate).toISOString().split('T')[0]);
+            setOperatingEndDate(new Date(popupData.endDate).toISOString().split('T')[0]);
+            setTelephone(popupData.telephone || '');
+            setPostcode(popupData.postcode || '');
+            setAddress(popupData.address || '');
+            setRoadAddress(popupData.roadAddress || '');
+            setDetailAddress(popupData.detailAddress || '');
+            setSubway(popupData.subway || '');
+            setCategories(popupData.categories.map(cat => cat.category));
+            setDescription(popupData.description || '');
+            setImage(popupData.popupImages?.[0]?.imageUrl || '');
+            setLink(popupData.link || '');
+            setCoordinates({ mapx: popupData.mapx, mapy: popupData.mapy });
+            setOperatingDays(popupData.storeDays.reduce((acc, day) => {
+              acc[day.day] = {
+                startTime: day.openTime,
+                endTime: day.closeTime,
+                isSelected: true
+              };
+              return acc;
+            }, {
+              월요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
+              화요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
+              수요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
+              목요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
+              금요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
+              토요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
+              일요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
+            }));
+            setPopupReservations(popupData.popupReservations || []);
+            setIsReservationEnabled(popupData.popupReservations.length > 0);
+            fetchCategorySuggestions(popupData.title || '', popupData.description || '');
+            const images = popupImages.length > 0 ? popupImages.map(image => `http://localhost:8080/${image.imageUrl}`) : ['/images/image1.png'];
+  
+            const { popupImages } = location.state || {};
+            if (popupImages && popupImages.length > 0) {
+              const imageUrls = popupImages.map(image => `http://localhost:8080/${image.imageUrl}`);
+              setImages(imageUrls);
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching popup data:', error);
+          setError(error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+  
+    fetchData();
+  }, [id, location]);
+  
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
     const token = localStorage.getItem('token');
     if (!token) {
       alert('로그인이 필요합니다.');
       return;
     }
-
+  
+    // JSON 데이터 구성
     const jsonData = {
+      companyId,
+      companyName,
       title,
       postcode,
       address,
       roadAddress,
       detailAddress,
+      distance,
       startDate: operatingStartDate || '',
       endDate: operatingEndDate || '',
       telephone,
@@ -119,7 +164,7 @@ const PopupUpdate_Company = () => {
       link,
       mapx: coordinates.mapx,
       mapy: coordinates.mapy,
-      categories: category.map(cat => ({ category: cat.category })),
+      categories: category.map(cat => ({ category: cat })),
       storeDays: Object.keys(operatingDays)
         .filter(day => operatingDays[day].isSelected)
         .map(day => ({
@@ -127,30 +172,44 @@ const PopupUpdate_Company = () => {
           closeTime: operatingDays[day].endTime,
           day
         })),
-      isReservationEnabled
+      popupReservations: popupReservations.map(res => ({
+        id: res.id,
+        day: res.day,
+        startTime: res.startTime,
+        totalReservation: res.totalReservation,
+        currentReservation: res.currentReservation,
+        isReservationFull: res.isReservationFull,
+        data: res.date
+      })),
+      isReservationEnabled: reservationEnabled
     };
-
+  
+    // FormData 객체 생성
     const formData = new FormData();
     formData.append('dto', new Blob([JSON.stringify(jsonData)], { type: 'application/json' }));
-
-    imageFiles.forEach((file) => {
+  
+    imageFiles.forEach((file, index) => {
       formData.append('images', file);
     });
 
+    console.log('Fetched images:', images); // For debugging
+
+  
     try {
       const response = await fetch(`http://localhost:8080/popup/company/update/${id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
         },
-        body: formData
+        body: formData,
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
+        console.error('Error response:', errorData);
         throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message}`);
       }
-
+  
       const result = await response.json();
       if (result.result) {
         alert('수정되었습니다!');
@@ -161,8 +220,10 @@ const PopupUpdate_Company = () => {
     } catch (error) {
       console.error('Error:', error);
       alert('수정에 실패했습니다. 다시 시도해주세요.');
+      console.log(jsonData);
     }
   };
+  
 
   const handleAddressSearch = (e) => {
     e.preventDefault();
@@ -234,7 +295,6 @@ const PopupUpdate_Company = () => {
     }
   };
 
-  // title과 description 입력 시 ai 호출 요청
   const fetchCategorySuggestions = async (title, description) => {
     try {
       console.log('Fetching category suggestions for:', title, description);
@@ -279,6 +339,28 @@ const PopupUpdate_Company = () => {
     debouncedFetchCategorySuggestions(title, newDescription);
   };
 
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImageFiles(files);
+  
+    // File preview URLs
+    const previewImages = files.map(file => URL.createObjectURL(file));
+    setImages(previewImages);
+  
+    // Set first image for preview
+    if (files.length > 0) {
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImage('');
+    }
+  };
+  
+
   const timeOptions = [];
   for (let hour = 0; hour < 24; hour++) {
     for (let minute = 0; minute < 60; minute += 30) {
@@ -313,38 +395,17 @@ const PopupUpdate_Company = () => {
         </label>
 
         <label>
-          운영기간:
-          <div className="date-picker-container">
-          <DatePicker
-            selected={operatingStartDate ? new Date(operatingStartDate) : null}
-            onChange={(date) => setOperatingStartDate(date ? date.toISOString().split('T')[0] : '')}
-            selectsStart
-            startDate={operatingStartDate ? new Date(operatingStartDate) : null}
-            endDate={operatingEndDate ? new Date(operatingEndDate) : null}
-            placeholderText="운영 시작일"
-            required
-            showMonthDropdown
-            showYearDropdown
-            dropdownMode="select"
-            withPortal
-            closeOnScroll={true}
-          />
-          <DatePicker
-            selected={operatingEndDate ? new Date(operatingEndDate) : null}
-            onChange={(date) => setOperatingEndDate(date ? date.toISOString().split('T')[0] : '')}
-            selectsEnd
-            startDate={operatingStartDate ? new Date(operatingStartDate) : null}
-            endDate={operatingEndDate ? new Date(operatingEndDate) : null}
-            minDate={operatingStartDate ? new Date(operatingStartDate) : null}
-            placeholderText="운영 종료일"
-            required
-            showMonthDropdown
-            showYearDropdown
-            dropdownMode="select"
-            withPortal
-            closeOnScroll={true}
-          />
+        {/* 운영기간 (Read-Only) */}
+        <div>
+          <label>운영기간</label>
+          <div>
+            <input
+              type="text"
+              value={`${operatingStartDate} ~ ${operatingEndDate}`}
+              readOnly
+            />
           </div>
+        </div>
         </label>
 
         <label>
@@ -423,23 +484,45 @@ const PopupUpdate_Company = () => {
         </label>
 
         <label>
-          카테고리:
-          <div className="categories">
-            {category.map((cat, index) => (
-              <div key={index} className="category-box2">
-                {cat.category}
-              </div>
-            ))}
-          </div>
-        </label>
+            카테고리:
+            <div className="categories">
+              {category.length > 0 ? (
+                category.map((cat, index) => (
+                  <div key={index} className="category-box2">
+                    {cat.category}
+                  </div>
+                ))
+              ) : (
+                <p>No categories available</p>
+              )}
+            </div>
+          </label>
 
         <label>
-          이미지 삽입
-          <div className="form-group">
-            <input type="file" multiple accept="image/*" onChange={(e) => setImageFiles([...e.target.files])} />
-            {image && <img src={image} alt="Company Image" style={{ maxWidth: '200px', maxHeight: '200px' }} />}
-          </div>
+          이미지 업로드:
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
         </label>
+
+        <div className="image-preview">
+          {images.length > 0 ? (
+            <div className="banner-images">
+              {images.map((imgUrl, index) => (
+                <img 
+                  key={index} 
+                  src={imgUrl} 
+                  alt={`Preview ${index}`} 
+                  className="banner-image" 
+                />
+              ))}
+            </div>
+          ) : (
+            <img src="/images/image1.png" alt="Default Banner" className="banner-image" />
+          )}
+        </div>
 
         <label>
           링크 삽입(sns, url)
@@ -451,45 +534,29 @@ const PopupUpdate_Company = () => {
         </label>
 
         <div className="operating-days">
-          <h3>영업 요일:</h3>
-          {Object.keys(operatingDays).map((day) => (
-            <div key={day} className="day-container">
-              <input
-                type="checkbox"
-                checked={operatingDays[day].isSelected}
-                onChange={() => handleDayChange(day)}
-              />
-              <label>{day}</label>
-              {operatingDays[day].isSelected && (
-                <div className="time-picker-container">
-                  <select
-                    value={operatingDays[day].startTime}
-                    onChange={(e) => handleTimeChange(day, 'startTime', e.target.value)}
-                  >
-                    {timeOptions.map((time, index) => (
-                      <option key={index} value={time}>
-                        {time}
-                      </option>
-                    ))}
-                  </select>
-                  {' ~ '}
-                  <select
-                    value={operatingDays[day].endTime}
-                    onChange={(e) => handleTimeChange(day, 'endTime', e.target.value)}
-                  >
-                    {timeOptions.map((time, index) => (
-                      <option key={index} value={time}>
-                        {time}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+          <div>
+            <label>영업 요일 및 시간</label>
+            <div>
+              {Object.keys(operatingDays).map((day) =>
+                operatingDays[day].isSelected ? (
+                  <div key={day}>
+                    <label>{day}</label>
+                    <input
+                      type="text"
+                      value={`${operatingDays[day].startTime} - ${operatingDays[day].endTime}`}
+                      readOnly
+                    />
+                  </div>
+                ) : null
               )}
             </div>
-          ))}
+          </div>
         </div>
 
         <br/>
+        <p>
+          기간 및 예약 수정은 대시보드 내 "기간 및 예약 수정"을 참고하세요.
+        </p>
 
         <button type="submit">수정하기</button>
       </form>
@@ -510,7 +577,8 @@ export default PopupUpdate_Company;
 
 
 
-// // 24.08.23 사전예약 수정
+
+// // 24.08.30 수정하기 운영기간 기본정보 분리 전 코드
 // import React, { useEffect, useState } from 'react';
 // import { useParams, useNavigate } from 'react-router-dom';
 // import DatePicker from 'react-datepicker';
@@ -550,6 +618,7 @@ export default PopupUpdate_Company;
 //   const [loading, setLoading] = useState(true);
 //   const [error, setError] = useState(null);
 //   const [showPostcodeModal, setShowPostcodeModal] = useState(false);
+//   const [isReservationEnabled, setIsReservationEnabled] = useState(true);
 //   const navigate = useNavigate();
 
 //   useEffect(() => {
@@ -565,6 +634,8 @@ export default PopupUpdate_Company;
 //       .then(data => {
 //         if (data.result && data.data) {
 //           const popupData = data.data;
+//           console.log(data);
+
 //           setTitle(popupData.title || '');
 //           setCompanyName(popupData.companyName || '');
 //           setOperatingStartDate(new Date(popupData.startDate).toISOString().split('T')[0]);
@@ -596,6 +667,7 @@ export default PopupUpdate_Company;
 //             토요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
 //             일요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
 //           }));
+//           setIsReservationEnabled((popupData.storeDays || []).length > 0);
 //         }
 //         setLoading(false);
 //       })
@@ -638,6 +710,7 @@ export default PopupUpdate_Company;
 //           closeTime: operatingDays[day].endTime,
 //           day
 //         })),
+//       isReservationEnabled
 //     };
 
 //     const formData = new FormData();
@@ -674,27 +747,26 @@ export default PopupUpdate_Company;
 //     }
 //   };
 
-//   if (loading) {
-//     return <p>Loading...</p>;
-//   }
-
-//   if (error) {
-//     return <p>Error: {error.message}</p>;
-//   }
-
 //   const handleAddressSearch = (e) => {
 //     e.preventDefault();
 //     setShowPostcodeModal(true);
 //   };
 
 //   const handleDayChange = (day) => {
-//     setOperatingDays(prevDays => ({
-//       ...prevDays,
-//       [day]: {
-//         ...prevDays[day],
-//         isSelected: !prevDays[day].isSelected,
-//       },
-//     }));
+//     setOperatingDays(prevDays => {
+//       const updatedDays = {
+//         ...prevDays,
+//         [day]: {
+//           ...prevDays[day],
+//           isSelected: !prevDays[day].isSelected,
+//         },
+//       };
+
+//       const anyDaySelected = Object.values(updatedDays).some(day => day.isSelected);
+//       setIsReservationEnabled(anyDaySelected); 
+
+//       return updatedDays;
+//     });
 //   };
 
 //   const handleTimeChange = (day, timeType, time) => {
@@ -745,36 +817,36 @@ export default PopupUpdate_Company;
 //     }
 //   };
 
-//  // title과 description 입력 시 ai 호출 요청
-//  const fetchCategorySuggestions = async (title, description) => {
-//   try {
-//     console.log('Fetching category suggestions for:', title, description);
-//     const response = await fetch('http://localhost:8080/popup/ai/category', {
-//       method: 'POST',
-//       headers: { 'Content-Type': 'application/json' },
-//       body: JSON.stringify({ title, description }),
-//     });
+//   // title과 description 입력 시 ai 호출 요청
+//   const fetchCategorySuggestions = async (title, description) => {
+//     try {
+//       console.log('Fetching category suggestions for:', title, description);
+//       const response = await fetch('http://localhost:8080/popup/ai/category', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ title, description }),
+//       });
 
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! status: ${response.status}`);
-//     }
+//       if (!response.ok) {
+//         throw new Error(`HTTP error! status: ${response.status}`);
+//       }
 
-//     const data = await response.json();
-//     console.log('Received categories:', data);
+//       const data = await response.json();
+//       console.log('Received categories:', data);
 
-//     if (Array.isArray(data)) {
-//       const allCategories = data.flatMap(item => item.categories || []);
-//       console.log('categories:', allCategories);
-//       setCategory(allCategories);
-//     } else {
-//       console.error('Received categories data is not in the expected format:', data);
+//       if (Array.isArray(data)) {
+//         const allCategories = data.flatMap(item => item.categories || []);
+//         console.log('categories:', allCategories);
+//         setCategory(allCategories);
+//       } else {
+//         console.error('Received categories data is not in the expected format:', data);
+//         setCategory([]);
+//       }
+//     } catch (error) {
+//       console.error('Error fetching category suggestions:', error);
 //       setCategory([]);
 //     }
-//   } catch (error) {
-//     console.error('Error fetching category suggestions:', error);
-//     setCategory([]);
-//   }
-// };
+//   };
 
 //   const debouncedFetchCategorySuggestions = debounce(fetchCategorySuggestions, 300);
 
@@ -1018,3 +1090,4 @@ export default PopupUpdate_Company;
 // };
 
 // export default PopupUpdate_Company;
+

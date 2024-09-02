@@ -87,7 +87,6 @@ const Home_Company = () => {
                     </div>
                   </div>
                 </Link>
-                <Link to={`/popup/company/update/${location.id}`} className='company-popup-edit-link'>수정하기</Link>
               </div>
             );
           })

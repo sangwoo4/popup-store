@@ -1,0 +1,177 @@
+/* General Container Styling */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h1, h2, h3 {
+  color: #333;
+}
+
+label {
+  display: block;
+  margin: 8px 0;
+}
+
+input[type="date"], input[type="time"], input[type="text"], input[type="number"] {
+  margin-left: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: calc(100% - 20px);
+  box-sizing: border-box;
+}
+
+input[type="date"], input[type="time"] {
+  width: 150px;
+}
+
+/* Operating Period Container */
+.operating-period-container {
+  margin-bottom: 20px;
+}
+
+.operating-period-container label {
+  display: inline-block;
+  width: 120px;
+}
+
+/* Store Days Container */
+.store-days-container {
+  margin-bottom: 20px;
+}
+
+.store-days-container .store-day {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+}
+
+.store-days-container input[type="text"] {
+  width: 120px;
+}
+
+.store-days-container input[type="time"] {
+  width: 100px;
+}
+
+/* Reservation Times Table */
+.reservation-times-container {
+  margin-top: 20px;
+}
+
+.reservation-times-container table {
+  width: 70%; /* 전체 너비를 100%로 설정 */
+  border-collapse: collapse;
+}
+
+.reservation-times-container th, .reservation-times-container td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.reservation-times-container th {
+  background-color: #f4f4f4;
+}
+
+/* 열 너비를 직접 지정 */
+.reservation-times-container th:nth-child(1),
+.reservation-times-container td:nth-child(1) {
+  width: 30%; /* 첫 번째 열 너비 */
+}
+
+.reservation-times-container th:nth-child(2),
+.reservation-times-container td:nth-child(2) {
+  width: 30%; /* 두 번째 열 너비 */
+}
+
+.reservation-times-container th:nth-child(3),
+.reservation-times-container td:nth-child(3) {
+  width: 15%; /* 세 번째 열 너비 */
+}
+
+.reservation-times-container th:nth-child(4),
+.reservation-times-container td:nth-child(4) {
+  width: 15%; /* 네 번째 열 너비 */
+}
+
+/* 버튼 스타일 */
+.reservation-times-container button {
+  margin-top: 10px;
+}
+
+
+/* Toggle Button */
+.button {
+  display: inline-block;
+  margin: 10px 0;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  text-align: center;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+
+
+/* Grid for Reservations */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.grid-container div {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.button.activate {
+  background-color: #28a745;
+}
+
+.button.activate:hover {
+  background-color: #218838;
+}
+
+.button.deadline {
+  background-color: #dc3545;
+}
+
+.button.deadline:hover {
+  background-color: #c82333;
+}
+
+/* Alerts */
+.alert {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 4px;
+  color: #fff;
+}
+
+.alert.success {
+  background-color: #28a745;
+}
+
+.alert.error {
+  background-color: #dc3545;
+}

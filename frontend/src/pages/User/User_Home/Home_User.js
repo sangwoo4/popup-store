@@ -254,7 +254,7 @@ const Home_User = () => {
                         )}
                       </div>
                       <div className='lower-popup-details'>
-                        <h3>{distance.title}</h3>
+                        <h3>{distance.title}</h3> <p>{distance.distance}km</p>
                         <p>{distance.startDate ? `${distance.startDate} ~ ${distance.endDate}` : '상시 운영'}</p>
                         <div className="lower-category-box">
                           {distance.categories && distance.categories.map((locCategory, index) => (
