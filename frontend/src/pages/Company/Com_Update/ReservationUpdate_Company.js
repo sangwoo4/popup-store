@@ -37,10 +37,14 @@ const ReservationUpdate_Company = () => {
   const [companyId, setCompanyId] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [distance, setDistance] = useState('');
+  const [mapx, setMapx] = useState('');
+  const [mapy, setMapy] = useState('');
 
   // Assuming operatingStartDate and operatingEndDate come from state
   const [operatingStartDate, setOperatingStartDate] = useState('');
   const [operatingEndDate, setOperatingEndDate] = useState('');
+  const [originalCategories, setOriginalCategories] = useState([]);
+  const [originalStoreDays, setOriginalStoreDays] = useState([]);
 
   const convertToLocalDate = (dateString) => {
     const date = new Date(dateString);
@@ -137,15 +141,55 @@ const ReservationUpdate_Company = () => {
         }
 
         const data = await response.json();
+        console.log('받은 데이터:', data);
 
         if (data && data.data) {
-          const { title, startDate, endDate, popupReservations } = data.data;
+          const {
+            companyId,
+            companyName,
+            title,
+            postcode,
+            address,
+            roadAddress,
+            detailAddress,
+            distance,
+            startDate,
+            endDate,
+            telephone,
+            subway,
+            description,
+            link,
+            mapx,
+            mapy,
+            categories,
+            storeDays,
+            popupReservations,
+          } = data.data;
+
+          // 상태 변수에 데이터 저장
+          setCompanyId(companyId || '');
+          setCompanyName(companyName || '');
           setTitle(title || 'No Title');
+          setPostcode(postcode || '');
+          setAddress(address || '');
+          setRoadAddress(roadAddress || '');
+          setDetailAddress(detailAddress || '');
+          setDistance(distance || '');
           setStartDate(convertToLocalDate(startDate));
           setEndDate(convertToLocalDate(endDate));
-          setPopupReservations(popupReservations || []);
+          setTelephone(telephone || '');
+          setSubway(subway || '');
+          setDescription(description || '');
+          setLink(link || '');
+          setMapx(mapx || '');
+          setMapy(mapy || '');
 
-          // Extract store days and reservation times from popupReservations
+          setOriginalCategories(categories || []);
+          setOriginalStoreDays(storeDays || []);
+
+          setCategory(categories || []);
+          setStoreDays(storeDays || []);
+
           const days = [...new Set(popupReservations.map(reservation => reservation.day))];
           const times = popupReservations.map(reservation => ({
             day: reservation.day,
@@ -153,7 +197,6 @@ const ReservationUpdate_Company = () => {
             totalReservation: reservation.totalReservation,
           }));
 
-          // Remove duplicates by creating a unique map based on day and startTime
           const uniqueTimesMap = new Map();
           times.forEach(time => {
             const key = `${time.day}-${time.startTime}`;
@@ -165,7 +208,7 @@ const ReservationUpdate_Company = () => {
 
           setStoreDays(days.map(day => ({ day, startTime: '' })));
           setReservationTimes(uniqueTimes);
-          
+
           setReservationEnabled(true);
         } else {
           setError('No data found');
@@ -211,8 +254,22 @@ const ReservationUpdate_Company = () => {
   };
 
   const handleRemoveReservationTime = (index) => {
-    setReservationTimes(reservationTimes.filter((_, i) => i !== index));
+    const removedTime = reservationTimes[index]; // Get the reservation time being removed
+    const newReservationTimes = reservationTimes.filter((_, i) => i !== index);
+    setReservationTimes(newReservationTimes);
+
+    if (newReservationTimes.length === 0) {
+      setReservationEnabled(false);
+    }
+
+    // Log the details of the removed reservation time including `isReservationEnabled`
+    console.log('Removed reservation time:', {
+      ...removedTime,
+      isReservationEnabled: removedTime.isReservationEnabled || false
+    });
   };
+
+
 
   const handleTimeChange = (index, field, value) => {
     const newReservationTimes = [...reservationTimes];
@@ -223,40 +280,50 @@ const ReservationUpdate_Company = () => {
     setReservationTimes(newReservationTimes);
   };
 
+  // UTC 기준으로 날짜 변환
+  const formatDateToUTC = (date) => {
+    if (!date) return '';
+    const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    return utcDate.toISOString().split('T')[0];
+  };
+
   const handleUpdate = async () => {
     const token = localStorage.getItem('token');
-  
+
     if (!token) {
       alert('로그인 후 다시 시도해 주세요.');
       return;
     }
-  
-    // JSON 객체 생성
+
+    // 운영기간 데이터를 처리하는 부분
+    const processedStoreDays = Object.keys(operatingDays)
+      .filter(day => operatingDays[day].isSelected)
+      .map(day => ({
+        openTime: operatingDays[day].startTime,
+        closeTime: operatingDays[day].endTime,
+        day
+      }));
+
+    // JSON 데이터 구성
     const jsonData = {
-      companyId,
-      companyName,
-      title,
-      postcode,
-      address,
-      roadAddress,
-      detailAddress,
-      distance,
-      startDate: operatingStartDate || '',
-      endDate: operatingEndDate || '',
-      telephone,
-      subway,
-      description,
-      link,
-      mapx: coordinates.mapx,
-      mapy: coordinates.mapy,
-      categories: category.map(cat => ({ category: cat })),
-      storeDays: Object.keys(operatingDays)
-        .filter(day => operatingDays[day].isSelected)
-        .map(day => ({
-          openTime: operatingDays[day].startTime,
-          closeTime: operatingDays[day].endTime,
-          day
-        })),
+      companyId: companyId,
+      companyName: companyName,
+      title: title,
+      postcode: postcode,
+      address: address,
+      roadAddress: roadAddress,
+      detailAddress: detailAddress,
+      distance: distance,
+      startDate: formatDateToUTC(operatingStartDate || new Date(startDate)),
+      endDate: formatDateToUTC(operatingEndDate || new Date(endDate)),
+      telephone: telephone,
+      subway: subway,
+      description: description,
+      link: link,
+      mapx: mapx,
+      mapy: mapy,
+      categories: category.length ? category : originalCategories,  // 카테고리 배열 처리
+      storeDays: processedStoreDays.length ? processedStoreDays : originalStoreDays,  // 운영기간 배열 처리
       popupReservations: popupReservations.map(res => ({
         id: res.id,
         day: res.day,
@@ -264,19 +331,21 @@ const ReservationUpdate_Company = () => {
         totalReservation: res.totalReservation,
         currentReservation: res.currentReservation,
         isReservationFull: res.isReservationFull,
-        data: res.date
+        isReservationEnabled: res.isReservationEnabled,
+        date: res.date,
       })),
-      isReservationEnabled: reservationEnabled
+      isReservationEnabled: reservationEnabled,
     };
-  
-    // FormData 객체 생성
+
+    console.log('전송할 JSON 데이터:', JSON.stringify(jsonData, null, 2));
+
     const formData = new FormData();
     formData.append('dto', new Blob([JSON.stringify(jsonData)], { type: 'application/json' }));
-  
-    imageFiles.forEach((file, index) => {
+
+    imageFiles.forEach((file) => {
       formData.append('images', file);
     });
-  
+
     try {
       const response = await fetch(`http://localhost:8080/popup/company/update/${id}`, {
         method: 'PUT',
@@ -285,21 +354,24 @@ const ReservationUpdate_Company = () => {
         },
         body: formData,
       });
-  
+
+      const result = await response.json();
+      console.log('서버 응답:', result);
+
       if (response.ok) {
         alert('수정되었습니다!');
         window.location.reload();
       } else {
-        const responseBody = await response.text();
-        alert(`수정 실패했습니다. 양식을 다시 확인하세요.`);
-        console.log(jsonData);
+        alert(`수정 실패했습니다. ${result}`);
       }
     } catch (error) {
       alert('서버 오류');
       console.error(error);
     }
   };
-  
+
+
+
 
   if (loading) {
     return <div>Loading...</div>;
@@ -321,7 +393,7 @@ const ReservationUpdate_Company = () => {
     <div className="container">
       <h1>팝업스토어 예약 페이지</h1>
       <h2>{title}</h2>
-      
+
       <div className="operating-period-container">
         <h3>운영 기간</h3>
         <label>
@@ -470,31 +542,6 @@ const ReservationUpdate_Company = () => {
 };
 
 export default ReservationUpdate_Company;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
