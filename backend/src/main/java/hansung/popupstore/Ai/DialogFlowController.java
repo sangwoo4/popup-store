@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/chatbot")
 public class DialogFlowController {
 
     private final DialogFlowService dialogFlowService;
@@ -21,7 +21,7 @@ public class DialogFlowController {
         this.dialogFlowService = dialogFlowService;
     }
 
-    @PostMapping("/query")
+    @PostMapping("/talk")
     public ResponseEntity<Map<String, String>> getChat(@RequestBody ChatBotRequest request) {
         Map<String, String> responseMap = new HashMap<>();
         try {
