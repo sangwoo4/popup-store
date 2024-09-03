@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RequestMapping("/popup/")
 public class PopupStoreController {
-    private final PopUpStoreManagementService popUpRegisterService;
+    private final PopUpStoreManagementService popUpStoreManagementService;
     private final PopupStoreService popupStoreService;
 
     @GetMapping("/detail/{id}")
     public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("id") Long id) {
         popupStoreService.incrementViewCount(id);
-        ResponseDto<?> result = popUpRegisterService.getDetail(id);
+        ResponseDto<?> result = popUpStoreManagementService.getDetail(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

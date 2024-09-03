@@ -71,6 +71,7 @@ public class PopupStoreService {
         if (dto.getCompanyId() != null) {
             company = companyRepository.findById(dto.getCompanyId())
                     .orElseThrow(() -> new RuntimeException("Company not found with ID: " + dto.getCompanyId()));
+
         }
 
         return PopupStore.builder()
@@ -129,6 +130,7 @@ public class PopupStoreService {
         }
 
         String companyName = (popupStore.getCompany() != null) ? popupStore.getCompany().getCompanyName() : "회사 없음";
+        String companyEmail = (popupStore.getCompany() != null) ? popupStore.getCompany().getEmail() : "회사 없음";
 
 
         Set<CategoryDto> categoryDtos = new HashSet<>();
@@ -182,6 +184,7 @@ public class PopupStoreService {
                 .detailAddress(popupStore.getDetailAddress())
                 .heartCount(popupStore.getHeartCount())
                 .companyName(companyName)
+                .companyEmail(companyEmail)
                 .categories(categoryDtos)
                 .storeDays(storeDayDtos)
                 .popupImages(popupImageDtos)

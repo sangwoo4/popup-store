@@ -31,6 +31,7 @@ public class PopupStoreDto {
     private String detailAddress;
     private Long companyId;
     private String companyName;
+    private String companyEmail;
     private Double distance;
     private String roadAddress;
     private Boolean reservation = false;

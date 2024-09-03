@@ -23,6 +23,38 @@ public class PopupReservationService {
     private final PopupStoreRepository popupStoreRepository;
     private final DayService dayService;
 
+//    @Transactional
+//    public void saveOrUpdatePopupReservations(Set<PopupReservationDto> popupReservationDtos, PopupStore popupStore) {
+//        Set<PopupReservation> existingReservations = Optional.ofNullable(popupStore.getPopupReservations())
+//                .orElse(new HashSet<>());
+//
+//        Set<PopupReservation> updatedReservations = new HashSet<>();
+//
+//        int existingTotalReservationSum = existingReservations.stream()
+//                .filter(PopupReservation::getIsReservationEnabled)
+//                .mapToInt(PopupReservation::getTotalReservation)
+//                .sum();
+//
+//        int newTotalReservationSum = 0;
+//
+//        for (PopupReservationDto dto : popupReservationDtos) {
+//            Day day = dayService.getOrCreateDay(dto.getDay());
+//
+//            PopupReservation reservation = dto.getId() != null
+//                    ? updateExistingReservation(dto)
+//                    : createNewReservation(dto, popupStore, day);
+//
+//            newTotalReservationSum += reservation.getIsReservationEnabled() ? reservation.getTotalReservation() : 0;
+//
+//            popupReservationRepository.save(reservation);
+//            updatedReservations.add(reservation);
+//        }
+//
+//        removeDeletedReservations(existingReservations, updatedReservations);
+//
+//        popupStore.setTotalReservation(existingTotalReservationSum + newTotalReservationSum);
+//    }
+
     @Transactional
     public void saveOrUpdatePopupReservations(Set<PopupReservationDto> popupReservationDtos, PopupStore popupStore) {
         Set<PopupReservation> existingReservations = Optional.ofNullable(popupStore.getPopupReservations())
@@ -40,9 +72,15 @@ public class PopupReservationService {
         for (PopupReservationDto dto : popupReservationDtos) {
             Day day = dayService.getOrCreateDay(dto.getDay());
 
-            PopupReservation reservation = dto.getId() != null
-                    ? updateExistingReservation(dto)
-                    : createNewReservation(dto, popupStore, day);
+            PopupReservation reservation;
+
+            if (dto.getId() != null) {
+                // 기존 예약이 존재하는 경우 업데이트
+                reservation = updateExistingReservation(dto);
+            } else {
+                // 새로운 예약 생성
+                reservation = createNewReservation(dto, popupStore, day);
+            }
 
             newTotalReservationSum += reservation.getIsReservationEnabled() ? reservation.getTotalReservation() : 0;
 
@@ -50,6 +88,7 @@ public class PopupReservationService {
             updatedReservations.add(reservation);
         }
 
+        // 삭제된 예약 처리
         removeDeletedReservations(existingReservations, updatedReservations);
 
         popupStore.setTotalReservation(existingTotalReservationSum + newTotalReservationSum);
