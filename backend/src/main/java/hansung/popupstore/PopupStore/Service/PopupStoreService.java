@@ -1,6 +1,5 @@
 package hansung.popupstore.PopupStore.Service;
 
-<<<<<<< HEAD
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hansung.popupstore.PopupStore.Controller.PopUpAiController;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-=======
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.dto.CategoryDto;
 import hansung.popupstore.dto.PopupImageDto;
@@ -32,10 +30,9 @@ import hansung.popupstore.Account.Repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
->>>>>>> 950e11a771cbb0c4716d1425a55e11d4b684fce1
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

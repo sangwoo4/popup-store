@@ -45,7 +45,9 @@ dependencies {
 	implementation group: 'org.jsoup', name: 'jsoup', version: '1.7.2'
 	implementation group: 'org.htmlunit', name: 'htmlunit', version: '3.0.0'
 	implementation group: 'org.jsoup', name: 'jsoup', version: '1.7.2'
-
+	// 24/09/03 수정
+	implementation 'com.google.cloud:google-cloud-dialogflow:4.18.0'
+	implementation 'com.google.auth:google-auth-library-oauth2-http:1.16.0'
 
 
 }
