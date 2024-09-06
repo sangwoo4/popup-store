@@ -6,6 +6,9 @@ import hansung.popupstore.model.PopupReview;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class PopupReviewService {
@@ -16,7 +19,7 @@ public class PopupReviewService {
         review.setPopupStoreId(reviewDto.getPopupStoreId());
         review.setUserId(reviewDto.getUserId());
         review.setReviewText(reviewDto.getReviewText());
-        review.setLocalDate(reviewDto.getLocalDate());
+        review.setLocalDateTime(LocalDateTime.now());
         reviewRepository.save(review);
     }
 }

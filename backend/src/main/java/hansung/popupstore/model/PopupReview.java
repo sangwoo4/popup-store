@@ -5,9 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
-
-import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -16,9 +14,8 @@ public class PopupReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Long popupStoreId;
     private Long userId;
     private String reviewText;
-    private LocalDate localDate;
+    private LocalDateTime localDateTime;
 }
