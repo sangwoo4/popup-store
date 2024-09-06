@@ -11,7 +11,7 @@ const PopupRegister_Company = () => {
   const [operatingStartDate, setOperatingStartDate] = useState(null);
   const [operatingEndDate, setOperatingEndDate] = useState(null);
   const [telephone, setPhoneNumber] = useState('');
-  const [postcode, setPostcode] = useState('');
+  const [postCode, setPostCode] = useState('');
   const [address, setAddress] = useState('');
   const [roadAddress, setRoadAddress] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
@@ -62,15 +62,15 @@ const PopupRegister_Company = () => {
           "Authorization": `Bearer ${token}`
         }
       })
-      .then((res) => res.text())
-      .then(res => {
-        if (res) {
-          setCompanyName(res);
-        }
-      })
-      .catch(error => {
-        console.error('닉네임 가져오기 중 오류 발생:', error);
-      });
+        .then((res) => res.text())
+        .then(res => {
+          if (res) {
+            setCompanyName(res);
+          }
+        })
+        .catch(error => {
+          console.error('닉네임 가져오기 중 오류 발생:', error);
+        });
     } else {
       setIsLoggedIn(false);
     }
@@ -78,7 +78,7 @@ const PopupRegister_Company = () => {
 
   const handlePostcodeComplete = (data) => {
     const fullAddress = `${data.address} ${data.bname ? ` (${data.bname})` : ''} ${data.buildingName ? ` ${data.buildingName}` : ''}`;
-    setPostcode(data.zonecode); // Set postcode
+    setPostCode(data.zonecode); // Set postcode
     setAddress(data.jibunAddress); // Set jibun address
     setRoadAddress(data.roadAddress); // Set road address
     fetchCoordinates(data.roadAddress); // 주소를 좌표로 변환
@@ -120,7 +120,7 @@ const PopupRegister_Company = () => {
       console.error('네이버 지도 API를 로드하지 못했습니다.');
     }
   };
-  
+
   // title과 description 입력 시 ai 호출 요청
   const fetchCategorySuggestions = async (title, description) => {
     try {
@@ -155,37 +155,37 @@ const PopupRegister_Company = () => {
   const getDatesInRange = (startDate, endDate) => {
     let dates = [];
     let currentDate = new Date(startDate);
-  
+
     while (currentDate <= endDate) {
       dates.push(new Date(currentDate));
       currentDate.setDate(currentDate.getDate() + 1);
     }
-  
+
     return dates;
   };
-  
+
 
   const handleAddReservationSlot = () => {
     const selectedDays = Object.keys(operatingDays).filter(day => operatingDays[day].isSelected);
-  
+
     if (selectedDays.length === 0) {
       alert('요일을 선택해 주세요.');
       return;
     }
-  
+
     const newSlots = [];
     const startDate = new Date(operatingStartDate);
     const endDate = new Date(operatingEndDate);
-  
+
     // 운영 기간 동안 모든 날짜를 반복합니다.
     while (startDate <= endDate) {
       const dayOfWeek = new Intl.DateTimeFormat('ko-KR', { weekday: 'long' }).format(startDate);
-  
+
       if (selectedDays.includes(dayOfWeek)) {
         const dayData = operatingDays[dayOfWeek];
         let slotStartTime = dayData.startTime;
         let slotEndTime = calculateEndTime(slotStartTime, reservationInterval);
-  
+
         while (slotEndTime <= dayData.endTime) {
           newSlots.push({
             day: dayOfWeek,
@@ -197,53 +197,53 @@ const PopupRegister_Company = () => {
             isReservationEnabled: true, // 예약 활성화 여부
             isReservationFull: false // 초기 상태에서는 예약이 다 차지 않았으므로 false
           });
-  
+
           // 다음 슬롯의 시작 시간 설정
           slotStartTime = slotEndTime;
           slotEndTime = calculateEndTime(slotStartTime, reservationInterval);
         }
       }
-  
+
       // 날짜를 하루 증가시킵니다.
       startDate.setDate(startDate.getDate() + 1);
     }
-  
+
     // 새로운 예약 슬롯을 기존 예약 슬롯과 합치기
     setPopupReservation(prevSlots => [
       ...prevSlots,
       ...newSlots
     ]);
   };
-  
+
 
   const calculateEndTime = (startTime, interval) => {
     const [startHour, startMinute] = startTime.split(':').map(Number);
     const startDate = new Date();
     startDate.setHours(startHour, startMinute, 0, 0);
-  
+
     // 종료 시간 계산
     const endDate = new Date(startDate.getTime() + interval * 60000);
     const endHour = String(endDate.getHours()).padStart(2, '0');
     const endMinute = String(endDate.getMinutes()).padStart(2, '0');
-  
+
     return `${endHour}:${endMinute}`;
   };
-  
-  
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // UTC 기준으로 날짜 변환
     const formatDateToUTC = (date) => {
       if (!date) return '';
       const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
       return utcDate.toISOString().split('T')[0];
     };
-  
+
     // JSON 데이터 생성
     const jsonData = {
       title,
-      postcode,
+      postCode,
       address,
       roadAddress,
       detailAddress,
@@ -267,14 +267,14 @@ const PopupRegister_Company = () => {
         })),
       popupReservations: popupReservation
     };
-  
+
     const formData = new FormData();
     formData.append('dto', new Blob([JSON.stringify(jsonData)], { type: 'application/json' }));
-  
+
     imageFiles.forEach((file, index) => {
       formData.append('images', file);
     });
-  
+
     try {
       const response = await fetch('http://localhost:8080/popup/company/register', {
         method: 'POST',
@@ -283,11 +283,11 @@ const PopupRegister_Company = () => {
         },
         body: formData
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-  
+
       const result = await response.json();
       alert('등록되었습니다!');
       navigate('/auth/company/homepage');
@@ -296,9 +296,9 @@ const PopupRegister_Company = () => {
       alert('등록에 실패했습니다. 다시 시도해주세요.');
     }
   };
-  
-  
-  
+
+
+
   const handleAddressSearch = () => {
     setShowPostcodeModal(true);
   };
@@ -311,7 +311,7 @@ const PopupRegister_Company = () => {
       setOperatingEndDate(null);
     }
   };
-  
+
   const handleOperatingEndDateChange = (date) => {
     if (date) {
       // 로컬 날짜를 UTC로 변환
@@ -322,7 +322,7 @@ const PopupRegister_Company = () => {
       setOperatingEndDate(utcDate);
     }
   };
-  
+
 
   const handleDayChange = (day) => {
     setOperatingDays(prevDays => {
@@ -367,7 +367,7 @@ const PopupRegister_Company = () => {
   const handleFileChange = (e) => {
     setImageFiles([...e.target.files]);
   };
-  
+
   useEffect(() => {
     const titleInput = document.getElementById('title-input');
     const descriptionTextarea = document.getElementById('description-textarea');
@@ -468,11 +468,11 @@ const PopupRegister_Company = () => {
         </label>
 
         <label>
-           우편번호:
-           <div className="postcode-container">
-             <input
+          우편번호:
+          <div className="postcode-container">
+            <input
               type="text"
-              value={postcode}
+              value={postCode}
               readOnly
             />
             <button
@@ -500,7 +500,7 @@ const PopupRegister_Company = () => {
           <span>{address}</span>
         </div>
 
-        <br/>
+        <br />
 
         <label>
           상세 주소:
@@ -520,7 +520,7 @@ const PopupRegister_Company = () => {
             onChange={(e) => setSubway(e.target.value)}
           />
         </label>
-        
+
         <label>
           설명:
           <textarea
@@ -546,8 +546,8 @@ const PopupRegister_Company = () => {
         <label>
           이미지 삽입
           <div className="form-group">
-          <input type="file" id="imageFiles" multiple accept="image/*" onChange={handleFileChange} />
-        </div>
+            <input type="file" id="imageFiles" multiple accept="image/*" onChange={handleFileChange} />
+          </div>
         </label>
 
         <label>
@@ -598,7 +598,7 @@ const PopupRegister_Company = () => {
           ))}
         </div>
 
-        <br/>
+        <br />
 
         <label>
           사전 예약 활성화:
@@ -668,7 +668,7 @@ const PopupRegister_Company = () => {
           </>
         )}
 
-        <br/>
+        <br />
 
         <button type="submit">등록</button>
       </form>

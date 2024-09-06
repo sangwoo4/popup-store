@@ -6,7 +6,9 @@
   font-family: Arial, sans-serif;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   color: #333;
 }
 
@@ -15,7 +17,10 @@ label {
   margin: 8px 0;
 }
 
-input[type="date"], input[type="time"], input[type="text"], input[type="number"] {
+input[type="date"],
+input[type="time"],
+input[type="text"],
+input[type="number"] {
   margin-left: 10px;
   padding: 5px;
   border: 1px solid #ccc;
@@ -24,7 +29,8 @@ input[type="date"], input[type="time"], input[type="text"], input[type="number"]
   box-sizing: border-box;
 }
 
-input[type="date"], input[type="time"] {
+input[type="date"],
+input[type="time"] {
   width: 150px;
 }
 
@@ -65,11 +71,13 @@ input[type="date"], input[type="time"] {
 }
 
 .reservation-times-container table {
-  width: 70%; /* 전체 너비를 100%로 설정 */
+  width: 70%;
+  /* 전체 너비를 100%로 설정 */
   border-collapse: collapse;
 }
 
-.reservation-times-container th, .reservation-times-container td {
+.reservation-times-container th,
+.reservation-times-container td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: center;
@@ -82,28 +90,47 @@ input[type="date"], input[type="time"] {
 /* 열 너비를 직접 지정 */
 .reservation-times-container th:nth-child(1),
 .reservation-times-container td:nth-child(1) {
-  width: 30%; /* 첫 번째 열 너비 */
+  width: 30%;
+  /* 첫 번째 열 너비 */
 }
 
 .reservation-times-container th:nth-child(2),
 .reservation-times-container td:nth-child(2) {
-  width: 30%; /* 두 번째 열 너비 */
+  width: 30%;
+  /* 두 번째 열 너비 */
 }
 
 .reservation-times-container th:nth-child(3),
 .reservation-times-container td:nth-child(3) {
-  width: 15%; /* 세 번째 열 너비 */
+  width: 15%;
+  /* 세 번째 열 너비 */
 }
 
 .reservation-times-container th:nth-child(4),
 .reservation-times-container td:nth-child(4) {
-  width: 15%; /* 네 번째 열 너비 */
+  width: 15%;
+  /* 네 번째 열 너비 */
 }
 
 /* 버튼 스타일 */
 .reservation-times-container button {
   margin-top: 10px;
 }
+
+/* ReservationUpdate_Company.css */
+
+.react-calendar .disabled {
+  background-color: #d3d3d3;
+  /* Light gray for disabled dates */
+  color: #a0a0a0;
+  /* Darker gray text */
+}
+
+.react-calendar .disabled:hover {
+  background-color: #d3d3d3;
+  cursor: not-allowed;
+}
+
 
 
 /* Toggle Button */

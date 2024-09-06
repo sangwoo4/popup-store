@@ -34,6 +34,8 @@ const DetailInfo_Company = () => {
         }
 
         const data = await response.json();
+        console.log(data);
+
         if (data && data.data) {
           const { companyName, title, address, detailAddress, telephone, description, popupImages, link, categories, storeDays, mapx, mapy, startDate, endDate } = data.data;
 
@@ -173,11 +175,11 @@ const DetailInfo_Company = () => {
         {locationInfo.popupImages.length > 0 ? (
           <div className="banner-images">
             {locationInfo.popupImages.map((image, index) => (
-              <img 
-                key={index} 
-                src={image} 
-                alt={`Banner ${index + 1}`} 
-                className="banner-image" 
+              <img
+                key={index}
+                src={image}
+                alt={`Banner ${index + 1}`}
+                className="banner-image"
               />
             ))}
           </div>
@@ -416,11 +418,11 @@ export default DetailInfo_Company;
 //         {locationInfo.popupImages.length > 0 ? (
 //           <div className="banner-images">
 //             {locationInfo.popupImages.map((image, index) => (
-//               <img 
-//                 key={index} 
-//                 src={image} 
-//                 alt={`Banner ${index + 1}`} 
-//                 className="banner-image" 
+//               <img
+//                 key={index}
+//                 src={image}
+//                 alt={`Banner ${index + 1}`}
+//                 className="banner-image"
 //               />
 //             ))}
 //           </div>

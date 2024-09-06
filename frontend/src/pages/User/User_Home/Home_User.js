@@ -8,7 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 const Home_User = () => {
   const [locations, setLocations] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [distanceLocations, setDistanceLocations] = useState([]); 
+  const [distanceLocations, setDistanceLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [token, setToken] = useState('');
@@ -27,16 +27,16 @@ const Home_User = () => {
           "Authorization": `Bearer ${token}`
         }
       })
-      .then((res) => res.text())
-      .then(res => {
-        if (res) {
-          setUserName(res);
-          console.log('User nickname:', res);
-        }
-      })
-      .catch(error => {
-        console.error('닉네임 가져오기 중 오류 발생:', error);
-      });
+        .then((res) => res.text())
+        .then(res => {
+          if (res) {
+            setUserName(res);
+            console.log('User nickname:', res);
+          }
+        })
+        .catch(error => {
+          console.error('닉네임 가져오기 중 오류 발생:', error);
+        });
 
       fetch("http://localhost:8080/popup/ai/recommend/category", {
         method: "GET",
@@ -44,16 +44,16 @@ const Home_User = () => {
           "Authorization": `Bearer ${token}`
         }
       })
-      .then((res) => res.json())
-      .then(res => {
-        console.log('Received categories:', res);
-        if (res.data) {
-          setCategories(res.data);
-        }
-      })
-      .catch(error => {
-        console.error('카테고리 가져오기 중 오류 발생:', error);
-      });
+        .then((res) => res.json())
+        .then(res => {
+          console.log('Received categories:', res);
+          if (res.data) {
+            setCategories(res.data);
+          }
+        })
+        .catch(error => {
+          console.error('카테고리 가져오기 중 오류 발생:', error);
+        });
 
       fetch("http://localhost:8080/popup/ai/recommend/distance", {
         method: "GET",
@@ -61,16 +61,16 @@ const Home_User = () => {
           "Authorization": `Bearer ${token}`
         }
       })
-      .then((res) => res.json())
-      .then(res => {
-        console.log('Received distance popup store:', res);
-        if (res.data) {
-          setDistanceLocations(res.data); // 거리별 팝업스토어 데이터 저장
-        }
-      })
-      .catch(error => {
-        console.error('거리 가져오기 중 오류 발생:', error);
-      });
+        .then((res) => res.json())
+        .then(res => {
+          console.log('Received distance popup store:', res);
+          if (res.data) {
+            setDistanceLocations(res.data); // 거리별 팝업스토어 데이터 저장
+          }
+        })
+        .catch(error => {
+          console.error('거리 가져오기 중 오류 발생:', error);
+        });
     } else {
       setIsLoggedIn(false);
     }
@@ -154,10 +154,10 @@ const Home_User = () => {
         ) : (
           <h2>이달의 추천 팝업 리스트</h2>
         )}
-          <Slider {...settings}>
-            {locations.slice(0, 5).map(location => {
-            const images = location.popupImages && location.popupImages.length > 0 
-              ? location.popupImages.map(image => `http://localhost:8080/${image.imageUrl}`) 
+        <Slider {...settings}>
+          {locations.slice(0, 5).map(location => {
+            const images = location.popupImages && location.popupImages.length > 0
+              ? location.popupImages.map(image => `http://localhost:8080/${image.imageUrl}`)
               : ['/images/mainImage.png'];
 
             return (
@@ -166,9 +166,9 @@ const Home_User = () => {
                   <div className="popup-image-box">
                     {images.map((image, index) => (
                       <img
-                        key={index} 
-                        src={image} 
-                        alt={`Banner ${index + 1}`} 
+                        key={index}
+                        src={image}
+                        alt={`Banner ${index + 1}`}
                         className='popup-image'
                       />
                     ))}
@@ -188,8 +188,8 @@ const Home_User = () => {
           })}
         </Slider>
       </div>
-  
-      <br/><br/><br/><br/><br/>
+
+      <br /><br /><br /><br /><br />
       {/* 하단 카테고리별 팝업 리스트 */}
       {isLoggedIn ? (
         <>
@@ -206,9 +206,9 @@ const Home_User = () => {
                         {category.popupImages && category.popupImages.length > 0 ? (
                           category.popupImages.map((image, imageIndex) => (
                             <img
-                              key={imageIndex} 
-                              src={`http://localhost:8080/${image.imageUrl}`} 
-                              alt={`Banner ${imageIndex + 1}`} 
+                              key={imageIndex}
+                              src={`http://localhost:8080/${image.imageUrl}`}
+                              alt={`Banner ${imageIndex + 1}`}
                               className='lower-popup-image'
                             />
                           ))
@@ -231,7 +231,7 @@ const Home_User = () => {
               </div>
             ))}
           </div>
-  
+
           <div className='category-search-wrapper'>
             <h1>"{userName}"님 집근처에는 이런 팝업스토어가 있어요!</h1>
             {distanceLocations.map((distance, index) => ( // location 대신 distance 사용
@@ -243,9 +243,9 @@ const Home_User = () => {
                         {distance.popupImages && distance.popupImages.length > 0 ? (
                           distance.popupImages.map((image, imageIndex) => (
                             <img
-                              key={imageIndex} 
-                              src={`http://localhost:8080/${image.imageUrl}`} 
-                              alt={`Banner ${imageIndex + 1}`} 
+                              key={imageIndex}
+                              src={`http://localhost:8080/${image.imageUrl}`}
+                              alt={`Banner ${imageIndex + 1}`}
                               className='lower-popup-image'
                             />
                           ))
@@ -284,9 +284,9 @@ const Home_User = () => {
                           {location.popupImages && location.popupImages.length > 0 ? (
                             location.popupImages.map((image, imageIndex) => (
                               <img
-                                key={imageIndex} 
-                                src={`http://localhost:8080/${image.imageUrl}`} 
-                                alt={`Banner ${imageIndex + 1}`} 
+                                key={imageIndex}
+                                src={`http://localhost:8080/${image.imageUrl}`}
+                                alt={`Banner ${imageIndex + 1}`}
                                 className='lower-popup-image'
                               />
                             ))
@@ -313,7 +313,7 @@ const Home_User = () => {
         </>
       )}
     </div>
-  );  
+  );
 };
 
 function SampleNextArrow(props) {
@@ -490,9 +490,9 @@ export default Home_User;
 //                       {category.popupImages && category.popupImages.length > 0 ? (
 //                         category.popupImages.map((image, imageIndex) => (
 //                           <img
-//                             key={imageIndex} 
-//                             src={`http://localhost:8080/${image.imageUrl}`} 
-//                             alt={`Banner ${imageIndex + 1}`} 
+//                             key={imageIndex}
+//                             src={`http://localhost:8080/${image.imageUrl}`}
+//                             alt={`Banner ${imageIndex + 1}`}
 //                             className='popup-image'
 //                           />
 //                         ))
@@ -519,8 +519,8 @@ export default Home_User;
 //             <h2>이달의 추천 팝업 리스트</h2>
 //             <Slider {...settings}>
 //               {locations.map(location => {
-//                 const images = location.popupImages && location.popupImages.length > 0 
-//                   ? location.popupImages.map(image => `http://localhost:8080/${image.imageUrl}`) 
+//                 const images = location.popupImages && location.popupImages.length > 0
+//                   ? location.popupImages.map(image => `http://localhost:8080/${image.imageUrl}`)
 //                   : ['/images/image1.png'];
 
 //                 return (
@@ -529,9 +529,9 @@ export default Home_User;
 //                       <div className="popup-image-box">
 //                         {images.map((image, index) => (
 //                           <img
-//                             key={index} 
-//                             src={image} 
-//                             alt={`Banner ${index + 1}`} 
+//                             key={index}
+//                             src={image}
+//                             alt={`Banner ${index + 1}`}
 //                             className='popup-image'
 //                           />
 //                         ))}
@@ -571,9 +571,9 @@ export default Home_User;
 //                         {category.popupImages && category.popupImages.length > 0 ? (
 //                           category.popupImages.map((image, imageIndex) => (
 //                             <img
-//                               key={imageIndex} 
-//                               src={`http://localhost:8080/${image.imageUrl}`} 
-//                               alt={`Banner ${imageIndex + 1}`} 
+//                               key={imageIndex}
+//                               src={`http://localhost:8080/${image.imageUrl}`}
+//                               alt={`Banner ${imageIndex + 1}`}
 //                               className='lower-popup-image'
 //                             />
 //                           ))
@@ -610,9 +610,9 @@ export default Home_User;
 //                           {location.popupImages && location.popupImages.length > 0 ? (
 //                             location.popupImages.map((image, imageIndex) => (
 //                               <img
-//                                 key={imageIndex} 
-//                                 src={`http://localhost:8080/${image.imageUrl}`} 
-//                                 alt={`Banner ${imageIndex + 1}`} 
+//                                 key={imageIndex}
+//                                 src={`http://localhost:8080/${image.imageUrl}`}
+//                                 alt={`Banner ${imageIndex + 1}`}
 //                                 className='lower-popup-image'
 //                               />
 //                             ))
