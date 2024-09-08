@@ -30,7 +30,7 @@ services:
   fastapi-app:
     build:
       context: ./ai
-      dockerfile: Dockerfile  # 명시적 Dockerfile 경로
+      dockerfile: Dockerfile # 명시적 Dockerfile 경로
     container_name: fastapi-app-container
     ports:
       - "8000:8000"

@@ -1,5 +1,6 @@
 package hansung.popupstore.PopupStore.Controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.Security.TokenUtils;
 import hansung.popupstore.Util.ResponseDto;
@@ -64,6 +65,8 @@ public class PopupStoreManagementController {
         ResponseDto<?> result = popUpStoreManagementService.updatePopUp(id, dto, images);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseDto<?>> delete(@PathVariable("id") Long id,

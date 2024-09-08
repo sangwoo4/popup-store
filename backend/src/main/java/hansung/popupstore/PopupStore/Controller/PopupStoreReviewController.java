@@ -2,10 +2,12 @@ package hansung.popupstore.PopupStore.Controller;
 
 import hansung.popupstore.PopupStore.Service.PopupReviewService;
 import hansung.popupstore.Security.TokenUtils;
+import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.dto.PopupReviewDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class PopupStoreReviewController {
     private final PopupReviewService popupReviewService;
     private final TokenUtils tokenUtils;
+
     @PostMapping("/register")
     public ResponseEntity<String> registerReview(
             @RequestHeader("Authorization") String token, @RequestBody PopupReviewDto reviewDto) {
@@ -28,6 +31,12 @@ public class PopupStoreReviewController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("리뷰 등록 중 오류가 발생했습니다: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseDto<?>> getPopupReview(@PathVariable("id") Long id) {
+        ResponseDto<?> result = popupReviewService.getPopupReview(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{reviewId}")
