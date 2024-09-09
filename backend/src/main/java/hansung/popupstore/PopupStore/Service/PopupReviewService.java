@@ -38,7 +38,7 @@ public class PopupReviewService {
                     .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."))
                     .getNickname();
 
-            return new PopupReviewResponseDto(nickname, review.getReviewText(), review.getLocalDateTime());
+            return new PopupReviewResponseDto(nickname, review.getReviewText(), review.getLocalDateTime(), review.getId());
         }).collect(Collectors.toList());
 
         return ResponseDto.setSuccessData("리뷰 조회 결과", reviewDtos);
