@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "chat-bot-9iul",
+  "private_key_id": "e3d3a746bf0c58998021ef0697abc2af848b4c73",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDNQBxdrVranyO7\nbhm32If0+VMz8+g+p4Wc9OlTboialgBe7IZQxnakHYKuqGoo6BOdNX50hb29qffK\nldxuAyJWpBSIc4Hgfe+bsWeWX+4q23MFLDBk3Ymj5+myE4Jw10p/Klifb5/v1y73\nSHYzIlsdExlcswyz7MVeh/LbrJiosBaRjFVzQYwtq/7fgpo/1bKj+gBTPsVpFoLk\nQ+NPSRtgVKvXypdAYsSVG6wXb54TVCbfR55CT2MzVgIi+GiWK8ehO/hb6ILBsQyJ\n9vv3HWGU7hmcOfRr4foAFHVTAYMT7TAz0nzuYwyUc2fMHqBO6JCTGZL4pMqCzDJ9\nCrbWQbhLAgMBAAECggEAC1mIOAXmCEDUkQC9m1T17635092g8hYBZXSFkn+CPkod\nKyKZKs5OsTSQjWfytuBedUsH+xmKLHrBoQo4bjzuISxhlkoM3IUaQtnEiKQ1X1lT\nOu3+nxVBDzc7zQUXKXY+QFnvHKHnjjOv/SycnKdBspHjzSR5h1mIcHnEDDG3H1zE\nB5QMsbvr67SQ8YvCiNcJMeDUjVSKezUi7i2DIYBulOLmz/FxQMXgMsqALXjukkn5\nwLIaYJsBaLyyjKPNaGYhCIuihyAiFYFXI+dRRiuthUYsccf1pNzQ9JBGrIOmW2YZ\nHObcXQvz1RmeNlP8OwWJs67YcRkJ86UsDWQku5wDAQKBgQDpsQoEoq7ePiy4UT7R\nUtp2esjt5mGB9awm63Msvdxgs0E/XJS1H1lcL4CsiqkAkw7OKnO4mIGxgloR5Kum\nOOQZjaZk0XHXC5gsHgkwwRBbmdcc7Xj4VR8k6/6ucrOEN2K1f8pk4N3aQLSQhLkc\n+duDdv1L/d8fWrHMPxjW8p3xMQKBgQDg2AbRQP0WgmTzncGEyUSOmqNWXqi4cuCZ\n5rM8AaHYQHfBDG2+714bfke3N103jTrjiZsq+12oYpDl+gldednx/BWkTK1m7u66\nwM5Yqz8O9JzMpofytNI+qKAAvsxhQoNhD5VI8T3t34K0PsO1IhCsY0bvY8e2sX1R\nJsLRx1TCOwKBgGmsH66W7eIbVVeHjZNUFuuKfD9vdNoygEUdJPivZe7oP/Hp6Gi6\no0rXRCVBkkhrNz+s3KU1eTgOjLIYqDHC+gpADmT6fLLUUFxqvJcqRj5Vo3s2OwR4\nYVvtxz2VKm34KY+PGLNjJ47gwYW0LozWwxeAf+uUAggIl+uXAKF6FkeRAoGAEQKG\n0YHXI8LNnFiM8VzAoQE15izXGs0mDL6VRK7i7ZdC+AnWq6E0P2Q4TLYViURX9irM\n4F2P4lNCnwNhff7f7BykDn/2hlkBGoPHmJGr/Zen3RukIUpotXDQWf4VPC5p/gfN\nxWzqwHouSzCMYcGn/UKtdSLZUwrubhs+ldw8n00CgYAYfRDPib7p542e1if/zq54\n8mwZyMtCHfl95GWxu3kJFMQ/e+02xQopg0Mrnuz6QTRX+w2BhmbvlSMY5G1tCRNe\nq6pfy+vM8Iut8osQimm8iZPpoxdVn+Ll5YPAY82BV68VOeIhTg0fiWRBngFEUEDM\n2zpAcJVu2g1YYnlvdGusAg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "popspot@chat-bot-9iul.iam.gserviceaccount.com",
+  "client_id": "105569894128810046067",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/popspot%40chat-bot-9iul.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
