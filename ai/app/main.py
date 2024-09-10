@@ -72,7 +72,7 @@ async def save_cache_periodically(interval: int = 600):
         save_cache_to_file(CACHE_FILE)
 
 # 주기적으로 팝업 스토어 캐시를 업데이트하는 함수
-async def update_popup_stores_cache_periodically(interval: int = 600):
+async def update_popup_stores_cache_periodically(interval: int = 60):
     while True:
         await asyncio.sleep(interval)
         try:
@@ -146,23 +146,32 @@ def fetch_popup_stores_from_db():
 async def distance_recommendations(request: List[schemas.DistanceRequest]):
     logger.info(f"추천 요청 수신: {request}")
     
-    num_recommendations = 3
+    num_recommendations = 5
     
     try:
         user_id_input = np.array([req.id for req in request])
-        mapx_input = np.array([req.mapx for req in request])
-        mapy_input = np.array([req.mapy for req in request])
+
+        # mapx, mapy 값 변환 전 유효성 검증
+        mapx_input = [float(req.mapx) for req in request]
+        mapy_input = [float(req.mapy) for req in request]
+
+        for i in range(len(mapx_input)):
+            if not (100000000 <= mapx_input[i] <= 9999999999) or not (100000000 <= mapy_input[i] <= 9999999999):
+                raise HTTPException(status_code=400, detail="Invalid coordinates: raw mapx/mapy values are out of expected range")
+
+        # mapx, mapy 값을 올바르게 변환
+        mapx_input = np.array([mx / 10000000.0 for mx in mapx_input])
+        mapy_input = np.array([my / 10000000.0 for my in mapy_input])
 
         if len(user_id_input) != 1:
             raise HTTPException(status_code=400, detail="Request must contain exactly one user id")
 
-        # 좌표를 변환하여 올바른 범위로 설정합니다.
-        user_coords = (mapy_input[0] / 10000000.0, mapx_input[0] / 10000000.0)  # (위도, 경도)
+        user_coords = (mapy_input[0], mapx_input[0])  # 변환된 위도와 경도
 
-        # 유효성 검사
+        # 변환된 좌표의 유효성 검사
         if not (-90 <= user_coords[0] <= 90) or not (-180 <= user_coords[1] <= 180):
             raise HTTPException(status_code=400, detail="Invalid coordinates: latitude must be between -90 and 90, and longitude must be between -180 and 180")
-
+        
         popup_stores_data = get_cache("popup_stores")
         if popup_stores_data:
             popup_stores = [schemas.PopupStore(**store) for store in popup_stores_data]
@@ -176,11 +185,10 @@ async def distance_recommendations(request: List[schemas.DistanceRequest]):
 
         distances = []
         for store in popup_stores:
-            store_coords = (store.mapy / 10000000.0, store.mapx / 10000000.0)  # (위도, 경도)
-            logger.info(f"store_coords: {store_coords}")
+            # store.mapx와 store.mapy를 float로 변환 후 나눗셈 수행
+            store_coords = (float(store.mapy) / 10000000.0, float(store.mapx) / 10000000.0)
             distance = calculate_distance(user_coords, store_coords)
             distances.append(distance)
-            logger.info(f"Distance to store {store.id}: {distance}")
 
         distances = np.array(distances)
         top_distance_indices = np.argsort(distances)
@@ -195,6 +203,7 @@ async def distance_recommendations(request: List[schemas.DistanceRequest]):
                     distance=distances[idx]
                 ))
                 seen.add(popup_stores[idx].id)
+
         logger.info(f"거리 기반 추천 완료: {distance_recommendations}")
 
         return distance_recommendations
@@ -204,17 +213,30 @@ async def distance_recommendations(request: List[schemas.DistanceRequest]):
         logger.error(f"추천 처리 중 오류 발생: {str(e)}")
         traceback.print_exc()
         raise HTTPException(status_code=500, detail="추천 처리 중 오류 발생")
-
-
+    
 @app.post("/recommend/category", response_model=List[schemas.NfcRecommendation])
 async def category_recommendations(request: List[schemas.CategoryRequest]):
     logger.info(f"추천 요청 수신: {request}")
     
-    num_recommendations = 3
+    num_recommendations = 5
+    weight_ncf = 0.4  # NCF 점수의 가중치
+    weight_distance = 0.2  # 거리 점수의 가중치
+    # weight_heart = 0.1  # 좋아요 수 가중치
+    # weight_share = 0.1  # 공유 수 가중치
+    # weight_views = 0.1  # 조회 수 가중치
+    # weight_reserve = 0.1  # 예약 퍼센티지 가중치
 
     try:
         user_id_input = np.array([req.id for req in request])
         categories_input = np.array([req.categories for req in request])
+        mapx_input = np.array([float(req.mapx) for req in request])
+        mapy_input = np.array([float(req.mapy) for req in request])
+
+        # 추가 지표 추출
+        # heart_counts = np.array([req.heart_count for req in request])
+        # share_counts = np.array([req.share_count for req in request])
+        # view_counts = np.array([req.view_count for req in request])
+        # reserve_percents = np.array([req.reserve_percent for req in request])  # 예약 퍼센티지 값 추출
 
         if len(user_id_input) != 1:
             raise HTTPException(status_code=400, detail="Request must contain exactly one user id")
@@ -238,21 +260,38 @@ async def category_recommendations(request: List[schemas.CategoryRequest]):
         predictions = np.round(predictions.flatten(), 5)
         logger.info(f"NCF 모델을 사용한 예측 완료: {predictions}")
 
-        for store, score in zip(filtered_popup_stores, predictions):
-            logger.info(f"Store ID: {store.id}, Score: {score}")
+        # 거리 및 추가 지표 점수 계산 및 결합
+        final_scores = []
+        user_coords = (mapy_input[0] / 10000000.0, mapx_input[0] / 10000000.0)
 
-        top_ncf_indices = np.argsort(-predictions)
-        ncf_recommendations = []
-        seen = set()
-        for idx in top_ncf_indices:
-            if len(ncf_recommendations) >= num_recommendations:
-                break
-            if filtered_popup_stores[idx].id not in seen:
-                ncf_recommendations.append(schemas.NfcRecommendation(
-                    id=filtered_popup_stores[idx].id
-                ))
-                seen.add(filtered_popup_stores[idx].id)
-        logger.info(f"NCF 추천 완료: {ncf_recommendations}")
+        for idx, store in enumerate(filtered_popup_stores):
+            store_coords = (float(store.mapy) / 10000000.0, float(store.mapx) / 10000000.0)
+            distance = calculate_distance(user_coords, store_coords)
+
+            # 거리 점수 계산 (거리가 멀수록 점수는 낮아져야 함)
+            distance_score = 1 / (1 + distance)
+
+            # 추가 지표 점수: 요청에서 받은 값 사용
+            # heart_score = heart_counts[0]
+            # share_score = share_counts[0]
+            # views_score = view_counts[0]
+            # reserve_score = reserve_percents[0] / 100.0  # 퍼센티지를 0~1 사이 값으로 변환
+
+            # NCF 예측 점수와 거리 점수 및 추가 지표 점수를 가중합하여 최종 점수 계산
+            # final_score = (weight_ncf * predictions[idx] + weight_distance * distance_score +
+            #                weight_heart * heart_score + weight_share * share_score +
+            #                weight_views * views_score + weight_reserve * reserve_score)
+            # final_scores.append((store.id, final_score))
+
+            final_score = (weight_ncf * predictions[idx] + weight_distance * distance_score)
+            final_scores.append((store.id, final_score))
+            logger.info(f"Store ID: {store.id}, Final Score: {final_score}")
+
+        # 최종 점수로 정렬
+        final_scores.sort(key=lambda x: x[1], reverse=True)
+        ncf_recommendations = [schemas.NfcRecommendation(id=store_id) for store_id, _ in final_scores[:num_recommendations]]
+        
+        logger.info(f"거리와 NCF 점수를 고려한 최종 추천: {ncf_recommendations}")
 
         return ncf_recommendations
     except HTTPException as e:
@@ -261,7 +300,7 @@ async def category_recommendations(request: List[schemas.CategoryRequest]):
         logger.error(f"추천 처리 중 오류 발생: {str(e)}")
         traceback.print_exc()
         raise HTTPException(status_code=500, detail="추천 처리 중 오류 발생")
-
+    
 @app.post("/categorize", response_model=List[schemas.ChatResponse])
 async def categorize(requests: List[schemas.ChatRequest]):
     responses = []
@@ -280,13 +319,13 @@ async def categorize(requests: List[schemas.ChatRequest]):
 )
         
             response = await client.completions.create(
-                model="ft:davinci-002:category:categoryfinal03:9ve3FVGx",
+                model="ft:davinci-002:category:category-v3:A4saWh3R",
                 prompt=detailed_prompt,
                 max_tokens=15,
-                temperature=0.3,
+                temperature=0.25,
                 top_p=0.5,
-                frequency_penalty=0.1,
-                presence_penalty=0.1,
+                frequency_penalty=0.15,
+                presence_penalty=0.15,
                 # stop = [","]
             )
             text_response = response.choices[0].text.strip()
@@ -366,7 +405,7 @@ if __name__ == "__main__":
 # 유틸리티 함수들
 CATEGORY_LIST = [
     "화장품", "캐릭터", "도서/음반", "패션", "인테리어", "전시/체험", "향수", "음식", "주류", 
-    "음료", "문구", "가정", "생활용품", "스포츠", "게임", "전자제품", "인물", "건강/웰빙", "자동차", 
+    "음료", "문구", "생활용품", "스포츠", "게임", "전자제품", "인물", "건강/웰빙", "자동차", 
     "식물", "여행/레저", "드라마/영화", "가전제품", "기타행사"
 ]
 
@@ -383,10 +422,6 @@ def restore_categories(text):
         protected = category.replace('/', '|')
         text = text.replace(protected, category)
     return text
-
-
-
-
 
 
 

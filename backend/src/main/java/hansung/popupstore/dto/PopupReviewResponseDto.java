@@ -12,6 +12,7 @@ public class PopupReviewResponseDto {
     private Long id;
 
     public PopupReviewResponseDto(String nickname, String reviewText, LocalDateTime localDateTime, Long id){
+        this.nickname = nickname;
         this.reviewText = reviewText;
         this.localDateTime = localDateTime;
         this.id = id;
