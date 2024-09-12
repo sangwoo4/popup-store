@@ -1,121 +1,247 @@
-/* detailInfo.css */
-
 .detail-info-container {
-    font-family: Arial, sans-serif;
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px;
-    background: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .banner {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .banner-image {
-    max-width: 100%;
-    height: auto;
-  }
-  
-  .menu {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-  }
-  
-  .menu-button {
-    background: none;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    border-bottom: 2px solid transparent;
-    transition: border-color 0.3s;
-  }
-  
-  .menu-button.active {
-    border-bottom: 2px solid #8843f8;
-  }
-  
-  .info-content,
-  .map-content,
-  .review-content {
-    padding: 20px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .info-content h2 {
-    color: #007bff;
-    margin-bottom: 10px;
-  }
-  
-  .info-content p {
-    margin: 10px 0;
-  }
-  
-  .categories {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .category-box2 {
-    display: inline-block;
-    padding: 5px 50px;
-    border: 2px solid #9545ff;
-    border-radius: 5px;
-    background-color: #f1edff;
-    color: #8400ff;
-    margin-right: 4px; /* 각 카테고리 사이의 간격 조정 */
-    font-size: 0.9em;
-    font-weight: bold;
-  }
-  
-  
-  .map-content {
-    min-height: 400px;
-    width: 94%;  
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    overflow: hidden;
-  }
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-  .review-content h2 {
-    color: #007bff;
-  }
-  
-  .review-content p {
-    margin: 10px 0;
-  }
-  
-  /* detailInfo.css */
+.banner {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.banner-image {
+  max-width: 100%;
+  height: auto;
+}
+
+.menu {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s;
+}
+
+.menu-button.active {
+  border-bottom: 2px solid #8843f8;
+}
+
+.info-content,
+.map-content,
+.review-content {
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.info-content h2 {
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.info-content p {
+  margin: 10px 0;
+}
+
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.category-box2 {
+  display: inline-block;
+  padding: 5px 50px;
+  border: 2px solid #9545ff;
+  border-radius: 5px;
+  background-color: #f1edff;
+  color: #8400ff;
+  margin-right: 4px;
+  /* 각 카테고리 사이의 간격 조정 */
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.map-content {
+  min-height: 400px;
+  width: 94%;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.review-content {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.review-content h2 {
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.review-content p {
+  margin: 10px 0;
+}
 
 /* 사전예약하기 버튼 스타일 */
 .reservation-button {
   display: block;
-  width: 80%; /* 버튼 너비를 부모 컨테이너의 80%로 설정 */
-  max-width: 300px; /* 버튼 최대 너비 설정 */
-  margin: 20px auto; /* 상하 여백, 자동으로 가운데 정렬 */
-  background: linear-gradient(135deg, #77b5d9, #1d7ab8); /* 그라데이션 배경 */
-  color: white; /* 텍스트 색상 */
+  width: 80%;
+  /* 버튼 너비를 부모 컨테이너의 80%로 설정 */
+  max-width: 300px;
+  /* 버튼 최대 너비 설정 */
+  margin: 20px auto;
+  /* 상하 여백, 자동으로 가운데 정렬 */
+  background: linear-gradient(135deg, #77b5d9, #1d7ab8);
+  /* 그라데이션 배경 */
+  color: white;
+  /* 텍스트 색상 */
   border: none;
-  border-radius: 10px; /* 둥근 테두리 */
-  padding: 15px; /* 여백 */
-  font-size: 18px; /* 폰트 크기 */
-  font-weight: bold; /* 볼드체 */
-  text-align: center; /* 가운데 정렬 */
-  text-transform: uppercase; /* 대문자 변환 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+  border-radius: 10px;
+  /* 둥근 테두리 */
+  padding: 15px;
+  /* 여백 */
+  font-size: 18px;
+  /* 폰트 크기 */
+  font-weight: bold;
+  /* 볼드체 */
+  text-align: center;
+  /* 가운데 정렬 */
+  text-transform: uppercase;
+  /* 대문자 변환 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* 그림자 효과 */
   transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .reservation-button:hover {
-  background: linear-gradient(135deg, #77b5d9, #1d7ab8); /* 어두운 그라데이션 */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 강한 그림자 효과 */
+  background: linear-gradient(135deg, #77b5d9, #1d7ab8);
+  /* 어두운 그라데이션 */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  /* 강한 그림자 효과 */
+}
+
+.review-item {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 95%;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.review-header .nickname {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+.review-header .date {
+  font-size: 14px;
+  color: #888;
+}
+
+.review-body {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.4;
+}
+
+/* 후기 작성하기 버튼 스타일 */
+.review-content button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 15px;
+  /* 버튼 하단 여백 */
+}
+
+.review-content button:hover {
+  background-color: #0056b3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.review-content button:active {
+  transform: scale(0.98);
+}
+
+.review-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  /* 상단 여백 */
+}
+
+.review-form textarea {
+  width: 95%;
+  height: 90px;
+  resize: none;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  outline: none;
+  /* 글자 수 제한 설정 */
+}
+
+.review-form textarea:focus {
+  border-color: #007bff;
+  /* 포커스 시 테두리 색상 변경 */
+}
+
+.review-form textarea::placeholder {
+  color: #aaa;
+  /* 플레이스홀더 텍스트 색상 */
+}
+
+.review-form button.submit-button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.review-form button.submit-button:hover {
+  background-color: #0056b3;
+  /* 버튼 호버 시 색상 변경 */
 }

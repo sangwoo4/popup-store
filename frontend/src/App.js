@@ -13,6 +13,7 @@ import ReservationDetails_User from "./pages/User/User_ReservarionDetails/Reserv
 import Search_User from './pages/User/User_Search/Search_User';
 import PopupReservation_User from './pages/User/User_PopupReservation/PopupReservation_User';
 import PopupReservation_Comfirm_User from './pages/User/User_PopupReservation/PopupReservation_Confirm_User';
+import ChatbotTest_User from './pages/User/User_Chatbot/ChatbotTest_User';
 
 import Home_Company from "./pages/Company/Com_Home/Home_Company";
 import Dashboard_Company from "./pages/Company/Com_Dashboard/Dashboard_Company";
@@ -27,29 +28,30 @@ import PopupUpdate_Company from './pages/Company/Com_Update/PopupUpdate_Company'
 
 function App() {
   return (
-      <Routes>
-        <Route path="/select/login" element={<LoginPage/>}/>
+    <Routes>
+      <Route path="/select/login" element={<LoginPage />} />
 
-        <Route path="/" element={<Home_User/>}/>
-        <Route path="/popup/user/detail/:location" element={<DetailInfo_User/>}/>
-        <Route path="/auth/user/signup" element={<SignUp_User/>}/>
-        <Route path="/auth/user/login" element={<Login_User/>}/>
-        <Route path="/auth/user/findidpw" element={<FindIDPW_User/>}/>
-        <Route path="/auth/user/mypage" element={<MyPage_User/>}/>
-        <Route path="/popup/my.reservation" element={<ReservationDetails_User/>}/>
-        <Route path="/popup/user/search" element={<Search_User/>}/>
-        <Route path="/popup/user/popup_pre_reservation/:id" element={<PopupReservation_User/>}/>
-        <Route path="/popup/user/popup_reservation/confirm/:reservationId" element={<PopupReservation_Comfirm_User/>}/>
+      <Route path="/" element={<Home_User />} />
+      <Route path="/popup/user/detail/:location" element={<DetailInfo_User />} />
+      <Route path="/auth/user/signup" element={<SignUp_User />} />
+      <Route path="/auth/user/login" element={<Login_User />} />
+      <Route path="/auth/user/findidpw" element={<FindIDPW_User />} />
+      <Route path="/auth/user/mypage" element={<MyPage_User />} />
+      <Route path="/popup/my.reservation" element={<ReservationDetails_User />} />
+      <Route path="/popup/user/search" element={<Search_User />} />
+      <Route path="/popup/user/popup_pre_reservation/:id" element={<PopupReservation_User />} />
+      <Route path="/popup/user/popup_reservation/confirm/:reservationId" element={<PopupReservation_Comfirm_User />} />
+      <Route path="/popup/user/chatbot/talk" element={<ChatbotTest_User />} />
 
-        <Route path="/auth/company/homepage" element={<Home_Company/>}/>
-        <Route path="/auth/company/dashboard" element={<Dashboard_Company/>}/>
-        <Route path="/popup/company/detail/:location" element={<DetailInfo_Company/>}/>
-        <Route path="/auth/company/signup" element={<SignUp_Company/>}/>
-        <Route path="/auth/company/login" element={<Login_Company/>}/>
-        <Route path="/popup/company/register" element={<PopupRegister_Company/>}/>
-        <Route path="/popup/company/update/:id" element={<PopupUpdate_Company/>}/>
-        <Route path="/popup/company/pre-reservation/update/:id" element={<ReservationUpdate_Company/>}/>
-      </Routes>
+      <Route path="/auth/company/homepage" element={<Home_Company />} />
+      <Route path="/auth/company/dashboard" element={<Dashboard_Company />} />
+      <Route path="/popup/company/detail/:location" element={<DetailInfo_Company />} />
+      <Route path="/auth/company/signup" element={<SignUp_Company />} />
+      <Route path="/auth/company/login" element={<Login_Company />} />
+      <Route path="/popup/company/register" element={<PopupRegister_Company />} />
+      <Route path="/popup/company/update/:id" element={<PopupUpdate_Company />} />
+      <Route path="/popup/company/pre-reservation/update/:id" element={<ReservationUpdate_Company />} />
+    </Routes>
   );
 }
 

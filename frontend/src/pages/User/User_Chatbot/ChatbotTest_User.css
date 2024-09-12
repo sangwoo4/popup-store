@@ -1,0 +1,53 @@
+.chatbot-container {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.chat-window {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 10px;
+}
+
+.chat-bubble {
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 5px 0;
+}
+
+.chat-bubble.user {
+  background-color: #0084ff;
+  color: white;
+  align-self: flex-end;
+}
+
+.chat-bubble.chatbot {
+  background-color: #e5e5ea;
+  color: black;
+  align-self: flex-start;
+}
+
+.input-container {
+  display: flex;
+  gap: 10px;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px;
+  background-color: #0084ff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

@@ -181,7 +181,7 @@ const PopupUpdate_Company = () => {
       currentReservation, //추가
       views, //추가
       heartCount, //추가
-      categories: category.map(cat => ({ category: cat })),
+      categories: category.map(cat => ({ category: cat.category })),
       storeDays: Object.keys(operatingDays)
         .filter(day => operatingDays[day].isSelected)
         .map(day => ({
@@ -322,7 +322,12 @@ const PopupUpdate_Company = () => {
 
   const fetchCategorySuggestions = async (title, description) => {
     try {
-      console.log('Fetching category suggestions for:', title, description);
+      // console.log('Fetching category suggestions for:', title, description);
+      // const response = await fetch('http://spring-app:8080/popup/ai/category', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ title, description }),
+      // });
       const response = await fetch('http://localhost:8080/popup/ai/category', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -355,13 +360,21 @@ const PopupUpdate_Company = () => {
   const handleTitleChange = (e) => {
     const newTitle = e.target.value;
     setTitle(newTitle);
-    debouncedFetchCategorySuggestions(newTitle, description);
+
+    if (e.inputType === 'insertText' && e.data === ' ') {
+      console.log('API Call for Title');
+      debouncedFetchCategorySuggestions(newTitle, description);
+    }
   };
 
   const handleDescriptionChange = (e) => {
     const newDescription = e.target.value;
     setDescription(newDescription);
-    debouncedFetchCategorySuggestions(title, newDescription);
+
+    if (e.inputType === 'insertText' && (e.data === '.' || e.data === '!' || e.data === '~' || e.data === '?' || e.data === ',')) {
+      console.log('API Call for Description');
+      debouncedFetchCategorySuggestions(title, newDescription);
+    }
   };
 
   // const handleImageChange = (e) => {
@@ -587,7 +600,7 @@ export default PopupUpdate_Company;
 
 
 
-// // 24.09.06 put정보 담기 수정 전
+// // 24.09.13 put 400 에러 수정 전... 아마 이미지 문제일듯...
 // import React, { useEffect, useState } from 'react';
 // import { useParams, useNavigate, useLocation } from 'react-router-dom';
 // import DaumPostcode from 'react-daum-postcode';
@@ -602,7 +615,7 @@ export default PopupUpdate_Company;
 //   const [operatingStartDate, setOperatingStartDate] = useState('');
 //   const [operatingEndDate, setOperatingEndDate] = useState('');
 //   const [telephone, setTelephone] = useState('');
-//   const [postcode, setPostcode] = useState('');
+//   const [postCode, setPostCode] = useState('');
 //   const [address, setAddress] = useState('');
 //   const [roadAddress, setRoadAddress] = useState('');
 //   const [detailAddress, setDetailAddress] = useState('');
@@ -611,9 +624,14 @@ export default PopupUpdate_Company;
 //   const [categories, setCategories] = useState([]);
 //   const [description, setDescription] = useState('');
 //   const [imageFiles, setImageFiles] = useState([]);
-//   const [image, setImage] = useState('');
+//   const [popupImages, setPopupImages] = useState([]);  // 기존 이미지 상태
 //   const [link, setLink] = useState('');
 //   const [coordinates, setCoordinates] = useState({ mapx: '', mapy: '' });
+//   const [companyEmail, setCompanyEmail] = useState(''); //추가
+//   const [reservation, sortedReservations] = useState(true); //추가
+//   const [views, setViews] = useState(''); //추가
+//   const [heartCount, setHeartCount] = useState(''); //추가
+//   const [currentReservation, setCurrentReservation] = useState(''); //추가
 //   const [operatingDays, setOperatingDays] = useState({
 //     월요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
 //     화요일: { startTime: '00:00', endTime: '23:59', isSelected: false },
@@ -631,20 +649,10 @@ export default PopupUpdate_Company;
 //   const [companyId, setCompanyId] = useState(''); // 회사 ID (필요한 값으로 초기화)
 //   const [totalReservation, setTotalReservation] = useState(0); // 총 예약 수 (필요한 값으로 초기화)
 //   const [distance, setDistance] = useState('');
-//   const [reservationEnabled, setReservationEnabled] = useState(false);
-
 
 //   const [images, setImages] = useState([]);
+//   const [previewImages, setPreviewImages] = useState([]);  // 이미지 프리뷰 상태
 //   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     const { popupImages } = location.state || {};
-  
-//     if (popupImages && popupImages.length > 0) {
-//       const imageUrls = popupImages.map(image => `http://localhost:8080/${image.imageUrl}`);
-//       setImages(imageUrls);
-//     }
-//   }, [location]);
   
   
 //   useEffect(() => {
@@ -666,17 +674,24 @@ export default PopupUpdate_Company;
   
 //             setTitle(popupData.title || '');
 //             setCompanyName(popupData.companyName || '');
+//             setCompanyEmail(popupData.companyEmail || '');
+//             setCompanyId(popupData.companyId || '');
+//             setHeartCount(popupData.heartCount || '');
+//             setDistance(popupData.distance || '');
+//             setLink(popupData.link || '');
+//             setPostCode(popupData.postCode || '');
+//             setViews(popupData.views || '');
 //             setOperatingStartDate(new Date(popupData.startDate).toISOString().split('T')[0]);
 //             setOperatingEndDate(new Date(popupData.endDate).toISOString().split('T')[0]);
 //             setTelephone(popupData.telephone || '');
-//             setPostcode(popupData.postcode || '');
+//             setPostCode(popupData.postCode || '');
 //             setAddress(popupData.address || '');
 //             setRoadAddress(popupData.roadAddress || '');
 //             setDetailAddress(popupData.detailAddress || '');
 //             setSubway(popupData.subway || '');
 //             setCategories(popupData.categories.map(cat => cat.category));
 //             setDescription(popupData.description || '');
-//             setImage(popupData.popupImages?.[0]?.imageUrl || '');
+//             setPopupImages(popupData.popupImages || []);
 //             setLink(popupData.link || '');
 //             setCoordinates({ mapx: popupData.mapx, mapy: popupData.mapy });
 //             setOperatingDays(popupData.storeDays.reduce((acc, day) => {
@@ -698,13 +713,14 @@ export default PopupUpdate_Company;
 //             setPopupReservations(popupData.popupReservations || []);
 //             setIsReservationEnabled(popupData.popupReservations.length > 0);
 //             fetchCategorySuggestions(popupData.title || '', popupData.description || '');
-//             const images = popupImages.length > 0 ? popupImages.map(image => `http://localhost:8080/${image.imageUrl}`) : ['/images/image1.png'];
   
-//             const { popupImages } = location.state || {};
-//             if (popupImages && popupImages.length > 0) {
-//               const imageUrls = popupImages.map(image => `http://localhost:8080/${image.imageUrl}`);
-//               setImages(imageUrls);
-//             }
+
+//             const images = popupData.popupImages
+//               ? popupData.popupImages.map(image => `http://localhost:8080/${image.imageUrl}`)
+//               : ['/images/image1.png'];
+//             setPreviewImages(images); // Set the image URLs for preview
+          
+//             console.log('Generated Image URL:', images); 
 //           }
 //         } catch (error) {
 //           console.error('Error fetching popup data:', error);
@@ -716,9 +732,16 @@ export default PopupUpdate_Company;
 //     };
   
 //     fetchData();
-//   }, [id, location]);
+//   }, [id]);
+
+//   const handleImageChange = (e) => {
+//     const files = Array.from(e.target.files);
+//     setImageFiles(prev => [...prev, ...files]);
   
-  
+//     // File preview URLs
+//     const newPreviewImages = files.map(file => URL.createObjectURL(file));
+//     setPreviewImages(prev => [...prev, ...newPreviewImages]); // 새로 업로드된 이미지도 추가
+//   };
 
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
@@ -731,11 +754,12 @@ export default PopupUpdate_Company;
   
 //     // JSON 데이터 구성
 //     const jsonData = {
+//       id, //추가
 //       companyId,
 //       companyName,
-//       companyEmail,
+//       companyEmail, //추가
 //       title,
-//       postcode,
+//       postCode, //postcode -> postCode 수정
 //       address,
 //       roadAddress,
 //       detailAddress,
@@ -748,7 +772,12 @@ export default PopupUpdate_Company;
 //       link,
 //       mapx: coordinates.mapx,
 //       mapy: coordinates.mapy,
-//       categories: category.map(cat => ({ category: cat })),
+//       reservation, //추가
+//       totalReservation, //추가
+//       currentReservation, //추가
+//       views, //추가
+//       heartCount, //추가
+//       categories: category.map(cat => ({ category: cat.category })),
 //       storeDays: Object.keys(operatingDays)
 //         .filter(day => operatingDays[day].isSelected)
 //         .map(day => ({
@@ -764,20 +793,28 @@ export default PopupUpdate_Company;
 //         currentReservation: res.currentReservation,
 //         isReservationEnabled: res.isReservationEnabled, //추가
 //         isReservationFull: res.isReservationFull,
-//         data: res.date
+//         date: res.date
 //       })),
-//       isReservationEnabled: reservationEnabled
+//       // isReservationEnabled: reservationEnabled // 삭제
 //     };
   
 //     // FormData 객체 생성
 //     const formData = new FormData();
 //     formData.append('dto', new Blob([JSON.stringify(jsonData)], { type: 'application/json' }));
   
-//     imageFiles.forEach((file, index) => {
+//     // 기존 이미지를 추가
+//     popupImages.forEach((image) => {
+//       if (image.imageUrl) {
+//         formData.append('images', image.imageUrl);
+//       }
+//     });
+
+//     // 새로 업로드할 이미지를 추가
+//     imageFiles.forEach((file) => {
 //       formData.append('images', file);
 //     });
 
-//     console.log('Fetched images:', images); // For debugging
+//     console.log('Fetched images:', formData.getAll('images')); // For debugging
 
   
 //     try {
@@ -809,7 +846,6 @@ export default PopupUpdate_Company;
 //     }
 //   };
   
-
 //   const handleAddressSearch = (e) => {
 //     e.preventDefault();
 //     setShowPostcodeModal(true);
@@ -844,7 +880,7 @@ export default PopupUpdate_Company;
 
 //   const handlePostcodeComplete = (data) => {
 //     const fullAddress = `${data.address} ${data.bname ? ` (${data.bname})` : ''} ${data.buildingName ? ` ${data.buildingName}` : ''}`;
-//     setPostcode(data.zonecode);
+//     setPostCode(data.zonecode);
 //     setAddress(data.jibunAddress);
 //     setRoadAddress(data.roadAddress);
 //     fetchCoordinates(data.roadAddress);
@@ -882,7 +918,12 @@ export default PopupUpdate_Company;
 
 //   const fetchCategorySuggestions = async (title, description) => {
 //     try {
-//       console.log('Fetching category suggestions for:', title, description);
+//       // console.log('Fetching category suggestions for:', title, description);
+//       // const response = await fetch('http://spring-app:8080/popup/ai/category', {
+//       //   method: 'POST',
+//       //   headers: { 'Content-Type': 'application/json' },
+//       //   body: JSON.stringify({ title, description }),
+//       // });
 //       const response = await fetch('http://localhost:8080/popup/ai/category', {
 //         method: 'POST',
 //         headers: { 'Content-Type': 'application/json' },
@@ -924,26 +965,14 @@ export default PopupUpdate_Company;
 //     debouncedFetchCategorySuggestions(title, newDescription);
 //   };
 
-//   const handleImageChange = (e) => {
-//     const files = Array.from(e.target.files);
-//     setImageFiles(files);
+//   // const handleImageChange = (e) => {
+//   //   const files = Array.from(e.target.files);
+//   //   setImageFiles(files);
   
-//     // File preview URLs
-//     const previewImages = files.map(file => URL.createObjectURL(file));
-//     setImages(previewImages);
-  
-//     // Set first image for preview
-//     if (files.length > 0) {
-//       const file = files[0];
-//       const reader = new FileReader();
-//       reader.onloadend = () => {
-//         setImage(reader.result);
-//       };
-//       reader.readAsDataURL(file);
-//     } else {
-//       setImage('');
-//     }
-//   };
+//   //   // File preview URLs
+//   //   const previewImages = files.map(file => URL.createObjectURL(file));
+//   //   setPreviewImages(previewImages); // Update the state here
+//   // };
   
 
 //   const timeOptions = [];
@@ -1008,8 +1037,8 @@ export default PopupUpdate_Company;
 //           <div className="postcode-container">
 //             <input
 //               type="text"
-//               value={postcode}
-//               onChange={(e) => setPostcode(e.target.value)}
+//               value={postCode}
+//               onChange={(e) => setPostCode(e.target.value)}
 //               readOnly
 //             />
 //             <button
@@ -1093,19 +1122,12 @@ export default PopupUpdate_Company;
 //         </label>
 
 //         <div className="image-preview">
-//           {images.length > 0 ? (
-//             <div className="banner-images">
-//               {images.map((imgUrl, index) => (
-//                 <img 
-//                   key={index} 
-//                   src={imgUrl} 
-//                   alt={`Preview ${index}`} 
-//                   className="banner-image" 
-//                 />
-//               ))}
-//             </div>
+//           {previewImages.length > 0 ? (
+//             previewImages.map((src, index) => (
+//               <img key={index} src={src} alt={`미리보기 ${index + 1}`} />
+//             ))
 //           ) : (
-//             <img src="/images/image1.png" alt="Default Banner" className="banner-image" />
+//             <img src="/images/image1.png" alt="Default Banner" />
 //           )}
 //         </div>
 
