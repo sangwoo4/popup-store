@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.api.client.json.Json;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,6 +30,7 @@ public class JsonProcessingService {
         ArrayNode jsonArray = objectMapper.createArrayNode();
         ObjectNode jsonObject = objectMapper.createObjectNode();
 
+        System.out.println("queryNode ===" + queryNode);
         JsonNode mapxNode = queryNode.get("mapx");
         JsonNode mapyNode = queryNode.get("mapy");
         JsonNode idNode = queryNode.get("id");
@@ -36,6 +38,7 @@ public class JsonProcessingService {
         jsonObject.put("id", idNode.asText());
         jsonObject.put("mapx", mapxNode.asText());
         jsonObject.put("mapy", mapyNode.asText());
+
 
         jsonArray.add(jsonObject);
         return jsonArray;
@@ -45,13 +48,16 @@ public class JsonProcessingService {
         ArrayNode jsonArray = objectMapper.createArrayNode();
         ObjectNode jsonObject = objectMapper.createObjectNode();
 
+        System.out.println("queryNode" + queryNode);
         // JsonNode에서 필요한 필드만 추출
         JsonNode categoriesNode = queryNode.get("categories"); // categories 필드 가져오기
         JsonNode idNode = queryNode.get("id");
         JsonNode mapxNode = queryNode.get("mapx");
         JsonNode mapyNode = queryNode.get("mapy");
+        JsonNode heartsNode = queryNode.get("hearts");
         // id 필드 추가
         jsonObject.put("id", idNode.asInt());
+
 
         // categories 필드를 문자열로 변환
         if (categoriesNode.isArray()) {
@@ -66,6 +72,20 @@ public class JsonProcessingService {
         } else {
             jsonObject.put("categories", categoriesNode.asText());
         }
+
+        if (heartsNode.isArray()) {
+            StringBuilder heartsBuilder = new StringBuilder();
+            for (JsonNode heartNode : heartsNode) {
+                if (heartsBuilder.length() > 0) {
+                    heartsBuilder.append(", ");
+                }
+                heartsBuilder.append(heartNode.get("popupStoreId").asText()); // popupStoreId 추출
+            }
+            jsonObject.put("hearts", heartsBuilder.toString());
+        } else {
+            jsonObject.put("hearts", heartsNode.asText());
+        }
+
         jsonObject.put("mapx", mapxNode.asText()); // 좌표 추가
         jsonObject.put("mapy", mapyNode.asText());
 

@@ -14,4 +14,9 @@ public class HeartDto {
     private Long id;
     private Long userId;
     private Long popupStoreId;
+
+    public HeartDto(Long popupStoreId) {
+        this.popupStoreId = popupStoreId;
+    }
+
 }

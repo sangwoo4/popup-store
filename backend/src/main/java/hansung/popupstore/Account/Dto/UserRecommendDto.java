@@ -1,8 +1,8 @@
 package hansung.popupstore.Account.Dto;
 
 import hansung.popupstore.dto.CategoryDto;
-import hansung.popupstore.model.Category;
-import lombok.AllArgsConstructor;
+import hansung.popupstore.dto.HeartDto;
+import hansung.popupstore.dto.HeartRecommendResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,5 +18,6 @@ public class UserRecommendDto {
     private Long id;
     private String mapx;
     private String mapy;
+    private Set<HeartRecommendResponseDto> hearts = new HashSet<>();
     private Set<CategoryDto> categories = new HashSet<>();
 }

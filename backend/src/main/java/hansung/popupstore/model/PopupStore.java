@@ -1,6 +1,7 @@
 package hansung.popupstore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -98,7 +99,7 @@ public class PopupStore {
     private Set<PopupImage> popupImages = new HashSet<>();
 
     @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
+    @JsonIgnoreProperties(ignoreUnknown = true)
     private Set<PopupReservation> popupReservations = new HashSet<>();
 
     @Column(name = "heartCount")

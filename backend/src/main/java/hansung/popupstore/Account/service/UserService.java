@@ -5,6 +5,8 @@ import hansung.popupstore.Account.Repository.UserRepository;
 import hansung.popupstore.PopupStore.Repository.CategoryRepository;
 import hansung.popupstore.Security.TokenProvider;
 import hansung.popupstore.dto.CategoryDto;
+import hansung.popupstore.dto.HeartDto;
+import hansung.popupstore.dto.HeartRecommendResponseDto;
 import hansung.popupstore.dto.UserDto;
 import hansung.popupstore.model.Category;
 import hansung.popupstore.model.Role;
@@ -140,6 +142,14 @@ public UserRecommendDto userCategoryAndAddressFindByUserId(Long userId) {
                 .map(category -> new CategoryDto(category.getId(), category.getCategory()))
                 .collect(Collectors.toSet());
         userRecommendDto.setCategories(categoryDtos);
+
+    // 유저의 하트(좋아요) 정보 설정 (해당 popupStore의 id와 name 설정)
+    Set<HeartRecommendResponseDto> heartDtos = user.getHearts().stream()
+            .map(heart -> new HeartRecommendResponseDto(
+                    heart.getPopupStore().getId()   // PopupStore의 ID만 설정
+            ))
+            .collect(Collectors.toSet());
+    userRecommendDto.setHearts(heartDtos);
 
     return userRecommendDto;
     }

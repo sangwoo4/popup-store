@@ -24,4 +24,6 @@ public class Heart {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "popup_store_id", nullable = false)
     private PopupStore popupStore;
+
+
 }
