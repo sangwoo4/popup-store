@@ -39,6 +39,8 @@ public class PopupStoreMapper {
         return new PopupStoreResponseDto(
                 popupStore.getId(),
                 popupStore.getTitle(),
+                popupStore.getStartDate(),
+                popupStore.getEndDate(),
                 categories,
                 popupImages
         );

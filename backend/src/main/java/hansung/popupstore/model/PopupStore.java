@@ -100,6 +100,7 @@ public class PopupStore {
 
     @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonIgnore
     private Set<PopupReservation> popupReservations = new HashSet<>();
 
     @Column(name = "heartCount")

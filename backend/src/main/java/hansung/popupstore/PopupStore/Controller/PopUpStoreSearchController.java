@@ -15,7 +15,6 @@ public class PopUpStoreSearchController {
 
     private final PopupStoreSearchService popupStoreSearchService;
 
-
     @GetMapping("/all")
     public ResponseEntity<ResponseDto<?>> savePopUp() throws JsonProcessingException {
         ResponseDto<?> result = popupStoreSearchService.processPopUpSearch("팝업스토어");

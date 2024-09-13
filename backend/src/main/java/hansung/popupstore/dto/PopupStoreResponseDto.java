@@ -12,6 +12,8 @@ import java.util.Set;
 public class PopupStoreResponseDto {
     private Long id;
     private String title;
+    private String startDate;
+    private String endDate;
     private List<CategoryDto> categories;
     private List<PopupImageDto> popupImages;
 }

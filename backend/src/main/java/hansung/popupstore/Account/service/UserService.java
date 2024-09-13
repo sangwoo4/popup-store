@@ -53,6 +53,7 @@ public class UserService {
             throw new RuntimeException("회원 생성 실패", e);
         }
     }
+
     private User buildUserEntity(UserDto dto) {
         String hashedPassword = passwordService.encodePassword(dto.getPassword());
         return User.builder()
