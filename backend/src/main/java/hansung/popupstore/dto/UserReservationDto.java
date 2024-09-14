@@ -14,4 +14,5 @@ public class UserReservationDto {
     private Long popupReservationId;
     private Long userId;
     private int numberOfPeople;
+
 }

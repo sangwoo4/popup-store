@@ -28,4 +28,5 @@ public class UserReservation {
 
     @Column(name = "number_of_people")
     private int numberOfPeople;
+
 }

@@ -1,10 +1,12 @@
 package hansung.popupstore.PopupStore.Controller;
 
+import hansung.popupstore.PopupReservation.Service.UserReservationService;
 import hansung.popupstore.PopupStore.Service.PopupReviewService;
 import hansung.popupstore.Security.TokenUtils;
 import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.dto.DeleteReviewRequest;
 import hansung.popupstore.dto.PopupReviewDto;
+import hansung.popupstore.dto.UserReservationDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PopupStoreReviewController {
     private final PopupReviewService popupReviewService;
+    private final UserReservationService userReservationService;
     private final TokenUtils tokenUtils;
 
     @PostMapping("/register")
@@ -31,6 +34,18 @@ public class PopupStoreReviewController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("리뷰 등록 중 오류가 발생했습니다: " + e.getMessage());
         }
+    }
+
+    @PostMapping("/register/check")
+    public ResponseEntity<ResponseDto<?>> checkUserPopupReservationOrNot(
+            @RequestHeader("Authorization") String token, @RequestBody PopupReviewDto reviewDto) {
+
+        String jwtToken = tokenUtils.extractToken(token);
+        Long userId = tokenUtils.extractUserIdFromToken(jwtToken);
+
+        ResponseDto<?> result = userReservationService.checkUserReservation(userId, reviewDto.getPopupStoreId());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
