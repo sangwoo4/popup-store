@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DataLoader {
 
-    @Beanx
+    @Bean
     ApplicationRunner initData(CategoryRepository categoryRepository) {
         return args -> {
             if (categoryRepository.count() == 0) {
