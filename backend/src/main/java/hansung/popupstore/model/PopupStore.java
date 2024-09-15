@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -79,7 +80,8 @@ public class PopupStore {
     private Integer currentReservation;
 
     @Column(name = "views")
-    private Long views = 0L;
+    @ColumnDefault("0")
+    private Long views = 0L;  // 기본값 설정
 
 
     @ManyToMany(fetch = FetchType.EAGER)
