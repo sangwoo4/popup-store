@@ -25,12 +25,12 @@ public class PopUpStoreAiService {
     private final ApiRequestService apiRequestService;
     private final JsonProcessingService jsonProcessingService;
     private final DtoConversionService dtoConversionService;
-//    private static final String CATEGORIZE_URL = "http://fastapi-app:8000/categorize";
-//    private static final String DISTANCE_RECOMMEND_URL = "http://fastapi-app:8000/recommend/distance";
-//    private static final String CATEGORY_RECOMMEND_URL = "http://fastapi-app:8000/recommend/category";
-    private static final String CATEGORIZE_URL = "http://localhost:8000/categorize";
-    private static final String DISTANCE_RECOMMEND_URL = "http://localhost:8000/recommend/distance";
-    private static final String CATEGORY_RECOMMEND_URL = "http://localhost:8000/recommend/category";
+    private static final String CATEGORIZE_URL = "http://fastapi-app:8000/categorize";
+    private static final String DISTANCE_RECOMMEND_URL = "http://fastapi-app:8000/recommend/distance";
+    private static final String CATEGORY_RECOMMEND_URL = "http://fastapi-app:8000/recommend/category";
+//    private static final String CATEGORIZE_URL = "http://localhost:8000/categorize";
+//    private static final String DISTANCE_RECOMMEND_URL = "http://localhost:8000/recommend/distance";
+//    private static final String CATEGORY_RECOMMEND_URL = "http://localhost:8000/recommend/category";
 
 
 
