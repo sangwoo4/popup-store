@@ -36,10 +36,10 @@ public class User {
     private String mapx;
 
     @Column
-    private String address;
+    private String mapy;
 
     @Column
-    private String mapy;
+    private String address;
 
     @Column
     private String roadAddress;
@@ -71,4 +71,15 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Heart> hearts = new HashSet<>();
 
+    // 마이페이지 기능
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserMyPage> userMyPages = new HashSet<>();
+
+    // 리뷰 기능
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<PopupReview> popupReviews = new HashSet<>();
+
+    // 예약 기능
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<UserReservation> userReservations = new HashSet<>();
 }

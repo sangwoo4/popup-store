@@ -63,6 +63,9 @@ public class Company {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PopupStore> popupStores = new HashSet<>();
 
+//    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private Set<CompanyMyPage> companyMyPages = new HashSet<>();
+
     @Builder
     public Company(Long id, String companyName, String managerName, String address, String email, String password, String companyId, Set<Role> roles, Set<PopupStore> popupStores, String postCode, String detailAddress, String roadAddress) {
         this.id = id;

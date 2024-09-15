@@ -1,13 +1,11 @@
 package hansung.popupstore.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -18,7 +16,15 @@ public class PopupReview {
     private Long id;
 
     private Long popupStoreId;
-    private Long userId;
     private String reviewText;
     private LocalDate localDate;
+
+    // 마이페이지 기능
+    @OneToMany(mappedBy = "popupReview", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserMyPage> userMyPages = new HashSet<>();
+
+    // User와의 관계 추가, 회원 탈퇴 시 리뷰 삭제 용도
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

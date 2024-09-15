@@ -22,11 +22,13 @@ public class Category {
     @Column(name = "category", length = 50)
     private String category;
 
-    @ManyToMany(mappedBy = "categories")
+    // 회원탈퇴를 위한 부모 자식관계 재확립(REMOVE 기능이 없어서 탈퇴시 에러 발생으로 추가)
+    @ManyToMany(mappedBy = "categories", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Set<PopupStore> popupStores = new HashSet<>();
 
-    @ManyToMany(mappedBy = "categories")
+    // 회원탈퇴를 위한 부모 자식관계 재확립(REMOVE 기능이 없어서 탈퇴시 에러 발생으로 추가)
+    @ManyToMany(mappedBy = "categories", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Set<User> users = new HashSet<>();
 
