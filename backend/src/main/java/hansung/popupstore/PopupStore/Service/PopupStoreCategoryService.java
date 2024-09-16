@@ -7,6 +7,7 @@ import hansung.popupstore.model.Category;
 import hansung.popupstore.model.PopupStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class PopupStoreCategoryService {
     private final CategoryRepository categoryRepository;
-
+    @Transactional
     public Set<Category> saveOrUpdatePopUpCategories(Set<CategoryDto> categoryDtos, PopupStore popupStore) {
         Set<Category> savedCategories = new HashSet<>();
         for (CategoryDto categoryDto : categoryDtos) {
