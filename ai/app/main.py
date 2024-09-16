@@ -1,4 +1,4 @@
-# ncf_main.py
+# main.py
 
 import os
 import math
@@ -18,10 +18,10 @@ from contextlib import asynccontextmanager
 # from cache import set_cache, get_cache, save_cache_to_file, load_cache_from_file, get_cache_content, clear_cache
 # from ncf_model import create_ncf
 from openai import AsyncOpenAI
-
 # 절대 경로로 모듈을 가져옴
 from app.model_definition import create_ncf
 from app import schemas
+from app.schemas import PopupStore
 from app.cache import set_cache, get_cache, save_cache_to_file, load_cache_from_file, get_cache_content, clear_cache
 
 load_dotenv()
@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 CACHE_FILE = "cache_data.json"
 MODEL_FILE = "ncf_model.keras"
 
-Docker
+# Docker
 DB_CONFIG = {
     'user': 'root',
     'password': '1234',
@@ -50,6 +50,7 @@ DB_CONFIG = {
 #     'database': 'popup'
 # }
 
+# OpenAI API 키 설정(시스템 환경변수에 설정으로 외부에 노출 가능성 하락)
 # OpenAI API 키 설정(시스템 환경변수에 설정으로 외부에 노출 가능성 하락)
 auto_category_key = os.getenv("AUTO_CATEGORY_KEY")
 if not auto_category_key:
@@ -133,6 +134,10 @@ def calculate_distance02(coords1, coords2):
     lat2, lon2 = coords2
     return math.sqrt((lat2 - lat1) ** 2 + (lon2 - lon1) ** 2)
 
+# NCF 점수를 제곱 또는 세제곱하여 더 큰 차이로 확대
+def scale_ncf_score(score, factor=2):
+    return score ** factor
+
 # MySQL 데이터베이스에서 팝업 스토어 정보를 가져오는 함수
 def fetch_popup_stores_from_db():
     try:
@@ -197,7 +202,7 @@ async def distance_recommendations(request: List[schemas.DistanceRequest]):
         
         popup_stores_data = get_cache("popup_stores")
         if popup_stores_data:
-            popup_stores = [schemas.PopupStore(**store) for store in popup_stores_data]
+            popup_stores = [PopupStore(**store) for store in popup_stores_data]
             logger.info(f"캐시에서 팝업 스토어 데이터 로드: {popup_stores}")
         else:
             popup_stores = fetch_popup_stores_from_db()
@@ -248,6 +253,13 @@ async def category_recommendations(request: List[schemas.CategoryRequest]):
     weight_reserve = 0.2  # 예약 퍼센티지 가중치 증가
 
     try:
+        # request에서 hearts 필드가 리스트로 변환되었는지 확인
+        for req in request:
+            if isinstance(req.hearts, list):
+                logger.info(f"hearts는 리스트로 변환되었습니다: {req.hearts}")
+            else:
+                logger.warning(f"hearts 필드가 리스트로 변환되지 않았습니다: {req.hearts}")
+
         # 입력 데이터를 numpy 배열로 변환
         user_id_input = np.array([req.id for req in request])
         categories_input = np.array([req.categories for req in request])
@@ -267,7 +279,7 @@ async def category_recommendations(request: List[schemas.CategoryRequest]):
         # 캐시에서 팝업 스토어 데이터를 로드
         popup_stores_data = get_cache("popup_stores")
         if popup_stores_data:
-            popup_stores = [schemas.PopupStore(**store) for store in popup_stores_data]
+            popup_stores = [PopupStore(**store) for store in popup_stores_data]
             logger.info(f"캐시에서 팝업 스토어 데이터 로드 완료: {popup_stores}")
         else:
             popup_stores = fetch_popup_stores_from_db()
@@ -277,17 +289,22 @@ async def category_recommendations(request: List[schemas.CategoryRequest]):
             logger.info(f"데이터베이스에서 팝업 스토어 데이터 로드 및 캐시 저장 완료: {popup_stores}")
 
         categories = categories_input[0].split(', ')
-        filtered_popup_stores = [store for store in popup_stores if any(cat in categories for cat in store.categories.split(', '))]
 
-        if not filtered_popup_stores:
-            logger.warning("카테고리에 맞는 팝업 스토어가 없습니다. 모든 팝업 스토어를 사용합니다.")
-            filtered_popup_stores = popup_stores
+        # 모든 팝업 스토어를 고려하는 대신 카테고리와 일치 여부에 따라 가중치를 달리하는 로직 추가
+        final_popup_stores = popup_stores  # 모든 팝업 스토어를 기본으로 사용
+        store_match_weights = []
 
-        logger.info(f"필터링된 팝업 스토어 목록: {[store.id for store in filtered_popup_stores]}")
+        for store in popup_stores:
+            if any(cat in categories for cat in store.categories.split(', ')):
+                store_match_weights.append(1.0)  # 카테고리 일치하면 높은 가중치
+            else:
+                store_match_weights.append(0.5)  # 일치하지 않으면 낮은 가중치
+
+        logger.info(f"모든 팝업 스토어 목록: {[store.id for store in final_popup_stores]}")
 
         # NCF 모델 예측 수행
-        item_ids_input = np.array([store.id for store in filtered_popup_stores])
-        predictions = model.predict([user_id_input.repeat(len(filtered_popup_stores)), item_ids_input])
+        item_ids_input = np.array([store.id for store in final_popup_stores])
+        predictions = model.predict([user_id_input.repeat(len(final_popup_stores)), item_ids_input])
         predictions = np.round(predictions.flatten(), 5)
         logger.info(f"NCF 모델 예측 완료: {predictions}")
 
@@ -295,23 +312,18 @@ async def category_recommendations(request: List[schemas.CategoryRequest]):
         final_scores = []
         user_coords = (mapy_input[0] / 10000000.0, mapx_input[0] / 10000000.0)
 
-        for idx, store in enumerate(filtered_popup_stores):
+        for idx, store in enumerate(final_popup_stores):
             store_coords = (float(store.mapy) / 10000000.0, float(store.mapx) / 10000000.0)
             distance = calculate_distance02(user_coords, store_coords)
             distance_score = 1 / (1 + distance)  # 거리 점수 계산
 
-            # 예약률 퍼센티지를 개별 팝업스토어에 맞게 지정
-            if store.id == request[0].id:
-                reserve_score = request[0].reserve_percent / 100.0  # 요청된 팝업스토어의 예약률 사용
-            else:
-                reserve_score = 0.0  # 다른 스토어에는 예약률이 없는 것으로 처리
-
-            if store.id in hearts:
-                heart_score = 1
-            else:
-                heart_score = 0
-
+            # 예약률 퍼센티지, 찜 점수, 조회수 점수 추출
+            reserve_score = request[0].reserve_percent / 100.0 if store.id == request[0].id else 0.0
+            heart_score = 1 if store.id in hearts else 0
             views_score = view_count
+
+             # NCF 점수를 스케일링해서 더 큰 비중을 주는 방식
+            scaled_ncf_score = scale_ncf_score(predictions[idx], factor=3)  # NCF 점수에 지수 적용
 
             # 로그 기록
             logger.info(f"스토어 ID: {store.id}")
@@ -319,18 +331,19 @@ async def category_recommendations(request: List[schemas.CategoryRequest]):
             logger.info(f"예약률 계산: {reserve_score}")
             logger.info(f"찜 점수(heart_score): {heart_score}")
             logger.info(f"조회수 점수(views_score): {views_score}")
-            logger.info(f"NCF 예측 점수: {predictions[idx]}")
+            logger.info(f"스케일링된 NCF 예측 점수: {scaled_ncf_score}")
 
-            # NCF 예측 점수와 거리 점수 및 추가 지표 점수를 가중합하여 최종 점수 계산
-            final_score = (weight_ncf * predictions[idx] + weight_distance * distance_score +
-                           weight_heart * heart_score + weight_views * views_score + weight_reserve * reserve_score)
+            # 최종 점수 계산 (스케일링된 NCF 점수를 사용)
+            final_score = (weight_ncf * scaled_ncf_score + weight_distance * distance_score +
+                   weight_heart * heart_score + weight_views * views_score +
+                   weight_reserve * reserve_score)
 
             final_scores.append((store.id, float(final_score)))
             logger.info(f"스토어 {store.id}의 최종 점수: {float(final_score)}")
 
-        # 최종 점수로 정렬
-        final_scores.sort(key=lambda x: x[1], reverse=True)
-        logger.info(f"정렬된 최종 점수 목록: {final_scores}")
+            # 최종 점수로 정렬
+            final_scores.sort(key=lambda x: x[1], reverse=True)
+            logger.info(f"정렬된 최종 점수 목록: {final_scores}")
 
         ncf_recommendations = [schemas.NfcRecommendation(id=store_id) for store_id, _ in final_scores[:num_recommendations]]
         

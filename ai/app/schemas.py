@@ -1,15 +1,23 @@
-from pydantic import BaseModel, RootModel, Field
+from pydantic import BaseModel, RootModel, Field, validator
 from typing import List, Optional
 
+# hearts 필드를 배열로 정의합니다.
 class CategoryRequest(BaseModel):
     id: int
     categories: str
     mapx: str
     mapy: str
-    hearts: List[int]
+    hearts: Optional[List[int]] = Field(default_factory=list)
     view_count: Optional[int] = 0
     reserve_percent: Optional[float] = 0
-    
+
+    # hearts 필드가 문자열로 들어오는 경우 배열로 변환
+    @validator('hearts', pre=True)
+    def convert_hearts_to_list(cls, v):
+        if isinstance(v, str):
+            return list(map(int, v.split(',')))
+        return v
+
 # 거리 요청 스키마
 class DistanceRequest(BaseModel):
     id: int
