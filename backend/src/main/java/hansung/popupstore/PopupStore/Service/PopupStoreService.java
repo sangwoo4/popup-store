@@ -121,6 +121,7 @@ public void incrementViewCount(Long popupStoreId, Long userId, HttpServletReques
                 //.totalReservation(dto.getTotalReservation())
                 .detailAddress(dto.getDetailAddress())
                 .heartCount(dto.getHeartCount())
+                .reservation(dto.getReservation())
                 .company(company)
                 .build();
     }
