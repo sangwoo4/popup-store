@@ -36,7 +36,6 @@ public class SecurityConfig {
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/company/**").hasAnyRole("COMPANY", "ADMIN")
                                 .requestMatchers("/popup/company/**").hasAnyRole("COMPANY", "ADMIN")
-                                .requestMatchers("/user/mypage").authenticated() // 마이페이지 접근 권한 추가(도커 실행 에러로 추가해본 것)
                                 .requestMatchers("/**").permitAll()
 
                 )

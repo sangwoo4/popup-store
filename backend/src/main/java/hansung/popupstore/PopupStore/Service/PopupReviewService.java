@@ -57,4 +57,16 @@ public class PopupReviewService {
                         review.getLocalDate()))
                 .collect(Collectors.toList());
     }
+
+    // 특정 리뷰를 ID로 조회하는 메서드 추가
+    public PopupReviewDto getPopupReview(Long reviewId) {
+        PopupReview review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 리뷰를 찾을 수 없습니다."));
+
+        return new PopupReviewDto(
+                review.getPopupStoreId(),
+                review.getUser().getId(),
+                review.getReviewText(),
+                review.getLocalDate());
+    }
 }

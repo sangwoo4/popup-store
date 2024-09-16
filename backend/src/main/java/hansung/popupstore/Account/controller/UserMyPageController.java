@@ -13,14 +13,14 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/mypage")
 public class UserMyPageController {
 
     private final UserMyPageService userMyPageService;
     private final TokenUtils tokenUtils;
 
     // 첫 마이페이지 조회
-    @GetMapping("/mypage")
+    @GetMapping("/user")
     public ResponseEntity<ResponseDto<?>> allInfo(@RequestHeader("Authorization") String tokenHeader) {
         String token = tokenUtils.extractToken(tokenHeader);
         Long userId = tokenUtils.extractUserIdFromToken(token);
@@ -78,22 +78,4 @@ public class UserMyPageController {
 
         return ResponseEntity.ok(ResponseDto.setSuccess("회원 탈퇴가 성공적으로 처리되었습니다."));
     }
-
-//
-//    // 사용자가 작성한 전체 리뷰 조회
-//    @GetMapping("/allreview")
-//    public ResponseEntity<ResponseDto<?>> allReview(Authentication authentication) {
-//        return null;
-//    }
-//
-//    // 사용자가 예약한 전체 목록
-//    @GetMapping("/allreservation")
-//    public ResponseEntity<ResponseDto<?>> allReservation(Authentication authentication) {
-//        return null;
-//    }
-//    // 사용자가 찜한 전체 목록
-//    @GetMapping("/allhearts")
-//    public ResponseEntity<ResponseDto<?>> allhearts(Authentication authentication) {
-//        return null;
-//    }
 }
