@@ -37,7 +37,10 @@ public class PopUpStoreManagementService {
         storeDayService.saveOrUpdateStoreDays(dto.getStoreDays(), popupStore);
         popupReservationService.saveOrUpdatePopupReservations(dto.getPopupReservations(), popupStore);
         Set<Category> categories = categoryService.saveOrUpdatePopUpCategories(dto.getCategories(), popupStore);
+        System.out.println("catoegories ======" + categories);
         popupStore.setCategories(categories);
+
+        System.out.println("popupStore ============ " + popupStore.getCategories());
         popupStoreService.updatePopupStoreEntity(popupStore, dto);
 
         if (images != null && !images.isEmpty()) {

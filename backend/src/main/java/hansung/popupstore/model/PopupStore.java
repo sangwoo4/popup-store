@@ -1,9 +1,11 @@
 package hansung.popupstore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -78,7 +80,8 @@ public class PopupStore {
     private Integer currentReservation;
 
     @Column(name = "views")
-    private Long views = 0L;
+    @ColumnDefault("0")
+    private Long views = 0L;  // 기본값 설정
 
     // 회원탈퇴를 위한 부모 자식관계 재확립(ALL 기능이 없어서 탈퇴시 에러 발생으로 추가)
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -98,6 +101,7 @@ public class PopupStore {
     private Set<PopupImage> popupImages = new HashSet<>();
 
     @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonIgnore
     private Set<PopupReservation> popupReservations = new HashSet<>();
 

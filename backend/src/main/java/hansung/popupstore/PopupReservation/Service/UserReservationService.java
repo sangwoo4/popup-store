@@ -3,6 +3,7 @@ package hansung.popupstore.PopupReservation.Service;
 import hansung.popupstore.Account.Repository.UserRepository;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.Util.ResponseDto;
+import hansung.popupstore.dto.CheckUserReservationDto;
 import hansung.popupstore.dto.UserReservationDto;
 import hansung.popupstore.model.PopupReservation;
 import hansung.popupstore.model.PopupStore;
@@ -11,9 +12,11 @@ import hansung.popupstore.model.UserReservation;
 import hansung.popupstore.PopupReservation.Repository.PopupReservationRepository;
 import hansung.popupstore.PopupStore.Repository.UserReservationRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -194,5 +197,26 @@ public class UserReservationService {
                 .user(user)
                 .numberOfPeople(dto.getNumberOfPeople())
                 .build();
+    }
+
+    public ResponseDto<?> checkUserReservation(Long userId, Long popupStoreId) {
+        // userId로 사용자의 예약 정보를 조회 (UserReservation 엔티티 리스트)
+        List<UserReservation> reservations = userReservationRepository.findByUserId(userId);
+
+        // UserReservation 엔티티를 CheckUserReservationDto로 변환
+        List<CheckUserReservationDto> checkUserReservationDtos = reservations.stream()
+                .map(reservation -> new CheckUserReservationDto(
+                        reservation.getPopupReservation().getPopupStore().getId()))  // popupStoreId 가져오기
+                .collect(Collectors.toList());
+
+        // 변환된 checkUserReservationDtos 리스트에서 각 예약을 확인
+        for (CheckUserReservationDto checkUserReservationDto : checkUserReservationDtos) {
+            if (checkUserReservationDto.getPopupStoreId().equals(popupStoreId)) {  // popupStoreId 비교
+                return ResponseDto.setSuccess("Reservation found");
+            }
+        }
+
+        // 예약이 없는 경우 실패 응답 반환
+        return ResponseDto.setFailed("No reservation found");
     }
 }

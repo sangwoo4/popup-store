@@ -59,7 +59,6 @@ public class Company {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @JsonIgnore
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PopupStore> popupStores = new HashSet<>();
 

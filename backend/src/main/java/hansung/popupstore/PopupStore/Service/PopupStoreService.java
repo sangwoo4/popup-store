@@ -1,13 +1,17 @@
 package hansung.popupstore.PopupStore.Service;
 
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
+import hansung.popupstore.Util.RedisUtil;
 import hansung.popupstore.dto.*;
 import hansung.popupstore.model.*;
 import hansung.popupstore.Account.Repository.CompanyRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -17,6 +21,7 @@ import java.util.Set;
 public class PopupStoreService {
     private final PopupStoreRepository popupStoreRepository;
     private final CompanyRepository companyRepository;
+    private final RedisUtil redisUtil;
 
     @Transactional
     public PopupStore createPopupStore(PopupStoreDto dto) {
@@ -51,12 +56,28 @@ public class PopupStoreService {
         return convertToDto(popupStore);
     }
 
-    @Transactional
-    public void incrementViewCount(Long popupStoreId) {
+@Transactional
+public void incrementViewCount(Long popupStoreId, Long userId, HttpServletRequest request) {
+    String redisKey;
+
+    if (userId != null) {
+        // 로그인 사용자의 경우: userId 기준으로 Redis 키 생성
+        redisKey = "popupStore:" + popupStoreId + ":user:" + userId;
+    } else {
+        // 비로그인 사용자의 경우: IP 주소를 기준으로 Redis 키 생성
+        String userIp = request.getRemoteAddr();
+        redisKey = "popupStore:" + popupStoreId + ":ip:" + userIp;
+    }
+
+    String viewRecord = redisUtil.getData(redisKey);
+
+    if (viewRecord == null) {
+        // 조회 기록이 없으면 조회수 증가 및 Redis에 기록 저장
+        redisUtil.setDataExpire(redisKey, "viewed", calculateTimeUntilMidnight());
+
         PopupStore popupStore = popupStoreRepository.findById(popupStoreId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 팝업 스토어 ID입니다."));
 
-        // 조회수 증가
         if (popupStore.getViews() == null) {
             popupStore.setViews(1L);
         } else {
@@ -65,6 +86,13 @@ public class PopupStoreService {
 
         popupStoreRepository.save(popupStore);
     }
+}
+    private long calculateTimeUntilMidnight() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime midnight = now.toLocalDate().atStartOfDay().plusDays(1);
+        return Duration.between(now, midnight).getSeconds();
+    }
+
 
     private PopupStore buildPopupStoreEntity(PopupStoreDto dto) {
         Company company = null;
@@ -88,10 +116,10 @@ public class PopupStoreService {
                 .link(dto.getLink())
                 .mapx(dto.getMapx())
                 .mapy(dto.getMapy())
+                .views(0L)
                 .currentReservation(dto.getCurrentReservation())
                 //.totalReservation(dto.getTotalReservation())
                 .detailAddress(dto.getDetailAddress())
-                .views(dto.getViews())
                 .heartCount(dto.getHeartCount())
                 .company(company)
                 .build();
@@ -114,7 +142,6 @@ public class PopupStoreService {
         popupStore.setMapx(dto.getMapx());
         popupStore.setMapy(dto.getMapy());
         popupStore.setPostCode(dto.getPostCode());
-        popupStore.setViews(dto.getViews());
         popupStore.setDetailAddress(dto.getDetailAddress());
         popupStore.setHeartCount(dto.getHeartCount());
     }

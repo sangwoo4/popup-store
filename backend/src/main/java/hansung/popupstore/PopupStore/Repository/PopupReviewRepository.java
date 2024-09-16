@@ -12,4 +12,5 @@ public interface PopupReviewRepository extends JpaRepository<PopupReview, Long> 
 
     // 마이페이지 기능 PopupReviewService.getReviewsByUserId 메서드에 사용
     List<PopupReview> findByUserId(Long userId);
+
 }

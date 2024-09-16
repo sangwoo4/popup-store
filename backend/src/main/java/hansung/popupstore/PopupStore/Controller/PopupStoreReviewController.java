@@ -1,10 +1,13 @@
 package hansung.popupstore.PopupStore.Controller;
 
+import hansung.popupstore.PopupReservation.Service.UserReservationService;
 import hansung.popupstore.PopupStore.Service.PopupReviewService;
 import hansung.popupstore.Security.TokenUtils;
 import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.dto.DeleteReviewRequest;
 import hansung.popupstore.dto.PopupReviewDto;
+import hansung.popupstore.dto.UserReservationDto;
+
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PopupStoreReviewController {
     private final PopupReviewService popupReviewService;
+    private final UserReservationService userReservationService;
     private final TokenUtils tokenUtils;
 
     @PostMapping("/register")
@@ -33,10 +37,30 @@ public class PopupStoreReviewController {
         }
     }
 
+
+//    @GetMapping("/{id}")
+//    public ResponseEntity<ResponseDto<?>> getPopupReview(@PathVariable("id") Long id) {
+//        PopupReviewDto reviewDto = popupReviewService.getPopupReview(id);
+//        return new ResponseEntity<>(ResponseDto.setSuccessData("리뷰 조회 성공", reviewDto), HttpStatus.OK);
+//    }
+
+    @PostMapping("/register/check")
+    public ResponseEntity<ResponseDto<?>> checkUserPopupReservationOrNot(
+            @RequestHeader("Authorization") String token, @RequestBody PopupReviewDto reviewDto) {
+
+        String jwtToken = tokenUtils.extractToken(token);
+        Long userId = tokenUtils.extractUserIdFromToken(jwtToken);
+
+        ResponseDto<?> result = userReservationService.checkUserReservation(userId, reviewDto.getPopupStoreId());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDto<?>> getPopupReview(@PathVariable("id") Long id) {
-        PopupReviewDto reviewDto = popupReviewService.getPopupReview(id);
-        return new ResponseEntity<>(ResponseDto.setSuccessData("리뷰 조회 성공", reviewDto), HttpStatus.OK);
+        ResponseDto<?> result = popupReviewService.getPopupReview(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+
     }
 
     @DeleteMapping("/delete")

@@ -2,10 +2,11 @@ package hansung.popupstore.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+
+import java.time.LocalDateTime;
+
 
 @Entity
 @Data
@@ -14,11 +15,9 @@ public class PopupReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Long popupStoreId;
     private String reviewText;
-    private LocalDate localDate;
-
+//    private Long userId;
     // 마이페이지 기능
     @OneToMany(mappedBy = "popupReview", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserMyPage> userMyPages = new HashSet<>();
@@ -27,4 +26,7 @@ public class PopupReview {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    private LocalDateTime localDateTime;
+
 }

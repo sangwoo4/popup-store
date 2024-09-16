@@ -1,5 +1,6 @@
 package hansung.popupstore.PopupStore.Controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.Security.TokenUtils;
 import hansung.popupstore.Util.ResponseDto;
@@ -51,6 +52,9 @@ public class PopupStoreManagementController {
         String jwtToken = tokenUtils.extractToken(token);
         Long companyId = tokenUtils.extractCompanyIdFromToken(jwtToken);
 
+        System.out.println("Received DTO: " + dto); // 요청 데이터 확인
+        System.out.println("Received Images: " + images); // 이미지 리스트 확인
+
 
         Optional<PopupStore> popupStoreOptional = popupStoreRepository.findById(id);
         if (!popupStoreOptional.isPresent()) {
@@ -64,6 +68,7 @@ public class PopupStoreManagementController {
         ResponseDto<?> result = popUpStoreManagementService.updatePopUp(id, dto, images);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseDto<?>> delete(@PathVariable("id") Long id,

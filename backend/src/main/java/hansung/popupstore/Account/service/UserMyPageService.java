@@ -52,7 +52,7 @@ public class UserMyPageService {
                 .collect(Collectors.toList());
 
         List<PopupReviewDto> reviewDtos = reviews.stream()
-                .map(review -> new PopupReviewDto(review.getPopupStoreId(), null, review.getReviewText(), review.getLocalDate()))
+                .map(review -> new PopupReviewDto(review.getPopupStoreId(), null, review.getReviewText(), review.getLocalDateTime()))
                 .collect(Collectors.toList());
 
         List<Map<String, Object>> reservationDtos = reservations.stream()
