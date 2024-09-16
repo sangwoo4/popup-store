@@ -6,11 +6,12 @@ import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.dto.PopupReviewDto;
 import hansung.popupstore.dto.PopupReviewResponseDto;
 import hansung.popupstore.model.PopupReview;
+import hansung.popupstore.model.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +25,6 @@ public class PopupReviewService {
     public void registerReview(PopupReviewDto reviewDto) {
         PopupReview review = new PopupReview();
         review.setPopupStoreId(reviewDto.getPopupStoreId());
-        review.setUserId(reviewDto.getUserId());
         review.setReviewText(reviewDto.getReviewText());
         review.setLocalDateTime(LocalDateTime.now());
         popupReviewRepository.save(review);
@@ -34,7 +34,7 @@ public class PopupReviewService {
         List<PopupReview> reviews = popupReviewRepository.findAllByPopupStoreId(id);
         List<PopupReviewResponseDto> reviewDtos = reviews.stream().map(review -> {
             // userId로 사용자 닉네임 조회 (UserRepository를 통해 가져온다고 가정)
-            String nickname = userRepository.findById(review.getUserId())
+            String nickname = userRepository.findById(review.getUser().getId())
                     .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."))
                     .getNickname();
 
@@ -50,7 +50,7 @@ public class PopupReviewService {
                 .orElseThrow(() -> new EntityNotFoundException("리뷰를 찾을 수 없습니다."));
 
         // 리뷰 작성자가 현재 사용자와 일치하는지 확인
-        if (!review.getUserId().equals(userId)) {
+        if (!review.getUser().getId().equals(userId)) {
             return false;  // 작성자가 아니면 삭제할 수 없음
         }
 
@@ -58,4 +58,28 @@ public class PopupReviewService {
         popupReviewRepository.delete(review);
         return true;
     }
+
+    // 마이페이지 기능으로 사용자 ID로 리뷰 목록 조회 기능 추가
+    public List<PopupReviewDto> getReviewsByUserId(Long userId) {
+        List<PopupReview> reviews = popupReviewRepository.findByUserId(userId);
+        return reviews.stream()
+                .map(review -> new PopupReviewDto(
+                        review.getPopupStoreId(),
+                        review.getUser().getId(),  // User 객체에서 ID 가져오기
+                        review.getReviewText(),
+                        review.getLocalDateTime()))
+                .collect(Collectors.toList());
+    }
+
+    // 특정 리뷰를 ID로 조회하는 메서드 추가
+//    public PopupReviewDto getPopupReview(Long reviewId) {
+//        PopupReview review = reviewRepository.findById(reviewId)
+//                .orElseThrow(() -> new EntityNotFoundException("해당 리뷰를 찾을 수 없습니다."));
+//
+//        return new PopupReviewDto(
+//                review.getPopupStoreId(),
+//                review.getUser().getId(),
+//                review.getReviewText(),
+//                review.getLocalDate());
+//    }
 }

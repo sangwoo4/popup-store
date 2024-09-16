@@ -83,8 +83,8 @@ public class PopupStore {
     @ColumnDefault("0")
     private Long views = 0L;  // 기본값 설정
 
-
-    @ManyToMany(fetch = FetchType.EAGER)
+    // 회원탈퇴를 위한 부모 자식관계 재확립(ALL 기능이 없어서 탈퇴시 에러 발생으로 추가)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable (
             name ="store_category",
             joinColumns = @JoinColumn(name = "popup_store_id"),
@@ -111,6 +111,9 @@ public class PopupStore {
     @OneToMany(mappedBy = "popupStore", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<Heart> hearts = new HashSet<>();
+
+//    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private Set<CompanyMyPage> companyMyPages = new HashSet<>();
     
     public void updateCurrentReservation(int numberOfPeople) {
         if (this.currentReservation == null) {

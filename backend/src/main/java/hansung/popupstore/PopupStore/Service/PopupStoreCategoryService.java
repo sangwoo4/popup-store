@@ -27,12 +27,14 @@ public class PopupStoreCategoryService {
             }
 
             Optional<Category> existingCategory = categoryRepository.findByCategory(categoryDto.getCategory());
+            System.out.println("existingCategory" + existingCategory);
             if (existingCategory.isPresent()) {
                 savedCategories.add(existingCategory.get());
             } else {
                 System.out.println("Category not found: " + categoryDto.getCategory());
             }
         }
+        System.out.println("savedCategories" + savedCategories);
         return savedCategories;
     }
 

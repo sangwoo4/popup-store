@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Builder
 @Getter
@@ -28,5 +31,9 @@ public class UserReservation {
 
     @Column(name = "number_of_people")
     private int numberOfPeople;
+
+    // 마이페이지 기능
+    @OneToMany(mappedBy = "userReservation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserMyPage> userMyPages = new HashSet<>();
 
 }

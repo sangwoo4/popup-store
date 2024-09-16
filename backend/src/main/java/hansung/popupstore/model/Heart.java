@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -25,5 +28,8 @@ public class Heart {
     @JoinColumn(name = "popup_store_id", nullable = false)
     private PopupStore popupStore;
 
+    // 마이페이지 기능
+    @OneToMany(mappedBy = "heart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserMyPage> userMyPages = new HashSet<>();
 
 }

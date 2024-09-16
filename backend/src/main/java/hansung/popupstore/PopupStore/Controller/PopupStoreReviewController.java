@@ -7,6 +7,7 @@ import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.dto.DeleteReviewRequest;
 import hansung.popupstore.dto.PopupReviewDto;
 import hansung.popupstore.dto.UserReservationDto;
+
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,13 @@ public class PopupStoreReviewController {
         }
     }
 
+
+//    @GetMapping("/{id}")
+//    public ResponseEntity<ResponseDto<?>> getPopupReview(@PathVariable("id") Long id) {
+//        PopupReviewDto reviewDto = popupReviewService.getPopupReview(id);
+//        return new ResponseEntity<>(ResponseDto.setSuccessData("리뷰 조회 성공", reviewDto), HttpStatus.OK);
+//    }
+
     @PostMapping("/register/check")
     public ResponseEntity<ResponseDto<?>> checkUserPopupReservationOrNot(
             @RequestHeader("Authorization") String token, @RequestBody PopupReviewDto reviewDto) {
@@ -52,6 +60,7 @@ public class PopupStoreReviewController {
     public ResponseEntity<ResponseDto<?>> getPopupReview(@PathVariable("id") Long id) {
         ResponseDto<?> result = popupReviewService.getPopupReview(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
+
     }
 
     @DeleteMapping("/delete")
