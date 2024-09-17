@@ -46,7 +46,7 @@ public class PopUpStoreAiService {
         String response = apiRequestService.sendHttpPostRequest(CATEGORY_RECOMMEND_URL, jsonArray);
         List<PopupStoreResponseDto> popupStoreDtos = dtoConversionService.convertCategoryRecommendations(response);
         return ResponseDto.setSuccessData("추천 팝업 스토어 정보를 성공적으로 로드했습니다.", popupStoreDtos);
-    }ㅁㅑ
+    }
 
     public ResponseDto<List<PopupStoreDistanceResponseDto>> convertRecommendPopupByDistance(UserRecommendDto userRecommendDto) throws JsonProcessingException {
         JsonNode queryNode = objectMapper.valueToTree(userRecommendDto);
