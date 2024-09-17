@@ -1,25 +1,30 @@
-from fastapi import FastAPI, HTTPException
-from contextlib import asynccontextmanager
-import numpy as np
-from tensorflow.keras.models import load_model
-from geopy.distance import geodesic
+# main.py
+
+import os
+import math
+import re
 import logging
 import asyncio
-import mysql.connector
 import traceback
-from typing import List
+# import schemas
+import numpy as np
+import mysql.connector
+from geopy.distance import geodesic
 from dotenv import load_dotenv
-import os
-import re
+from fastapi import FastAPI, HTTPException
+from tensorflow.keras.models import load_model
+from typing import List
+from contextlib import asynccontextmanager
+# from cache import set_cache, get_cache, save_cache_to_file, load_cache_from_file, get_cache_content, clear_cache
+# from ncf_model import create_ncf
 from openai import AsyncOpenAI
-
 # 절대 경로로 모듈을 가져옴
 from app.model_definition import create_ncf
 from app import schemas
+from app.schemas import PopupStore
 from app.cache import set_cache, get_cache, save_cache_to_file, load_cache_from_file, get_cache_content, clear_cache
 
 load_dotenv()
-
 app = FastAPI()
 
 logging.basicConfig(level=logging.INFO)
@@ -28,6 +33,7 @@ logger = logging.getLogger(__name__)
 CACHE_FILE = "cache_data.json"
 MODEL_FILE = "ncf_model.keras"
 
+# Docker
 DB_CONFIG = {
     'user': 'root',
     'password': '1234',
@@ -36,7 +42,15 @@ DB_CONFIG = {
     'database': 'popup'
 }
 
-# OpenAI API 키 설정
+#localhost
+# DB_CONFIG = {
+#     'user': 'root',
+#     'password': '0000',
+#     'host': 'localhost',
+#     'database': 'popup'
+# }
+
+# OpenAI API 키 설정(시스템 환경변수에 설정으로 외부에 노출 가능성 하락)
 auto_category_key = os.getenv("AUTO_CATEGORY_KEY")
 if not auto_category_key:
     raise ValueError("API 키가 설정되지 않았습니다.")
@@ -59,14 +73,14 @@ except Exception as e:
     logger.info("새 모델 생성 및 컴파일 완료")
 
 # 모델을 주기적으로 파일에 저장하는 함수
-async def save_model_periodically(interval: int = 600):
+async def save_model_periodically(interval: int = 300):
     while True:
         await asyncio.sleep(interval)
         model.save(MODEL_FILE)
         logger.info(f"모델이 파일에 저장되었습니다: {MODEL_FILE}")
 
 # 주기적으로 캐시를 파일에 저장하는 함수
-async def save_cache_periodically(interval: int = 600):
+async def save_cache_periodically(interval: int = 300):
     while True:
         await asyncio.sleep(interval)
         save_cache_to_file(CACHE_FILE)
@@ -113,6 +127,16 @@ app.router.lifespan_context = lifespan
 def calculate_distance(user_coords, store_coords):
     return round(geodesic(user_coords, store_coords).kilometers, 1)
 
+# ncf 추천 모델을 위한 거리 계산 가중치 함수
+def calculate_distance02(coords1, coords2):
+    lat1, lon1 = coords1
+    lat2, lon2 = coords2
+    return math.sqrt((lat2 - lat1) ** 2 + (lon2 - lon1) ** 2)
+
+# NCF 점수를 제곱 또는 세제곱하여 더 큰 차이로 확대
+def scale_ncf_score(score, factor=2):
+    return score ** factor
+
 # MySQL 데이터베이스에서 팝업 스토어 정보를 가져오는 함수
 def fetch_popup_stores_from_db():
     try:
@@ -121,7 +145,9 @@ def fetch_popup_stores_from_db():
         cursor = conn.cursor(dictionary=True)
         
         query = """
-        SELECT ps.id, ps.title, ps.address, ps.mapx, ps.mapy, GROUP_CONCAT(c.category SEPARATOR ', ') AS categories
+        SELECT ps.id, ps.title, ps.address, ps.mapx, ps.mapy, ps.total_reservation, 
+        ps.current_reservation, ps.views, ps.heart_count, 
+        GROUP_CONCAT(c.category SEPARATOR ', ') AS categories
         FROM popup_store ps
         JOIN store_category sc ON ps.id = sc.popup_store_id
         JOIN category c ON sc.category_id = c.id
@@ -142,6 +168,7 @@ def fetch_popup_stores_from_db():
         traceback.print_exc()
         raise HTTPException(status_code=500, detail="팝업 스토어 정보를 로드하는 중 오류가 발생했습니다.")
 
+
 @app.post("/recommend/distance", response_model=List[schemas.RecommendResponseItem])
 async def distance_recommendations(request: List[schemas.DistanceRequest]):
     logger.info(f"추천 요청 수신: {request}")
@@ -149,32 +176,24 @@ async def distance_recommendations(request: List[schemas.DistanceRequest]):
     num_recommendations = 5
     
     try:
+        # 입력 데이터 검증
+        if len(request) != 1:
+            raise HTTPException(status_code=400, detail="Request must contain exactly one user")
+
+        # 사용자 ID 및 좌표 입력
         user_id_input = np.array([req.id for req in request])
-
-        # mapx, mapy 값 변환 전 유효성 검증
-        mapx_input = [float(req.mapx) for req in request]
-        mapy_input = [float(req.mapy) for req in request]
-
-        for i in range(len(mapx_input)):
-            if not (100000000 <= mapx_input[i] <= 9999999999) or not (100000000 <= mapy_input[i] <= 9999999999):
-                raise HTTPException(status_code=400, detail="Invalid coordinates: raw mapx/mapy values are out of expected range")
-
-        # mapx, mapy 값을 올바르게 변환
-        mapx_input = np.array([mx / 10000000.0 for mx in mapx_input])
-        mapy_input = np.array([my / 10000000.0 for my in mapy_input])
-
-        if len(user_id_input) != 1:
-            raise HTTPException(status_code=400, detail="Request must contain exactly one user id")
-
-        user_coords = (mapy_input[0], mapx_input[0])  # 변환된 위도와 경도
-
-        # 변환된 좌표의 유효성 검사
+        mapx_input = np.array([float(req.mapx) / 10000000.0 for req in request])
+        mapy_input = np.array([float(req.mapy) / 10000000.0 for req in request])
+        
+        # 좌표 유효성 검사
+        user_coords = (mapy_input[0], mapx_input[0])
         if not (-90 <= user_coords[0] <= 90) or not (-180 <= user_coords[1] <= 180):
             raise HTTPException(status_code=400, detail="Invalid coordinates: latitude must be between -90 and 90, and longitude must be between -180 and 180")
-        
+
+        # 캐시 또는 DB에서 팝업 스토어 데이터 가져오기
         popup_stores_data = get_cache("popup_stores")
         if popup_stores_data:
-            popup_stores = [schemas.PopupStore(**store) for store in popup_stores_data]
+            popup_stores = [PopupStore(**store) for store in popup_stores_data]
             logger.info(f"캐시에서 팝업 스토어 데이터 로드: {popup_stores}")
         else:
             popup_stores = fetch_popup_stores_from_db()
@@ -183,17 +202,20 @@ async def distance_recommendations(request: List[schemas.DistanceRequest]):
             set_cache("popup_stores", [store.dict() for store in popup_stores])
             logger.info(f"데이터베이스에서 팝업 스토어 데이터 로드 및 캐시에 저장: {popup_stores}")
 
+        # 팝업 스토어와의 거리 계산
         distances = []
         for store in popup_stores:
-            # store.mapx와 store.mapy를 float로 변환 후 나눗셈 수행
             store_coords = (float(store.mapy) / 10000000.0, float(store.mapx) / 10000000.0)
             distance = calculate_distance(user_coords, store_coords)
             distances.append(distance)
 
+        # 가장 가까운 팝업 스토어를 찾음
         distances = np.array(distances)
         top_distance_indices = np.argsort(distances)
         distance_recommendations = []
         seen = set()
+
+        # 추천할 팝업 스토어 선택
         for idx in top_distance_indices:
             if len(distance_recommendations) >= num_recommendations:
                 break
@@ -205,102 +227,138 @@ async def distance_recommendations(request: List[schemas.DistanceRequest]):
                 seen.add(popup_stores[idx].id)
 
         logger.info(f"거리 기반 추천 완료: {distance_recommendations}")
-
         return distance_recommendations
+
     except HTTPException as e:
         raise e
     except Exception as e:
         logger.error(f"추천 처리 중 오류 발생: {str(e)}")
         traceback.print_exc()
         raise HTTPException(status_code=500, detail="추천 처리 중 오류 발생")
-    
+
 @app.post("/recommend/category", response_model=List[schemas.NfcRecommendation])
 async def category_recommendations(request: List[schemas.CategoryRequest]):
     logger.info(f"추천 요청 수신: {request}")
     
     num_recommendations = 5
-    weight_ncf = 0.4  # NCF 점수의 가중치
-    weight_distance = 0.2  # 거리 점수의 가중치
-    # weight_heart = 0.1  # 좋아요 수 가중치
-    # weight_share = 0.1  # 공유 수 가중치
-    # weight_views = 0.1  # 조회 수 가중치
-    # weight_reserve = 0.1  # 예약 퍼센티지 가중치
+    weight_ncf = 0.2  # NCF 점수의 가중치 감소
+    weight_heart = 0.3  # 사용자가 찜한 팝업스토어에 가중치 부여 증가
+    weight_distance = 0.15  # 거리 점수의 가중치 증가
+    weight_views = 0.15  # 조회 수 가중치 증가
+    weight_reserve = 0.2  # 예약 퍼센티지 가중치 증가
 
     try:
+        # hearts 필드가 빈 문자열일 경우 빈 리스트로 처리
+        for req in request:
+            if isinstance(req.hearts, list):
+                logger.info(f"hearts는 리스트로 변환되었습니다: {req.hearts}")
+            else:
+                # hearts 필드가 빈 문자열이거나 잘못된 형식일 경우 빈 리스트로 처리
+                if not req.hearts or isinstance(req.hearts, str) and not req.hearts.strip():
+                    req.hearts = []
+                    logger.info(f"hearts 필드가 비어있어 빈 리스트로 처리되었습니다.")
+                else:
+                    raise HTTPException(status_code=400, detail="Invalid format for hearts field")
+        
+        # 입력 데이터를 numpy 배열로 변환
         user_id_input = np.array([req.id for req in request])
         categories_input = np.array([req.categories for req in request])
         mapx_input = np.array([float(req.mapx) for req in request])
         mapy_input = np.array([float(req.mapy) for req in request])
 
         # 추가 지표 추출
-        # heart_counts = np.array([req.heart_count for req in request])
-        # share_counts = np.array([req.share_count for req in request])
-        # view_counts = np.array([req.view_count for req in request])
-        # reserve_percents = np.array([req.reserve_percent for req in request])  # 예약 퍼센티지 값 추출
+        hearts = request[0].hearts 
+        view_count = request[0].view_count
+
+        logger.info(f"사용자 찜 목록: {hearts}")
+        logger.info(f"사용자 조회수: {view_count}")
 
         if len(user_id_input) != 1:
             raise HTTPException(status_code=400, detail="Request must contain exactly one user id")
 
+        # 캐시에서 팝업 스토어 데이터를 로드
         popup_stores_data = get_cache("popup_stores")
         if popup_stores_data:
-            popup_stores = [schemas.PopupStore(**store) for store in popup_stores_data]
-            logger.info(f"캐시에서 팝업 스토어 데이터 로드: {popup_stores}")
+            popup_stores = [PopupStore(**store) for store in popup_stores_data]
+            logger.info(f"캐시에서 팝업 스토어 데이터 로드 완료: {popup_stores}")
         else:
             popup_stores = fetch_popup_stores_from_db()
             if not popup_stores:
                 raise HTTPException(status_code=500, detail="팝업 스토어 데이터를 로드하지 못했습니다.")
             set_cache("popup_stores", [store.dict() for store in popup_stores])
-            logger.info(f"데이터베이스에서 팝업 스토어 데이터 로드 및 캐시에 저장: {popup_stores}")
+            logger.info(f"데이터베이스에서 팝업 스토어 데이터 로드 및 캐시 저장 완료: {popup_stores}")
 
         categories = categories_input[0].split(', ')
-        filtered_popup_stores = [store for store in popup_stores if any(cat in categories for cat in store.categories.split(', '))]
 
-        item_ids_input = np.array([store.id for store in filtered_popup_stores])
-        predictions = model.predict([user_id_input.repeat(len(filtered_popup_stores)), item_ids_input])
+        # 모든 팝업 스토어를 고려하는 대신 카테고리와 일치 여부에 따라 가중치를 달리하는 로직 추가
+        final_popup_stores = popup_stores  # 모든 팝업 스토어를 기본으로 사용
+        store_match_weights = []
+
+        for store in popup_stores:
+            if any(cat in categories for cat in store.categories.split(', ')):
+                store_match_weights.append(1.0)  # 카테고리 일치하면 높은 가중치
+            else:
+                store_match_weights.append(0.5)  # 일치하지 않으면 낮은 가중치
+
+        logger.info(f"모든 팝업 스토어 목록: {[store.id for store in final_popup_stores]}")
+
+        # NCF 모델 예측 수행
+        item_ids_input = np.array([store.id for store in final_popup_stores])
+        predictions = model.predict([user_id_input.repeat(len(final_popup_stores)), item_ids_input])
         predictions = np.round(predictions.flatten(), 5)
-        logger.info(f"NCF 모델을 사용한 예측 완료: {predictions}")
+        logger.info(f"NCF 모델 예측 완료: {predictions}")
 
         # 거리 및 추가 지표 점수 계산 및 결합
         final_scores = []
         user_coords = (mapy_input[0] / 10000000.0, mapx_input[0] / 10000000.0)
 
-        for idx, store in enumerate(filtered_popup_stores):
+        for idx, store in enumerate(final_popup_stores):
             store_coords = (float(store.mapy) / 10000000.0, float(store.mapx) / 10000000.0)
-            distance = calculate_distance(user_coords, store_coords)
+            distance = calculate_distance02(user_coords, store_coords)
+            distance_score = 1 / (1 + distance)  # 거리 점수 계산
 
-            # 거리 점수 계산 (거리가 멀수록 점수는 낮아져야 함)
-            distance_score = 1 / (1 + distance)
+            # 예약률 퍼센티지, 찜 점수, 조회수 점수 추출
+            reserve_score = request[0].reserve_percent / 100.0 if store.id == request[0].id else 0.0
+            heart_score = 1 if store.id in hearts else 0
+            views_score = view_count
 
-            # 추가 지표 점수: 요청에서 받은 값 사용
-            # heart_score = heart_counts[0]
-            # share_score = share_counts[0]
-            # views_score = view_counts[0]
-            # reserve_score = reserve_percents[0] / 100.0  # 퍼센티지를 0~1 사이 값으로 변환
+            # NCF 점수를 스케일링해서 더 큰 비중을 주는 방식
+            scaled_ncf_score = scale_ncf_score(predictions[idx], factor=3)  # NCF 점수에 지수 적용
 
-            # NCF 예측 점수와 거리 점수 및 추가 지표 점수를 가중합하여 최종 점수 계산
-            # final_score = (weight_ncf * predictions[idx] + weight_distance * distance_score +
-            #                weight_heart * heart_score + weight_share * share_score +
-            #                weight_views * views_score + weight_reserve * reserve_score)
-            # final_scores.append((store.id, final_score))
+            # 로그 기록
+            logger.info(f"스토어 ID: {store.id}")
+            logger.info(f"거리 점수 계산: {distance_score}")
+            logger.info(f"예약률 계산: {reserve_score}")
+            logger.info(f"찜 점수(heart_score): {heart_score}")
+            logger.info(f"조회수 점수(views_score): {views_score}")
+            logger.info(f"스케일링된 NCF 예측 점수: {scaled_ncf_score}")
 
-            final_score = (weight_ncf * predictions[idx] + weight_distance * distance_score)
-            final_scores.append((store.id, final_score))
-            logger.info(f"Store ID: {store.id}, Final Score: {final_score}")
+            # 최종 점수 계산 (스케일링된 NCF 점수를 사용)
+            final_score = (weight_ncf * scaled_ncf_score + weight_distance * distance_score +
+                           weight_heart * heart_score + weight_views * views_score +
+                           weight_reserve * reserve_score)
+
+            final_scores.append((store.id, float(final_score)))
+            logger.info(f"스토어 {store.id}의 최종 점수: {float(final_score)}")
 
         # 최종 점수로 정렬
         final_scores.sort(key=lambda x: x[1], reverse=True)
+        logger.info(f"정렬된 최종 점수 목록: {final_scores}")
+
         ncf_recommendations = [schemas.NfcRecommendation(id=store_id) for store_id, _ in final_scores[:num_recommendations]]
         
-        logger.info(f"거리와 NCF 점수를 고려한 최종 추천: {ncf_recommendations}")
+        logger.info(f"최종 추천 목록: {ncf_recommendations}")
 
         return ncf_recommendations
+
     except HTTPException as e:
         raise e
     except Exception as e:
         logger.error(f"추천 처리 중 오류 발생: {str(e)}")
         traceback.print_exc()
         raise HTTPException(status_code=500, detail="추천 처리 중 오류 발생")
-    
+
+
 @app.post("/categorize", response_model=List[schemas.ChatResponse])
 async def categorize(requests: List[schemas.ChatRequest]):
     responses = []
@@ -422,481 +480,3 @@ def restore_categories(text):
         protected = category.replace('/', '|')
         text = text.replace(protected, category)
     return text
-
-
-
-
-
-
-
-# 현재 사용 코드
-# # main.py
-
-# from fastapi import FastAPI, HTTPException
-# from contextlib import asynccontextmanager
-# import numpy as np
-# from tensorflow.keras.models import load_model
-# from geopy.distance import geodesic
-# from model_definition import create_ncf
-# import schemas
-# from cache import set_cache, get_cache, save_cache_to_file, load_cache_from_file, get_cache_content, clear_cache
-# import logging
-# import asyncio
-
-# app = FastAPI()
-
-# logging.basicConfig(level=logging.INFO)
-# logger = logging.getLogger(__name__)
-
-# CACHE_FILE = "cache_data.json"
-# MODEL_FILE = "ncf_model.h5"
-
-# # 모델 로딩 또는 초기화
-# try:
-#     model = load_model(MODEL_FILE, compile=True)
-#     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])  # 컴파일 포함
-#     logger.info("모델 로드 성공")
-# except Exception as e:
-#     logger.error(f"모델 로드 실패: {e}")
-#     model = create_ncf(num_users=1000, num_items=500)
-#     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-#     logger.info("새 모델 생성 및 컴파일 완료")
-
-# # 모델을 주기적으로 파일에 저장하는 함수
-# async def save_model_periodically(interval: int = 600):
-#     while True:
-#         await asyncio.sleep(interval)
-#         model.save(MODEL_FILE)
-#         logger.info(f"모델이 파일에 저장되었습니다: {MODEL_FILE}")
-
-# # 주기적으로 캐시를 파일에 저장하는 함수
-# async def save_cache_periodically(interval: int = 600):
-#     while True:
-#         await asyncio.sleep(interval)
-#         save_cache_to_file(CACHE_FILE)
-
-# @asynccontextmanager
-# async def lifespan(app: FastAPI):
-#     # 서버 시작 시 캐시 로드
-#     load_cache_from_file(CACHE_FILE)
-#     cache_task = asyncio.create_task(save_cache_periodically())
-#     model_task = asyncio.create_task(save_model_periodically())
-
-#     try:
-#         yield
-#     finally:
-#         # 서버 종료 시 캐시 저장
-#         save_cache_to_file(CACHE_FILE)
-#         model.save(MODEL_FILE)
-#         cache_task.cancel()
-#         model_task.cancel()
-#         try:
-#             await cache_task
-#             await model_task
-#         except asyncio.CancelledError:
-#             pass
-
-# app.router.lifespan_context = lifespan
-
-# # 사용자와 상점 간 거리를 계산하는 함수
-# def calculate_distance(user_coords, store_coords):
-#     logger.info(f"Calculating distance between user_coords: {user_coords} and store_coords: {store_coords}")
-#     return round(geodesic(user_coords, store_coords).kilometers, 1)
-
-# @app.post("/recommend", response_model=schemas.RecommendResponse)
-# async def recommendations(request: schemas.RecommendRequest):
-#     logger.info(f"추천 요청 수신: 사용자 ID = {request.user.id}, 추천 개수 = {request.num_recommendations}")
-#     logger.info(f"Request data: {request.json()}")  # 요청 데이터 전체 로깅
-    
-#     try:
-#         user_id_input = np.array([request.user.id])
-#         user_coords = (request.user.mapx, request.user.mapy)  # 사용자 좌표
-#         logger.info(f"user_coords: {user_coords}")
-
-#         # 팝업 스토어 캐시 확인
-#         popup_stores_data = get_cache("popup_stores")
-#         if popup_stores_data:
-#             popup_stores = [schemas.PopupStore(**store) for store in popup_stores_data]
-#             logger.info(f"캐시에서 팝업 스토어 데이터 로드: {popup_stores}")
-#         else:
-#             popup_stores = request.popup_stores
-#             set_cache("popup_stores", [store.dict() for store in popup_stores])
-#             logger.info(f"요청에서 팝업 스토어 데이터 로드 및 캐시에 저장: {popup_stores}")
-        
-#         item_ids_input = np.array([store.id for store in popup_stores])
-#         predictions = model.predict([user_id_input.repeat(len(popup_stores)), item_ids_input])
-#         logger.info(f"NCF 모델을 사용한 예측 완료: {predictions}")
-        
-#         # NCF 추천 순위 계산 및 중복 제거
-#         top_ncf_indices = np.argsort(-predictions.flatten())
-#         ncf_recommendations = []
-#         seen = set()
-#         preferred_categories = request.user.preferred_categories.split(', ')
-#         for idx in top_ncf_indices:
-#             if len(ncf_recommendations) >= request.num_recommendations:
-#                 break
-#             if popup_stores[idx].id not in seen and any(cat in preferred_categories for cat in popup_stores[idx].categories.split(', ')):
-#                 ncf_recommendations.append(schemas.NfcRecommendation(
-#                     id=popup_stores[idx].id
-#                 ))
-#                 seen.add(popup_stores[idx].id)
-#         logger.info(f"NCF 추천 완료: {ncf_recommendations}")
-        
-#         # 거리 기반 추천 계산 및 중복 제거
-#         distances = []
-#         for store in popup_stores:
-#             store_coords = (store.mapx, store.mapy)
-#             logger.info(f"store_coords: {store_coords}")  # 상점 좌표 로그
-#             distance = calculate_distance(user_coords, store_coords)
-#             distances.append(distance)
-#             logger.info(f"Distance to store {store.id}: {distance}")
-
-#         distances = np.array(distances)
-#         top_distance_indices = np.argsort(distances)
-#         distance_recommendations = []
-#         seen.clear()
-#         for idx in top_distance_indices:
-#             if len(distance_recommendations) >= request.num_recommendations:
-#                 break
-#             if popup_stores[idx].id not in seen:
-#                 distance_recommendations.append(schemas.RecommendResponseItem(
-#                     id=popup_stores[idx].id,
-#                     distance=distances[idx]
-#                 ))
-#                 seen.add(popup_stores[idx].id)
-#         logger.info(f"거리 기반 추천 완료: {distance_recommendations}")
-
-#         return schemas.RecommendResponse(
-#             ncf_recommendations=ncf_recommendations,
-#             distance_recommendations=distance_recommendations
-#         )
-#     except Exception as e:
-#         logger.error(f"추천 처리 중 오류 발생: {str(e)}")
-#         raise HTTPException(status_code=500, detail="추천 처리 중 오류 발생")
-
-# @app.post("/save_cache")
-# async def save_cache():
-#     save_cache_to_file(CACHE_FILE)
-#     return {"message": "캐시가 파일에 저장되었습니다."}
-
-# @app.post("/load_cache")
-# async def load_cache():
-#     load_cache_from_file(CACHE_FILE)
-#     return {"message": "파일에서 캐시가 로드되었습니다."}
-
-# @app.post("/clear_cache")
-# async def clear_cache_endpoint():
-#     clear_cache()
-#     return {"message": "캐시가 비워졌습니다."}
-
-# @app.get("/view_cache")
-# async def view_cache():
-#     cache_content = get_cache_content()
-#     return {"cache_content": cache_content}
-
-# if __name__ == "__main__":
-#     import uvicorn
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
-
-
-
-
-
-# 첫번째 스프링부트 연결 코드
-
-# import httpx
-# from fastapi import FastAPI, HTTPException, Request
-# from typing import List
-# import numpy as np
-# from tensorflow.keras.models import load_model
-# from geopy.distance import geodesic
-# from model_definition import create_ncf
-# import schemas
-# from cache import set_cache, get_cache, save_cache_to_file, load_cache_from_file, get_cache_content, clear_cache
-# import logging
-# import asyncio
-
-# app = FastAPI()
-
-# logging.basicConfig(level=logging.INFO)
-# logger = logging.getLogger(__name__)
-
-# CACHE_FILE = "cache_data.json"
-
-# # 모델 로딩 또는 초기화
-# try:
-#     model = load_model("ncf_model.h5")
-#     logger.info("모델 로드 성공")
-# except Exception as e:
-#     logger.error(f"모델 로드 실패: {e}")
-#     model = create_ncf(num_users=1000, num_items=500)
-#     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-#     logger.info("새 모델 생성 및 컴파일 완료")
-
-# # 서버 시작 시 캐시 로드
-# @app.on_event("startup")
-# async def startup_event():
-#     load_cache_from_file(CACHE_FILE)
-
-# # 서버 종료 시 캐시 저장
-# @app.on_event("shutdown")
-# async def shutdown_event():
-#     save_cache_to_file(CACHE_FILE)
-
-# # 주기적으로 캐시를 파일에 저장하는 함수
-# async def save_cache_periodically(interval: int = 600):
-#     while True:
-#         await asyncio.sleep(interval)
-#         save_cache_to_file(CACHE_FILE)
-
-# # 백그라운드 태스크로 주기적 캐시 저장 함수 실행
-# @app.on_event("startup")
-# async def start_background_tasks():
-#     asyncio.create_task(save_cache_periodically())
-
-# def calculate_distance(user_coords, store_coords):
-#     logger.info(f"Calculating distance between user_coords: {user_coords} and store_coords: {store_coords}")
-#     return round(geodesic(user_coords, store_coords).kilometers, 1)
-
-# @app.post("/recommend", response_model=schemas.RecommendResponse)
-# async def recommendations(request: schemas.RecommendRequest):
-#     logger.info(f"추천 요청 수신: 사용자 ID = {request.user.id}, 추천 개수 = {request.num_recommendations}")
-#     logger.info(f"Request data: {request.json()}")  # 요청 데이터 전체 로깅
-    
-#     user_id_input = np.array([request.user.id])
-#     user_coords = (request.user.mapx, request.user.mapy)  # 사용자 좌표
-#     logger.info(f"user_coords: {user_coords}")
-
-#     # 스프링부트 서버에서 팝업 스토어 데이터 가져오기
-#     async with httpx.AsyncClient() as client:
-#         response = await client.get('http://springboot-server-url/api/popup_stores')
-#         if response.status_code != 200:
-#             raise HTTPException(status_code=response.status_code, detail="스프링부트 서버에서 팝업 스토어 데이터를 가져오는 중 오류 발생")
-#         popup_stores_data = response.json()
-    
-#     popup_stores = [schemas.PopupStore(**store) for store in popup_stores_data]
-#     logger.info(f"스프링부트 서버에서 팝업 스토어 데이터 로드: {popup_stores}")
-    
-#     item_ids_input = np.array([store.id for store in popup_stores])
-#     predictions = model.predict([user_id_input.repeat(len(popup_stores)), item_ids_input])
-#     logger.info(f"NCF 모델을 사용한 예측 완료: {predictions}")
-    
-#     # NCF 추천 순위 계산 및 중복 제거
-#     top_ncf_indices = np.argsort(-predictions.flatten())
-#     ncf_recommendations = []
-#     seen = set()
-#     preferred_categories = request.user.preferred_categories.split(', ')
-#     for idx in top_ncf_indices:
-#         if len(ncf_recommendations) >= request.num_recommendations:
-#             break
-#         if popup_stores[idx].id not in seen and any(cat in preferred_categories for cat in popup_stores[idx].categories.split(', ')):
-#             ncf_recommendations.append(popup_stores[idx].id)
-#             seen.add(popup_stores[idx].id)
-#     logger.info(f"NCF 추천 완료: {ncf_recommendations}")
-    
-#     # 거리 기반 추천 계산 및 중복 제거
-#     distances = []
-#     for store in popup_stores:
-#         store_coords = (store.mapx, store.mapy)
-#         logger.info(f"store_coords: {store_coords}")  # 상점 좌표 로그
-#         distance = calculate_distance(user_coords, store_coords)
-#         distances.append(distance)
-#         logger.info(f"Distance to store {store.id}: {distance}")
-
-#     distances = np.array(distances)
-#     top_distance_indices = np.argsort(distances)
-#     distance_recommendations = []
-#     seen.clear()
-#     for idx in top_distance_indices:
-#         if len(distance_recommendations) >= request.num_recommendations:
-#             break
-#         if popup_stores[idx].id not in seen:
-#             distance_recommendations.append(schemas.RecommendResponseItem(
-#                 id=popup_stores[idx].id,
-#                 distance=distances[idx]
-#             ))
-#             seen.add(popup_stores[idx].id)
-#     logger.info(f"거리 기반 추천 완료: {distance_recommendations}")
-
-#     return schemas.RecommendResponse(
-#         ncf_recommendations=ncf_recommendations,
-#         distance_recommendations=distance_recommendations
-#     )
-
-# @app.post("/save_cache")
-# async def save_cache():
-#     save_cache_to_file(CACHE_FILE)
-#     return {"message": "캐시가 파일에 저장되었습니다."}
-
-# @app.post("/load_cache")
-# async def load_cache():
-#     load_cache_from_file(CACHE_FILE)
-#     return {"message": "파일에서 캐시가 로드되었습니다."}
-
-# @app.post("/clear_cache")
-# async def clear_cache_endpoint():
-#     clear_cache()
-#     return {"message": "캐시가 비워졌습니다."}
-
-# @app.get("/view_cache")
-# async def view_cache():
-#     cache_content = get_cache_content()
-#     return {"cache_content": cache_content}
-
-# if __name__ == "__main__":
-#     import uvicorn
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
-
-
-# 두번째 스프링부트 연결 코드
-
-# import httpx
-# from fastapi import FastAPI, HTTPException, Request
-# from typing import List
-# import numpy as np
-# from tensorflow.keras.models import load_model
-# from geopy.distance import geodesic
-# from model_definition import create_ncf
-# import schemas
-# from cache import set_cache, get_cache, save_cache_to_file, load_cache_from_file, get_cache_content, clear_cache
-# import logging
-# import asyncio
-
-# app = FastAPI()
-
-# logging.basicConfig(level=logging.INFO)
-# logger = logging.getLogger(__name__)
-
-# CACHE_FILE = "cache_data.json"
-# SPRINGBOOT_SERVER_URL = os.getenv('SPRINGBOOT_SERVER_URL', 'http://localhost:8080/api/popup_stores')
-
-# # 모델 로딩 또는 초기화
-# try:
-#     model = load_model("ncf_model.h5")
-#     logger.info("모델 로드 성공")
-# except Exception as e:
-#     logger.error(f"모델 로드 실패: {e}")
-#     model = create_ncf(num_users=1000, num_items=500)
-#     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-#     logger.info("새 모델 생성 및 컴파일 완료")
-
-# # 서버 시작 시 캐시 로드
-# @app.on_event("startup")
-# async def startup_event():
-#     load_cache_from_file(CACHE_FILE)
-
-# # 서버 종료 시 캐시 저장
-# @app.on_event("shutdown")
-# async def shutdown_event():
-#     save_cache_to_file(CACHE_FILE)
-
-# # 주기적으로 캐시를 파일에 저장하는 함수
-# async def save_cache_periodically(interval: int = 600):
-#     while True:
-#         await asyncio.sleep(interval)
-#         save_cache_to_file(CACHE_FILE)
-
-# # 백그라운드 태스크로 주기적 캐시 저장 함수 실행
-# @app.on_event("startup")
-# async def start_background_tasks():
-#     asyncio.create_task(save_cache_periodically())
-
-# def calculate_distance(user_coords, store_coords):
-#     logger.info(f"Calculating distance between user_coords: {user_coords} and store_coords: {store_coords}")
-#     return round(geodesic(user_coords, store_coords).kilometers, 1)
-
-# @app.post("/recommend", response_model=schemas.RecommendResponse)
-# async def recommendations(request: schemas.RecommendRequest):
-#     logger.info(f"추천 요청 수신: 사용자 ID = {request.user.id}, 추천 개수 = {request.num_recommendations}")
-#     logger.info(f"Request data: {request.json()}")  # 요청 데이터 전체 로깅
-    
-#     user_id_input = np.array([request.user.id])
-#     user_coords = (request.user.mapx, request.user.mapy)  # 사용자 좌표
-#     logger.info(f"user_coords: {user_coords}")
-
-#     # 스프링부트 서버에서 팝업 스토어 데이터 가져오기
-#     async with httpx.AsyncClient() as client:
-#         try:
-#             response = await client.get(SPRINGBOOT_SERVER_URL)
-#             response.raise_for_status()  # HTTP 상태 코드가 200이 아닐 경우 예외 발생
-#         except httpx.RequestError as exc:
-#             logger.error(f"스프링부트 서버와의 통신 중 오류 발생: {exc}")
-#             raise HTTPException(status_code=500, detail="스프링부트 서버와의 통신 중 오류 발생")
-#         except httpx.HTTPStatusError as exc:
-#             logger.error(f"스프링부트 서버 응답 오류: {exc.response.status_code}")
-#             raise HTTPException(status_code=exc.response.status_code, detail="스프링부트 서버 응답 오류")
-        
-#         popup_stores_data = response.json()
-    
-#     popup_stores = [schemas.PopupStore(**store) for store in popup_stores_data]
-#     logger.info(f"스프링부트 서버에서 팝업 스토어 데이터 로드: {popup_stores}")
-    
-#     item_ids_input = np.array([store.id for store in popup_stores])
-#     predictions = model.predict([user_id_input.repeat(len(popup_stores)), item_ids_input])
-#     logger.info(f"NCF 모델을 사용한 예측 완료: {predictions}")
-    
-#     # NCF 추천 순위 계산 및 중복 제거
-#     top_ncf_indices = np.argsort(-predictions.flatten())
-#     ncf_recommendations = []
-#     seen = set()
-#     preferred_categories = request.user.preferred_categories.split(', ')
-#     for idx in top_ncf_indices:
-#         if len(ncf_recommendations) >= request.num_recommendations:
-#             break
-#         if popup_stores[idx].id not in seen and any(cat in preferred_categories for cat in popup_stores[idx].categories.split(', ')):
-#             ncf_recommendations.append(popup_stores[idx].id)
-#             seen.add(popup_stores[idx].id)
-#     logger.info(f"NCF 추천 완료: {ncf_recommendations}")
-    
-#     # 거리 기반 추천 계산 및 중복 제거
-#     distances = []
-#     for store in popup_stores:
-#         store_coords = (store.mapx, store.mapy)
-#         logger.info(f"store_coords: {store_coords}")  # 상점 좌표 로그
-#         distance = calculate_distance(user_coords, store_coords)
-#         distances.append(distance)
-#         logger.info(f"Distance to store {store.id}: {distance}")
-
-#     distances = np.array(distances)
-#     top_distance_indices = np.argsort(distances)
-#     distance_recommendations = []
-#     seen.clear()
-#     for idx in top_distance_indices:
-#         if len(distance_recommendations) >= request.num_recommendations:
-#             break
-#         if popup_stores[idx].id not in seen:
-#             distance_recommendations.append(schemas.RecommendResponseItem(
-#                 id=popup_stores[idx].id,
-#                 distance=distances[idx]
-#             ))
-#             seen.add(popup_stores[idx].id)
-#     logger.info(f"거리 기반 추천 완료: {distance_recommendations}")
-
-#     return schemas.RecommendResponse(
-#         ncf_recommendations=ncf_recommendations,
-#         distance_recommendations=distance_recommendations
-#     )
-
-# @app.post("/save_cache")
-# async def save_cache():
-#     save_cache_to_file(CACHE_FILE)
-#     return {"message": "캐시가 파일에 저장되었습니다."}
-
-# @app.post("/load_cache")
-# async def load_cache():
-#     load_cache_from_file(CACHE_FILE)
-#     return {"message": "파일에서 캐시가 로드되었습니다."}
-
-# @app.post("/clear_cache")
-# async def clear_cache_endpoint():
-#     clear_cache()
-#     return {"message": "캐시가 비워졌습니다."}
-
-# @app.get("/view_cache")
-# async def view_cache():
-#     cache_content = get_cache_content()
-#     return {"cache_content": cache_content}
-
-# if __name__ == "__main__":
-#     import uvicorn
-#     uvicorn.run(app, host="0.0.0.0", port=8000)

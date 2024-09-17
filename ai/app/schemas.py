@@ -1,16 +1,25 @@
-from pydantic import BaseModel, RootModel, Field
-from typing import List
+from pydantic import BaseModel, RootModel, Field, validator
+from typing import List, Optional
 
-# 카테고리 요청 스키마
+# hearts 필드를 배열로 정의합니다.
 class CategoryRequest(BaseModel):
     id: int
     categories: str
     mapx: str
     mapy: str
-    # heart_count: int  # 좋아요 수
-    # share_count: int  # 공유 수
-    # view_count: int  # 조회 수
-    # reserve_percent: float  # 예약 수 퍼센티지 (0.0 ~ 100.0)
+    hearts: Optional[List[int]] = Field(default_factory=list)
+    view_count: Optional[int] = 0
+    reserve_percent: Optional[float] = 0
+
+    # hearts 필드가 문자열로 들어오는 경우 배열로 변환
+    @validator('hearts', pre=True)
+    def convert_hearts_to_list(cls, v):
+        if isinstance(v, str):
+            if not v.strip():
+                return []
+            return list(map(int, v.split(',')))
+        return v
+
 # 거리 요청 스키마
 class DistanceRequest(BaseModel):
     id: int
@@ -24,11 +33,10 @@ class PopupStore(BaseModel):
     address: str
     mapx: str
     mapy: str
-    categories: str
-    # heart_count: int
-    # views: int
-    # share: int
-    # reservation: int
+    categories: str 
+    views: int
+    total_reservation: Optional[float]
+    current_reservation: Optional[float]
 
 # 추천 응답 아이템 스키마
 class RecommendResponseItem(BaseModel):

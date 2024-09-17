@@ -32,13 +32,6 @@ public class PopUpStoreAiService {
 //    private static final String DISTANCE_RECOMMEND_URL = "http://localhost:8000/recommend/distance";
 //    private static final String CATEGORY_RECOMMEND_URL = "http://localhost:8000/recommend/category";
 
-//    private static final String CATEGORIZE_URL = "http://localhost:8000/categorize";
-//    private static final String DISTANCE_RECOMMEND_URL = "http://localhost:8000/recommend/distance";
-//    private static final String CATEGORY_RECOMMEND_URL = "http://localhost:8000/recommend/category";
-
-
-
-
     public List<PopupStoreDto> convertCategoryAPI(String queryResult) throws JsonProcessingException {
         JsonNode queryNode = objectMapper.readTree(queryResult);
         ArrayNode jsonArray = jsonProcessingService.createJsonArrayCategory(queryNode);
@@ -53,7 +46,7 @@ public class PopUpStoreAiService {
         String response = apiRequestService.sendHttpPostRequest(CATEGORY_RECOMMEND_URL, jsonArray);
         List<PopupStoreResponseDto> popupStoreDtos = dtoConversionService.convertCategoryRecommendations(response);
         return ResponseDto.setSuccessData("추천 팝업 스토어 정보를 성공적으로 로드했습니다.", popupStoreDtos);
-    }
+    }ㅁㅑ
 
     public ResponseDto<List<PopupStoreDistanceResponseDto>> convertRecommendPopupByDistance(UserRecommendDto userRecommendDto) throws JsonProcessingException {
         JsonNode queryNode = objectMapper.valueToTree(userRecommendDto);
