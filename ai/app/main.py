@@ -51,7 +51,6 @@ DB_CONFIG = {
 # }
 
 # OpenAI API 키 설정(시스템 환경변수에 설정으로 외부에 노출 가능성 하락)
-# OpenAI API 키 설정(시스템 환경변수에 설정으로 외부에 노출 가능성 하락)
 auto_category_key = os.getenv("AUTO_CATEGORY_KEY")
 if not auto_category_key:
     raise ValueError("API 키가 설정되지 않았습니다.")
@@ -177,29 +176,21 @@ async def distance_recommendations(request: List[schemas.DistanceRequest]):
     num_recommendations = 5
     
     try:
+        # 입력 데이터 검증
+        if len(request) != 1:
+            raise HTTPException(status_code=400, detail="Request must contain exactly one user")
+
+        # 사용자 ID 및 좌표 입력
         user_id_input = np.array([req.id for req in request])
-
-        # mapx, mapy 값 변환 전 유효성 검증
-        mapx_input = [float(req.mapx) for req in request]
-        mapy_input = [float(req.mapy) for req in request]
-
-        for i in range(len(mapx_input)):
-            if not (100000000 <= mapx_input[i] <= 9999999999) or not (100000000 <= mapy_input[i] <= 9999999999):
-                raise HTTPException(status_code=400, detail="Invalid coordinates: raw mapx/mapy values are out of expected range")
-
-        # mapx, mapy 값을 올바르게 변환
-        mapx_input = np.array([mx / 10000000.0 for mx in mapx_input])
-        mapy_input = np.array([my / 10000000.0 for my in mapy_input])
-
-        if len(user_id_input) != 1:
-            raise HTTPException(status_code=400, detail="Request must contain exactly one user id")
-
-        user_coords = (mapy_input[0], mapx_input[0])  # 변환된 위도와 경도
-
-        # 변환된 좌표의 유효성 검사
+        mapx_input = np.array([float(req.mapx) / 10000000.0 for req in request])
+        mapy_input = np.array([float(req.mapy) / 10000000.0 for req in request])
+        
+        # 좌표 유효성 검사
+        user_coords = (mapy_input[0], mapx_input[0])
         if not (-90 <= user_coords[0] <= 90) or not (-180 <= user_coords[1] <= 180):
             raise HTTPException(status_code=400, detail="Invalid coordinates: latitude must be between -90 and 90, and longitude must be between -180 and 180")
-        
+
+        # 캐시 또는 DB에서 팝업 스토어 데이터 가져오기
         popup_stores_data = get_cache("popup_stores")
         if popup_stores_data:
             popup_stores = [PopupStore(**store) for store in popup_stores_data]
@@ -211,16 +202,20 @@ async def distance_recommendations(request: List[schemas.DistanceRequest]):
             set_cache("popup_stores", [store.dict() for store in popup_stores])
             logger.info(f"데이터베이스에서 팝업 스토어 데이터 로드 및 캐시에 저장: {popup_stores}")
 
+        # 팝업 스토어와의 거리 계산
         distances = []
         for store in popup_stores:
             store_coords = (float(store.mapy) / 10000000.0, float(store.mapx) / 10000000.0)
             distance = calculate_distance(user_coords, store_coords)
             distances.append(distance)
 
+        # 가장 가까운 팝업 스토어를 찾음
         distances = np.array(distances)
         top_distance_indices = np.argsort(distances)
         distance_recommendations = []
         seen = set()
+
+        # 추천할 팝업 스토어 선택
         for idx in top_distance_indices:
             if len(distance_recommendations) >= num_recommendations:
                 break
@@ -232,8 +227,8 @@ async def distance_recommendations(request: List[schemas.DistanceRequest]):
                 seen.add(popup_stores[idx].id)
 
         logger.info(f"거리 기반 추천 완료: {distance_recommendations}")
-
         return distance_recommendations
+
     except HTTPException as e:
         raise e
     except Exception as e:
@@ -253,13 +248,18 @@ async def category_recommendations(request: List[schemas.CategoryRequest]):
     weight_reserve = 0.2  # 예약 퍼센티지 가중치 증가
 
     try:
-        # request에서 hearts 필드가 리스트로 변환되었는지 확인
+        # hearts 필드가 빈 문자열일 경우 빈 리스트로 처리
         for req in request:
             if isinstance(req.hearts, list):
                 logger.info(f"hearts는 리스트로 변환되었습니다: {req.hearts}")
             else:
-                logger.warning(f"hearts 필드가 리스트로 변환되지 않았습니다: {req.hearts}")
-
+                # hearts 필드가 빈 문자열이거나 잘못된 형식일 경우 빈 리스트로 처리
+                if not req.hearts or isinstance(req.hearts, str) and not req.hearts.strip():
+                    req.hearts = []
+                    logger.info(f"hearts 필드가 비어있어 빈 리스트로 처리되었습니다.")
+                else:
+                    raise HTTPException(status_code=400, detail="Invalid format for hearts field")
+        
         # 입력 데이터를 numpy 배열로 변환
         user_id_input = np.array([req.id for req in request])
         categories_input = np.array([req.categories for req in request])
@@ -267,8 +267,8 @@ async def category_recommendations(request: List[schemas.CategoryRequest]):
         mapy_input = np.array([float(req.mapy) for req in request])
 
         # 추가 지표 추출
-        hearts = request[0].hearts  # hearts는 사용자가 찜한 팝업스토어의 ID 목록
-        view_count = request[0].view_count  # 사용자가 조회한 view_count를 직접 추출
+        hearts = request[0].hearts 
+        view_count = request[0].view_count
 
         logger.info(f"사용자 찜 목록: {hearts}")
         logger.info(f"사용자 조회수: {view_count}")
@@ -322,7 +322,7 @@ async def category_recommendations(request: List[schemas.CategoryRequest]):
             heart_score = 1 if store.id in hearts else 0
             views_score = view_count
 
-             # NCF 점수를 스케일링해서 더 큰 비중을 주는 방식
+            # NCF 점수를 스케일링해서 더 큰 비중을 주는 방식
             scaled_ncf_score = scale_ncf_score(predictions[idx], factor=3)  # NCF 점수에 지수 적용
 
             # 로그 기록
@@ -335,21 +335,22 @@ async def category_recommendations(request: List[schemas.CategoryRequest]):
 
             # 최종 점수 계산 (스케일링된 NCF 점수를 사용)
             final_score = (weight_ncf * scaled_ncf_score + weight_distance * distance_score +
-                   weight_heart * heart_score + weight_views * views_score +
-                   weight_reserve * reserve_score)
+                           weight_heart * heart_score + weight_views * views_score +
+                           weight_reserve * reserve_score)
 
             final_scores.append((store.id, float(final_score)))
             logger.info(f"스토어 {store.id}의 최종 점수: {float(final_score)}")
 
-            # 최종 점수로 정렬
-            final_scores.sort(key=lambda x: x[1], reverse=True)
-            logger.info(f"정렬된 최종 점수 목록: {final_scores}")
+        # 최종 점수로 정렬
+        final_scores.sort(key=lambda x: x[1], reverse=True)
+        logger.info(f"정렬된 최종 점수 목록: {final_scores}")
 
         ncf_recommendations = [schemas.NfcRecommendation(id=store_id) for store_id, _ in final_scores[:num_recommendations]]
         
         logger.info(f"최종 추천 목록: {ncf_recommendations}")
 
         return ncf_recommendations
+
     except HTTPException as e:
         raise e
     except Exception as e:

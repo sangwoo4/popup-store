@@ -15,6 +15,8 @@ class CategoryRequest(BaseModel):
     @validator('hearts', pre=True)
     def convert_hearts_to_list(cls, v):
         if isinstance(v, str):
+            if not v.strip():
+                return []
             return list(map(int, v.split(',')))
         return v
 
