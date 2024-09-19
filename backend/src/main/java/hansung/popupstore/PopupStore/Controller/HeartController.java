@@ -5,6 +5,7 @@ import hansung.popupstore.Security.TokenUtils;
 import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.dto.HeartDto;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,15 +34,15 @@ public class HeartController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseDto<List<HeartDto>>> getHeartedPopupStores(
+    public ResponseEntity<ResponseDto<?>> getHeartedPopupStores(
             @RequestHeader("Authorization") String token) {
 
         String jwtToken = tokenUtils.extractToken(token);
         Long userId = tokenUtils.extractUserIdFromToken(jwtToken);
 
-        ResponseDto<List<HeartDto>> response = heartService.getHeartedPopupStores(userId);
+        ResponseDto<?> result = heartService.getHeartByUserId(userId);
 
-        return ResponseEntity.ok(response);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @DeleteMapping

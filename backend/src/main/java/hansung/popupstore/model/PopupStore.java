@@ -71,6 +71,7 @@ public class PopupStore {
     private Company company;
 
     @Column
+    @Builder.Default
     private Boolean reservation = false;
 
     @Column(name = "total_reservation")
@@ -81,6 +82,7 @@ public class PopupStore {
 
     @Column(name = "views")
     @ColumnDefault("0")
+    @Builder.Default
     private Long views = 0L;  // 기본값 설정
 
     // 회원탈퇴를 위한 부모 자식관계 재확립(ALL 기능이 없어서 탈퇴시 에러 발생으로 추가)
@@ -90,6 +92,7 @@ public class PopupStore {
             joinColumns = @JoinColumn(name = "popup_store_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
+    @Builder.Default
     private Set<Category> categories = new HashSet<>();
 
 

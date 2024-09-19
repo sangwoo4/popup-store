@@ -2,6 +2,7 @@ package hansung.popupstore.PopupStore.Service;
 
 import hansung.popupstore.Account.Repository.UserRepository;
 import hansung.popupstore.PopupStore.Repository.PopupReviewRepository;
+import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.dto.PopupReviewDto;
 import hansung.popupstore.dto.PopupReviewResponseDto;
@@ -21,24 +22,45 @@ import java.util.stream.Collectors;
 public class PopupReviewService {
     private final PopupReviewRepository popupReviewRepository;
     private final UserRepository userRepository;
+    private final PopupStoreRepository popupStoreRepository;
+
+//    public void registerReview(PopupReviewDto reviewDto) {
+//        PopupReview review = new PopupReview();
+//        review.setPopupStoreId(reviewDto.getPopupStoreId());
+//        review.setReviewText(reviewDto.getReviewText());
+//        review.setLocalDateTime(LocalDateTime.now());
+//        popupReviewRepository.save(review);
+//    }
 
     public void registerReview(PopupReviewDto reviewDto) {
         PopupReview review = new PopupReview();
         review.setPopupStoreId(reviewDto.getPopupStoreId());
         review.setReviewText(reviewDto.getReviewText());
         review.setLocalDateTime(LocalDateTime.now());
+
+        // userId로 사용자 정보를 가져와서 리뷰에 설정
+        User user = userRepository.findById(reviewDto.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."));
+        review.setUser(user); // 사용자 설정
+
         popupReviewRepository.save(review);
     }
 
-    public ResponseDto<?> getPopupReview(Long id){
+    public ResponseDto<?> getPopupReview(Long id) {
         List<PopupReview> reviews = popupReviewRepository.findAllByPopupStoreId(id);
         List<PopupReviewResponseDto> reviewDtos = reviews.stream().map(review -> {
-            // userId로 사용자 닉네임 조회 (UserRepository를 통해 가져온다고 가정)
+            // User의 닉네임 조회
             String nickname = userRepository.findById(review.getUser().getId())
                     .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."))
                     .getNickname();
 
-            return new PopupReviewResponseDto(nickname, review.getReviewText(), review.getLocalDateTime(), review.getId());
+            // PopupStore의 제목 조회
+            String popupTitle = popupStoreRepository.findById(review.getPopupStoreId())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 팝업 스토어가 없습니다."))
+                    .getTitle(); // 팝업 스토어의 제목 가져오기
+
+            // PopupReviewResponseDto에 필요한 데이터 매핑
+            return new PopupReviewResponseDto(nickname, review.getReviewText(), review.getLocalDateTime(), popupTitle);
         }).collect(Collectors.toList());
 
         return ResponseDto.setSuccessData("리뷰 조회 결과", reviewDtos);
@@ -65,7 +87,7 @@ public class PopupReviewService {
         return reviews.stream()
                 .map(review -> new PopupReviewDto(
                         review.getPopupStoreId(),
-                        review.getUser().getId(),  // User 객체에서 ID 가져오기
+                        review.getUser().getId(), // 사용자 ID 사용
                         review.getReviewText(),
                         review.getLocalDateTime()))
                 .collect(Collectors.toList());

@@ -9,12 +9,12 @@ public class PopupReviewResponseDto {
     private String nickname;
     private String reviewText;
     private LocalDateTime localDateTime;
-    private Long id;
+    private String popupTitle;
 
-    public PopupReviewResponseDto(String nickname, String reviewText, LocalDateTime localDateTime, Long id){
+    public PopupReviewResponseDto(String nickname, String reviewText, LocalDateTime localDateTime, String popupTitle){
         this.nickname = nickname;
         this.reviewText = reviewText;
         this.localDateTime = localDateTime;
-        this.id = id;
+        this.popupTitle = popupTitle;
     }
 }

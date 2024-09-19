@@ -5,6 +5,7 @@ import hansung.popupstore.PopupStore.Repository.HeartRepository;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.dto.HeartDto;
+import hansung.popupstore.dto.HeartResponseDto;
 import hansung.popupstore.model.Heart;
 import hansung.popupstore.model.PopupStore;
 import hansung.popupstore.model.User;
@@ -58,6 +59,30 @@ public class HeartService {
         } catch (RuntimeException e) {
             return ResponseDto.setFailed(e.getMessage());
         }
+    }
+
+
+    public ResponseDto<?> getHeartByUserId(Long userId) {
+        // 사용자가 찜한 팝업 스토어 목록 조회
+        List<Heart> hearts = heartRepository.findAllByUserId(userId);
+
+        // Heart 리스트를 HeartResponseDto 리스트로 변환
+        List<HeartResponseDto> heartResponseDtos = hearts.stream().map(heart -> {
+            // popupStoreId로 PopupStore 조회
+            PopupStore popupStore = popupStoreRepository.findById(heart.getPopupStore().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 팝업 스토어가 없습니다."));
+
+            // HeartResponseDto 생성 및 반환
+            HeartResponseDto heartResponseDto = new HeartResponseDto();
+            heartResponseDto.setId(heart.getId());
+            heartResponseDto.setPopupStoreId(heart.getPopupStore().getId());
+            heartResponseDto.setPopupTitle(popupStore.getTitle()); // 팝업 스토어 제목 설정
+            heartResponseDto.setUserId(userId);
+            return heartResponseDto;
+        }).collect(Collectors.toList());
+
+        // 응답 데이터 반환
+        return ResponseDto.setSuccessData("찜한 팝업 스토어 목록", heartResponseDtos);
     }
 
     public ResponseDto<?> removeHeart(Long userId, Long popupStoreId) {

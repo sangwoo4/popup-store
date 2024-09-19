@@ -1,21 +1,24 @@
 package hansung.popupstore.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import hansung.popupstore.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL) // Id 값이 없을 시 NULL로 포함(데이터 자체를 표시 X)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PopupReviewDto {
     private Long popupStoreId;
-    private Long userId;
+    private Long userId; // 사용자 ID 추가
     private String reviewText;
     private LocalDateTime localDateTime;
-
 }
