@@ -51,6 +51,8 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+	implementation 'software.amazon.awssdk:s3:2.20.41' // 최신 버전으로 업데이트
+
 
 
 }
