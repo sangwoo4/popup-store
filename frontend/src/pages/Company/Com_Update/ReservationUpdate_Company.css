@@ -55,6 +55,7 @@ input[type="time"] {
   border-radius: 4px;
   margin-bottom: 10px;
   background-color: #f9f9f9;
+
 }
 
 .store-days-container input[type="text"] {
@@ -167,7 +168,7 @@ input[type="time"] {
   background-color: #f9f9f9;
 }
 
-.button:hover {
+/* .button:hover {
   background-color: #0056b3;
 }
 
@@ -185,7 +186,7 @@ input[type="time"] {
 
 .button.deadline:hover {
   background-color: #c82333;
-}
+} */
 
 /* Alerts */
 .alert {
@@ -201,4 +202,119 @@ input[type="time"] {
 
 .alert.error {
   background-color: #dc3545;
+}
+
+
+
+/* ReservationUpdate_Company.css */
+.reservation-update-company {
+  margin: 20px;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.reservation-time {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.reservation-time select,
+.reservation-time input[type="time"],
+.reservation-time input[type="number"] {
+  width: 30%;
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.reservation-time input[type="number"] {
+  text-align: right;
+}
+
+.reservation-time button {
+  background-color: #ff5a5f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.reservation-time button:hover {
+  background-color: #e53e3e;
+}
+
+.button {
+  margin-top: 15px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #2980b9;
+}
+
+.button.deadline,
+.button.activate {
+  background-color: #e67e22;
+}
+
+.button.deadline:hover,
+.button.activate:hover {
+  background-color: #d35400;
+}
+
+.button.add {
+  background-color: #2ecc71;
+}
+
+.button.add:hover {
+  background-color: #27ae60;
+}
+
+.operating-day {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.operating-day label {
+  width: 80px;
+  font-weight: bold;
+}
+
+.operating-day input {
+  width: 150px;
+  padding: 5px;
+  margin-left: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.calendar .react-calendar__tile--active {
+  background-color: #2ecc71 !important;
+}
+
+.disabled {
+  background-color: #f39c12;
+  pointer-events: none;
+  opacity: 0.6;
 }

@@ -1,8 +1,5 @@
 /*
-  수정하기에 남아 있어야 하는 목록
-  수정가능: 제목, 주최사, 전화번호, 우편번호, 주소, 지하철역, 설명, 카테고리, 이미지, 링크
-  수정 불가능(read only): 운영기간, 영업요일
-  수정불가능에 대해서는 "운영 기간 및 예약 수정은 -페이지 안내 링크 걸어주기-"
+  put 수정 완벽!!!!!!!!!!!!!!!!!!!
 */
 
 import React, { useEffect, useState } from 'react';
@@ -122,7 +119,7 @@ const PopupUpdate_Company = () => {
             const images = popupData.popupImages
               ? popupData.popupImages.map(image => `http://localhost:8080/${image.imageUrl}`)
               : ['/images/image1.png'];
-            setPreviewImages(images); // Set the image URLs for preview
+            setPreviewImages(images);
           
             console.log('Generated Image URL:', images); 
           }
@@ -140,11 +137,19 @@ const PopupUpdate_Company = () => {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
+
+      // 콘솔에 선택된 파일 정보 출력
+      files.forEach(file => {
+        console.log('선택된 파일:', file);
+        console.log('파일 이름:', file.name);
+        console.log('파일 크기:', file.size);
+    });
+      
     setImageFiles(prev => [...prev, ...files]);
   
-    // File preview URLs
+    //새로 업로드한 이미지
     const newPreviewImages = files.map(file => URL.createObjectURL(file));
-    setPreviewImages(prev => [...prev, ...newPreviewImages]); // 새로 업로드된 이미지도 추가
+    setPreviewImages(prev => [...prev, ...newPreviewImages]); 
   };
 
   const handleSubmit = async (e) => {
@@ -199,19 +204,23 @@ const PopupUpdate_Company = () => {
         isReservationFull: res.isReservationFull,
         date: res.date
       })),
-      // isReservationEnabled: reservationEnabled // 삭제
+      images: popupImages.map(image => image.imageUrl)
     };
   
     // FormData 객체 생성
     const formData = new FormData();
     formData.append('dto', new Blob([JSON.stringify(jsonData)], { type: 'application/json' }));
   
-    // 기존 이미지를 추가
-    popupImages.forEach((image) => {
-      if (image.imageUrl) {
-        formData.append('images', image.imageUrl);
-      }
-    });
+    // // 기존 이미지를 FormData에 추가
+    // popupImages.forEach(image => {
+    //   formData.append('images[]', image.imageUrl); // URL 대신 서버에서 처리할 수 있는 경로를 추가
+    // });
+
+
+    // 기존 이미지 추가
+    popupImages.forEach(image => {
+      formData.append('images', new Blob([image.imageUrl], { type: 'image/jpeg' }), image.imageUrl);
+  });
 
     // 새로 업로드할 이미지를 추가
     imageFiles.forEach((file) => {
@@ -322,12 +331,6 @@ const PopupUpdate_Company = () => {
 
   const fetchCategorySuggestions = async (title, description) => {
     try {
-      // console.log('Fetching category suggestions for:', title, description);
-      // const response = await fetch('http://spring-app:8080/popup/ai/category', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ title, description }),
-      // });
       const response = await fetch('http://localhost:8080/popup/ai/category', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -377,15 +380,6 @@ const PopupUpdate_Company = () => {
     }
   };
 
-  // const handleImageChange = (e) => {
-  //   const files = Array.from(e.target.files);
-  //   setImageFiles(files);
-  
-  //   // File preview URLs
-  //   const previewImages = files.map(file => URL.createObjectURL(file));
-  //   setPreviewImages(previewImages); // Update the state here
-  // };
-  
 
   const timeOptions = [];
   for (let hour = 0; hour < 24; hour++) {
@@ -421,7 +415,6 @@ const PopupUpdate_Company = () => {
         </label>
 
         <label>
-        {/* 운영기간 (Read-Only) */}
         <div>
           <label>운영기간</label>
           <div>
@@ -600,7 +593,7 @@ export default PopupUpdate_Company;
 
 
 
-// // 24.09.13 put 400 에러 수정 전... 아마 이미지 문제일듯...
+// // put 수정 모든 기능 완료 (이미지 변환 제외)
 // import React, { useEffect, useState } from 'react';
 // import { useParams, useNavigate, useLocation } from 'react-router-dom';
 // import DaumPostcode from 'react-daum-postcode';
@@ -795,18 +788,15 @@ export default PopupUpdate_Company;
 //         isReservationFull: res.isReservationFull,
 //         date: res.date
 //       })),
-//       // isReservationEnabled: reservationEnabled // 삭제
 //     };
   
 //     // FormData 객체 생성
 //     const formData = new FormData();
 //     formData.append('dto', new Blob([JSON.stringify(jsonData)], { type: 'application/json' }));
   
-//     // 기존 이미지를 추가
-//     popupImages.forEach((image) => {
-//       if (image.imageUrl) {
-//         formData.append('images', image.imageUrl);
-//       }
+//     // Add existing images
+//     popupImages.forEach(image => {
+//       formData.append('images', image);
 //     });
 
 //     // 새로 업로드할 이미지를 추가
@@ -956,13 +946,21 @@ export default PopupUpdate_Company;
 //   const handleTitleChange = (e) => {
 //     const newTitle = e.target.value;
 //     setTitle(newTitle);
-//     debouncedFetchCategorySuggestions(newTitle, description);
+
+//     if (e.inputType === 'insertText' && e.data === ' ') {
+//       console.log('API Call for Title');
+//       debouncedFetchCategorySuggestions(newTitle, description);
+//     }
 //   };
 
 //   const handleDescriptionChange = (e) => {
 //     const newDescription = e.target.value;
 //     setDescription(newDescription);
-//     debouncedFetchCategorySuggestions(title, newDescription);
+
+//     if (e.inputType === 'insertText' && (e.data === '.' || e.data === '!' || e.data === '~' || e.data === '?' || e.data === ',')) {
+//       console.log('API Call for Description');
+//       debouncedFetchCategorySuggestions(title, newDescription);
+//     }
 //   };
 
 //   // const handleImageChange = (e) => {

@@ -44,6 +44,7 @@ const PopupReservation_User = () => {
         }
 
         const data = await response.json();
+        console.log(data);
 
         if (data && data.data) {
           const { id, title, startDate, endDate, popupReservations } = data.data;
@@ -110,10 +111,13 @@ const PopupReservation_User = () => {
     setPopupReservationId(null); // 날짜 변경 시 예약 ID 초기화
   };
 
+
   const handleTimeChange = (time) => {
+    const selectedSlot = availableTimes.find((slot) => slot.startTime === time);
     setSelectedTime(time);
-    setPopupReservationId(time ? availableTimes.find((slot) => slot.startTime === time)?.id : null);
+    setPopupReservationId(selectedSlot ? selectedSlot.id : null);
   };
+
 
   const handlePeopleChange = (people) => {
     setNumberOfPeople(people);
@@ -142,7 +146,7 @@ const PopupReservation_User = () => {
       const data = await response.json();
 
       if (response.ok) {
-      // 서버 응답에서 pk와 reservationId를 별도로 저장
+        // 서버 응답에서 pk와 reservationId를 별도로 저장
         const { id: id } = data.data;
         setPopupReservationId(id); // 삭제 시 사용할 pk 저장
         alert('예약이 성공적으로 완료되었습니다!');
@@ -175,8 +179,13 @@ const PopupReservation_User = () => {
     const isDisabledByReservation = popupReservations
       .some(reservation => convertToLocalDate(reservation.date) === dateStr && !reservation.isReservationEnabled);
 
-    return isOutOfRange || isNotOperatingDay || allTimesFull || isDisabledByReservation;
+    // 모든 시간대가 비활성화되지 않았고, 예약이 가능한 시간대가 있는 경우
+    const hasEnabledReservations = popupReservations
+      .some(reservation => convertToLocalDate(reservation.date) === dateStr && reservation.isReservationEnabled);
+
+    return isOutOfRange || isNotOperatingDay || (allTimesFull && !hasEnabledReservations);
   };
+
 
   const convertToDate = (dateString) => {
     const [year, month, day] = dateString.split('-').map(Number);
@@ -226,9 +235,9 @@ const PopupReservation_User = () => {
                   return (
                     <button
                       key={index}
-                      onClick={() => handleTimeChange(slot.startTime)}
-                      className={`${selectedTime === slot.startTime ? 'selected' : ''} ${isFull ? 'full' : ''}`}
-                      disabled={isFull}
+                      onClick={() => !isFull && slot.isReservationEnabled && handleTimeChange(slot.startTime)}
+                      className={`time-button ${selectedTime === slot.startTime ? 'selected' : ''} ${isFull ? 'full' : ''} ${!slot.isReservationEnabled ? 'disabled' : ''}`}
+                      disabled={isFull || !slot.isReservationEnabled} // 비활성화된 버튼은 클릭 불가능
                     >
                       {slot.startTime} {isFull ? '(마감)' : ''}
                     </button>
@@ -259,6 +268,7 @@ const PopupReservation_User = () => {
               )}
             </>
           )}
+
         </>
       )}
     </div>
@@ -266,8 +276,6 @@ const PopupReservation_User = () => {
 };
 
 export default PopupReservation_User;
-
-
 
 
 
@@ -287,7 +295,7 @@ export default PopupReservation_User;
 //   const [availableTimes, setAvailableTimes] = useState([]);
 //   const [selectedTime, setSelectedTime] = useState('');
 //   const [numberOfPeople, setNumberOfPeople] = useState(1);
-//   const [popupReservationId, setReservationId] = useState(null);
+//   const [popupReservationId, setPopupReservationId] = useState(null);
 //   const [error, setError] = useState(null);
 //   const [loading, setLoading] = useState(true);
 //   const [reservationEnabled, setReservationEnabled] = useState(false);
@@ -382,12 +390,12 @@ export default PopupReservation_User;
 
 //     setAvailableTimes(filteredTimes || []);
 //     setSelectedTime(''); // 날짜 변경 시 시간 선택 초기화
-//     setReservationId(null); // 날짜 변경 시 예약 ID 초기화
+//     setPopupReservationId(null); // 날짜 변경 시 예약 ID 초기화
 //   };
 
 //   const handleTimeChange = (time) => {
 //     setSelectedTime(time);
-//     setReservationId(time ? availableTimes.find((slot) => slot.startTime === time)?.id : null);
+//     setPopupReservationId(time ? availableTimes.find((slot) => slot.startTime === time)?.id : null);
 //   };
 
 //   const handlePeopleChange = (people) => {
@@ -398,40 +406,38 @@ export default PopupReservation_User;
 //     return getRemainingSpots() < num;
 //   };
 
-//   const handleReservation = () => {
+//   const handleReservation = async () => {
 //     const token = localStorage.getItem('token');
 
-//     console.log('예약 데이터:', {
-//       popupReservationId: popupReservationId,
-//       numberOfPeople: numberOfPeople,
-//     });
-
-//     fetch('http://localhost:8080/popup/reservation/user', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json; charset=utf-8',
-//         'Authorization': `Bearer ${token}`,
-//       },
-//       body: JSON.stringify({
-//         popupReservationId: popupReservationId,
-//         numberOfPeople: numberOfPeople,
-//       }),
-//     })
-//       .then((response) => {
-//         console.log('서버 응답 상태 코드:', response.status);
-//         return response.json().then((data) => {
-//           console.log('서버 응답 데이터:', data);
-//           if (response.ok) {
-//             alert('예약이 성공적으로 완료되었습니다!');
-//             navigate(`/popup/user/popup_reservation/confirm}`, { state: { reservationDetails: data.data }});
-//           } else {
-//             throw new Error('예약에 실패했습니다.');
-//           }
-//         });
-//       })
-//       .catch((error) => {
-//         console.error('예약 중 오류 발생:', error);
+//     try {
+//       const response = await fetch('http://localhost:8080/popup/reservation/user', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json; charset=utf-8',
+//           'Authorization': `Bearer ${token}`,
+//         },
+//         body: JSON.stringify({
+//           popupReservationId: popupReservationId,
+//           numberOfPeople: numberOfPeople,
+//         }),
 //       });
+
+//       const data = await response.json();
+
+//       if (response.ok) {
+//       // 서버 응답에서 pk와 reservationId를 별도로 저장
+//         const { id: id } = data.data;
+//         setPopupReservationId(id); // 삭제 시 사용할 pk 저장
+//         alert('예약이 성공적으로 완료되었습니다!');
+//         // 예약 성공 시
+//         navigate(`/popup/user/popup_reservation/confirm/${data.data.id}`, { state: { reservationDetails: data.data } });
+//       } else {
+//         throw new Error('예약에 실패했습니다.');
+//       }
+//     } catch (error) {
+//       console.error('예약 중 오류 발생:', error);
+//       alert('예약에 실패했습니다.');
+//     }
 //   };
 
 //   const isDateDisabled = (date) => {
@@ -543,5 +549,4 @@ export default PopupReservation_User;
 // };
 
 // export default PopupReservation_User;
-
 

@@ -8,7 +8,8 @@
   background: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: relative; /* 버튼을 하단 우측에 위치시키기 위한 설정 */
+  position: relative;
+  /* 버튼을 하단 우측에 위치시키기 위한 설정 */
 }
 
 .banner {
@@ -35,6 +36,7 @@
   font-size: 16px;
   border-bottom: 2px solid transparent;
   transition: border-color 0.3s;
+  color: black;
 }
 
 .menu-button.active {
@@ -73,7 +75,8 @@
   border-radius: 5px;
   background-color: #f1edff;
   color: #8400ff;
-  margin-right: 4px; /* 각 카테고리 사이의 간격 조정 */
+  margin-right: 4px;
+  /* 각 카테고리 사이의 간격 조정 */
   font-size: 0.9em;
   font-weight: bold;
 }
@@ -97,8 +100,10 @@
 /* 삭제하기 버튼 스타일 */
 .delete-button {
   position: absolute;
-  bottom: 20px; /* 하단에서의 거리 */
-  right: 20px; /* 우측에서의 거리 */
+  bottom: 20px;
+  /* 하단에서의 거리 */
+  right: 20px;
+  /* 우측에서의 거리 */
   padding: 10px 20px;
   background-color: #ff4d4d;
   color: #fff;

@@ -289,6 +289,8 @@ const PopupRegister_Company = () => {
       }
 
       const result = await response.json();
+      console.log(result);
+
       alert('등록되었습니다!');
       navigate('/auth/company/homepage');
     } catch (error) {

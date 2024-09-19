@@ -41,11 +41,14 @@ const DetailInfo_User = () => {
     }
 
     const fetchLocationInfo = async () => {
+      const token = localStorage.getItem('token');
+      
       try {
         const response = await fetch(`http://localhost:8080/popup/detail/${location}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
           },
         });
 
@@ -219,6 +222,44 @@ const DetailInfo_User = () => {
     }
   };
 
+  const handleReviewButtonClick = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      handleReviewClick();
+    } else {
+      checkPopupReservation();
+    }
+  };
+
+  // 팝업스토어 예약 유무 확인 함수
+  const checkPopupReservation = async () => {
+    const token = localStorage.getItem('token');
+    
+    try {
+      const response = await fetch('http://localhost:8080/popup/review/register/check', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          popupStoreId: locationInfo.id
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.result === true) {
+        setShowReviewForm(true);
+      } else {
+        alert('해당 팝업스토어 예약자만 작성 가능합니다.');
+      }
+    } catch (error) {
+      console.error('예약 확인 중 오류 발생:', error);
+      alert('예약 여부 확인 중 오류가 발생했습니다. 다시 시도해주세요.');
+    }
+  };
+
   const handleReviewClick = () => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -230,10 +271,6 @@ const DetailInfo_User = () => {
 
   const handleReviewSubmit = async () => {
     const token = localStorage.getItem('token');
-    if (!token) {
-      alert('로그인이 필요합니다.');
-      return;
-    }
 
     try {
       const response = await fetch(`http://localhost:8080/popup/review/register`, {
@@ -400,7 +437,7 @@ const DetailInfo_User = () => {
             </div>
           )}
 
-          <button onClick={handleReviewClick}>후기 작성하기</button>
+          <button onClick={handleReviewButtonClick}>후기 작성하기</button>
           {showReviewForm && (
             <div className="review-form">
               <textarea
