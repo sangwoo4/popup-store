@@ -1,6 +1,8 @@
 package hansung.popupstore.Account.controller;
 
+import hansung.popupstore.Account.Dto.ChangePwdDto;
 import hansung.popupstore.Account.Dto.UserMyPageDto;
+import hansung.popupstore.Account.Dto.UserMyPageEditDto;
 import hansung.popupstore.Account.service.UserMyPageService;
 import hansung.popupstore.Security.TokenUtils;
 import hansung.popupstore.Util.ResponseDto;
@@ -30,7 +32,7 @@ public class UserMyPageController {
         return ResponseEntity.ok(ResponseDto.setSuccessData("마이페이지 정보 조회 성공", myPageInfo));
     }
 
-    // 비밀번호 확인 API
+    // 비밀번호 확인
     @PostMapping("/matchpwd")
     public ResponseEntity<ResponseDto<?>> matchPwd(@RequestHeader("Authorization") String tokenHeader,
                                                    @RequestBody Map<String, String> requestBody) {
@@ -51,21 +53,34 @@ public class UserMyPageController {
     // 회원 정보 수정
     @PutMapping("/editinfo")
     public ResponseEntity<ResponseDto<?>> editInfo(@RequestHeader("Authorization") String tokenHeader,
-                                                   @RequestBody UserDto userDto) {
+                                                   @RequestBody UserMyPageEditDto userMyPageEditDto) {
         String token = tokenUtils.extractToken(tokenHeader);
         Long userId = tokenUtils.extractUserIdFromToken(token);
 
-        return ResponseEntity.ok(userMyPageService.updateUserInfo(userId, userDto));
+        return ResponseEntity.ok(userMyPageService.updateUserInfo(userId, userMyPageEditDto));
     }
 
     // 회원 정보 조회
     @GetMapping("/getinfo")
-    public ResponseEntity<ResponseDto<UserDto>> getInfo(@RequestHeader("Authorization") String tokenHeader) {
+    public ResponseEntity<ResponseDto<UserMyPageEditDto>> getInfo(@RequestHeader("Authorization") String tokenHeader) {
         String token = tokenUtils.extractToken(tokenHeader);
         Long userId = tokenUtils.extractUserIdFromToken(token);
 
-        UserDto userInfo = userMyPageService.getUserInfo(userId);
+        UserMyPageEditDto userInfo = userMyPageService.getUserInfo(userId);
         return ResponseEntity.ok(ResponseDto.setSuccessData("회원 정보 조회 성공", userInfo));
+    }
+
+    // 비밀번호 변경
+    @PostMapping("/changepwd")
+    public ResponseEntity<ResponseDto<?>> changePassword(@RequestHeader("Authorization") String tokenHeader,
+                                                         @RequestBody ChangePwdDto changePwdDto) {
+
+        String token = tokenUtils.extractToken(tokenHeader);
+        Long userId = tokenUtils.extractUserIdFromToken(token);
+
+        ResponseDto<?> response = userMyPageService.changePassword(userId, changePwdDto);
+
+        return ResponseEntity.ok(response);
     }
 
     // 회원 정보 삭제

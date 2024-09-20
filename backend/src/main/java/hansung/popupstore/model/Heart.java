@@ -28,9 +28,4 @@ public class Heart {
     @JoinColumn(name = "popup_store_id", nullable = false)
     private PopupStore popupStore;
 
-    // 마이페이지 기능
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_my_page_id")
-    private UserMyPage userMyPage;
-
 }

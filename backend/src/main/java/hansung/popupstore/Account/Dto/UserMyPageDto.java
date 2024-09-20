@@ -18,6 +18,7 @@ public class UserMyPageDto {
     private List<Map<String, Object>> reservations;
     private List<HeartDto> hearts;
     private List<PopupReviewDto> reviews;
+    private List<String> categories;  // 카테고리 리스트 추가
     private int allHearts;
     private int allReviews;
     private int allReservations;

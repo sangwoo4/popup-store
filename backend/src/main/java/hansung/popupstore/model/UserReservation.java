@@ -1,7 +1,10 @@
 package hansung.popupstore.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,7 +14,6 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Table(name = "user_reservation") // 테이블 이름 오타 수정
 public class UserReservation {
 
@@ -29,10 +31,5 @@ public class UserReservation {
 
     @Column(name = "number_of_people")
     private int numberOfPeople;
-
-    // 마이페이지 기능
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_my_page_id")
-    private UserMyPage userMyPage;
 
 }
