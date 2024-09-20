@@ -62,7 +62,7 @@ public class PopUpStoreManagementService {
         popupReservationService.saveOrUpdatePopupReservations(dto.getPopupReservations(), popupStore);
         popupStoreService.updatePopupStoreEntity(popupStore, dto);
         if (images != null && !images.isEmpty()) {
-            popupImageService.saveOrUpdatePopupImages(dto.getPopupImages(), popupStore, images);
+            popupImageService.updatePopupImages(dto.getPopupImages(), popupStore, images);
         }
         return ResponseDto.setSuccess("PopupStore updated successfully.");
     }
