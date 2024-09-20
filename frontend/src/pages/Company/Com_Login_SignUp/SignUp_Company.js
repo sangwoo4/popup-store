@@ -1,11 +1,7 @@
-/*
-  24.07.22 수정 사항
-  - 이메일, 사업자번호 중복확인 코드 추가
-  - 예정: 다음 주소찾기 api 가져오기 수정 중
-*/
 import React, { useState, useEffect } from 'react';
 import './SignUp_Company.css';
 import DaumPostcode from 'react-daum-postcode';
+import API_BASE_URL from '../../../URL_API';
 
 export default function SignUp_Company() {
   const [companyName, setCompanyName] = useState('');
@@ -148,7 +144,7 @@ export default function SignUp_Company() {
     setDetailAddressValid(detailAddress.trim().length > 0);
   
     if (addressValid && postcodeValid && detailAddressValid) {
-      fetch("http://localhost:8080/auth/company/signup", {
+      fetch(`${API_BASE_URL}/auth/company/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -192,7 +188,7 @@ export default function SignUp_Company() {
       return;
     }
 
-    fetch("http://localhost:8080/auth/company/signup/check-email", {
+    fetch(`${API_BASE_URL}/auth/company/signup/check-email`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;"
@@ -226,7 +222,7 @@ export default function SignUp_Company() {
       return;
     }
 
-    fetch("http://localhost:8080/auth/company/signup/check-companyid", {
+    fetch(`${API_BASE_URL}/auth/company/signup/check-companyid`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;"

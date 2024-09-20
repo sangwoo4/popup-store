@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './PopupReservation_User.css';
+import API_BASE_URL from '../../../URL_API';
 
 const PopupReservation_User = () => {
   const { id } = useParams();
@@ -31,7 +32,7 @@ const PopupReservation_User = () => {
 
     const fetchLocationInfo = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/popup/detail/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/popup/detail/${id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -131,7 +132,7 @@ const PopupReservation_User = () => {
     const token = localStorage.getItem('token');
 
     try {
-      const response = await fetch('http://localhost:8080/popup/reservation/user', {
+      const response = await fetch(`${API_BASE_URL}/popup/reservation/user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json; charset=utf-8',

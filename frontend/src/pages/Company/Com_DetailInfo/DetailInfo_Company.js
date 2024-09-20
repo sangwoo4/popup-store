@@ -1,6 +1,7 @@
 import './DetailInfo_Company.css';
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../../../URL_API';
 
 const DetailInfo_Company = () => {
   const { location } = useParams();
@@ -21,7 +22,7 @@ const DetailInfo_Company = () => {
           throw new Error('User is not authenticated');
         }
 
-        const response = await fetch(`http://localhost:8080/popup/company/detail/${location}`, {
+        const response = await fetch(`${API_BASE_URL}/popup/company/detail/${location}`, {
           method: "GET",
           headers: {
             'Content-Type': 'application/json',
@@ -47,7 +48,7 @@ const DetailInfo_Company = () => {
             return isNaN(date.getTime()) ? 'N/A' : date.toISOString().split('T')[0];
           };
 
-          const images = popupImages.length > 0 ? popupImages.map(image => `http://localhost:8080/${image.imageUrl}`) : ['/images/image1.png'];
+          const images = popupImages.length > 0 ? popupImages.map(image => `${image.imageUrl}`) : ['/images/image1.png'];
 
           console.log('Converted Image URLs:', images); // 이미지 URL 변환 확인용
 
@@ -130,7 +131,7 @@ const DetailInfo_Company = () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`http://localhost:8080/popup/company/delete/${location}`, {
+        const response = await fetch(`${API_BASE_URL}/popup/company/delete/${location}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',

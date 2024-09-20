@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Home_Company.css';
-import API_BASE_URL from '../../../config';  // config.js에서 주소 가져오기
+import API_BASE_URL from '../../../URL_API';
 
 
 const Home_Company = () => {
@@ -64,7 +64,7 @@ const Home_Company = () => {
         ) : (
           locations.map(location => {
             const images = location.popupImages && location.popupImages.length > 0 
-              ? location.popupImages.map(image => `http://localhost:8080/${image.imageUrl}`) : ['/images/image1.png'];
+              ? location.popupImages.map(image => `${image.imageUrl}`) : ['/images/image1.png'];
             console.log('Converted Image URLs:', images);
 
             return (

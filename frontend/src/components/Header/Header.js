@@ -6,6 +6,7 @@ import { MdOutlineDashboardCustomize, MdOutlineFiberNew } from "react-icons/md";
 import { CiLogin } from "react-icons/ci";
 import { FaPagelines } from "react-icons/fa";
 import './Header.css';
+import API_BASE_URL from '../../../src/URL_API';
 
 const Header = () => {
   const [isCompanyLoggedIn, setIsCompanyLoggedIn] = useState(false);
@@ -18,34 +19,34 @@ const Header = () => {
     console.log("Token from localStorage:", token);
 
     if (token) {
-      fetch("http://localhost:8080/company/companyname", {
+      fetch(`${API_BASE_URL}/company/companyname`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`
         }
       })
-      .then(res => {
-        console.log("Company name fetch status:", res.status);
-        if (res.ok) {
-          return res.text();
-        } else {
-          throw new Error('Failed to fetch company name');
-        }
-      })
-      .then(res => {
-        console.log("Company name response:", res);
-        if (res) {
-          setIsCompanyLoggedIn(true);
-          setNickname(res);
-          setHomeLink('/auth/company/homepage');
-        } else {
+        .then(res => {
+          console.log("Company name fetch status:", res.status);
+          if (res.ok) {
+            return res.text();
+          } else {
+            throw new Error('Failed to fetch company name');
+          }
+        })
+        .then(res => {
+          console.log("Company name response:", res);
+          if (res) {
+            setIsCompanyLoggedIn(true);
+            setNickname(res);
+            setHomeLink('/auth/company/homepage');
+          } else {
+            checkUserLogin(token);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching company name:', error);
           checkUserLogin(token);
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching company name:', error);
-        checkUserLogin(token);
-      });
+        });
     } else {
       setIsCompanyLoggedIn(false);
       setIsUserLoggedIn(false);
@@ -53,43 +54,43 @@ const Header = () => {
   }, []);
 
   const checkUserLogin = (token) => {
-    fetch("http://localhost:8080/user/nickname", {
+    fetch(`${API_BASE_URL}/user/nickname`, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`
       }
     })
-    .then(res => {
-      console.log("User nickname fetch status:", res.status);
-      if (res.ok) {
-        return res.text();
-      } else {
-        throw new Error('Failed to fetch user nickname');
-      }
-    })
-    .then(resText => {
-      console.log("User nickname response (text):", resText);
-      try {
-        const res = JSON.parse(resText);
-        console.log("User nickname response (parsed):", res);
-        if (res && res.username) {
-          setIsUserLoggedIn(true);
-          setNickname(res.username);
-          setHomeLink('/');
+      .then(res => {
+        console.log("User nickname fetch status:", res.status);
+        if (res.ok) {
+          return res.text();
         } else {
-          console.warn('No username found in response');
+          throw new Error('Failed to fetch user nickname');
         }
-      } catch (error) {
-        console.error('Error parsing JSON response:', error);
-        // Assuming the response is plain text in this case
-        setIsUserLoggedIn(true);
-        setNickname(resText);
-        setHomeLink('/');
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching user nickname:', error);
-    });
+      })
+      .then(resText => {
+        console.log("User nickname response (text):", resText);
+        try {
+          const res = JSON.parse(resText);
+          console.log("User nickname response (parsed):", res);
+          if (res && res.username) {
+            setIsUserLoggedIn(true);
+            setNickname(res.username);
+            setHomeLink('/');
+          } else {
+            console.warn('No username found in response');
+          }
+        } catch (error) {
+          console.error('Error parsing JSON response:', error);
+          // Assuming the response is plain text in this case
+          setIsUserLoggedIn(true);
+          setNickname(resText);
+          setHomeLink('/');
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching user nickname:', error);
+      });
   };
 
   useEffect(() => {

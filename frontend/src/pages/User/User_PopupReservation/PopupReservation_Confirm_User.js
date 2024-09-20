@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './PopupReservation_Confirm_User.css';
+import API_BASE_URL from '../../../URL_API';
 
 const PopupReservation_Confirm_User = () => {
   const { state } = useLocation();
@@ -22,7 +23,7 @@ const PopupReservation_Confirm_User = () => {
           return;
         }
   
-        const response = await fetch(`http://localhost:8080/popup/reservation/user/cancel`, {
+        const response = await fetch(`${API_BASE_URL}/popup/reservation/user/cancel`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',

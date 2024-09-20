@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './ChatbotTest_User.css';
+import API_BASE_URL from '../../../URL_API';
 
 const ChatbotTest_User = () => {
   const [userInput, setUserInput] = useState('');
@@ -18,7 +19,7 @@ const ChatbotTest_User = () => {
       console.log('Sending message:', userInput); // Log the message being sent
 
       // Send user message to chatbot via POST request
-      const response = await fetch('http://localhost:8080/chatbot/talk', {
+      const response = await fetch(`${API_BASE_URL}/chatbot/talk`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

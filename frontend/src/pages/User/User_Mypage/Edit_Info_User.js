@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from '../../../URL_API';
 
 const Edit_Info_User = () => {
   const [password, setPassword] = useState(""); // 비밀번호 입력 상태
@@ -12,7 +13,7 @@ const Edit_Info_User = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch("http://localhost:8080/mypage/matchpwd", {
+      const response = await fetch(`${API_BASE_URL}/mypage/matchpwd`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -41,7 +42,7 @@ const Edit_Info_User = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:8080/mypage/editinfo", {
+      const response = await fetch(`${API_BASE_URL}/mypage/editinfo`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

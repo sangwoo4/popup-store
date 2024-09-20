@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import "./Dashboard_Company.css";
+import API_BASE_URL from '../../../URL_API';
 
 // 왼쪽 사이드바 관리
 const Sidebar = ({ onSelect }) => {
@@ -33,7 +34,7 @@ const Dashboard_Company = () => {
     const fetchLocations = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:8080/company/popuplist', {
+        const response = await fetch(`${API_BASE_URL}/company/popuplist`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -68,7 +69,7 @@ const Dashboard_Company = () => {
   const fetchReservations = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8080/popup/reservation/list/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/popup/reservation/list/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -113,7 +114,7 @@ const Dashboard_Company = () => {
             ) : (
               locations.map(location => {
                 const images = location.popupImages && location.popupImages.length > 0 
-                  ? location.popupImages.map(image => `http://localhost:8080/${image.imageUrl}`) 
+                  ? location.popupImages.map(image => `${image.imageUrl}`) 
                   : ['/images/image1.png'];
                 console.log('Converted Image URLs:', images);
 

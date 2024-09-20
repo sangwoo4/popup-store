@@ -1,12 +1,7 @@
-/*
-    수정사항 예정 [24.07.15]
-    1. 헤더와 푸터 사이에 들어가게 수정 - O
-    2. 모든 코드 재수정 
-*/
-
 import React, { useEffect, useState, useRef } from 'react';
 import './Login_User.css';
 import { Link, useNavigate } from "react-router-dom";
+import API_BASE_URL from '../../../URL_API';
 
 export default function Login_User() {
   const [email, setEmail] = useState('');
@@ -44,7 +39,7 @@ export default function Login_User() {
   };
 
   const onClickConfirmButton = () => {
-    fetch("http://localhost:8080/auth/user/login", {
+    fetch(`${API_BASE_URL}/auth/user/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;"
@@ -54,21 +49,21 @@ export default function Login_User() {
         password: password,
       }),
     })
-    .then((res) => res.json())
-    .then(res => {
-      console.log("백엔드: ", res);
+      .then((res) => res.json())
+      .then(res => {
+        console.log("백엔드: ", res);
 
-      if (res.data && res.data.token) {
-        alert("로그인 되었습니다.");
-        window.localStorage.setItem('token', res.data.token); // 토큰 저장
-        window.location.href = '/';
-      } else {
-        alert("이메일 또는 비밀번호가 일치하지 않습니다.");
-      }
-    })
-    .catch(error => {
-      console.error('백엔드와의 통신 중 오류 발생:', error);
-    });
+        if (res.data && res.data.token) {
+          alert("로그인 되었습니다.");
+          window.localStorage.setItem('token', res.data.token); // 토큰 저장
+          window.location.href = '/';
+        } else {
+          alert("이메일 또는 비밀번호가 일치하지 않습니다.");
+        }
+      })
+      .catch(error => {
+        console.error('백엔드와의 통신 중 오류 발생:', error);
+      });
   };
   const handleEmailKeyDown = (e) => {
     if (e.key === 'Enter') {

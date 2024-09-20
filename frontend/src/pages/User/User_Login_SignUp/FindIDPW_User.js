@@ -1,12 +1,6 @@
-/*
-    수정사항 예정 [24.07.15]
-    1. 헤더와 푸터 사이에 들어가게 수정
-    2. 모든 코드 재수정
-*/
-
-
 import React, { useEffect, useState } from 'react';
 import './FindIDPW_User.css';
+import API_BASE_URL from '../../../URL_API';
 
 const FindIDPW_User = () => {
     const [selectedTab, setSelectedTab] = useState('findEmail');

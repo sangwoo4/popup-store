@@ -2,6 +2,7 @@ import './DetailInfo_User.css';
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { MdDelete } from "react-icons/md";
+import API_BASE_URL from '../../../URL_API';
 
 const DetailInfo_User = () => {
   const { location } = useParams();
@@ -44,7 +45,7 @@ const DetailInfo_User = () => {
       const token = localStorage.getItem('token');
       
       try {
-        const response = await fetch(`http://localhost:8080/popup/detail/${location}`, {
+        const response = await fetch(`${API_BASE_URL}/popup/detail/${location}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -73,7 +74,7 @@ const DetailInfo_User = () => {
           };
 
           const images = popupImages && popupImages.length > 0
-            ? popupImages.map(image => `http://localhost:8080/${image.imageUrl}`)
+            ? popupImages.map(image => `${image.imageUrl}`)
             : ['/images/mainImage.png'];
 
           setLocationInfo({
@@ -117,7 +118,7 @@ const DetailInfo_User = () => {
       const fetchReviews = async () => {
         setReviewsLoading(true);
         try {
-          const response = await fetch(`http://localhost:8080/popup/review/${locationInfo.id}`, {
+          const response = await fetch(`${API_BASE_URL}/popup/review/${locationInfo.id}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -196,7 +197,7 @@ const DetailInfo_User = () => {
 
     try {
       const method = isHearted ? 'DELETE' : 'POST';
-      const response = await fetch(`http://localhost:8080/heart`, {
+      const response = await fetch(`${API_BASE_URL}/heart`, {
         method: method,
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -236,7 +237,7 @@ const DetailInfo_User = () => {
     const token = localStorage.getItem('token');
     
     try {
-      const response = await fetch('http://localhost:8080/popup/review/register/check', {
+      const response = await fetch('${API_BASE_URL}/popup/review/register/check', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -273,7 +274,7 @@ const DetailInfo_User = () => {
     const token = localStorage.getItem('token');
 
     try {
-      const response = await fetch(`http://localhost:8080/popup/review/register`, {
+      const response = await fetch(`${API_BASE_URL}/popup/review/register`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -310,7 +311,7 @@ const DetailInfo_User = () => {
     }
   
     try {
-      const response = await fetch(`http://localhost:8080/popup/review/delete`, {
+      const response = await fetch(`${API_BASE_URL}/popup/review/delete`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,  // 토큰이 제대로 포함되어 있는지 확인

@@ -4,6 +4,7 @@ import Slider from 'react-slick';
 import './Home_User.css';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import API_BASE_URL from '../../../URL_API';
 
 const Home_User = () => {
   const [locations, setLocations] = useState([]);
@@ -21,7 +22,7 @@ const Home_User = () => {
       setIsLoggedIn(true);
       setToken(token);
 
-      fetch("http://localhost:8080/user/nickname", {
+      fetch(`${API_BASE_URL}/user/nickname`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`
@@ -38,7 +39,7 @@ const Home_User = () => {
           console.error('닉네임 가져오기 중 오류 발생:', error);
         });
 
-      fetch("http://localhost:8080/popup/ai/recommend/category", {
+      fetch(`${API_BASE_URL}/popup/ai/recommend/category`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`
@@ -55,7 +56,7 @@ const Home_User = () => {
           console.error('카테고리 가져오기 중 오류 발생:', error);
         });
 
-      fetch("http://localhost:8080/popup/ai/recommend/distance", {
+      fetch(`${API_BASE_URL}/popup/ai/recommend/distance`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`
@@ -79,7 +80,7 @@ const Home_User = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await fetch('http://localhost:8080/search/popup/all', {
+        const response = await fetch(`${API_BASE_URL}/search/popup/all`, {
           method: "GET",
           headers: {
             'Content-Type': 'application/json',
@@ -157,7 +158,7 @@ const Home_User = () => {
         <Slider {...settings}>
           {locations.slice(0, 5).map(location => {
             const images = location.popupImages && location.popupImages.length > 0
-              ? location.popupImages.map(image => `http://localhost:8080/${image.imageUrl}`)
+              ? location.popupImages.map(image => `${image.imageUrl}`)
               : ['/images/mainImage.png'];
 
             return (
@@ -207,7 +208,7 @@ const Home_User = () => {
                           category.popupImages.map((image, imageIndex) => (
                             <img
                               key={imageIndex}
-                              src={`http://localhost:8080/${image.imageUrl}`}
+                              src={`${image.imageUrl}`}
                               alt={`Banner ${imageIndex + 1}`}
                               className='lower-popup-image'
                             />
@@ -244,7 +245,7 @@ const Home_User = () => {
                           distance.popupImages.map((image, imageIndex) => (
                             <img
                               key={imageIndex}
-                              src={`http://localhost:8080/${image.imageUrl}`}
+                              src={`${image.imageUrl}`}
                               alt={`Banner ${imageIndex + 1}`}
                               className='lower-popup-image'
                             />
@@ -285,7 +286,7 @@ const Home_User = () => {
                             location.popupImages.map((image, imageIndex) => (
                               <img
                                 key={imageIndex}
-                                src={`http://localhost:8080/${image.imageUrl}`}
+                                src={`${image.imageUrl}`}
                                 alt={`Banner ${imageIndex + 1}`}
                                 className='lower-popup-image'
                               />

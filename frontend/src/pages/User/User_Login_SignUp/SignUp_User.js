@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './SignUp_User.css';
+import API_BASE_URL from '../../../URL_API';
 
 export default function SignUp_User() {
   const [email, setEmail] = useState('');
@@ -123,7 +124,7 @@ export default function SignUp_User() {
       setEmailValid(false);
       return;
     }
-    fetch("http://localhost:8080/auth/user/signup/check-email", {
+    fetch(`${API_BASE_URL}/auth/user/signup/check-email`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;"
@@ -161,7 +162,7 @@ export default function SignUp_User() {
       setPhoneValid(false);
       return;
     }
-    fetch("http://localhost:8080/auth/user/signup/check-phone", {
+    fetch(`${API_BASE_URL}/auth/user/signup/check-phone`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;"
@@ -193,7 +194,7 @@ export default function SignUp_User() {
       setNicknameValid(false);
       return;
     }
-    fetch("http://localhost:8080/auth/user/signup/check-nickname", {
+    fetch(`${API_BASE_URL}/auth/user/signup/check-nickname`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;"
@@ -258,7 +259,7 @@ export default function SignUp_User() {
 
   
     // 서버에 데이터 전송
-    fetch("http://localhost:8080/auth/user/signup", {
+    fetch(`${API_BASE_URL}/auth/user/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8"

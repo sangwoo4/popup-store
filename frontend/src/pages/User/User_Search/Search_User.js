@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";  // useNavigate 훅 임포트
 import './Search_User.css';
+import API_BASE_URL from '../../../URL_API';
 
 const Search_User = () => {
   const [query, setQuery] = useState('');
@@ -24,7 +25,7 @@ const Search_User = () => {
     setError(null);
 
     try {
-      const response = await fetch(`http://localhost:8080/search/popup?query=${encodeURIComponent(query)}`, {
+      const response = await fetch(`${API_BASE_URL}/search/popup?query=${encodeURIComponent(query)}`, {
         method: "GET",
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +86,7 @@ const Search_User = () => {
               </div>
               {result.popupImages && result.popupImages.length > 0 && (
                 <img
-                  src={`http://localhost:8080/${result.popupImages[0].imageUrl}`}
+                  src={`${result.popupImages[0].imageUrl}`}
                   alt={result.title}
                   className="result-image"
                 />

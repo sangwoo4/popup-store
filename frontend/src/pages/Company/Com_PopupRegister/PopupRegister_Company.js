@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import DaumPostcode from 'react-daum-postcode';
 import './PopupRegister_Company.css';
+import API_BASE_URL from '../../../URL_API';
 
 const PopupRegister_Company = () => {
   const [title, setTitle] = useState('');
@@ -56,7 +57,7 @@ const PopupRegister_Company = () => {
       setIsLoggedIn(true);
       setToken(token);
 
-      fetch("http://localhost:8080/company/companyname", {
+      fetch(`${API_BASE_URL}/company/companyname`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`
@@ -125,7 +126,7 @@ const PopupRegister_Company = () => {
   const fetchCategorySuggestions = async (title, description) => {
     try {
       console.log('Fetching category suggestions for:', title, description);
-      const response = await fetch('http://localhost:8080/popup/ai/category', {
+      const response = await fetch(`${API_BASE_URL}/popup/ai/category`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, description }),
@@ -276,7 +277,7 @@ const PopupRegister_Company = () => {
     });
 
     try {
-      const response = await fetch('http://localhost:8080/popup/company/register', {
+      const response = await fetch(`${API_BASE_URL}/popup/company/register`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`

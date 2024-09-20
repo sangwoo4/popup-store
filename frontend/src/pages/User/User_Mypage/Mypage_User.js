@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './Mypage_User.css';
+import API_BASE_URL from '../../../URL_API';
 
 const Sidebar = ({ onSelect }) => {
   return (
@@ -46,7 +47,7 @@ const Mypage_User = () => {
       const token = localStorage.getItem("token");
 
       try {
-        const response = await fetch("http://localhost:8080/mypage/getinfo", {
+        const response = await fetch(`${API_BASE_URL}/mypage/getinfo`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -70,7 +71,7 @@ const Mypage_User = () => {
     // 마이페이지 조회
     const fetchUserData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/mypage/user", {
+        const response = await fetch(`${API_BASE_URL}/mypage/user`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -94,7 +95,7 @@ const Mypage_User = () => {
     // 예약내역 조회
     const fetchReservations = async () => {
       try {
-        const response = await fetch("http://localhost:8080/popup/reservation/user/list", {
+        const response = await fetch(`${API_BASE_URL}/popup/reservation/user/list`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -128,7 +129,7 @@ const Mypage_User = () => {
     // 찜목록 조회
     const fetchUserHearts = async () => {
       try {
-        const response = await fetch("http://localhost:8080/heart", {
+        const response = await fetch(`${API_BASE_URL}/heart`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

@@ -1,12 +1,9 @@
-/*
-  put 수정 완벽!!!!!!!!!!!!!!!!!!!
-*/
-
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import DaumPostcode from 'react-daum-postcode';
 import './PopupUpdate_Company.css';
 import debounce from 'lodash.debounce';
+import API_BASE_URL from '../../../URL_API';
 
 const PopupUpdate_Company = () => {
   const location = useLocation(); 
@@ -61,7 +58,7 @@ const PopupUpdate_Company = () => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const response = await fetch(`http://localhost:8080/popup/company/detail/${id}`, {
+          const response = await fetch(`${API_BASE_URL}/popup/company/detail/${id}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`
@@ -117,7 +114,7 @@ const PopupUpdate_Company = () => {
   
 
             const images = popupData.popupImages
-              ? popupData.popupImages.map(image => `http://localhost:8080/${image.imageUrl}`)
+              ? popupData.popupImages.map(image => `${image.imageUrl}`)
               : ['/images/image1.png'];
             setPreviewImages(images);
           
@@ -218,9 +215,14 @@ const PopupUpdate_Company = () => {
 
 
     // 기존 이미지 추가
-    popupImages.forEach(image => {
-      formData.append('images', new Blob([image.imageUrl], { type: 'image/jpeg' }), image.imageUrl);
-  });
+  //   popupImages.forEach(image => {
+  //     formData.append('images', new Blob([image.imageUrl], { type: 'image/jpeg' }), image.imageUrl);
+  // });
+  // 기존 이미지 (서버에서 받은 이미지 URL)
+  // popupImages.forEach(image => {
+  //   formData.append('images', image.imageUrl); // URL 그대로 전달
+  // });
+
 
     // 새로 업로드할 이미지를 추가
     imageFiles.forEach((file) => {
@@ -231,7 +233,7 @@ const PopupUpdate_Company = () => {
 
   
     try {
-      const response = await fetch(`http://localhost:8080/popup/company/update/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/popup/company/update/${id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -331,7 +333,7 @@ const PopupUpdate_Company = () => {
 
   const fetchCategorySuggestions = async (title, description) => {
     try {
-      const response = await fetch('http://localhost:8080/popup/ai/category', {
+      const response = await fetch(`${API_BASE_URL}/popup/ai/category`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, description }),

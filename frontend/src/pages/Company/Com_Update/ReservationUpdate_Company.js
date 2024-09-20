@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './ReservationUpdate_Company.css';
+import API_BASE_URL from '../../../URL_API';
 
 const daysOfWeek = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
 
@@ -49,7 +50,7 @@ const ReservationUpdate_Company = () => {
   useEffect(() => {
     const fetchPopupData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/popup/detail/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/popup/detail/${id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -215,7 +216,7 @@ const ReservationUpdate_Company = () => {
       return;
     }
 
-    const response = await fetch(`http://localhost:8080/popup/reservation/deadline?popupStoreId=${id}&date=${selectedDate}`, {
+    const response = await fetch(`${API_BASE_URL}/popup/reservation/deadline?popupStoreId=${id}&date=${selectedDate}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -236,7 +237,7 @@ const ReservationUpdate_Company = () => {
       return;
     }
 
-    const response = await fetch(`http://localhost:8080/popup/reservation/activate?popupStoreId=${id}&date=${selectedDate}`, {
+    const response = await fetch(`${API_BASE_URL}/popup/reservation/activate?popupStoreId=${id}&date=${selectedDate}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -313,7 +314,7 @@ const ReservationUpdate_Company = () => {
     });
 
     try {
-      const response = await fetch(`http://localhost:8080/popup/company/update/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/popup/company/update/${id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

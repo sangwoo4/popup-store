@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ReservationDetails_User.css";
+import API_BASE_URL from '../../../URL_API';
 
 const ReservationDetails_User = () => {
   const [groupedReservations, setGroupedReservations] = useState({});
@@ -19,7 +20,7 @@ const ReservationDetails_User = () => {
       }
 
       try {
-        const response = await fetch("http://localhost:8080/popup/reservation/user/list", {
+        const response = await fetch(`${API_BASE_URL}/popup/reservation/user/list`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
