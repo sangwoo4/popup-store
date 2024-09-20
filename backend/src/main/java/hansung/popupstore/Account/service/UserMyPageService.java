@@ -1,9 +1,11 @@
 package hansung.popupstore.Account.service;
 
 import hansung.popupstore.Account.Dto.UserMyPageDto;
+import hansung.popupstore.Account.Repository.UserMyPageRepository;
 import hansung.popupstore.Account.Repository.UserRepository;
 import hansung.popupstore.PopupReservation.Service.UserReservationService;
 import hansung.popupstore.PopupStore.Repository.CategoryRepository;
+import hansung.popupstore.PopupStore.Repository.HeartRepository;
 import hansung.popupstore.PopupStore.Service.HeartService;
 import hansung.popupstore.PopupStore.Service.PopupReviewService;
 import hansung.popupstore.Util.PasswordEncoderUtil;
@@ -12,8 +14,7 @@ import hansung.popupstore.dto.CategoryDto;
 import hansung.popupstore.dto.HeartDto;
 import hansung.popupstore.dto.PopupReviewDto;
 import hansung.popupstore.dto.UserDto;
-import hansung.popupstore.model.Category;
-import hansung.popupstore.model.User;
+import hansung.popupstore.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,51 +29,95 @@ public class UserMyPageService {
 
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
+    private final UserMyPageRepository userMyPageRepository;
+    private final HeartRepository heartRepository;
+
     private final HeartService heartService;
     private final UserReservationService userReservationService;
     private final PopupReviewService popupReviewService;
     private final PasswordService passwordService;
     private final UserService userService;
 
-    // 마이페이지 정보 조회
     public UserMyPageDto getMyPageInfo(Long userId) {
+        // 사용자 조회
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
+        // 찜 목록, 리뷰 목록, 예약 목록 가져오기
         List<HeartDto> hearts = heartService.getHeartedPopupStores(userId).getData();
         List<PopupReviewDto> reviews = popupReviewService.getReviewsByUserId(userId);
         List<Map<String, Object>> reservations = userReservationService.userReservationList(userId).getData();
 
+        // 모든 찜, 리뷰, 예약 개수 계산
         int allHearts = hearts.size();
         int allReviews = reviews.size();
         int allReservations = reservations.size();
 
-        List<HeartDto> heartDtos = hearts.stream()
-                .map(heart -> new HeartDto(heart.getId(), null, heart.getPopupStoreId()))
-                .collect(Collectors.toList());
+        // 기존에 해당 유저의 마이페이지 정보가 있는지 확인
+        UserMyPage userMyPage = userMyPageRepository.findByUser(user);
 
-        List<PopupReviewDto> reviewDtos = reviews.stream()
-                .map(review -> new PopupReviewDto(review.getPopupStoreId(), null, review.getReviewText(), review.getLocalDateTime()))
-                .collect(Collectors.toList());
+        if (userMyPage == null) {
+            // 기존 데이터가 없으면 새로 생성
+            userMyPage = new UserMyPage();
+            userMyPage.setUser(user);
+        }
 
-        List<Map<String, Object>> reservationDtos = reservations.stream()
-                .map(reservation -> {
-                    reservation.put("userId", null);
-                    return reservation;
-                })
-                .collect(Collectors.toList());
+        // 데이터 업데이트
+        userMyPage.setAllHearts(allHearts);
+        userMyPage.setAllReviews(allReviews);
+        userMyPage.setAllReservations(allReservations);
 
+        // 찜 설정 (기존 hearts 리스트를 비우고 다시 추가)
+        userMyPage.getHearts().clear();
+        for (HeartDto heartDto : hearts) {
+            Heart heartEntity = heartRepository.findById(heartDto.getId()).orElse(new Heart()); // 기존 Heart를 조회 또는 새로 생성
+            PopupStore popupStore = new PopupStore();
+            popupStore.setId(heartDto.getPopupStoreId());
+            heartEntity.setPopupStore(popupStore);
+            heartEntity.setUser(user);
+            heartEntity.setUserMyPage(userMyPage);
+            userMyPage.getHearts().add(heartEntity);
+        }
+
+        // 리뷰 설정 (기존 reviews 리스트를 비우고 다시 추가)
+        userMyPage.getPopupReviews().clear();
+        for (PopupReviewDto review : reviews) {
+            PopupReview popupReview = new PopupReview();
+            popupReview.setId(review.getPopupStoreId());
+            popupReview.setReviewText(review.getReviewText());
+            popupReview.setUserMyPage(userMyPage);
+            userMyPage.getPopupReviews().add(popupReview);
+        }
+
+        // 예약 설정 (기존 reservations 리스트를 비우고 다시 추가)
+        userMyPage.getUserReservations().clear();
+        for (Map<String, Object> reservation : reservations) {
+            UserReservation userReservation = new UserReservation();
+            userReservation.setId(Long.parseLong(reservation.get("id").toString()));
+            PopupReservation popupReservation = new PopupReservation();
+            popupReservation.setId(Long.parseLong(reservation.get("popupReservationId").toString()));
+            userReservation.setPopupReservation(popupReservation);
+            userReservation.setUser(user);
+            userReservation.setUserMyPage(userMyPage);
+            userMyPage.getUserReservations().add(userReservation);
+        }
+
+        // 테이블에 저장 (기존 데이터가 있으면 업데이트)
+        userMyPageRepository.save(userMyPage);
+
+        // DTO 반환
         return new UserMyPageDto(
                 user.getNickname(),
                 user.getEmail(),
-                reservationDtos,
-                heartDtos,
-                reviewDtos,
+                reservations,
+                hearts,
+                reviews,
                 allHearts,
                 allReviews,
                 allReservations
         );
     }
+
 
     // 사용자 정보 조회
     public UserDto getUserInfo(Long userId) {

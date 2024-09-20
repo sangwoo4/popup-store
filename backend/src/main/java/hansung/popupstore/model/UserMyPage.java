@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -16,7 +19,7 @@ public class UserMyPage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "all_reservations")
     private int allReservations;
@@ -31,15 +34,12 @@ public class UserMyPage {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "heart_id", nullable = false)
-    private Heart heart;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userMyPage", cascade = CascadeType.ALL)
+    private List<Heart> hearts = new ArrayList<>(); // 초기화 추가
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "popupReview_id", nullable = false)
-    private PopupReview popupReview;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userMyPage", cascade = CascadeType.ALL)
+    private List<PopupReview> popupReviews = new ArrayList<>(); // 초기화 추가
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userReservation", nullable = false)
-    private  UserReservation userReservation;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userMyPage", cascade = CascadeType.ALL)
+    private List<UserReservation> userReservations = new ArrayList<>(); // 초기화 추가
 }

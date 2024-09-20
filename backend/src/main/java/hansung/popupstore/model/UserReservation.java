@@ -1,10 +1,7 @@
 package hansung.popupstore.model;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +11,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Table(name = "user_reservation") // 테이블 이름 오타 수정
 public class UserReservation {
 
@@ -33,7 +31,8 @@ public class UserReservation {
     private int numberOfPeople;
 
     // 마이페이지 기능
-    @OneToMany(mappedBy = "userReservation", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<UserMyPage> userMyPages = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_my_page_id")
+    private UserMyPage userMyPage;
 
 }

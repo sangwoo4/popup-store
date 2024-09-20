@@ -29,7 +29,8 @@ public class Heart {
     private PopupStore popupStore;
 
     // 마이페이지 기능
-    @OneToMany(mappedBy = "heart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<UserMyPage> userMyPages = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_my_page_id")
+    private UserMyPage userMyPage;
 
 }
