@@ -1,5 +1,6 @@
 package hansung.popupstore.PopupStore.Service;
 
+import hansung.popupstore.Account.Dto.UserMyPageReviewDto;
 import hansung.popupstore.Account.Repository.UserRepository;
 import hansung.popupstore.PopupStore.Repository.PopupReviewRepository;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
@@ -82,14 +83,22 @@ public class PopupReviewService {
     }
 
     // 마이페이지 기능으로 사용자 ID로 리뷰 목록 조회 기능 추가
-    public List<PopupReviewDto> getReviewsByUserId(Long userId) {
+    public List<UserMyPageReviewDto> getReviewsByUserId(Long userId) {
         List<PopupReview> reviews = popupReviewRepository.findByUserId(userId);
         return reviews.stream()
-                .map(review -> new PopupReviewDto(
-                        review.getPopupStoreId(),
-                        review.getUser().getId(), // 사용자 ID 사용
-                        review.getReviewText(),
-                        review.getLocalDateTime()))
+                .map(review -> {
+                    String popupTitle = popupStoreRepository.findById(review.getPopupStoreId())
+                            .map(store -> store.getTitle())
+                            .orElse("Unknown");
+
+                    return new UserMyPageReviewDto(
+                            review.getId(),
+                            review.getPopupStoreId(),
+                            popupTitle,
+                            review.getReviewText(),
+                            review.getLocalDateTime()
+                    );
+                })
                 .collect(Collectors.toList());
     }
 

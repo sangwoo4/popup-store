@@ -3,19 +3,21 @@ package hansung.popupstore.Account.service;
 import hansung.popupstore.Account.Dto.ChangePwdDto;
 import hansung.popupstore.Account.Dto.UserMyPageDto;
 import hansung.popupstore.Account.Dto.UserMyPageEditDto;
+import hansung.popupstore.Account.Dto.UserMyPageReviewDto;
 import hansung.popupstore.Account.Repository.UserRepository;
 import hansung.popupstore.PopupReservation.Service.UserReservationService;
 import hansung.popupstore.PopupStore.Repository.CategoryRepository;
+import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.PopupStore.Service.HeartService;
 import hansung.popupstore.PopupStore.Service.PopupReviewService;
 import hansung.popupstore.Util.PasswordEncoderUtil;
 import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.dto.CategoryDto;
 import hansung.popupstore.dto.HeartDto;
-import hansung.popupstore.dto.PopupReviewDto;
 import hansung.popupstore.dto.UserDto;
 import hansung.popupstore.model.Category;
 import hansung.popupstore.model.User;
+import hansung.popupstore.model.PopupStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,7 @@ public class UserMyPageService {
 
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
+    private final PopupStoreRepository popupStoreRepository;
     private final HeartService heartService;
     private final UserReservationService userReservationService;
     private final PopupReviewService popupReviewService;
@@ -42,22 +45,31 @@ public class UserMyPageService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        // 각종 데이터를 다른 서비스로부터 가져옴
         List<HeartDto> hearts = heartService.getHeartedPopupStores(userId).getData();
-        List<PopupReviewDto> reviews = popupReviewService.getReviewsByUserId(userId);
         List<Map<String, Object>> reservations = userReservationService.userReservationList(userId).getData();
+        List<UserMyPageReviewDto> reviews = popupReviewService.getReviewsByUserId(userId).stream()
+                .map(review -> {
+                    String popupStoreTitle = popupStoreRepository.findById(review.getPopupStoreId())
+                            .map(PopupStore::getTitle)
+                            .orElse("Unknown");
+                    return new UserMyPageReviewDto(
+                            review.getReviewId(),
+                            review.getPopupStoreId(),
+                            popupStoreTitle,
+                            review.getReviewText(),
+                            review.getLocalDateTime()
+                    );
+                }).collect(Collectors.toList());
 
         Set<Category> categories = user.getCategories();
         List<String> categoryNames = categories.stream()
                 .map(Category::getCategory)
                 .collect(Collectors.toList());
 
-        // 직접 계산한 통계 데이터
         int allHearts = hearts.size();
         int allReviews = reviews.size();
         int allReservations = reservations.size();
 
-        // 반환 DTO 생성
         return new UserMyPageDto(
                 user.getNickname(),
                 user.getEmail(),
