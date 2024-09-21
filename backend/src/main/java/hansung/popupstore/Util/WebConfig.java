@@ -11,7 +11,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000", "http://10.0.2.2" ,"popspot.s3-website.ap-northeast-2.amazonaws.com") // 허용할 출처를 배열로 설정
+                .allowedOrigins("http://localhost:3000", "http://10.0.2.2" ,"http://popspot.s3-website.ap-northeast-2.amazonaws.com") // 허용할 출처를 배열로 설정
                 .allowedMethods("*")
                 .allowedHeaders("*")
                 .allowCredentials(true);
