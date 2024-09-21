@@ -30,7 +30,11 @@ const Mypage_User = () => {
   const navigate = useNavigate();
 
   const handleEditClick = () => {
-    navigate(`/popup/user/mypage/confirm.pw`);
+    navigate(`/auth/user/mypage/confirm.pw`);
+  };
+
+  const handleDeleteClick = () => {
+    navigate(`/auth/user/mypage/delete/userinfo`);
   };
 
   useEffect(() => {
@@ -150,7 +154,6 @@ const Mypage_User = () => {
       }
     };
 
-
     if (selectedSection === "myPage") {
       fetchUserData();
     }
@@ -166,9 +169,9 @@ const Mypage_User = () => {
     if (selectedSection === "editMember") {
       fetchUserInfo();
     }
-    // if (selectedSection === "deleteMember") {
-    //   fetchUserHearts();
-    // }
+    if (selectedSection === "deleteMember") {
+      handleDeleteClick();
+    }
 
   }, [selectedSection, navigate]);
 
@@ -208,7 +211,7 @@ const Mypage_User = () => {
             {userHearts && userHearts.length > 0 ? (
               userHearts.map((heart) => (
                 <div key={heart.id}>
-                  <p>팝업스토어 ID: {heart.popupStoreId}</p>
+                  <p>[{heart.popupStoreId}] {heart.popupTitle}</p>
                 </div>
               ))
             ) : (

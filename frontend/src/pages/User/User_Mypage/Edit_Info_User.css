@@ -1,0 +1,133 @@
+/* Edit_Info_User.css */
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+}
+
+h2 {
+  color: #333;
+}
+
+form {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin: 10px 0 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+input[type="text"]:read-only {
+  background-color: #e9ecef;
+}
+
+.postcode-container {
+  display: flex;
+  align-items: center;
+}
+
+.searchButton {
+  margin-left: 10px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.searchButton:hover {
+  background-color: #0056b3;
+}
+
+.inputTitle {
+  margin: 20px 0 5px;
+  font-weight: bold;
+}
+
+.errorMessageWrap {
+  color: red;
+  margin: 5px 0;
+}
+
+.category-selection {
+  margin-top: 10px;
+}
+
+.category-selection div {
+  margin: 5px 0;
+}
+
+button[type="button"],
+button[type="submit"] {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button[type="button"]:hover,
+button[type="submit"]:hover {
+  background-color: #218838;
+}
+
+.postcode-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.postcode-modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.postcode-modal-content button {
+  margin-top: 10px;
+  background-color: #dc3545;
+}
+
+.postcode-modal-content button:hover {
+  background-color: #c82333;
+}
+
+.modal {
+  background-color: white;
+  /* 배경색 */
+  border: 1px solid #ccc;
+  /* 테두리 */
+  border-radius: 8px;
+  /* 모서리 둥글게 */
+  padding: 20px;
+  /* 안쪽 여백 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* 그림자 */
+  text-align: center;
+  /* 텍스트 중앙 정렬 */
+}

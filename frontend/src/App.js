@@ -15,6 +15,7 @@ import PopupReservation_User from './pages/User/User_PopupReservation/PopupReser
 import PopupReservation_Comfirm_User from './pages/User/User_PopupReservation/PopupReservation_Confirm_User';
 import ChatbotTest_User from './pages/User/User_Chatbot/ChatbotTest_User';
 import Edit_Info_User from './pages/User/User_Mypage/Edit_Info_User';
+import Delete_Info_User from './pages/User/User_Mypage/Delete_Info_User';
 
 import Home_Company from "./pages/Company/Com_Home/Home_Company";
 import Dashboard_Company from "./pages/Company/Com_Dashboard/Dashboard_Company";
@@ -42,7 +43,8 @@ function App() {
       <Route path="/popup/user/popup_pre_reservation/:id" element={<PopupReservation_User />} />
       <Route path="/popup/user/popup_reservation/confirm/:reservationId" element={<PopupReservation_Comfirm_User />} />
       <Route path="/popup/user/chatbot/talk" element={<ChatbotTest_User />} />
-      <Route path="/popup/user/mypage/confirm.pw" element={<Edit_Info_User />} />
+      <Route path="/auth/user/mypage/confirm.pw" element={<Edit_Info_User />} />
+      <Route path="/auth/user/mypage/delete/userinfo" element={<Delete_Info_User />} />
 
       <Route path="/auth/company/homepage" element={<Home_Company />} />
       <Route path="/auth/company/dashboard" element={<Dashboard_Company />} />

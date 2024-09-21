@@ -207,21 +207,6 @@ const PopupUpdate_Company = () => {
     // FormData 객체 생성
     const formData = new FormData();
     formData.append('dto', new Blob([JSON.stringify(jsonData)], { type: 'application/json' }));
-  
-    // // 기존 이미지를 FormData에 추가
-    // popupImages.forEach(image => {
-    //   formData.append('images[]', image.imageUrl); // URL 대신 서버에서 처리할 수 있는 경로를 추가
-    // });
-
-
-    // 기존 이미지 추가
-  //   popupImages.forEach(image => {
-  //     formData.append('images', new Blob([image.imageUrl], { type: 'image/jpeg' }), image.imageUrl);
-  // });
-  // 기존 이미지 (서버에서 받은 이미지 URL)
-  // popupImages.forEach(image => {
-  //   formData.append('images', image.imageUrl); // URL 그대로 전달
-  // });
 
 
     // 새로 업로드할 이미지를 추가

@@ -17,6 +17,9 @@ const Home_User = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
+    setIsLoggedIn(false);
+    setToken('');
+
     const token = localStorage.getItem('token');
     if (token) {
       setIsLoggedIn(true);
@@ -28,7 +31,15 @@ const Home_User = () => {
           "Authorization": `Bearer ${token}`
         }
       })
-        .then((res) => res.text())
+        .then((res) => {
+          // 만약 401 Unauthorized 응답이 오면 토큰이 만료된 것
+          if (res.status === 400) {
+            console.error('토큰이 만료되었습니다. 로컬 스토리지에서 삭제합니다.');
+            localStorage.removeItem('token');
+            return null; // null을 반환
+          }
+          return res.text();
+        })
         .then(res => {
           if (res) {
             setUserName(res);
