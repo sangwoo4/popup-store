@@ -1,6 +1,8 @@
 package hansung.popupstore.Account.service;
 
+import hansung.popupstore.Account.Dto.ChangePwdDto;
 import hansung.popupstore.Account.Dto.UserMyPageDto;
+import hansung.popupstore.Account.Dto.UserMyPageEditDto;
 import hansung.popupstore.Account.Repository.UserRepository;
 import hansung.popupstore.PopupReservation.Service.UserReservationService;
 import hansung.popupstore.PopupStore.Repository.CategoryRepository;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,35 +42,29 @@ public class UserMyPageService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
+        // 각종 데이터를 다른 서비스로부터 가져옴
         List<HeartDto> hearts = heartService.getHeartedPopupStores(userId).getData();
         List<PopupReviewDto> reviews = popupReviewService.getReviewsByUserId(userId);
         List<Map<String, Object>> reservations = userReservationService.userReservationList(userId).getData();
 
+        Set<Category> categories = user.getCategories();
+        List<String> categoryNames = categories.stream()
+                .map(Category::getCategory)
+                .collect(Collectors.toList());
+
+        // 직접 계산한 통계 데이터
         int allHearts = hearts.size();
         int allReviews = reviews.size();
         int allReservations = reservations.size();
 
-        List<HeartDto> heartDtos = hearts.stream()
-                .map(heart -> new HeartDto(heart.getId(), null, heart.getPopupStoreId()))
-                .collect(Collectors.toList());
-
-        List<PopupReviewDto> reviewDtos = reviews.stream()
-                .map(review -> new PopupReviewDto(review.getPopupStoreId(), null, review.getReviewText(), review.getLocalDateTime()))
-                .collect(Collectors.toList());
-
-        List<Map<String, Object>> reservationDtos = reservations.stream()
-                .map(reservation -> {
-                    reservation.put("userId", null);
-                    return reservation;
-                })
-                .collect(Collectors.toList());
-
+        // 반환 DTO 생성
         return new UserMyPageDto(
                 user.getNickname(),
                 user.getEmail(),
-                reservationDtos,
-                heartDtos,
-                reviewDtos,
+                reservations,
+                hearts,
+                reviews,
+                categoryNames,
                 allHearts,
                 allReviews,
                 allReservations
@@ -75,14 +72,14 @@ public class UserMyPageService {
     }
 
     // 사용자 정보 조회
-    public UserDto getUserInfo(Long userId) {
+    public UserMyPageEditDto getUserInfo(Long userId) {
         User user = findUserById(userId);
 
         Set<CategoryDto> categoryDtos = user.getCategories().stream()
                 .map(category -> new CategoryDto(category.getId(), category.getCategory()))
                 .collect(Collectors.toSet());
 
-        return UserDto.builder()
+        return UserMyPageEditDto.builder()
                 .userId(user.getId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
@@ -101,20 +98,39 @@ public class UserMyPageService {
     }
 
     // 회원 정보 수정
-    public ResponseDto<?> updateUserInfo(Long userId, UserDto userDto) {
+    public ResponseDto<?> updateUserInfo(Long userId, UserMyPageEditDto userMyPageEditDto) {
         User user = findUserById(userId);
 
-        ResponseDto<?> validationResponse = validateUserFields(userDto);
+        // 닉네임 중복 검사
+        ResponseDto<?> validationResponse = validateNickname(userMyPageEditDto.getNickname(), userId);
         if (!validationResponse.isResult()) {
             return validationResponse;
         }
 
-        updateUserFields(user, userDto);
-        updateUserCategories(user, userDto.getCategories());
+        // 사용자 정보 업데이트
+        updateUserFields(user, userMyPageEditDto);
+        updateUserCategories(user, userMyPageEditDto.getCategories());
 
         userRepository.save(user);
 
         return ResponseDto.setSuccess("회원 정보가 성공적으로 수정되었습니다.");
+    }
+
+    // 비밀번호 변경
+    public ResponseDto<?> changePassword(Long userId, ChangePwdDto changePwdDto) {
+        User user = findUserById(userId);
+
+        // 현재 비밀번호가 일치하는지 확인
+        if (!PasswordEncoderUtil.matches(changePwdDto.getCurrentPassword(), user.getPassword())) {
+            return ResponseDto.setFailed("현재 비밀번호가 일치하지 않습니다.");
+        }
+
+
+        // 새 비밀번호 암호화 후 저장
+        user.setPassword(PasswordEncoderUtil.encode(changePwdDto.getNewPassword()));
+        userRepository.save(user);
+
+        return ResponseDto.setSuccess("비밀번호가 성공적으로 변경되었습니다.");
     }
 
     // 회원 탈퇴 처리
@@ -142,19 +158,15 @@ public class UserMyPageService {
     }
 
     // 사용자 정보 업데이트 메서드
-    private void updateUserFields(User user, UserDto userDto) {
-        user.setNickname(userDto.getNickname());
-        user.setAddress(userDto.getAddress());
-        user.setDetailAddress(userDto.getDetailAddress());
-        user.setMapx(userDto.getMapx());
-        user.setMapy(userDto.getMapy());
-        user.setPostcode(userDto.getPostcode());
-        user.setRoadAddress(userDto.getRoadAddress());
+    private void updateUserFields(User user, UserMyPageEditDto userMyPageEditDto) {
+        user.setNickname(userMyPageEditDto.getNickname());
+        user.setAddress(userMyPageEditDto.getAddress());
+        user.setDetailAddress(userMyPageEditDto.getDetailAddress());
+        user.setMapx(userMyPageEditDto.getMapx());
+        user.setMapy(userMyPageEditDto.getMapy());
+        user.setPostcode(userMyPageEditDto.getPostcode());
+        user.setRoadAddress(userMyPageEditDto.getRoadAddress());
 
-        if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
-            String hashedPassword = passwordService.encodePassword(userDto.getPassword());
-            user.setPassword(hashedPassword);
-        }
     }
 
     // 유효성 검사 메서드
@@ -163,12 +175,6 @@ public class UserMyPageService {
         if (!nickCheck.isResult()) {
             return nickCheck;
         }
-
-        ResponseDto<UserDto> phoneCheck = userService.checkPhone(userDto);
-        if (!phoneCheck.isResult()) {
-            return phoneCheck;
-        }
-
         return ResponseDto.setSuccess("유효성 검사 통과");
     }
 
@@ -184,5 +190,15 @@ public class UserMyPageService {
         }
 
         userRepository.save(user);
+    }
+
+    // 닉네임 중복 검사 메서드
+    private ResponseDto<?> validateNickname(String nickname, Long userId) {
+        // 자신이 아닌 다른 사용자가 같은 닉네임을 사용하는지 확인
+        Optional<User> existingUser = userRepository.findBynickname(nickname);
+        if (existingUser.isPresent() && !existingUser.get().getId().equals(userId)) {
+            return ResponseDto.setFailed("이미 사용중인 닉네임 입니다.");
+        }
+        return ResponseDto.setSuccess("사용 가능한 닉네임 입니다.");
     }
 }

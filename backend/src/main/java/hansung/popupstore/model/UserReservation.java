@@ -32,8 +32,4 @@ public class UserReservation {
     @Column(name = "number_of_people")
     private int numberOfPeople;
 
-    // 마이페이지 기능
-    @OneToMany(mappedBy = "userReservation", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<UserMyPage> userMyPages = new HashSet<>();
-
 }
