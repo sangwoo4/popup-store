@@ -1,7 +1,7 @@
 import './DetailInfo_User.css';
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { MdDelete } from "react-icons/md";
+// import { MdDelete } from "react-icons/md";
 import API_BASE_URL from '../../../URL_API';
 
 const DetailInfo_User = () => {
@@ -237,7 +237,7 @@ const DetailInfo_User = () => {
     const token = localStorage.getItem('token');
     
     try {
-      const response = await fetch('${API_BASE_URL}/popup/review/register/check', {
+      const response = await fetch(`${API_BASE_URL}/popup/review/register/check`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -302,35 +302,35 @@ const DetailInfo_User = () => {
     }
   };
   
-  // Delete review handler
-  const handleDeleteReview = async (reviewId) => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('로그인이 필요합니다.');
-      return;
-    }
+  // // Delete review handler
+  // const handleDeleteReview = async (reviewId) => {
+  //   const token = localStorage.getItem('token');
+  //   if (!token) {
+  //     alert('로그인이 필요합니다.');
+  //     return;
+  //   }
   
-    try {
-      const response = await fetch(`${API_BASE_URL}/popup/review/delete`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,  // 토큰이 제대로 포함되어 있는지 확인
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ reviewId }),
-      });
+  //   try {
+  //     const response = await fetch(`${API_BASE_URL}/popup/review/delete`, {
+  //       method: 'DELETE',
+  //       headers: {
+  //         'Authorization': `Bearer ${token}`,  // 토큰이 제대로 포함되어 있는지 확인
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ reviewId }),
+  //     });
   
-      if (!response.ok) {
-        throw new Error('Failed to delete review');
-      }
+  //     if (!response.ok) {
+  //       throw new Error('Failed to delete review');
+  //     }
   
-      setReviews((prevReviews) => prevReviews.filter((review) => review.id !== reviewId));
-      alert('후기가 성공적으로 삭제되었습니다.');
-    } catch (error) {
-      console.error('Error deleting review:', error);
-      alert('후기 삭제 중 오류가 발생했습니다.');
-    }
-  };
+  //     setReviews((prevReviews) => prevReviews.filter((review) => review.id !== reviewId));
+  //     alert('후기가 성공적으로 삭제되었습니다.');
+  //   } catch (error) {
+  //     console.error('Error deleting review:', error);
+  //     alert('후기 삭제 중 오류가 발생했습니다.');
+  //   }
+  // };
   
   
 
@@ -422,16 +422,10 @@ const DetailInfo_User = () => {
                 <div key={review.id} className="review-item">
                   <div className="review-header">
                     <span className="nickname">{review.nickname}</span>
-                    <span className="date">{new Date(review.localDateTime).toLocaleDateString()}</span>
+                    <span className="date">{new Date(review.localDateTime).toLocaleString()}</span>
                   </div>
                   <div className="review-body">
                     {review.reviewText}
-                  </div>
-                  <div className="delete-icon">
-                    <MdDelete
-                      onClick={() => handleDeleteReview(review.id)}
-                      style={{ cursor: 'pointer' }}
-                    />
                   </div>
                 </div>
               ))}

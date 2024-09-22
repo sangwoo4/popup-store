@@ -123,10 +123,6 @@ const Edit_Info_User = () => {
 
   const handleEditInfo = async () => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      alert('로그인이 필요합니다.');
-      return;
-    }
 
     const userData = {
       // userId,
@@ -144,7 +140,7 @@ const Edit_Info_User = () => {
       mapy: coordinates.mapy,
       roadAddress,
       // categories: category.map(cat => ({ category: cat.category })),
-      categories: categorySelections.map(cat => ({ category: cat })),
+      categories: categories.map(cat => ({ category: cat })),
     }
 
     console.log("Data to be sent:", userData);
@@ -158,6 +154,8 @@ const Edit_Info_User = () => {
         },
         body: JSON.stringify(userData),
       });
+
+      console.log("Response status:", response.status); // 상태 코드 로그
 
       if (response.ok) {
         alert("회원정보가 성공적으로 수정되었습니다.");
@@ -175,24 +173,35 @@ const Edit_Info_User = () => {
     setShowPasswordChange(!showPasswordChange);
   };
 
-  const handlePassword = (e) => {
+  // 새로운 비밀번호 입력 핸들러
+  const handleNewPasswordChange = (e) => {
     const newPassword = e.target.value;
-    setPassword(newPassword);
+    setNewPassword(newPassword);
     const regex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,20}$/; // 8~20자 영문, 숫자, 특수문자 포함
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,20}$/;
     setPasswordValid(regex.test(newPassword));
     setConfirmPasswordValid(confirmPassword === newPassword);
   };
 
-  const handleConfirmPassword = (e) => {
+  // 비밀번호 확인 입력 핸들러
+  const handleConfirmPasswordChange = (e) => {
     const newConfirmPassword = e.target.value;
     setConfirmPassword(newConfirmPassword);
-    setConfirmPasswordValid(newConfirmPassword === password);
+    setConfirmPasswordValid(newConfirmPassword === newPassword);
   };
 
   // 패스워드 변경 체크 수정중----------------------------
   const handlePasswordChange = async () => {
     const token = localStorage.getItem("token");
+
+    if (!passwordValid) {
+      alert("새 비밀번호 입력이 올바르지 않습니다.");
+      return;
+    }
+    if (!confirmPasswordValid) {
+      alert("비밀번호 확인이 일치하지 않습니다.");
+      return;
+    }
 
     try {
       const response = await fetch(`${API_BASE_URL}/mypage/changepwd`, {
@@ -209,10 +218,11 @@ const Edit_Info_User = () => {
 
       const result = await response.json();
 
-      if (response.ok) {
-        alert("비밀번호가 변경되었습니다");
+      if (response.ok && result.result) {
+        alert("비밀번호가 변경되었습니다.");
+        setShowPasswordChange(false);
       } else {
-        alert("현재 비밀번호가 일치하지 않습니다.");
+        alert("현재 비밀번호가 일치하지 않습니다."); // 서버에서의 실패에 대한 메시지
       }
     } catch (error) {
       console.error("비밀번호 변경 중 오류 발생:", error);
@@ -220,6 +230,17 @@ const Edit_Info_User = () => {
     }
   };
   // 패스워드 변경 체크 수정중----------------------------
+  const handleEditInfoAndPasswordChange = async () => {
+    // 일반 회원정보 수정 호출
+    await handleEditInfo();
+
+    // 비밀번호가 변경될 경우에만 비밀번호 변경 호출
+    if (newPassword && confirmPasswordValid) {
+      await handlePasswordChange();
+    }
+  };
+
+
 
   const handleAddressSearch = (e) => {
     e.preventDefault();
@@ -333,9 +354,10 @@ const Edit_Info_User = () => {
                     type="password"
                     placeholder="비밀번호를 입력하세요"
                     value={currentPassword}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
                   />
                 </label>
+
                 <label>
                   새로운 비밀번호:
                   <input
@@ -343,7 +365,7 @@ const Edit_Info_User = () => {
                     type="password"
                     placeholder="영문, 숫자, 특수문자 포함 8자 이상"
                     value={newPassword}
-                    onChange={handlePassword}
+                    onChange={handleNewPasswordChange}
                   />
                 </label>
                 {(!passwordValid && newPassword.length > 0) && (
@@ -357,13 +379,19 @@ const Edit_Info_User = () => {
                     type="password"
                     placeholder="비밀번호를 다시 입력해주세요"
                     value={confirmPassword}
-                    onChange={handleConfirmPassword}
+                    onChange={handleConfirmPasswordChange}
                   />
                 </div>
                 {(!confirmPasswordValid && confirmPassword.length > 0) && (
                   <div className="errorMessageWrap">비밀번호가 일치하지 않습니다.</div>
                 )}
-                <button type="button" onClick={handlePasswordChange}>변경 하기</button>
+                <button
+                  type="button"
+                  onClick={handlePasswordChange}
+                  disabled={!currentPassword || !newPassword.trim()}
+                >
+                  변경 하기
+                </button>
               </div>
             )}
             {/*비밀번호 변경 토글 수정중*/}
@@ -465,7 +493,8 @@ const Edit_Info_User = () => {
               )}
             </div>
 
-            <button onClick={handleEditInfo}>회원정보 수정</button>
+            <button type="button" onClick={handleEditInfoAndPasswordChange}>회원정보 수정</button>
+
           </form>
 
           {showPostcodeModal && (

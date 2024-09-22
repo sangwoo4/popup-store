@@ -1,53 +1,71 @@
 .chatbot-container {
-  display: flex;
-  flex-direction: column;
-  height: 500px;
-  border: 1px solid #ccc;
-  padding: 10px;
+  position: fixed;
+  bottom: 9cap;
+  right: 20px;
+  z-index: 1000;
+  /* 항상 위에 보이게 */
 }
 
 .chat-window {
-  flex: 1;
+  width: 300px;
+  height: 400px;
   overflow-y: auto;
-  padding-bottom: 10px;
-}
-
-.chat-bubble {
-  max-width: 70%;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
   padding: 10px;
-  border-radius: 10px;
-  margin: 5px 0;
-}
-
-.chat-bubble.user {
-  background-color: #0084ff;
-  color: white;
-  align-self: flex-end;
-}
-
-.chat-bubble.chatbot {
-  background-color: #e5e5ea;
-  color: black;
-  align-self: flex-start;
 }
 
 .input-container {
   display: flex;
-  gap: 10px;
+  margin-top: 10px;
 }
 
-input {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.input-container.open {
+  display: flex;
 }
 
-button {
+.input-container.closed {
+  display: none;
+}
+
+.chat-bubble {
+  margin: 5px 0;
   padding: 10px;
-  background-color: #0084ff;
+  border-radius: 10px;
+  max-width: 80%;
+}
+
+.chat-bubble.user {
+  background-color: #d1ffd1;
+  align-self: flex-end;
+}
+
+.chat-bubble.chatbot {
+  background-color: #e6e6e6;
+}
+
+.chatbot-button {
+  background-color: #007bff;
+  /* 버튼 색상 */
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
   cursor: pointer;
+  position: fixed;
+  bottom: 5%;
+  right: 50px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.chatbot-button:hover {
+  background-color: #0056b3;
+  /* hover 시 색상 */
 }

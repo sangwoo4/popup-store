@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './Mypage_User.css';
+import { MdDelete } from "react-icons/md";
 import API_BASE_URL from '../../../URL_API';
 
 const Sidebar = ({ onSelect }) => {
@@ -25,6 +26,7 @@ const Mypage_User = () => {
   const [userReservations, setUserReservations] = useState({});
   const [userHearts, setUserHearts] = useState({});
   const [userInfo, setUserInfo] = useState(null);
+  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -35,6 +37,32 @@ const Mypage_User = () => {
 
   const handleDeleteClick = () => {
     navigate(`/auth/user/mypage/delete/userinfo`);
+  };
+
+  // 리뷰 삭제
+  const handleDeleteReview = async (reviewId) => {
+    const token = localStorage.getItem('token');
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/popup/review/delete`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,  // 토큰이 제대로 포함되어 있는지 확인
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ reviewId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete review');
+      }
+
+      setReviews((prevReviews) => prevReviews.filter((review) => review.id !== reviewId));
+      alert('후기가 성공적으로 삭제되었습니다.');
+    } catch (error) {
+      console.error('Error deleting review:', error);
+      alert('후기 삭제 중 오류가 발생했습니다.');
+    }
   };
 
   useEffect(() => {
@@ -164,7 +192,7 @@ const Mypage_User = () => {
       fetchReservations();
     }
     if (selectedSection === "myReview") {
-      fetchUserHearts();
+      fetchUserData();
     }
     if (selectedSection === "editMember") {
       fetchUserInfo();
@@ -249,10 +277,37 @@ const Mypage_User = () => {
       case "myReview":
         return (
           <div className="myReview-container">
-            <h2>마이페이지 정보</h2>
             <p><strong>나의 리뷰:</strong> {userMypage.allReviews}</p>
+
+            <div className="review-content">
+              {userMypage.reviews && userMypage.reviews.length === 0 ? (
+                <p>현재 등록된 후기가 없습니다.</p>
+              ) : (
+                <div>
+                  {userMypage.reviews && userMypage.reviews.map((review, index) => (
+                    <div key={index} className="review-item">
+                      <div className="review-header">
+                        <span className="date">{new Date(review.localDateTime).toLocaleString()}</span>
+                      </div>
+                      <div className="review-body">
+                        <h3>{review.popupStoretitle}</h3>
+                        {review.reviewId}
+                        {review.reviewText}
+                      </div>
+                      <div className="delete-icon">
+                        <MdDelete
+                          onClick={() => handleDeleteReview(review.id)}
+                          style={{ cursor: 'pointer' }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         );
+
 
       case "editMember":
         return (
