@@ -41,13 +41,14 @@ const Mypage_User = () => {
 
   // 리뷰 삭제
   const handleDeleteReview = async (reviewId) => {
+    console.log('Deleting review with ID:', reviewId); // 리뷰 ID 확인
     const token = localStorage.getItem('token');
 
     try {
       const response = await fetch(`${API_BASE_URL}/popup/review/delete`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${token}`,  // 토큰이 제대로 포함되어 있는지 확인
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ reviewId }),
@@ -59,6 +60,7 @@ const Mypage_User = () => {
 
       setReviews((prevReviews) => prevReviews.filter((review) => review.id !== reviewId));
       alert('후기가 성공적으로 삭제되었습니다.');
+      window.location.reload();
     } catch (error) {
       console.error('Error deleting review:', error);
       alert('후기 삭제 중 오류가 발생했습니다.');
@@ -296,7 +298,7 @@ const Mypage_User = () => {
                       </div>
                       <div className="delete-icon">
                         <MdDelete
-                          onClick={() => handleDeleteReview(review.id)}
+                          onClick={() => handleDeleteReview(review.reviewId)} // 수정된 부분
                           style={{ cursor: 'pointer' }}
                         />
                       </div>
