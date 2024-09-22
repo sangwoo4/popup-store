@@ -60,7 +60,7 @@ public class PopupReviewService {
                     .getTitle(); // 팝업 스토어의 제목 가져오기
 
             // PopupReviewResponseDto에 필요한 데이터 매핑
-            return new PopupReviewResponseDto(nickname, review.getReviewText(), review.getLocalDateTime(), popupTitle);
+            return new PopupReviewResponseDto(nickname, review.getReviewText(), review.getLocalDateTime(), popupTitle, review.getId());
         }).collect(Collectors.toList());
 
         return ResponseDto.setSuccessData("리뷰 조회 결과", reviewDtos);
