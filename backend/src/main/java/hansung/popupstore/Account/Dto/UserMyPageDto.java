@@ -17,8 +17,8 @@ public class UserMyPageDto {
     private String email;
     private List<Map<String, Object>> reservations;
     private List<HeartDto> hearts;
-    private List<PopupReviewDto> reviews;
-    private List<String> categories;  // 카테고리 리스트 추가
+    private List<UserMyPageReviewDto> reviews;  // 09/22 수정한 라인
+    private List<String> categories;
     private int allHearts;
     private int allReviews;
     private int allReservations;
