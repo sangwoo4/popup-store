@@ -74,7 +74,7 @@ public class CompanyService {
         Set<Role> roles = roleService.getRolesByIds(roleIds);
         Set<String> roleNames = roleService.getRoleNames(roles);
 
-        String token = tokenProvider.generateToken(company.getId(), roleNames, 3600);
+        String token = tokenProvider.generateToken(company.getId(), roleNames, 10000);
 
         return ResponseDto.setSuccessData("로그인에 성공하였습니다.", new LoginResponseDto(token, 3600));
     }
