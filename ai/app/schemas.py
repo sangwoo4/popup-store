@@ -1,7 +1,7 @@
 from pydantic import BaseModel, RootModel, Field, validator
 from typing import List, Optional
 
-# hearts 필드를 배열로 정의합니다.
+# 카테고리 요청 스키마
 class CategoryRequest(BaseModel):
     id: int
     categories: str
@@ -11,15 +11,12 @@ class CategoryRequest(BaseModel):
     view_count: Optional[int] = 0
     reserve_percent: Optional[float] = 0
 
-    # hearts 필드가 문자열로 들어오는 경우 배열로 변환
-    @validator('hearts', pre=True)
-    def convert_hearts_to_list(cls, v):
-        if isinstance(v, str):
-            if not v.strip():
-                return []
-            return list(map(int, v.split(',')))
+    # hearts 필드가 빈 문자열일 경우 빈 리스트로 변환하는 validator
+    @validator('hearts', pre=True, always=True)
+    def check_hearts(cls, v):
+        if v == "" or v is None:
+            return []
         return v
-
 # 거리 요청 스키마
 class DistanceRequest(BaseModel):
     id: int
