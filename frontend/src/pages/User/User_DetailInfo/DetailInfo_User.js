@@ -396,7 +396,11 @@ const DetailInfo_User = () => {
             <p>♡{locationInfo.heartCount}</p>
           </div>
           <div className='warning-content'>
-            <p>안내사항 문구가 입력됩니다</p>
+            <p>예약한 시간 10분 초과시 자동취소됩니다.<br/>
+            현장 상황에 따라 대기가 발생할 수 있으니, 10분 전 현장으로 와주세요.<br/>
+            일부 판매 상품은 소진될 수 있습니다.
+            시간 변경을 원하시면 취소하고 재예약하면 됩니다.
+            </p>
             <hr />
             <p>운영기관: {locationInfo.companyName}</p>
             <p>운영문의: {locationInfo.companyEmail}</p>
@@ -412,7 +416,7 @@ const DetailInfo_User = () => {
         <div ref={mapElement} className="map-content" />
       )}
 
-{activeMenu === 'review' && (
+      {activeMenu === 'review' && (
         <div className="review-content">
           {reviews.length === 0 ? (
             <p>현재 등록된 후기가 없습니다.</p>

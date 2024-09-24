@@ -61,10 +61,11 @@ const PopupReservation_Confirm_User = () => {
         <p><strong>예약 ID:</strong> {reservationDetails.Id}</p>
         
         <br/>
-        예약한 시간 10분 초과시 자동취소됩니다.<br/>
-        현장 상황에 따라 대기가 발생할 수 있으니, 10분 전 현장으로 와주세요.<br/>
-        일부 판매 상품은 소진될 수 있습니다.
-        시간 변경을 원하시면 취소하고 재예약하면 됩니다.
+        <p>예약한 시간 10분 초과시 자동취소됩니다.<br/>
+            현장 상황에 따라 대기가 발생할 수 있으니, 10분 전 현장으로 와주세요.<br/>
+            일부 판매 상품은 소진될 수 있습니다.
+            시간 변경을 원하시면 취소하고 재예약하면 됩니다.
+        </p>
       </div>
       <button onClick={handleBackToHome}>홈으로 돌아가기</button>
       <button onClick={handleDelete}>사전예약 취소하기</button>

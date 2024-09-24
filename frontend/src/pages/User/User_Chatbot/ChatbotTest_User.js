@@ -74,7 +74,10 @@ const ChatbotTest_User = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({
+          text,
+          // clientType  
+        }),
       });
 
       if (!response.ok) {

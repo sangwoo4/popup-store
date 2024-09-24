@@ -40,7 +40,8 @@
 .popup-registration .date-picker-container {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px; /* 날짜 선택기와 다른 요소 간의 간격 추가 */
+  margin-bottom: 20px;
+  /* 날짜 선택기와 다른 요소 간의 간격 추가 */
 }
 
 .popup-registration .date-picker-container input {
@@ -51,7 +52,8 @@
 .popup-registration .postcode-container {
   display: flex;
   align-items: center;
-  margin-bottom: 20px; /* 우편번호 입력창과 다른 요소 간의 간격 추가 */
+  margin-bottom: 20px;
+  /* 우편번호 입력창과 다른 요소 간의 간격 추가 */
 }
 
 .popup-registration .postcode-container input {
@@ -81,7 +83,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 20px; /* 카테고리와 다른 요소 간의 간격 추가 */
+  margin-bottom: 20px;
+  /* 카테고리와 다른 요소 간의 간격 추가 */
 }
 
 .popup-registration .category-box2 {
@@ -93,28 +96,31 @@
   color: #333;
 }
 
-.popup-registration .operating-days {
+.popup-registration .operating-days-update {
   margin-bottom: 20px;
 }
 
-.popup-registration .operating-days > div {
+.popup-registration .operating-days-update>div {
   display: flex;
-  flex-direction: column; /* 라벨과 내용을 다음 줄에 배치 */
+  flex-direction: column;
+  /* 라벨과 내용을 다음 줄에 배치 */
 }
 
-.popup-registration .operating-days label {
-  margin-bottom: 10px; /* 라벨과 내용 간의 간격 추가 */
+.popup-registration .operating-days-update label {
+  margin-bottom: 10px;
+  /* 라벨과 내용 간의 간격 추가 */
   font-weight: bold;
   color: #555;
 }
 
-.popup-registration .operating-days > div > div {
+.popup-registration .operating-days-update>div>div {
   display: flex;
   flex-direction: column;
 }
 
-.popup-registration .operating-days input[type="text"] {
-  margin-top: 5px; /* 라벨과 입력 필드 간의 간격 추가 */
+.popup-registration .operating-days-update input[type="text"] {
+  margin-top: 5px;
+  /* 라벨과 입력 필드 간의 간격 추가 */
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -183,11 +189,14 @@
   flex-wrap: wrap;
   border: 1px solid #ddd;
   padding: 5px;
-  margin-bottom: 20px; /* 이미지 업로드와 다른 요소 간의 간격 추가 */
+  margin-bottom: 20px;
+  /* 이미지 업로드와 다른 요소 간의 간격 추가 */
 }
 
 .image-preview img {
   max-width: 100%;
-  max-height: 150px; /* 이미지의 최대 높이 설정 */
-  object-fit: cover; /* 이미지가 컨테이너에 맞게 자르기 */
+  max-height: 150px;
+  /* 이미지의 최대 높이 설정 */
+  object-fit: cover;
+  /* 이미지가 컨테이너에 맞게 자르기 */
 }

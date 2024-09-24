@@ -532,7 +532,7 @@ const PopupUpdate_Company = () => {
           />
         </label>
 
-        <div className="operating-days">
+        <div className="operating-days-update">
           <div>
             <label>영업 요일 및 시간</label>
             <div>

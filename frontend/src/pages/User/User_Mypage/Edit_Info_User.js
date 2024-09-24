@@ -315,6 +315,11 @@ const Edit_Info_User = () => {
             placeholder="비밀번호를 입력하세요"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                handlePasswordCheck(); // 엔터키 입력 시 비밀번호 확인 함수 호출
+              }
+            }}
           />
           <button onClick={handlePasswordCheck}>비밀번호 확인</button>
         </div>

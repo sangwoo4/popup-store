@@ -94,6 +94,7 @@ const Mypage_User = () => {
         }
 
         const data = await response.json();
+
         setUserInfo(data.data);
         setLoading(false);
       } catch (err) {
@@ -231,6 +232,8 @@ const Mypage_User = () => {
             <p><strong>찜 개수:</strong> {userMypage.allHearts}</p>
             <p><strong>나의 리뷰:</strong> {userMypage.allReviews}</p>
             <p><strong>예약 개수:</strong> {userMypage.allReservations}</p>
+            <p><strong>카테고리:</strong> [{userMypage.categories.join('],  [')}]</p>
+
           </div>
         );
 
