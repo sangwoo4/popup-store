@@ -76,7 +76,7 @@ public class CompanyService {
 
         String token = tokenProvider.generateToken(company.getId(), roleNames, 10000);
 
-        return ResponseDto.setSuccessData("로그인에 성공하였습니다.", new LoginResponseDto(token, 3600));
+        return ResponseDto.setSuccessData("로그인에 성공하였습니다.", new LoginResponseDto(token, 10000));
     }
 
     public ResponseDto<CompanyDto> checkCompanyEmail(CompanyDto dto) {

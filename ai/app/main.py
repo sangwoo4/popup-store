@@ -1,3 +1,4 @@
+
 # main.py
 
 import os
@@ -133,10 +134,6 @@ def calculate_distance02(coords1, coords2):
     lat2, lon2 = coords2
     return math.sqrt((lat2 - lat1) ** 2 + (lon2 - lon1) ** 2)
 
-# NCF 점수를 제곱 또는 세제곱하여 더 큰 차이로 확대
-def scale_ncf_score(score, factor=2):
-    return score ** factor
-
 # MySQL 데이터베이스에서 팝업 스토어 정보를 가져오는 함수
 def fetch_popup_stores_from_db():
     try:
@@ -176,24 +173,32 @@ async def distance_recommendations(request: List[schemas.DistanceRequest]):
     num_recommendations = 5
     
     try:
-        # 입력 데이터 검증
-        if len(request) != 1:
-            raise HTTPException(status_code=400, detail="Request must contain exactly one user")
-
-        # 사용자 ID 및 좌표 입력
         user_id_input = np.array([req.id for req in request])
-        mapx_input = np.array([float(req.mapx) / 10000000.0 for req in request])
-        mapy_input = np.array([float(req.mapy) / 10000000.0 for req in request])
-        
-        # 좌표 유효성 검사
-        user_coords = (mapy_input[0], mapx_input[0])
+
+        # mapx, mapy 값 변환 전 유효성 검증
+        mapx_input = [float(req.mapx) for req in request]
+        mapy_input = [float(req.mapy) for req in request]
+
+        for i in range(len(mapx_input)):
+            if not (100000000 <= mapx_input[i] <= 9999999999) or not (100000000 <= mapy_input[i] <= 9999999999):
+                raise HTTPException(status_code=400, detail="Invalid coordinates: raw mapx/mapy values are out of expected range")
+
+        # mapx, mapy 값을 올바르게 변환
+        mapx_input = np.array([mx / 10000000.0 for mx in mapx_input])
+        mapy_input = np.array([my / 10000000.0 for my in mapy_input])
+
+        if len(user_id_input) != 1:
+            raise HTTPException(status_code=400, detail="Request must contain exactly one user id")
+
+        user_coords = (mapy_input[0], mapx_input[0])  # 변환된 위도와 경도
+
+        # 변환된 좌표의 유효성 검사
         if not (-90 <= user_coords[0] <= 90) or not (-180 <= user_coords[1] <= 180):
             raise HTTPException(status_code=400, detail="Invalid coordinates: latitude must be between -90 and 90, and longitude must be between -180 and 180")
-
-        # 캐시 또는 DB에서 팝업 스토어 데이터 가져오기
+        
         popup_stores_data = get_cache("popup_stores")
         if popup_stores_data:
-            popup_stores = [PopupStore(**store) for store in popup_stores_data]
+            popup_stores = [schemas.PopupStore(**store) for store in popup_stores_data]
             logger.info(f"캐시에서 팝업 스토어 데이터 로드: {popup_stores}")
         else:
             popup_stores = fetch_popup_stores_from_db()
@@ -202,20 +207,16 @@ async def distance_recommendations(request: List[schemas.DistanceRequest]):
             set_cache("popup_stores", [store.dict() for store in popup_stores])
             logger.info(f"데이터베이스에서 팝업 스토어 데이터 로드 및 캐시에 저장: {popup_stores}")
 
-        # 팝업 스토어와의 거리 계산
         distances = []
         for store in popup_stores:
             store_coords = (float(store.mapy) / 10000000.0, float(store.mapx) / 10000000.0)
             distance = calculate_distance(user_coords, store_coords)
             distances.append(distance)
 
-        # 가장 가까운 팝업 스토어를 찾음
         distances = np.array(distances)
         top_distance_indices = np.argsort(distances)
         distance_recommendations = []
         seen = set()
-
-        # 추천할 팝업 스토어 선택
         for idx in top_distance_indices:
             if len(distance_recommendations) >= num_recommendations:
                 break
@@ -227,8 +228,8 @@ async def distance_recommendations(request: List[schemas.DistanceRequest]):
                 seen.add(popup_stores[idx].id)
 
         logger.info(f"거리 기반 추천 완료: {distance_recommendations}")
-        return distance_recommendations
 
+        return distance_recommendations
     except HTTPException as e:
         raise e
     except Exception as e:
@@ -241,45 +242,41 @@ async def category_recommendations(request: List[schemas.CategoryRequest]):
     logger.info(f"추천 요청 수신: {request}")
     
     num_recommendations = 5
-    weight_ncf = 0.2  # NCF 점수의 가중치 감소
-    weight_heart = 0.3  # 사용자가 찜한 팝업스토어에 가중치 부여 증가
-    weight_distance = 0.15  # 거리 점수의 가중치 증가
-    weight_views = 0.15  # 조회 수 가중치 증가
-    weight_reserve = 0.2  # 예약 퍼센티지 가중치 증가
+    weight_ncf = 0.2  # NCF 점수의 가중치
+    weight_heart = 0.3  # 사용자가 찜한 팝업스토어에 가중치 부여
+    weight_distance = 0.25  # 거리 점수의 가중치
+    weight_views = 0.2  # 조회 수 가중치
+    weight_reserve = 0.15  # 예약 퍼센티지 가중치
+    score_scaling_factor = 100  # 점수 스케일링
 
     try:
-        # hearts 필드가 빈 문자열일 경우 빈 리스트로 처리
+        # hearts가 빈 문자열일 경우 빈 리스트로 처리
         for req in request:
-            if isinstance(req.hearts, list):
-                logger.info(f"hearts는 리스트로 변환되었습니다: {req.hearts}")
-            else:
-                # hearts 필드가 빈 문자열이거나 잘못된 형식일 경우 빈 리스트로 처리
-                if not req.hearts or isinstance(req.hearts, str) and not req.hearts.strip():
-                    req.hearts = []
-                    logger.info(f"hearts 필드가 비어있어 빈 리스트로 처리되었습니다.")
-                else:
-                    raise HTTPException(status_code=400, detail="Invalid format for hearts field")
-        
-        # 입력 데이터를 numpy 배열로 변환
+            if not req.hearts:
+                req.hearts = []
+
+        # 입력 데이터 배열 변환
         user_id_input = np.array([req.id for req in request])
-        categories_input = np.array([req.categories for req in request])
+        categories_input = [req.categories for req in request][0]
+        selected_categories = set(categories_input.split(', '))
+        
         mapx_input = np.array([float(req.mapx) for req in request])
         mapy_input = np.array([float(req.mapy) for req in request])
 
         # 추가 지표 추출
-        hearts = request[0].hearts 
+        hearts = request[0].hearts
         view_count = request[0].view_count
 
         logger.info(f"사용자 찜 목록: {hearts}")
         logger.info(f"사용자 조회수: {view_count}")
 
         if len(user_id_input) != 1:
-            raise HTTPException(status_code=400, detail="Request must contain exactly one user id")
+            raise HTTPException(status_code=400, detail="사용자 ID 값은 반드시 하나만 포함되어야 합니다.")
 
-        # 캐시에서 팝업 스토어 데이터를 로드
+        # 캐시에서 팝업 스토어 데이터 로드
         popup_stores_data = get_cache("popup_stores")
         if popup_stores_data:
-            popup_stores = [PopupStore(**store) for store in popup_stores_data]
+            popup_stores = [schemas.PopupStore(**store) for store in popup_stores_data]
             logger.info(f"캐시에서 팝업 스토어 데이터 로드 완료: {popup_stores}")
         else:
             popup_stores = fetch_popup_stores_from_db()
@@ -288,42 +285,33 @@ async def category_recommendations(request: List[schemas.CategoryRequest]):
             set_cache("popup_stores", [store.dict() for store in popup_stores])
             logger.info(f"데이터베이스에서 팝업 스토어 데이터 로드 및 캐시 저장 완료: {popup_stores}")
 
-        categories = categories_input[0].split(', ')
+        # 팝업 스토어 필터링: 사용자 선택 카테고리와 일치하는 팝업 스토어만 포함
+        filtered_popup_stores = [store for store in popup_stores if selected_categories.intersection(set(store.categories.split(', ')))]
 
-        # 모든 팝업 스토어를 고려하는 대신 카테고리와 일치 여부에 따라 가중치를 달리하는 로직 추가
-        final_popup_stores = popup_stores  # 모든 팝업 스토어를 기본으로 사용
-        store_match_weights = []
+        if not filtered_popup_stores:
+            logger.warning("선택한 카테고리에 해당하는 팝업 스토어가 없습니다.")
+            raise HTTPException(status_code=404, detail="선택한 카테고리에 해당하는 팝업 스토어가 없습니다.")
 
-        for store in popup_stores:
-            if any(cat in categories for cat in store.categories.split(', ')):
-                store_match_weights.append(1.0)  # 카테고리 일치하면 높은 가중치
-            else:
-                store_match_weights.append(0.5)  # 일치하지 않으면 낮은 가중치
-
-        logger.info(f"모든 팝업 스토어 목록: {[store.id for store in final_popup_stores]}")
+        logger.info(f"카테고리와 일치하는 팝업 스토어 목록: {[store.id for store in filtered_popup_stores]}")
 
         # NCF 모델 예측 수행
-        item_ids_input = np.array([store.id for store in final_popup_stores])
-        predictions = model.predict([user_id_input.repeat(len(final_popup_stores)), item_ids_input])
+        item_ids_input = np.array([store.id for store in filtered_popup_stores])
+        predictions = model.predict([user_id_input.repeat(len(filtered_popup_stores)), item_ids_input])
         predictions = np.round(predictions.flatten(), 5)
         logger.info(f"NCF 모델 예측 완료: {predictions}")
 
-        # 거리 및 추가 지표 점수 계산 및 결합
+        # 최종 점수 계산
         final_scores = []
         user_coords = (mapy_input[0] / 10000000.0, mapx_input[0] / 10000000.0)
 
-        for idx, store in enumerate(final_popup_stores):
+        for idx, store in enumerate(filtered_popup_stores):
             store_coords = (float(store.mapy) / 10000000.0, float(store.mapx) / 10000000.0)
             distance = calculate_distance02(user_coords, store_coords)
-            distance_score = 1 / (1 + distance)  # 거리 점수 계산
+            distance_score = 1 / (1 + distance)
 
-            # 예약률 퍼센티지, 찜 점수, 조회수 점수 추출
             reserve_score = request[0].reserve_percent / 100.0 if store.id == request[0].id else 0.0
             heart_score = 1 if store.id in hearts else 0
             views_score = view_count
-
-            # NCF 점수를 스케일링해서 더 큰 비중을 주는 방식
-            scaled_ncf_score = scale_ncf_score(predictions[idx], factor=3)  # NCF 점수에 지수 적용
 
             # 로그 기록
             logger.info(f"스토어 ID: {store.id}")
@@ -331,12 +319,12 @@ async def category_recommendations(request: List[schemas.CategoryRequest]):
             logger.info(f"예약률 계산: {reserve_score}")
             logger.info(f"찜 점수(heart_score): {heart_score}")
             logger.info(f"조회수 점수(views_score): {views_score}")
-            logger.info(f"스케일링된 NCF 예측 점수: {scaled_ncf_score}")
+            logger.info(f"NCF 예측 점수: {predictions[idx]}\n")
 
-            # 최종 점수 계산 (스케일링된 NCF 점수를 사용)
-            final_score = (weight_ncf * scaled_ncf_score + weight_distance * distance_score +
+            # 스케일링 팩터를 포함한 최종 점수 계산
+            final_score = (weight_ncf * predictions[idx] + weight_distance * distance_score +
                            weight_heart * heart_score + weight_views * views_score +
-                           weight_reserve * reserve_score)
+                           weight_reserve * reserve_score) * score_scaling_factor
 
             final_scores.append((store.id, float(final_score)))
             logger.info(f"스토어 {store.id}의 최종 점수: {float(final_score)}")
@@ -346,18 +334,16 @@ async def category_recommendations(request: List[schemas.CategoryRequest]):
         logger.info(f"정렬된 최종 점수 목록: {final_scores}")
 
         ncf_recommendations = [schemas.NfcRecommendation(id=store_id) for store_id, _ in final_scores[:num_recommendations]]
-        
         logger.info(f"최종 추천 목록: {ncf_recommendations}")
 
         return ncf_recommendations
-
     except HTTPException as e:
+        logger.error(f"HTTP 예외 발생: {str(e)}")
         raise e
     except Exception as e:
         logger.error(f"추천 처리 중 오류 발생: {str(e)}")
         traceback.print_exc()
         raise HTTPException(status_code=500, detail="추천 처리 중 오류 발생")
-
 
 @app.post("/categorize", response_model=List[schemas.ChatResponse])
 async def categorize(requests: List[schemas.ChatRequest]):
@@ -368,8 +354,8 @@ async def categorize(requests: List[schemas.ChatRequest]):
 
             category_prompt = ", ".join(CATEGORY_LIST)
             detailed_prompt = (
-            f"당신은 카테고리 선정 어시스턴트입니다. 당신의 임무는 전달 받은 팝업스토어의 title, 그리고 description의 문장을 단어 사용 빈도에 초점을 둬서 읽어줘.\n"
-            "다음 목록에서 적합한 카테고리들을 최대 3개 선정하는 것입니다: "
+            f"당신은 카테고리 선정 어시스턴트입니다. 당신의 임무는 전달 받은 팝업스토어의 title, 그리고 description의 읽어서 선정 해주세요.\n"
+            "다음 목록에서 적합한 카테고리들을 최대 3개 선정하는 것입니다: \n"
             f"{category_prompt}.\n\n"
             f"중복 응답을 자제 해주세요. 여기 세부 정보가 있습니다:\n"
             f"제목: {request.title}\n"
@@ -377,14 +363,13 @@ async def categorize(requests: List[schemas.ChatRequest]):
 )
         
             response = await client.completions.create(
-                model="ft:davinci-002:category:category-final-v1-1:AAitGCxS",
+                model="ft:davinci-002:category:category-final-v1-3:AAzvvJBy",
                 prompt=detailed_prompt,
                 max_tokens=15,
                 temperature=0.25,
                 top_p=0.5,
                 frequency_penalty=0.15,
                 presence_penalty=0.15,
-                # stop = [","]
             )
             text_response = response.choices[0].text.strip()
             logger.info(f"OpenAI로부터 받은 원시 응답: {text_response}")

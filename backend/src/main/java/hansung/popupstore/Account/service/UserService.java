@@ -88,9 +88,9 @@ public class UserService {
                             .collect(Collectors.toSet());
 
                     // 사용자 ID를 주체로 사용하는 경우
-                    String token = tokenProvider.generateToken(user.getId(), roles, 3600);
+                    String token = tokenProvider.generateToken(user.getId(), roles, 10000);
 
-                    return ResponseDto.setSuccessData("로그인에 성공하였습니다.", new LoginResponseDto(token, 3600));
+                    return ResponseDto.setSuccessData("로그인에 성공하였습니다.", new LoginResponseDto(token, 10000));
                 }
             }
             return ResponseDto.setFailed("입력하신 로그인 정보가 존재하지 않습니다.");
