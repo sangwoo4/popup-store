@@ -1,7 +1,1 @@
 /backend/build
-
-/backend/src/main/resources/application.properties
-
-/ai/.env
-
-docker-compose.yml
