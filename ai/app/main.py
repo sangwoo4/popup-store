@@ -377,7 +377,7 @@ async def categorize(requests: List[schemas.ChatRequest]):
 )
         
             response = await client.completions.create(
-                model="ft:davinci-002:category:category-v3:A4saWh3R",
+                model="ft:davinci-002:category:category-final-v1-1:AAitGCxS",
                 prompt=detailed_prompt,
                 max_tokens=15,
                 temperature=0.25,

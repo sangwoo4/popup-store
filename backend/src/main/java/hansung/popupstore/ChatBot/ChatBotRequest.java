@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ChatBotRequest {
     private String text;
+    private String clientType;  // 클라이언트 타입 필드 추가
 }
