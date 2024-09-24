@@ -1,20 +1,20 @@
 /* 전체 페이지 스타일 */
-body {
+/* body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
   margin: 0;
   padding: 0;
-}
+} */
 
 /* 컨테이너 스타일 */
-.container {
+.container-reservation-history {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
 }
 
 /* 제목 스타일 */
-h1 {
+reservation-history {
   text-align: center;
   color: #333;
   margin-bottom: 40px;
@@ -37,7 +37,7 @@ h2 {
 /* 팝업스토어 제목 스타일 */
 .popupstore-title {
   font-size: 24px;
-  color: #007bff;
+  color: #030391;
   margin-bottom: 20px;
   text-align: center;
 }
@@ -46,7 +46,8 @@ h2 {
 .reservation-cards {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px; /* 카드 간의 간격 */
+  gap: 20px;
+  /* 카드 간의 간격 */
   justify-content: space-between;
 }
 
@@ -57,7 +58,8 @@ h2 {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  width: calc(25% - 25px); /* 5개의 카드를 한 줄에 배치하기 위한 너비 설정 */
+  width: calc(25% - 25px);
+  /* 5개의 카드를 한 줄에 배치하기 위한 너비 설정 */
   box-sizing: border-box;
   text-align: left;
   display: flex;
@@ -86,12 +88,21 @@ ul {
 /* 반응형 디자인 */
 @media (max-width: 1024px) {
   .reservation-card {
-    width: calc(33.333% - 20px); /* 너비를 3개의 카드로 줄이기 */
+    width: calc(33.333% - 20px);
+    /* 너비를 3개의 카드로 줄이기 */
   }
 }
 
 @media (max-width: 768px) {
   .reservation-card {
-    width: calc(50% - 20px); /* 너비를 2개의 카드로 줄이기 */
+    width: calc(50% - 20px);
+    /* 너비를 2개의 카드로 줄이기 */
+  }
+}
+
+@media (max-width: 480px) {
+  .reservation-card {
+    width: 100%;
+    /* 모바일에서는 카드가 전체 너비를 차지하도록 */
   }
 }

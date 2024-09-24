@@ -12,6 +12,9 @@ const ChatbotTest_User = () => {
   const chatbotButtonRef = useRef(null);
   const inputContainerRef = useRef(null);
 
+  // 챗봇이 보이지 않을 경로를 설정
+  const hiddenChatbotPaths = ['/popup/user/search', '/auth/company/homepage', '/auth/company/dashboard', '/popup/company/detail/:location', '/auth/company/signup', '/auth/company/login', '/popup/company/register', '/popup/company/update/:id', '/popup/company/pre-reservation/update/:id'];
+
   // 메시지 텍스트를 파싱하여 URL을 버튼으로 변환하는 함수
   const parseMessage = (text) => {
     const urlPattern = /(https?:\/\/[^\s]+)/g;
@@ -19,7 +22,6 @@ const ChatbotTest_User = () => {
 
     return parts.map((part, index) => {
       if (part.match(urlPattern)) {
-        // 링크를 "이동하기" 버튼으로 변환, 현재 탭에서 이동하게 함
         return (
           <button
             key={index}
@@ -35,6 +37,8 @@ const ChatbotTest_User = () => {
   };
 
   const handleSubmit = async (e) => {
+    const token = localStorage.getItem("token");
+
     e.preventDefault();
 
     if (userInput.trim() === '') return;
@@ -47,8 +51,12 @@ const ChatbotTest_User = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify({ text: userInput }),
+        body: JSON.stringify({
+          text: userInput,
+          clientType: 'web' // 클라이언트 타입 추가
+        }),
       });
 
       if (!response.ok) {
@@ -76,7 +84,7 @@ const ChatbotTest_User = () => {
         },
         body: JSON.stringify({
           text,
-          // clientType  
+          clientType: 'web' // 클라이언트 타입 추가
         }),
       });
 
@@ -130,6 +138,10 @@ const ChatbotTest_User = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  if (hiddenChatbotPaths.includes(location.pathname)) {
+    return null;
+  }
 
   return (
     <div className="chatbot-container">
@@ -185,8 +197,6 @@ export default ChatbotTest_User;
 
 
 
-
-
 // import React, { useState, useEffect, useRef } from 'react';
 // import { useLocation } from 'react-router-dom';
 // import './ChatbotTest_User.css';
@@ -200,6 +210,28 @@ export default ChatbotTest_User;
 //   const chatWindowRef = useRef(null);
 //   const chatbotButtonRef = useRef(null);
 //   const inputContainerRef = useRef(null);
+
+//   // 메시지 텍스트를 파싱하여 URL을 버튼으로 변환하는 함수
+//   const parseMessage = (text) => {
+//     const urlPattern = /(https?:\/\/[^\s]+)/g;
+//     const parts = text.split(urlPattern);
+
+//     return parts.map((part, index) => {
+//       if (part.match(urlPattern)) {
+//         // 링크를 "이동하기" 버튼으로 변환, 현재 탭에서 이동하게 함
+//         return (
+//           <button
+//             key={index}
+//             className="chatbot-link-button"
+//             onClick={() => (window.location.href = part)}
+//           >
+//             이동하기
+//           </button>
+//         );
+//       }
+//       return part;
+//     });
+//   };
 
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
@@ -241,7 +273,10 @@ export default ChatbotTest_User;
 //         headers: {
 //           'Content-Type': 'application/json',
 //         },
-//         body: JSON.stringify({ text }),
+//         body: JSON.stringify({
+//           text,
+//           // clientType
+//         }),
 //       });
 
 //       if (!response.ok) {
@@ -269,19 +304,22 @@ export default ChatbotTest_User;
 //     }
 //   }, [isChatOpen]);
 
-//   // 자동 스크롤 기능
 //   useEffect(() => {
 //     if (chatWindowRef.current) {
 //       chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
 //     }
 //   }, [chatMessages]);
 
-//   // 외부 클릭 시 대화창 닫기
 //   useEffect(() => {
 //     const handleClickOutside = (event) => {
-//       if (chatWindowRef.current && !chatWindowRef.current.contains(event.target) &&
-//         chatbotButtonRef.current && !chatbotButtonRef.current.contains(event.target) &&
-//         inputContainerRef.current && !inputContainerRef.current.contains(event.target)) { // 인풋 컨테이너 참조 추가
+//       if (
+//         chatWindowRef.current &&
+//         !chatWindowRef.current.contains(event.target) &&
+//         chatbotButtonRef.current &&
+//         !chatbotButtonRef.current.contains(event.target) &&
+//         inputContainerRef.current &&
+//         !inputContainerRef.current.contains(event.target)
+//       ) {
 //         setIsChatOpen(false);
 //       }
 //     };
@@ -305,7 +343,7 @@ export default ChatbotTest_User;
 
 //           {chatMessages.map((message, index) => (
 //             <div key={index} className={`chat-bubble ${message.type}`}>
-//               {message.text}
+//               {parseMessage(message.text)}
 //             </div>
 //           ))}
 //         </div>
@@ -314,7 +352,7 @@ export default ChatbotTest_User;
 //       <form
 //         onSubmit={handleSubmit}
 //         className={`input-container ${isChatOpen ? 'open' : 'closed'}`}
-//         ref={inputContainerRef} // 인풋 컨테이너 참조 추가
+//         ref={inputContainerRef}
 //       >
 //         <input
 //           type="text"
@@ -333,7 +371,7 @@ export default ChatbotTest_User;
 //       <button
 //         className="chatbot-button"
 //         onClick={() => setIsChatOpen((prev) => !prev)}
-//         ref={chatbotButtonRef} // 참조 추가
+//         ref={chatbotButtonRef}
 //       >
 //         💬
 //       </button>

@@ -52,7 +52,7 @@ function App() {
         <Route path="/popup/company/update/:id" element={<PopupUpdate_Company />} />
         <Route path="/popup/company/pre-reservation/update/:id" element={<ReservationUpdate_Company />} />
       </Routes>
-      <ChatbotTest_User /> {/* 모든 페이지에 챗봇 띄우기 */}
+      <ChatbotTest_User />
     </div>
   );
 }

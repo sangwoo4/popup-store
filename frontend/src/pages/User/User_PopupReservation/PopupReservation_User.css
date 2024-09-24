@@ -1,28 +1,24 @@
-/* 전역 스타일 */
-body {
-  font-family: 'Arial', sans-serif;
-}
-
-/* 컨테이너 스타일 */
-.container {
+/* 전체 컨테이너 스타일 */
+.container-user-reservation {
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 30px;
   max-width: 600px;
   width: 100%;
-  margin: 20px;
+  margin: 20px auto;
+  /* 가운데 정렬 */
 }
 
 /* 제목 스타일 */
-.container h1 {
+.container-user-reservation h1 {
   font-size: 28px;
   margin-bottom: 15px;
   color: #333;
   text-align: center;
 }
 
-.container h2 {
+.container-user-reservation h2 {
   font-size: 22px;
   margin-bottom: 20px;
   color: #555;
@@ -30,7 +26,7 @@ body {
 }
 
 /* 설명 스타일 */
-.container p {
+.container-user-reservation p {
   font-size: 16px;
   color: #777;
   margin-bottom: 25px;
@@ -38,21 +34,21 @@ body {
 }
 
 /* 라벨 스타일 */
-.container label {
+.container-user-reservation label {
   display: block;
-  font-size: 18px; /* 라벨 크기 증가 */
+  font-size: 18px;
   padding: 10px;
   color: #333;
 }
 
 /* 선택 박스 스타일 */
-.container select {
+.container-user-reservation select {
   width: 100%;
   padding: 12px;
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  margin-bottom: 25px; /* 선택 박스와 다른 요소 간의 여백 증가 */
+  margin-bottom: 25px;
 }
 
 /* 캘린더 스타일 */
@@ -61,7 +57,7 @@ body {
   border-radius: 10px;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 25px; /* 캘린더와 다른 요소 간의 여백 증가 */
+  margin-bottom: 25px;
 }
 
 /* 비활성화된 날짜 스타일 */
@@ -76,17 +72,17 @@ body {
   color: white;
 }
 
-/* 시간 버튼 스타일 */
+/* 시간 선택 버튼 스타일 */
 .time-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 30px; /* 시간 버튼과 다른 요소 간의 여백 증가 */
+  margin-bottom: 30px;
 }
 
 .time-buttons button {
   flex: 1 1 calc(25% - 10px);
-  background-color: #f0f0f0; /* 기본 버튼 색상 */
+  background-color: #f0f0f0;
   color: #333;
   border: none;
   border-radius: 5px;
@@ -97,15 +93,16 @@ body {
 }
 
 .time-buttons button:hover {
-  background-color: #e0e0e0; /* 버튼 호버 색상 */
+  background-color: #e0e0e0;
 }
 
 /* 선택된 시간 버튼 스타일 */
 .time-buttons button.selected {
-  background-color: #28a745; /* 클릭된 버튼 색상 */
+  background-color: #28a745;
   color: white;
 }
 
+/* 비활성화된 시간 버튼 스타일 */
 .time-buttons button.full {
   background-color: #bdbdbd;
   color: #444;
@@ -117,12 +114,12 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 30px; /* 참여 인원 버튼과 다른 요소 간의 여백 증가 */
+  margin-bottom: 30px;
 }
 
 .people-buttons button {
   flex: 1 1 calc(25% - 10px);
-  background-color: #f0f0f0; /* 기본 버튼 색상 */
+  background-color: #f0f0f0;
   color: #333;
   border: none;
   border-radius: 5px;
@@ -133,24 +130,24 @@ body {
 }
 
 .people-buttons button:hover {
-  background-color: #e0e0e0; /* 버튼 호버 색상 */
+  background-color: #e0e0e0;
 }
 
 /* 선택된 참여 인원 버튼 스타일 */
 .people-buttons button.selected {
-  background-color: #519760; /* 클릭된 버튼 색상 */
+  background-color: #519760;
   color: white;
 }
 
-/* 예약 가능 인원 수를 초과한 경우 회색으로 비활성화된 버튼 스타일 */
+/* 비활성화된 참여 인원 버튼 스타일 */
 .people-buttons button.disabled {
   background-color: #bdbdbd;
   color: #444;
   cursor: not-allowed;
 }
 
-/* 버튼 스타일 */
-.container button.submit {
+/* 예약하기 버튼 스타일 */
+.container-user-reservation button.submit {
   width: 100%;
   background-color: #28a745;
   color: white;
@@ -160,14 +157,17 @@ body {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-top: 20px;
+  /* 상단 여백 추가 */
 }
 
-.container button.submit:hover {
+.container-user-reservation button.submit:hover {
   background-color: #218838;
 }
 
 /* 반응형 스타일 */
 @media (max-width: 600px) {
+
   .time-buttons button,
   .people-buttons button {
     flex: 1 1 calc(50% - 10px);
@@ -175,6 +175,7 @@ body {
 }
 
 @media (max-width: 400px) {
+
   .time-buttons button,
   .people-buttons button {
     flex: 1 1 100%;

@@ -75,8 +75,8 @@ const ReservationDetails_User = () => {
   }
 
   return (
-    <div className="container">
-      <h1>예약내역 페이지</h1>
+    <div className="container-reservation-history">
+      <h1 className="reservation-history">예약내역 페이지</h1><br />
       {Object.keys(groupedReservations).map((title) => (
         <div key={title} className="popupstore-container">
           <h2 className="popupstore-title">{title}</h2>

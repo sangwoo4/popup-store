@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './SignUp_Company.css';
+import { useNavigate } from "react-router-dom";
 import DaumPostcode from 'react-daum-postcode';
 import API_BASE_URL from '../../../URL_API';
 
@@ -168,7 +169,7 @@ export default function SignUp_Company() {
         if (res.result) {
           alert("회원가입이 정상적으로 되었습니다");
           // 페이지 이동을 위해 window.location.href를 설정합니다.
-          window.location.href = "http://localhost:3000/auth/company/login";
+          window.location.href = "/auth/company/login";
         } else {
           console.error("회원가입 실패 사유: ", res.message || "Unknown error");
           alert("회원가입에 실패했습니다. 다시 시도해주세요.");

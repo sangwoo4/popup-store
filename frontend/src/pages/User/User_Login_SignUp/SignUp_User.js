@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './SignUp_User.css';
 import API_BASE_URL from '../../../URL_API';
 
 export default function SignUp_User() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -221,17 +223,14 @@ export default function SignUp_User() {
   };
 
   const onClickConfirmButton = () => {
-    // 로그 추가: 버튼 클릭 여부 확인
     console.log("가입하기 버튼이 클릭되었습니다.");
   
-    // 중복 확인 상태 출력
     console.log("중복 확인 상태:", {
       doubleCheckEmail,
       doubleCheckPhone,
       doubleCheckNickname
     });
   
-    // 중복 확인이 완료되지 않았다면 경고
     if (!doubleCheckEmail || !doubleCheckPhone || !doubleCheckNickname) {
       alert("중복확인을 모두 완료해주세요.");
       return;
@@ -272,7 +271,7 @@ export default function SignUp_User() {
   
         if (res.result) {
           alert("회원가입이 정상적으로 되었습니다");
-          window.location.href = "http://localhost:3000/auth/user/login";
+          navigate("/auth/user/login");
         } else {
           alert("회원가입에 실패했습니다. 다시 시도해주세요.");
         }
