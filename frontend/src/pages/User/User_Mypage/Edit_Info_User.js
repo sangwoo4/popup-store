@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import DaumPostcode from 'react-daum-postcode';
@@ -308,7 +309,7 @@ const Edit_Info_User = () => {
     <div>
       {/* 비밀번호 확인창 */}
       {!isPasswordMatched && (
-        <div className="modal">
+        <div className="modal-password-confirm">
           <h2>비밀번호 확인</h2>
           <input
             type="password"
@@ -327,7 +328,7 @@ const Edit_Info_User = () => {
 
       {/* 비밀번호가 일치하면 회원정보 수정 폼을 표시 */}
       {isPasswordMatched && (
-        <div>
+        <div className="editInfo">
           <h2>회원정보 수정</h2>
           <form onSubmit={handleEditInfo}>
             <label>

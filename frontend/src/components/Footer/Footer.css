@@ -1,0 +1,10 @@
+/* 푸터는 항상 화면 하단에 고정 */
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}

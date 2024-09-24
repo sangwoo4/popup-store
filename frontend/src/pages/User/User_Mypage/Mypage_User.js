@@ -244,8 +244,6 @@ const Mypage_User = () => {
           </div>
         );
 
-
-
       case "myHeart":
         return (
           <div className="myHeart-container">
@@ -328,14 +326,14 @@ const Mypage_User = () => {
           <div className="editMember-container">
             <h3>회원정보 수정</h3>
             {userInfo ? (
-              <form>
+              <form className="memberInfo">
                 <div className="form-group">
                   <label>아이디:</label>
                   <input type="text" value={userInfo.username} disabled />
                 </div>
                 <div className="form-group">
                   <label>이메일:</label>
-                  <input type="email" value={userInfo.email} disabled />
+                  <input type="text" value={userInfo.email} disabled />
                 </div>
                 <div className="form-group">
                   <label>닉네임:</label>

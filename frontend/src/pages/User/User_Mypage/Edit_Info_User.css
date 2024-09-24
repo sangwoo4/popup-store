@@ -7,6 +7,22 @@
   padding: 20px;
 } */
 
+.editInfo {
+  width: 50%;
+  max-width: 450px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: hsl(0, 0%, 97%);
+  border: 1px solid rgb(179, 179, 179);
+
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
 h2 {
   color: #333;
 }
@@ -117,17 +133,11 @@ button[type="submit"]:hover {
   background-color: #c82333;
 }
 
-.modal {
+.modal-password-confirm {
   background-color: white;
-  /* 배경색 */
   border: 1px solid #ccc;
-  /* 테두리 */
   border-radius: 8px;
-  /* 모서리 둥글게 */
   padding: 20px;
-  /* 안쪽 여백 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  /* 그림자 */
   text-align: center;
-  /* 텍스트 중앙 정렬 */
 }
