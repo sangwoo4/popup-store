@@ -50,9 +50,9 @@ public class PopupStoreReviewController {
 
         String jwtToken = tokenUtils.extractToken(token);
         Long userId = tokenUtils.extractUserIdFromToken(jwtToken);
-
+        System.out.println("userId" + userId);
         ResponseDto<?> result = userReservationService.checkUserReservation(userId, reviewDto.getPopupStoreId());
-
+        System.out.println(result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

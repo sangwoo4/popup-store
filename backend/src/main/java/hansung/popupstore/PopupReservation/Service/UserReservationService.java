@@ -199,9 +199,29 @@ public class UserReservationService {
                 .build();
     }
 
+//    public ResponseDto<?> checkUserReservation(Long userId, Long popupStoreId) {
+//        // userId로 사용자의 예약 정보를 조회 (UserReservation 엔티티 리스트)
+//        List<UserReservation> reservations = userReservationRepository.findByUserId(userId);
+//        System.out.println("reservations ==== " + reservations);
+//
+//        // UserReservation 엔티티를 CheckUserReservationDto로 변환하여 popupStoreId 가져오기
+//        boolean reservationExists = reservations.stream()
+//                .map(reservation -> reservation.getPopupReservation().getPopupStore().getId())  // popupStoreId 추출
+//                .anyMatch(id -> id.equals(popupStoreId));  // popupStoreId 비교
+//
+//        // 예약이 있는 경우 성공 응답 반환
+//        if (reservationExists) {
+//            return ResponseDto.setSuccess("유저 예약 확인");
+//        }
+//
+//        // 예약이 없는 경우 실패 응답 반환
+//        return ResponseDto.setFailed("유저 예약 확인 실패");
+//    }
+
     public ResponseDto<?> checkUserReservation(Long userId, Long popupStoreId) {
         // userId로 사용자의 예약 정보를 조회 (UserReservation 엔티티 리스트)
         List<UserReservation> reservations = userReservationRepository.findByUserId(userId);
+        System.out.println("reservations ==== " + reservations);
 
         // UserReservation 엔티티를 CheckUserReservationDto로 변환
         List<CheckUserReservationDto> checkUserReservationDtos = reservations.stream()
@@ -219,4 +239,5 @@ public class UserReservationService {
         // 예약이 없는 경우 실패 응답 반환
         return ResponseDto.setFailed("No reservation found");
     }
+
 }
