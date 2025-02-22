@@ -2,6 +2,7 @@ package hansung.popupstore.PopupReservation.Service;
 
 import hansung.popupstore.Account.Repository.UserRepository;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
+import hansung.popupstore.Security.TokenUtils;
 import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.dto.CheckUserReservationDto;
 import hansung.popupstore.dto.UserReservationDto;
@@ -27,12 +28,19 @@ public class UserReservationService {
     private final PopupReservationRepository popupReservationRepository;
     private final UserRepository userRepository;
     private final PopupStoreRepository popupStoreRepository;
+    private final TokenUtils tokenUtils;
 
+    public ResponseDto<Map<String, Object>> userReservation(String token, UserReservationDto dto) {
 
-    public ResponseDto<Map<String, Object>> userReservation(UserReservationDto dto) {
+        String jwtToken = tokenUtils.extractToken(token);
+        Long userId = tokenUtils.extractUserIdFromToken(jwtToken);
+
         // PopupReservation 엔티티 조회
         PopupReservation popupReservation = popupReservationRepository.findById(dto.getPopupReservationId())
                 .orElseThrow(() -> new RuntimeException("PopupReservation not found with ID: " + dto.getPopupReservationId()));
+
+
+        dto.setUserId(userId);
 
         // 현재 예약자 수와 totalReservation 확인
         int currentReservation = popupReservation.getCurrentReservation() == null ? 0 : popupReservation.getCurrentReservation();
@@ -47,35 +55,44 @@ public class UserReservationService {
         UserReservation userReservation = buildUserReservationEntity(dto);
         userReservationRepository.save(userReservation);
 
+        // 예약 인원 업데이트
+        updateReservationCount(popupReservation, dto.getNumberOfPeople());
+
+        //PopupStore 정보 업데이트
+        updatePopupStoreReservation(popupReservation, dto.getNumberOfPeople());
+
+        // 클라이언트로 전송할 데이터 구성
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("id" , userReservation.getId());
+        responseData.put("numberOfPeople", dto.getNumberOfPeople());
+        responseData.put("date", popupReservation.getDate());
+        responseData.put("startTime", popupReservation.getStartTime());
+        responseData.put("title", popupReservation.getPopupStore().getTitle());
+
+        return ResponseDto.setSuccessData("예약 성공", responseData);
+    }
+
+    private synchronized void updateReservationCount(PopupReservation popupReservation, int numberOfPeople){
         // 현재 예약자 수 업데이트
-        int updatedCurrentReservation = currentReservation + dto.getNumberOfPeople();
+        int updatedCurrentReservation = popupReservation.getCurrentReservation() + numberOfPeople;
         popupReservation.setCurrentReservation(updatedCurrentReservation);
 
-        // 예약 가능한 상태 업데이트
-        if (updatedCurrentReservation == totalReservation) {
+         // 예약 가능한 상태 업데이트
+        if (updatedCurrentReservation == popupReservation.getTotalReservation()) {
             popupReservation.setReservationEnabled(false);
             popupReservation.setReservationFull(true);
         }
 
         popupReservationRepository.save(popupReservation);
+    }
 
+    private void updatePopupStoreReservation(PopupReservation popupReservation, int numberOfPeople){
         // PopupStore 엔티티 조회 및 예약 정보 업데이트
         PopupStore popupStore = popupStoreRepository.findById(popupReservation.getPopupStore().getId())
                 .orElseThrow(() -> new RuntimeException("PopupStore not found with ID: " + popupReservation.getPopupStore().getId()));
 
-        popupStore.updateCurrentReservation(dto.getNumberOfPeople());
+        popupStore.updateCurrentReservation(numberOfPeople);
         popupStoreRepository.save(popupStore);
-
-        // 클라이언트로 전송할 데이터 구성
-        Map<String, Object> responseData = new HashMap<>();
-//        responseData.put("reservationId", popupReservation.getId());
-        responseData.put("id" , userReservation.getId());
-        responseData.put("numberOfPeople", dto.getNumberOfPeople());
-        responseData.put("date", popupReservation.getDate());
-        responseData.put("startTime", popupReservation.getStartTime());
-        responseData.put("title", popupStore.getTitle());
-
-        return ResponseDto.setSuccessData("예약 성공", responseData);
     }
 
     public ResponseDto<Map<String, Object>> userCancelReservation(UserReservationDto dto) {

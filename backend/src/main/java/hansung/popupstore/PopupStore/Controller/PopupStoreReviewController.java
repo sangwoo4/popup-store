@@ -37,13 +37,6 @@ public class PopupStoreReviewController {
         }
     }
 
-
-//    @GetMapping("/{id}")
-//    public ResponseEntity<ResponseDto<?>> getPopupReview(@PathVariable("id") Long id) {
-//        PopupReviewDto reviewDto = popupReviewService.getPopupReview(id);
-//        return new ResponseEntity<>(ResponseDto.setSuccessData("리뷰 조회 성공", reviewDto), HttpStatus.OK);
-//    }
-
     @PostMapping("/register/check")
     public ResponseEntity<ResponseDto<?>> checkUserPopupReservationOrNot(
             @RequestHeader("Authorization") String token, @RequestBody PopupReviewDto reviewDto) {

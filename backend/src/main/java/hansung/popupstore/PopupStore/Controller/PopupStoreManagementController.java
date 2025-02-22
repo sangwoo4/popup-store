@@ -52,10 +52,6 @@ public class PopupStoreManagementController {
         String jwtToken = tokenUtils.extractToken(token);
         Long companyId = tokenUtils.extractCompanyIdFromToken(jwtToken);
 
-        System.out.println("Received DTO: " + dto); // 요청 데이터 확인
-        System.out.println("Received Images: " + images); // 이미지 리스트 확인
-
-
         Optional<PopupStore> popupStoreOptional = popupStoreRepository.findById(id);
         if (!popupStoreOptional.isPresent()) {
             return new ResponseEntity<>(ResponseDto.setFailed("등록된 가게가 존재하지 않습니다."), HttpStatus.NOT_FOUND);
@@ -73,8 +69,6 @@ public class PopupStoreManagementController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseDto<?>> delete(@PathVariable("id") Long id,
                                                  @RequestHeader("Authorization") String token) {
-//        String jwtToken = tokenUtils.extractToken(token);
-//        Long companyId = tokenUtils.extractCompanyIdFromToken(jwtToken);
         ResponseDto<?> result = popUpStoreManagementService.deleteRegister(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

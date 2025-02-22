@@ -18,12 +18,6 @@ public class PopupStoreController {
     private final PopupStoreService popupStoreService;
     private final TokenUtils tokenUtils;
 
-//    @GetMapping("/detail/{id}")
-//    public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("id") Long id) {
-//        popupStoreService.incrementViewCount(id);
-//        ResponseDto<?> result = popUpStoreManagementService.getDetail(id);
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
 
     @GetMapping("/detail/{id}")
     public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("id") Long id,

@@ -56,6 +56,7 @@ public class PopupStoreService {
         return convertToDto(popupStore);
     }
 
+    //조회수 로직
 @Transactional
 public void incrementViewCount(Long popupStoreId, Long userId, HttpServletRequest request) {
     String redisKey;

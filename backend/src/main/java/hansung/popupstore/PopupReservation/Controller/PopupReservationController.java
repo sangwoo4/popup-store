@@ -34,13 +34,8 @@ public class PopupReservationController {
             @RequestHeader("Authorization") String token,
             @RequestBody UserReservationDto dto) {
 
-        // 토큰에서 JWT 추출 및 사용자 ID 추출
-        String jwtToken = tokenUtils.extractToken(token);
-        Long userId = tokenUtils.extractUserIdFromToken(jwtToken);
-        dto.setUserId(userId);
-
         // 예약 처리 서비스 호출
-        ResponseDto<Map<String, Object>> result = userReservationService.userReservation(dto);
+        ResponseDto<Map<String, Object>> result = userReservationService.userReservation(token, dto);
 
         // HTTP 응답 반환
         return new ResponseEntity<>(result, HttpStatus.OK);
