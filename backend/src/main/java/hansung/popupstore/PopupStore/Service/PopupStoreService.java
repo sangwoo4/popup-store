@@ -1,6 +1,7 @@
 package hansung.popupstore.PopupStore.Service;
 
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
+import hansung.popupstore.Security.JwtService;
 import hansung.popupstore.Util.RedisUtil;
 import hansung.popupstore.dto.*;
 import hansung.popupstore.model.*;
@@ -22,6 +23,7 @@ public class PopupStoreService {
     private final PopupStoreRepository popupStoreRepository;
     private final CompanyRepository companyRepository;
     private final RedisUtil redisUtil;
+    private final JwtService jwtService;
 
     @Transactional
     public PopupStore createPopupStore(PopupStoreDto dto) {
@@ -56,38 +58,32 @@ public class PopupStoreService {
         return convertToDto(popupStore);
     }
 
-    //조회수 로직
-@Transactional
-public void incrementViewCount(Long popupStoreId, Long userId, HttpServletRequest request) {
+
+    @Transactional
+    public void incrementViewCount(Long popupStoreId, String token, HttpServletRequest request) {
+
+        Long userId = jwtService.extractUserIdFromToken(token);
     String redisKey;
 
-    if (userId != null) {
-        // 로그인 사용자의 경우: userId 기준으로 Redis 키 생성
-        redisKey = "popupStore:" + popupStoreId + ":user:" + userId;
-    } else {
-        // 비로그인 사용자의 경우: IP 주소를 기준으로 Redis 키 생성
-        String userIp = request.getRemoteAddr();
+    if (userId != null){
+        redisKey = "popupStore: " + popupStoreId + ":user:" + userId;
+    } else{
+        String userIp = request.getHeader("X-Forwarded-For");
+        if(userIp == null){
+            userIp = request.getRemoteAddr();
+        }
         redisKey = "popupStore:" + popupStoreId + ":ip:" + userIp;
     }
 
     String viewRecord = redisUtil.getData(redisKey);
 
-    if (viewRecord == null) {
-        // 조회 기록이 없으면 조회수 증가 및 Redis에 기록 저장
-        redisUtil.setDataExpire(redisKey, "viewed", calculateTimeUntilMidnight());
+    if(viewRecord == null){
+        redisUtil.setDataExpire(redisKey, "viewd", calculateTimeUntilMidnight());
 
-        PopupStore popupStore = popupStoreRepository.findById(popupStoreId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 팝업 스토어 ID입니다."));
-
-        if (popupStore.getViews() == null) {
-            popupStore.setViews(1L);
-        } else {
-            popupStore.setViews(popupStore.getViews() + 1);
-        }
-
-        popupStoreRepository.save(popupStore);
+        popupStoreRepository.incrementViewCount(popupStoreId);
     }
 }
+
     private long calculateTimeUntilMidnight() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime midnight = now.toLocalDate().atStartOfDay().plusDays(1);
