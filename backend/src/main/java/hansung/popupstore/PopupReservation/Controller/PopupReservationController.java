@@ -24,10 +24,8 @@ import java.util.*;
 @RequestMapping("/popup/reservation")
 public class PopupReservationController {
     private final UserReservationService userReservationService;
-    private final UserReservationRepository userReservationRepository;
     private final ReservationStatusService reservationStatusService;
     private final TokenUtils tokenUtils;
-    private final UserRepository userRepository;
 
     @PostMapping("/user")
     public ResponseEntity<ResponseDto<Map<String, Object>>> userReservation(
@@ -40,8 +38,6 @@ public class PopupReservationController {
         // HTTP 응답 반환
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
-
 
     @GetMapping("/user/list")
     public ResponseEntity<ResponseDto<List<Map<String, Object>>>> getAllReservationsByUser(

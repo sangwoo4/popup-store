@@ -12,7 +12,10 @@ import hansung.popupstore.model.User;
 import hansung.popupstore.model.UserReservation;
 import hansung.popupstore.PopupReservation.Repository.PopupReservationRepository;
 import hansung.popupstore.PopupStore.Repository.UserReservationRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.hibernate.dialect.lock.OptimisticEntityLockException;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-
+@Transactional
 public class UserReservationService {
 
     private final UserReservationRepository userReservationRepository;
@@ -32,6 +35,7 @@ public class UserReservationService {
 
     public ResponseDto<Map<String, Object>> userReservation(String token, UserReservationDto dto) {
 
+        // JWT 토큰에서 userId 추출
         String jwtToken = tokenUtils.extractToken(token);
         Long userId = tokenUtils.extractUserIdFromToken(jwtToken);
 
@@ -39,37 +43,46 @@ public class UserReservationService {
         PopupReservation popupReservation = popupReservationRepository.findById(dto.getPopupReservationId())
                 .orElseThrow(() -> new RuntimeException("PopupReservation not found with ID: " + dto.getPopupReservationId()));
 
-
+        // 예약 요청자 userId 설정
         dto.setUserId(userId);
 
-        // 현재 예약자 수와 totalReservation 확인
-        int currentReservation = popupReservation.getCurrentReservation() == null ? 0 : popupReservation.getCurrentReservation();
-        int totalReservation = popupReservation.getTotalReservation();
+        try {
+            // 현재 예약자 수와 totalReservation 확인
+            int currentReservation = popupReservation.getCurrentReservation() == null ? 0 : popupReservation.getCurrentReservation();
+            int totalReservation = popupReservation.getTotalReservation();
 
-        // 새로 추가될 인원이 전체 예약 가능 인원을 초과하는지 확인
-        if (currentReservation + dto.getNumberOfPeople() > totalReservation) {
-            return ResponseDto.setFailed("예약 가능 인원을 초과했습니다.");
+            // 새로 추가될 인원이 전체 예약 가능 인원을 초과하는지 확인
+            if (currentReservation + dto.getNumberOfPeople() > totalReservation) {
+                return ResponseDto.setFailed("예약 가능 인원을 초과했습니다.");
+            }
+
+            // UserReservation 엔티티 생성 및 저장
+            UserReservation userReservation = buildUserReservationEntity(dto);
+            userReservationRepository.save(userReservation);
+
+            // 예약 인원 업데이트
+            updateReservationCount(popupReservation, dto.getNumberOfPeople());
+
+            // PopupStore 정보 업데이트
+            updatePopupStoreReservation(popupReservation, dto.getNumberOfPeople());
+
+            // 클라이언트로 전송할 데이터 구성
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("id", userReservation.getId());
+            responseData.put("numberOfPeople", dto.getNumberOfPeople());
+            responseData.put("date", popupReservation.getDate());
+            responseData.put("startTime", popupReservation.getStartTime());
+            responseData.put("title", popupReservation.getPopupStore().getTitle());
+
+            return ResponseDto.setSuccessData("예약 성공", responseData);
+
+        } catch (OptimisticLockingFailureException e) {
+            // 동시성 문제 발생 시 실패 메시지 반환
+            return ResponseDto.setFailed("동시성 문제로 예약에 실패했습니다. 다시 시도해주세요.");
+        } catch (Exception e) {
+            // 일반적인 예외 처리
+            return ResponseDto.setFailed("예약 처리 중 오류가 발생했습니다: " + e.getMessage());
         }
-
-        // UserReservation 엔티티 생성 및 저장
-        UserReservation userReservation = buildUserReservationEntity(dto);
-        userReservationRepository.save(userReservation);
-
-        // 예약 인원 업데이트
-        updateReservationCount(popupReservation, dto.getNumberOfPeople());
-
-        //PopupStore 정보 업데이트
-        updatePopupStoreReservation(popupReservation, dto.getNumberOfPeople());
-
-        // 클라이언트로 전송할 데이터 구성
-        Map<String, Object> responseData = new HashMap<>();
-        responseData.put("id" , userReservation.getId());
-        responseData.put("numberOfPeople", dto.getNumberOfPeople());
-        responseData.put("date", popupReservation.getDate());
-        responseData.put("startTime", popupReservation.getStartTime());
-        responseData.put("title", popupReservation.getPopupStore().getTitle());
-
-        return ResponseDto.setSuccessData("예약 성공", responseData);
     }
 
     private synchronized void updateReservationCount(PopupReservation popupReservation, int numberOfPeople){
