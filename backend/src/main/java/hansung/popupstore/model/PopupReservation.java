@@ -50,6 +50,9 @@ public class PopupReservation {
     @JsonIgnore
     private Set<UserReservation> userReservations = new HashSet<>();
 
+    @Version
+    private Long version;
+
     // 마이페이지 기능
 //    @OneToMany(mappedBy = "popupReservation", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private Set<UserMyPage> userMyPages = new HashSet<>();

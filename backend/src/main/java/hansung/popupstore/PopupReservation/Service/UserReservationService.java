@@ -38,6 +38,7 @@ public class UserReservationService {
         // JWT 토큰에서 userId 추출
         Long userId = tokenUtils.extractUserIdFromToken(token);
 
+
         // PopupReservation 엔티티 조회
         PopupReservation popupReservation = popupReservationRepository.findById(dto.getPopupReservationId())
                 .orElseThrow(() -> new RuntimeException("PopupReservation not found with ID: " + dto.getPopupReservationId()));
