@@ -5,6 +5,7 @@ import hansung.popupstore.PopupReservation.Service.PopupReservationService;
 import hansung.popupstore.dto.*;
 import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.model.*;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,10 +40,8 @@ public class PopUpStoreManagementService {
         storeDayService.saveOrUpdateStoreDays(dto.getStoreDays(), popupStore);
         popupReservationService.saveOrUpdatePopupReservations(dto.getPopupReservations(), popupStore);
         Set<Category> categories = categoryService.saveOrUpdatePopUpCategories(dto.getCategories(), popupStore);
-        System.out.println("catoegories ======" + categories);
         popupStore.setCategories(categories);
 
-        System.out.println("popupStore ============ " + popupStore.getCategories());
         popupStoreService.updatePopupStoreEntity(popupStore, dto);
 
         if (images != null && !images.isEmpty()) {
@@ -68,10 +67,12 @@ public class PopUpStoreManagementService {
     }
     @Transactional
     public ResponseDto<?> getDetail(Long id) {
+        System.out.println("id ====== " + id);
         PopupStore popupStore = popupStoreService.getPopupStore(id);
         PopupStoreDto popupStoreDto = popupStoreService.convertToDto(popupStore);
         return ResponseDto.setSuccessData("Success", popupStoreDto);
     }
+
     @Transactional
     public ResponseDto<?> deleteRegister(Long id) {
         popupStoreService.deletePopupStore(id);

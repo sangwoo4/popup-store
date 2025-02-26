@@ -1,7 +1,7 @@
 package hansung.popupstore.PopupStore.Service;
 
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
-import hansung.popupstore.Security.JwtService;
+import hansung.popupstore.Security.TokenUtils;
 import hansung.popupstore.Util.RedisUtil;
 import hansung.popupstore.dto.*;
 import hansung.popupstore.model.*;
@@ -22,8 +22,8 @@ import java.util.Set;
 public class PopupStoreService {
     private final PopupStoreRepository popupStoreRepository;
     private final CompanyRepository companyRepository;
+    private final TokenUtils tokenUtils;
     private final RedisUtil redisUtil;
-    private final JwtService jwtService;
 
     @Transactional
     public PopupStore createPopupStore(PopupStoreDto dto) {
@@ -61,28 +61,35 @@ public class PopupStoreService {
 
     @Transactional
     public void incrementViewCount(Long popupStoreId, String token, HttpServletRequest request) {
+        System.out.println("token === "+ token);
+        Long userId;
 
-        Long userId = jwtService.extractUserIdFromToken(token);
-    String redisKey;
-
-    if (userId != null){
-        redisKey = "popupStore: " + popupStoreId + ":user:" + userId;
-    } else{
-        String userIp = request.getHeader("X-Forwarded-For");
-        if(userIp == null){
-            userIp = request.getRemoteAddr();
+        if(token != null){
+            userId = tokenUtils.extractUserIdFromToken(token);
         }
-        redisKey = "popupStore:" + popupStoreId + ":ip:" + userIp;
+        else{
+            userId = null;
+        }
+        //System.out.println("userId =========== " + userId);
+        String redisKey;
+
+        if (userId != null){
+            redisKey = "popupStore: " + popupStoreId + ":user:" + userId;
+        } else{
+            String userIp = request.getHeader("X-Forwarded-For");
+            if(userIp == null){
+                userIp = request.getRemoteAddr();
+            }
+            redisKey = "popupStore:" + popupStoreId + ":ip:" + userIp;
+        }
+
+        String viewRecord = redisUtil.checkData(redisKey);
+
+        if (viewRecord == null) {
+            redisUtil.setDataExpire(redisKey, "viewd", redisUtil.calculateTimeUntilMidnight());
+            popupStoreRepository.incrementViewCount(popupStoreId);
+        }
     }
-
-    String viewRecord = redisUtil.getData(redisKey);
-
-    if(viewRecord == null){
-        redisUtil.setDataExpire(redisKey, "viewd", calculateTimeUntilMidnight());
-
-        popupStoreRepository.incrementViewCount(popupStoreId);
-    }
-}
 
     private long calculateTimeUntilMidnight() {
         LocalDateTime now = LocalDateTime.now();
