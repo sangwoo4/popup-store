@@ -23,7 +23,6 @@ public class PopupStoreController {
     public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("id") Long id,
                                                     @RequestHeader(value = "Authorization", required = false) String token,
                                                     HttpServletRequest request) {
-
         // 조회수 증가 처리
         popupStoreService.incrementViewCount(id, token, request);
         // 팝업 스토어 상세 정보 조회

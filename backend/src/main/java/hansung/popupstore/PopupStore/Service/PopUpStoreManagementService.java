@@ -67,7 +67,6 @@ public class PopUpStoreManagementService {
     }
     @Transactional
     public ResponseDto<?> getDetail(Long id) {
-        System.out.println("id ====== " + id);
         PopupStore popupStore = popupStoreService.getPopupStore(id);
         PopupStoreDto popupStoreDto = popupStoreService.convertToDto(popupStore);
         return ResponseDto.setSuccessData("Success", popupStoreDto);
