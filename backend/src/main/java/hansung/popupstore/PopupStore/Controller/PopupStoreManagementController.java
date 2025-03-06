@@ -1,11 +1,10 @@
 package hansung.popupstore.PopupStore.Controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import hansung.popupstore.PopupStore.Repository.PopupStoreRepository;
 import hansung.popupstore.Security.TokenUtils;
 import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.dto.PopupStoreDto;
-import hansung.popupstore.PopupStore.Service.PopUpStoreManagementService;
+import hansung.popupstore.PopupStore.Service.PopupStoreManagementService;
 import hansung.popupstore.model.PopupStore;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,7 @@ import java.util.Optional;
 @RequestMapping("popup/company")
 public class PopupStoreManagementController {
 
-    private final PopUpStoreManagementService popUpStoreManagementService;
+    private final PopupStoreManagementService popUpStoreManagementService;
     private final TokenUtils tokenUtils;
     private final PopupStoreRepository popupStoreRepository;
 

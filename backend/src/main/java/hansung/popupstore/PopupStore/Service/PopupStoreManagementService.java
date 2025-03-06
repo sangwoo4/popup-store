@@ -5,7 +5,6 @@ import hansung.popupstore.PopupReservation.Service.PopupReservationService;
 import hansung.popupstore.dto.*;
 import hansung.popupstore.Util.ResponseDto;
 import hansung.popupstore.model.*;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +16,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class PopUpStoreManagementService {
+public class PopupStoreManagementService {
     private final PopupStoreService popupStoreService;
     private final PopupStoreImageService popupImageService;
     private final PopupStoreCategoryService categoryService;

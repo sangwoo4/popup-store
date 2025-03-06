@@ -1,6 +1,6 @@
 package hansung.popupstore.PopupStore.Controller;
 
-import hansung.popupstore.PopupStore.Service.PopUpStoreManagementService;
+import hansung.popupstore.PopupStore.Service.PopupStoreManagementService;
 import hansung.popupstore.PopupStore.Service.PopupStoreService;
 import hansung.popupstore.Security.TokenUtils;
 import hansung.popupstore.Util.ResponseDto;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RequestMapping("/popup/")
 public class PopupStoreController {
-    private final PopUpStoreManagementService popUpStoreManagementService;
+    private final PopupStoreManagementService popUpStoreManagementService;
     private final PopupStoreService popupStoreService;
     private final TokenUtils tokenUtils;
 

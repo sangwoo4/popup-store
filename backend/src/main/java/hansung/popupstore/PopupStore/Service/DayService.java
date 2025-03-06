@@ -10,9 +10,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class DayService {
-
     private final DayRepository dayRepository;
-
     public Day getOrCreateDay(String dayName) {
         return dayRepository.findByDay(dayName)
                 .orElseGet(() -> {
@@ -21,9 +19,6 @@ public class DayService {
                     return dayRepository.save(newDay);
                 });
     }
-
-
-
     public List<Day> getAllDays() {
         return dayRepository.findAll();
     }
