@@ -38,11 +38,11 @@ public class TokenProvider {
         }
     }
     // 토큰 생성
-    public String generateToken(Long companyId, Set<String> roles, int duration) {
+    public String generateToken(Long id, Set<String> roles, int duration) {
         Instant now = Instant.now();
         Instant expirationTime = now.plusSeconds(duration);
         return Jwts.builder()
-                .setSubject(String.valueOf(companyId)) // 회사 ID를 주체로 설정
+                .setSubject(String.valueOf(id)) // 회사 ID를 주체로 설정
                 .claim("roles", roles) // 사용자 역할 정보 추가
                 .setIssuedAt(Date.from(now))
                 .setExpiration(Date.from(expirationTime))

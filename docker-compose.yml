@@ -36,17 +36,17 @@ services:
       SPRING_DATASOURCE_PASSWORD: 1234
 
 
-  fastapi-app:
-    build:
-      context: ./ai
-      dockerfile: Dockerfile # 명시적 Dockerfile 경로
-    container_name: fastapi-app-container
-    ports:
-      - "8000:8000"
-    networks:
-      - docker-network
-    environment:
-      AUTO_CATEGORY_KEY: sk-proj-VXwcPzlcS0gr1vjm62FVT3BlbkFJHgphK3z9HJbEJ0JdTLyw
+  # fastapi-app:
+  #   build:
+  #     context: ./ai
+  #     dockerfile: Dockerfile # 명시적 Dockerfile 경로
+  #   container_name: fastapi-app-container
+  #   ports:
+  #     - "8000:8000"
+  #   networks:
+  #     - docker-network
+  #   environment:
+  #     AUTO_CATEGORY_KEY: sk-proj-VXwcPzlcS0gr1vjm62FVT3BlbkFJHgphK3z9HJbEJ0JdTLyw
 
 networks:
   docker-network:

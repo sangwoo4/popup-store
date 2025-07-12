@@ -1,14 +1,13 @@
 package hansung.popupstore.Account.controller;
 
+import hansung.popupstore.Account.Dto.UserLoginDto;
 import hansung.popupstore.Account.service.UserService;
 import hansung.popupstore.Util.ResponseDto;
+import hansung.popupstore.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,11 +24,43 @@ public class UserController {
         return ResponseEntity.ok(nickname);
     }
 
+    @PostMapping("/user/signup")
+    public ResponseDto<?> userSignUp(@RequestBody UserDto requestBody){
+        ResponseDto<?> result = userService.userSignUp(requestBody);
+        return result;
+    }
+
+
+    @PostMapping("/user/login")
+    public ResponseDto<?> userLogin(@RequestBody UserLoginDto requestBody) {
+        ResponseDto<?> result = userService.userLogin(requestBody);
+        return result;
+    }
+
+    @PostMapping("user/signup/check-nickname")
+    public ResponseDto<?> userCheckNick(@RequestBody UserDto requestBody){
+        ResponseDto<?> result = userService.checkNick(requestBody);
+        return result;
+    }
+
+    @PostMapping("user/signup/check-email")
+    public ResponseDto<?> userCheckEmail(@RequestBody UserDto requestBody){
+        ResponseDto<?> result = userService.checkEmail(requestBody);
+        return result;
+    }
+
     @GetMapping("/categories")
     public ResponseEntity<ResponseDto<?>> getCategories() {
         ResponseDto<?> result = userService.getAllCategories();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @PostMapping("user/signup/check-phone")
+    public ResponseDto<?> userCheckPhone(@RequestBody UserDto requestBody){
+        ResponseDto<?> result = userService.checkPhone(requestBody);
+        return result;
+    }
+
 
 //    @PostMapping("/likes")
 //    public ResponseDto<ResponseDto<?>> likePost(@PathVariable Long postId,)

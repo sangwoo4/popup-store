@@ -4,6 +4,7 @@ import hansung.popupstore.Account.Dto.*;
 import hansung.popupstore.Account.Repository.UserRepository;
 import hansung.popupstore.PopupStore.Repository.CategoryRepository;
 import hansung.popupstore.Security.TokenProvider;
+import hansung.popupstore.Util.PasswordEncoderUtil;
 import hansung.popupstore.dto.CategoryDto;
 import hansung.popupstore.dto.HeartDto;
 import hansung.popupstore.dto.HeartRecommendResponseDto;
@@ -13,6 +14,7 @@ import hansung.popupstore.model.Role;
 import hansung.popupstore.model.User;
 import hansung.popupstore.Util.ResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +34,7 @@ public class UserService {
     private final RoleService roleService;
     private final UserCategoryService categoryService;
     private final PasswordService passwordService;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public ResponseDto<?> userSignUp(UserDto dto) {
@@ -77,25 +80,49 @@ public class UserService {
         user.getRoles().add(userRole);
     }
 
-    public ResponseDto<LoginResponseDto> userLogin(UserLoginDto dto) {
+//    public ResponseDto<LoginResponseDto> userLogin(UserLoginDto dto) {
+//        try {
+//            Optional<User> userOptional = userRepository.findByEmail(dto.getEmail());
+//            if (userOptional.isPresent()) {
+//                User user = userOptional.get();
+//                if (passwordService.matchesPassword(dto.getPassword(), user.getPassword())) {
+//                    Set<String> roles = user.getRoles().stream()
+//                            .map(Role::getName)
+//                            .collect(Collectors.toSet());
+//
+//                    // 사용자 ID를 주체로 사용하는 경우
+//                    String token = tokenProvider.generateToken(user.getId(), roles, 10000);
+//
+//                    return ResponseDto.setSuccessData("로그인에 성공하였습니다.", new LoginResponseDto(token, 10000));
+//                }
+//            }
+//            return ResponseDto.setFailed("입력하신 로그인 정보가 존재하지 않습니다.");
+//        } catch (Exception e) {
+//            e.printStackTrace(); // 로그 추가 필요
+//            return ResponseDto.setFailed("데이터베이스 연결에 실패하였습니다.");
+//        }
+//    }
+
+        public ResponseDto<LoginResponseDto> userLogin(UserLoginDto dto) {
         try {
-            Optional<User> userOptional = userRepository.findByEmail(dto.getEmail());
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-                if (passwordService.matchesPassword(dto.getPassword(), user.getPassword())) {
-                    Set<String> roles = user.getRoles().stream()
-                            .map(Role::getName)
-                            .collect(Collectors.toSet());
+            User user = userRepository.findByEmail(dto.getEmail())
+                    .orElseThrow(() -> new IllegalArgumentException("로그인 정보가 올바르지 않습니다."));
 
-                    // 사용자 ID를 주체로 사용하는 경우
-                    String token = tokenProvider.generateToken(user.getId(), roles, 10000);
-
-                    return ResponseDto.setSuccessData("로그인에 성공하였습니다.", new LoginResponseDto(token, 10000));
-                }
+            if (passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+                throw new IllegalArgumentException("로그인 정보가 올바르지 않습니다.");
             }
+
+            Set<String> roles = user.getRoles().stream()
+                    .map(Role::getName)
+                    .collect(Collectors.toSet());
+
+            // 사용자 ID를 주체로 사용하는 경우
+            String token = tokenProvider.generateToken(user.getId(), roles, 10000);
+
+            return ResponseDto.setSuccessData("로그인에 성공하였습니다.", new LoginResponseDto(token, 10000));
+        } catch (IllegalArgumentException e) {
             return ResponseDto.setFailed("입력하신 로그인 정보가 존재하지 않습니다.");
-        } catch (Exception e) {
-            e.printStackTrace(); // 로그 추가 필요
+        } catch (Exception e){
             return ResponseDto.setFailed("데이터베이스 연결에 실패하였습니다.");
         }
     }

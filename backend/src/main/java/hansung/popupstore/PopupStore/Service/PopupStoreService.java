@@ -60,8 +60,7 @@ public class PopupStoreService {
 
 
     @Transactional
-    public void incrementViewCount(Long popupStoreId, String token, HttpServletRequest request) {
-        System.out.println("token === "+ token);
+    public void processViewCount(Long popupStoreId, String token, HttpServletRequest request) {
         Long userId;
 
         if(token != null){
@@ -70,7 +69,6 @@ public class PopupStoreService {
         else{
             userId = null;
         }
-        //System.out.println("userId =========== " + userId);
         String redisKey;
 
         if (userId != null){
@@ -83,7 +81,7 @@ public class PopupStoreService {
             redisKey = "popupStore:" + popupStoreId + ":ip:" + userIp;
         }
 
-        String viewRecord = redisUtil.checkData(redisKey);
+        String viewRecord = redisUtil.isAlreadyViewed(redisKey);
 
         if (viewRecord == null) {
             redisUtil.setDataExpire(redisKey, "viewd", redisUtil.calculateTimeUntilMidnight());
@@ -91,11 +89,11 @@ public class PopupStoreService {
         }
     }
 
-    private long calculateTimeUntilMidnight() {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime midnight = now.toLocalDate().atStartOfDay().plusDays(1);
-        return Duration.between(now, midnight).getSeconds();
-    }
+//    private long calculateTimeUntilMidnight() {
+//        LocalDateTime now = LocalDateTime.now();
+//        LocalDateTime midnight = now.toLocalDate().atStartOfDay().plusDays(1);
+//        return Duration.between(now, midnight).getSeconds();
+//    }
 
 
     private PopupStore buildPopupStoreEntity(PopupStoreDto dto) {

@@ -15,7 +15,7 @@ public class RedisUtil {
 
     private final StringRedisTemplate stringRedisTemplate;
 
-    public String checkData(String key) {
+    public String isAlreadyViewed(String key) {
         return stringRedisTemplate.opsForValue().get(key);
     }
 

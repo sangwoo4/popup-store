@@ -24,7 +24,7 @@ public class PopupStoreController {
                                                     @RequestHeader(value = "Authorization", required = false) String token,
                                                     HttpServletRequest request) {
         // 조회수 증가 처리
-        popupStoreService.incrementViewCount(id, token, request);
+        popupStoreService.processViewCount(id, token, request);
         // 팝업 스토어 상세 정보 조회
         ResponseDto<?> result = popUpStoreManagementService.getDetail(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
