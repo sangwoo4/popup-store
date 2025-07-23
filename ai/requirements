@@ -1,0 +1,15 @@
+fastapi
+pydantic
+openai
+uvicorn
+python-dotenv
+-----------------------------------------------------------------
+2. tensorflow AI 방식
+fastapi
+uvicorn
+cachetools
+geopy
+tensorflow
+numpy
+mysql-connector-python
+pydantic

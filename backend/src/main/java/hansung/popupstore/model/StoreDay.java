@@ -1,6 +1,5 @@
 package hansung.popupstore.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,4 +30,5 @@ public class StoreDay {
 
     @Column(name = "close_time")
     private String closeTime;
+
 }
